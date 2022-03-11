@@ -1,0 +1,13 @@
+set_io clk_master 21
+
+set_io flash_sclk 70
+set_io _flash_ss 71
+set_io flash_io0 67
+set_io flash_io1 68
+set_io flash_io2 1 # TODO: NEEDS PROPER ASSIGNMENT
+set_io flash_io3 2 # TODO: NEEDS PROPER ASSIGNMENT
+
+set_io spi_sclk 3 # TODO: NEEDS PROPER ASSIGNMENT
+set_io spi_miso 4 # TODO: NEEDS PROPER ASSIGNMENT
+set_io spi_mosi 7 # TODO: NEEDS PROPER ASSIGNMENT
+set_io _spi_ss 8 # TODO: NEEDS PROPER ASSIGNMENT
