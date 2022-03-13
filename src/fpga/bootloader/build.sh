@@ -10,7 +10,8 @@ OUT_YOSYS_JSON_FILENAME="${OUTDIR}/${MODULE_NAME}.json";
 OUT_PNR_ASC_FILENAME="${OUTDIR}/${MODULE_NAME}.asc";
 OUT_TIMINGS_FILENAME="${OUTDIR}/${MODULE_NAME}.timings";
 OUT_PACK_BIN_FILENAME="${OUTDIR}/${MODULE_NAME}.bin";
-PACKAGE="tq144"
+DEVICE="u4k"
+PACKAGE="sg48"
 CLK_FREQUENCY_MHZ="12"
 
 if [ ! -f "${VENV_ACTIVATE}" ]; then
@@ -26,8 +27,8 @@ cp ${HDLDIR}/*.pcf "${OUTDIR}";
 python -m src.bootloader "${OUTDIR}";
 
 yosys -q -p "synth_ice40 -relut -top ${MODULE_NAME} -json ${OUT_YOSYS_JSON_FILENAME}" ${MODULE_VERILOG_FILENAME} ${HDLDIR}/**/*.v;
-nextpnr-ice40 --force --json ${OUT_YOSYS_JSON_FILENAME} --pcf ${OUTDIR}/board.pcf --asc ${OUT_PNR_ASC_FILENAME} --freq ${CLK_FREQUENCY_MHZ} --hx1k --package ${PACKAGE} --opt-timing;
+nextpnr-ice40 --force --json ${OUT_YOSYS_JSON_FILENAME} --pcf ${OUTDIR}/board.pcf --asc ${OUT_PNR_ASC_FILENAME} --freq ${CLK_FREQUENCY_MHZ} --${DEVICE} --package ${PACKAGE} --opt-timing;
 
-icetime -p ${OUTDIR}/board.pcf -P ${PACKAGE} -r ${OUT_TIMINGS_FILENAME} -d hx1k -t ${OUT_PNR_ASC_FILENAME}
+icetime -p ${OUTDIR}/board.pcf -P ${PACKAGE} -r ${OUT_TIMINGS_FILENAME} -d ${DEVICE} -t ${OUT_PNR_ASC_FILENAME}
 
 icepack -s ${OUT_PNR_ASC_FILENAME} ${OUT_PACK_BIN_FILENAME}
