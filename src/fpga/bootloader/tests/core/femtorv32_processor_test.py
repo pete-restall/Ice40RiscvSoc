@@ -14,7 +14,7 @@ _MAXIMUM_IO_WRITE_VALUE = (1 << _MAXIMUM_IO_WRITE_VALUE_BITS) - 1
 class Femtorv32Fixture:
 	def __init__(self):
 		seed = random.getrandbits(32)
-		print('Using non-determinism seed: {seed}')
+		print(f'Using non-determinism seed: {seed}')
 		random.seed(seed)
 
 		self.io_writes = []

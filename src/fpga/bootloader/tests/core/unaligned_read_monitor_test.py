@@ -7,7 +7,7 @@ from src.core.unaligned_read_monitor import UnalignedReadMonitor
 class UnalignedReadMonitorFixture:
 	def __init__(self):
 		seed = random.getrandbits(32)
-		print('Using non-determinism seed: {seed}')
+		print(f'Using non-determinism seed: {seed}')
 		random.seed(seed)
 
 		self._bus = Femtorv32Bus()
