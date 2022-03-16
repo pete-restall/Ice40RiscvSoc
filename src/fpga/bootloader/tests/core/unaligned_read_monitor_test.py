@@ -62,11 +62,11 @@ class TestUnalignedReadMonitor:
 		sim = Simulation(fixture.generators(), *generators)
 		sim.run()
 
-	def test_constructor_with_no_reset_throws_type_error(self, fixture):
+	def test_constructor_with_no_reset_raises_type_error(self, fixture):
 		with pytest.raises(TypeError):
 			UnalignedReadMonitor(None, fixture.bus)
 
-	def test_constructor_with_no_bus_throws_type_error(self, fixture):
+	def test_constructor_with_no_bus_raises_type_error(self, fixture):
 		with pytest.raises(TypeError):
 			UnalignedReadMonitor(fixture._reset, None)
 
