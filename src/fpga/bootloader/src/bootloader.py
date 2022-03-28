@@ -1,7 +1,9 @@
 import sys
 from myhdl import *
+from src.core.device_bus import DeviceBus
 from src.core.femtorv32_processor import Femtorv32Processor
 from src.core.femtorv32_bus import Femtorv32Bus
+from src.core.ebr_memory_block import MemoryBlock
 
 @block
 def Main(
@@ -23,17 +25,26 @@ def Main(
 	irq = Signal(bool(0)) # TODO: should be tied to peripherals to enable IRQ
 
 	# TODO - THESE SHOULD BE ENCAPSULATED FURTHER (INTO A 'Core' MODULE) BUT FOR NOW, USE FEMTORV32 DIRECTLY...
+	clk_core = clk_master # TODO: SHOULD BE A DIVIDED CLOCK
 	core_bus = Femtorv32Bus()
 	core = Femtorv32Processor(
 		_reset,
-		clk_master, # TODO: should be a divided clock
+		clk_core,
 		core_bus,
-		irq=irq,
+		irq,
 		reset_address=0x000000)
 
-	# TODO - only necessary so that the synthesis tool does not optimise everything away...
-	xxx = int('0b001_00000000000_01', base=2) | (1 << 16) # c.jal 0; c.nop
-	yyy = 1 | (1 << 16) # c.nop; c.nop
+	rom_num_words = 12 * (4096 // 32)
+	rom_bus = DeviceBus(core_bus, 0, rom_num_words - 4)
+	rom = MemoryBlock(
+		clk_core,
+		rom_bus,
+		rom_num_words,
+		is_rom=True,
+		contents=[1],
+		fill_value=1)
+
+	rom_bus_generators = rom_bus.generators()
 
 	@always(clk_master.posedge)
 	def whatevs():
@@ -45,12 +56,6 @@ def Main(
 		irq.next = 0
 		core_bus.rbusy.next = 0
 		core_bus.wbusy.next = 0
-
-		nonlocal xxx, yyy
-		if core_bus.address == 0 and core_bus.rstrb:
-			core_bus.rdata.next = xxx
-		elif core_bus.rstrb:
-			core_bus.rdata.next = yyy
 
 		if core_bus.wmask:
 			if core_bus.wdata & 1:
@@ -74,7 +79,7 @@ def Main(
 		nonlocal _flash_ss
 		_flash_ss.next = 1
 
-	return core, outputs, whatevs # TODO: REMOVE 'outputs' WHEN MORE OF THE DESIGN IS COMPLETE...
+	return core, rom, rom_bus_generators, outputs, whatevs # TODO: REMOVE 'outputs' WHEN MORE OF THE DESIGN IS COMPLETE...
 
 class Bootloader:
 	def __init__(self):
@@ -113,7 +118,7 @@ class Bootloader:
 			name=self.__class__.__name__,
 			directory=dirname,
 			testbench=False,
-			initial_values=False)
+			initial_values=True)
 
 if __name__ == '__main__':
 	if len(sys.argv) != 2:
