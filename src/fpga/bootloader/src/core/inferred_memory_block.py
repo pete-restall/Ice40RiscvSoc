@@ -1,7 +1,7 @@
 from myhdl import *
 
 @block
-def EbrMemoryBlock(clk, bus, num_words, is_rom=False, contents=None, fill_value=0):
+def InferredMemoryBlock(clk, bus, num_words, is_rom=False, contents=None, fill_value=0):
 	if is_rom and not contents:
 		raise ValueError("ROM needs to be initialised as part of the bitstream")
 
