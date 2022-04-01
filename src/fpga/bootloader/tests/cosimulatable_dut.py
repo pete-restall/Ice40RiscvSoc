@@ -5,7 +5,7 @@ from myhdl import *
 _timescale_ps=1 # Must match the Lattice libraries for accurate timings - the simulator takes the highest precision.  Although there's still something weird about the LXT files...
 
 class CosimulatableDut:
-	def __init__(self, dut, initial_values=True):
+	def __init__(self, dut, initial_values=True, extra_signals={}):
 		self.cosim_path = mkdtemp()
 		this_path = os.path.dirname(os.path.realpath(__file__))
 		package_path = this_path + '/..'
@@ -43,7 +43,7 @@ class CosimulatableDut:
 			self.cosim_path + '/dut.v ' +
 			self.cosim_path + '/tb_dut.v')
 
-		print(iverilog_cmd)
+		print('iverilog_cmd =', iverilog_cmd)
 		os.system(iverilog_cmd)
 
 		cosim_cmd = ('vvp ' +
@@ -51,8 +51,10 @@ class CosimulatableDut:
 			self.cosim_path + '/dut.o ' +
 			'-lxt2')
 
-		print(cosim_cmd)
-		self.dut = Cosimulation(cosim_cmd, **dut.argdict)
+		print('cosim_cmd =', cosim_cmd)
+		signals = {**dut.argdict, **extra_signals}
+		print('signals =', signals)
+		self.dut = Cosimulation(cosim_cmd, **signals)
 
 	def run(self, generators, **kwargs):
 		sim = Simulation(generators)

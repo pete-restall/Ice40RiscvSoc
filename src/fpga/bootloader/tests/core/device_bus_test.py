@@ -1,8 +1,9 @@
-import random
 import pytest
+import random
 from myhdl import *
 from src.core.device_bus import DeviceBus
 from src.core.femtorv32_bus import Femtorv32Bus
+from tests.cosimulatable_dut import CosimulatableDut
 
 class DeviceBusFixture:
 	def __init__(self):
@@ -11,11 +12,10 @@ class DeviceBusFixture:
 		random.seed(seed)
 
 		self._processor_bus = Femtorv32Bus()
-		num_addressable_words = self.any_num_addressable_words()
-		self._device_bus = DeviceBus(
-			self._processor_bus,
-			self.any_base_address_allowing(num_addressable_words * 4),
-			num_addressable_words)
+		self._num_addressable_words = self.any_num_addressable_words()
+		self._base_address = self.any_base_address_allowing(self._num_addressable_words * 4)
+		self._device_bus = None
+		self._dut = None
 
 	def any_num_addressable_words(self):
 		return random.randint(1, 2**len(self._processor_bus.address) // 4)
@@ -43,11 +43,36 @@ class DeviceBusFixture:
 		return self._processor_bus
 
 	@property
+	def base_address(self):
+		return self._base_address
+
+	@base_address.setter
+	def base_address(self, value):
+		self._base_address = value
+
+	@property
+	def num_addressable_words(self):
+		return self._num_addressable_words
+
+	@num_addressable_words.setter
+	def num_addressable_words(self, value):
+		self._num_addressable_words = value
+
+	@property
 	def device_bus(self):
+		if self._device_bus is None:
+			self._device_bus = DeviceBus(
+				self._processor_bus,
+				self._base_address,
+				self._num_addressable_words)
+
 		return self._device_bus
 
 	def generators(self):
-		return self._device_bus.generators()
+		if self._dut is None:
+			self._dut = CosimulatableDut(self.device_bus.generators()).dut
+
+		return self._dut
 
 	def any_address(self):
 		return random.randint(self._processor_bus.address.min, self._processor_bus.address.max)
@@ -213,53 +238,50 @@ class TestDeviceBus:
 		self.run(fixture, test)
 
 	def test_wmask_remains_low_when_address_outside_of_upper_range(self, fixture):
-		base_address = 0x432100
-		num_addressable_words = 10
-		bus = DeviceBus(fixture.processor_bus, base_address, num_addressable_words)
+		fixture.base_address = 0x432100
+		fixture.num_addressable_words = 10
 
 		@instance
 		def test():
 			nonlocal fixture
-			for too_high in range(num_addressable_words * 4, num_addressable_words * 4 + 10):
-				fixture.processor_bus.address.next = base_address + too_high
+			for too_high in range(fixture.num_addressable_words * 4, fixture.num_addressable_words * 4 + 10):
+				fixture.processor_bus.address.next = fixture.base_address + too_high
 				fixture.processor_bus.wmask.next = 1
 				yield delay(1)
-				assert not bus.wmask
+				assert not fixture.device_bus.wmask
 
-		self.run(fixture, test, bus.generators())
+		self.run(fixture, test)
 
 	def test_wmask_remains_low_when_address_outside_of_lower_range(self, fixture):
-		base_address = 0x432100
-		num_addressable_words = 10
-		bus = DeviceBus(fixture.processor_bus, base_address, num_addressable_words)
+		fixture.base_address = 0x432100
+		fixture.num_addressable_words = 10
 
 		@instance
 		def test():
 			nonlocal fixture
 			for too_low in range(-10, 0):
-				fixture.processor_bus.address.next = base_address + too_low
+				fixture.processor_bus.address.next = fixture.base_address + too_low
 				fixture.processor_bus.wmask.next = 0x0f
 				yield delay(1)
-				assert not bus.wmask
+				assert not fixture.device_bus.wmask
 
-		self.run(fixture, test, bus.generators())
+		self.run(fixture, test)
 
 	def test_wmask_goes_high_for_each_address_inside_range(self, fixture):
-		base_address = 0x432100
-		num_addressable_words = 10
-		bus = DeviceBus(fixture.processor_bus, base_address, num_addressable_words)
+		fixture.base_address = 0x432100
+		fixture.num_addressable_words = 10
 
 		@instance
 		def test():
 			nonlocal fixture
-			for offset in range(0, num_addressable_words * 4):
+			for offset in range(0, fixture.num_addressable_words * 4):
 				wmask = fixture.any_word() & 0x0f
-				fixture.processor_bus.address.next = base_address + offset
+				fixture.processor_bus.address.next = fixture.base_address + offset
 				fixture.processor_bus.wmask.next = wmask
 				yield delay(1)
-				assert bus.wmask == wmask
+				assert fixture.device_bus.wmask == wmask
 
-		self.run(fixture, test, bus.generators())
+		self.run(fixture, test)
 
 	@pytest.mark.parametrize("wbusy", [True, False])
 	def test_wbusy_is_shadow_of_processor_wbusy(self, fixture, wbusy):
@@ -284,20 +306,19 @@ class TestDeviceBus:
 		self.run(fixture, test)
 
 	def test_rstrb_remains_low_when_address_outside_of_upper_range(self, fixture):
-		base_address = 0x123400
-		num_addressable_words = 10
-		bus = DeviceBus(fixture.processor_bus, base_address, num_addressable_words)
+		fixture.base_address = 0x123400
+		fixture.num_addressable_words = 10
 
 		@instance
 		def test():
 			nonlocal fixture
-			for too_high in range(num_addressable_words * 4, num_addressable_words * 4 + 10):
-				fixture.processor_bus.address.next = base_address + too_high
+			for too_high in range(fixture.num_addressable_words * 4, fixture.num_addressable_words * 4 + 10):
+				fixture.processor_bus.address.next = fixture.base_address + too_high
 				fixture.processor_bus.rstrb.next = 1
 				yield delay(1)
-				assert not bus.rstrb
+				assert not fixture.device_bus.rstrb
 
-		self.run(fixture, test, bus.generators())
+		self.run(fixture, test)
 
 	def test_rstrb_remains_low_when_address_outside_of_lower_range(self, fixture):
 		base_address = 0x123400

@@ -42,28 +42,36 @@ class DeviceBus:
 		self._rstrb = Signal(bool(0))
 		self._wmask = Signal(intbv(val=0, min=0, max=16))
 
-	@block
 	def generators(self):
-		en = Signal(bool(0))
+		@block
+		def encapsulated(bus_address, base_address, num_addressable_bytes, bus_rstrb, rstrb, bus_wmask, wmask):
+			en = Signal(bool(0))
 
-		@always_comb
-		def decode_en():
-			nonlocal self
-			en.next = self._bus.address >= self._base_address and self._bus.address < self._base_address + self._num_addressable_bytes
+			@always_comb
+			def decode_en():
+				nonlocal self
+				nonlocal bus_address
+				nonlocal base_address
+				nonlocal num_addressable_bytes
+				en.next = bus_address >= base_address and bus_address < base_address + num_addressable_bytes
 
-		@always_comb
-		def decode_rstrb():
-			nonlocal en
-			nonlocal self
-			self._rstrb.next = en and self._bus.rstrb
+			@always_comb
+			def decode_rstrb():
+				nonlocal en
+				nonlocal rstrb
+				nonlocal bus_rstrb
+				rstrb.next = en and bus_rstrb
 
-		@always_comb
-		def decode_wmask():
-			nonlocal en
-			nonlocal self
-			self._wmask.next = self._bus.wmask if en else 0
+			@always_comb
+			def decode_wmask():
+				nonlocal en
+				nonlocal wmask
+				nonlocal bus_wmask
+				wmask.next = bus_wmask if en else 0
 
-		return decode_en, decode_rstrb, decode_wmask
+			return decode_en, decode_rstrb, decode_wmask
+
+		return encapsulated(self._bus.address, self._base_address, self._num_addressable_bytes, self._bus.rstrb, self._rstrb, self._bus.wmask, self._wmask)
 
 	@property
 	def address(self):

@@ -3,7 +3,7 @@ from myhdl import *
 from src.core.device_bus import DeviceBus
 from src.core.femtorv32_processor import Femtorv32Processor
 from src.core.femtorv32_bus import Femtorv32Bus
-from src.core.ebr_memory_block import MemoryBlock
+from src.core.inferred_memory_block import InferredMemoryBlock
 
 @block
 def Main(
@@ -34,17 +34,21 @@ def Main(
 		irq,
 		reset_address=0x000000)
 
-	rom_num_words = 12 * (4096 // 32)
-	rom_bus = DeviceBus(core_bus, 0, rom_num_words - 4)
-	rom = MemoryBlock(
-		clk_core,
-		rom_bus,
-		rom_num_words,
-		is_rom=True,
-		contents=[1],
-		fill_value=1)
+	@block
+	def rom():
+		nonlocal clk_core
+		nonlocal core_bus
+		rom_num_words = 12 * (4096 // 32)
+		rom_bus = DeviceBus(core_bus, 0, rom_num_words - 4)
+		rom = InferredMemoryBlock(
+			clk_core,
+			rom_bus,
+			rom_num_words,
+			is_rom=True,
+			contents=[0x0000006f],
+			fill_value=1)
 
-	rom_bus_generators = rom_bus.generators()
+		return rom.generators(), rom_bus.generators().subs # TODO: BIT OF A MESS - BECAUSE THE 'generators()' FUNCTION IS NOT MARKED @block; BUT IF IT'S MARKED @block THEN THE SIGNALS CANNOT BE INFERRED FOR THE CO-SIMULATION TESTS.  THE TESTS ARE FINE (SHOULDN'T MARK generator() WITH @block) SO NEED A BETTER STRUCTURE; NEEDS TO BE IN @block AS WELL TO ALLOW NAMESPACING, OTHERWISE THE NAMES WILL COLLIDE IN THE VERILOG...
 
 	@always(clk_master.posedge)
 	def whatevs():
@@ -79,7 +83,7 @@ def Main(
 		nonlocal _flash_ss
 		_flash_ss.next = 1
 
-	return core, rom, rom_bus_generators, outputs, whatevs # TODO: REMOVE 'outputs' WHEN MORE OF THE DESIGN IS COMPLETE...
+	return core, rom(), outputs, whatevs # TODO: REMOVE 'outputs' WHEN MORE OF THE DESIGN IS COMPLETE...
 
 class Bootloader:
 	def __init__(self):
@@ -118,7 +122,7 @@ class Bootloader:
 			name=self.__class__.__name__,
 			directory=dirname,
 			testbench=False,
-			initial_values=True)
+			initial_values=False)
 
 if __name__ == '__main__':
 	if len(sys.argv) != 2:
