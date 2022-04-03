@@ -55,8 +55,7 @@ module FemtoRV32(
 
  // The ALU function, decoded in 1-hot form (doing so reduces LUT count)
  // It is used as follows: funct3Is[val] <=> funct3 == val
- (* onehot *)
- wire [7:0] funct3Is = 8'b00000001 << instr[14:12];
+ wire [7:0] funct3Is = 8'b00000001 << instr[14:12]; /* synthesis syn_encoding="onehot" */
 
  // The five immediate formats, see RiscV reference (link above), Fig. 2.4 p. 12
  wire [31:0] Uimm = {    instr[31],   instr[30:12], {12{1'b0}}};
@@ -353,7 +352,7 @@ module FemtoRV32(
    /***************************************************************************/
 
    reg [ADDR_WIDTH-1:2] cached_addr;
-   reg           [31:0] cached_data;
+   reg           [31:0] cached_data; /* synthesis syn_preserve=1 */
 
    wire current_cache_hit = cached_addr == PC     [ADDR_WIDTH-1:2];
    wire    next_cache_hit = cached_addr == PC_new [ADDR_WIDTH-1:2];
@@ -389,8 +388,7 @@ module FemtoRV32(
    localparam WAIT_ALU_OR_MEM      = 1 << WAIT_ALU_OR_MEM_bit;
    localparam WAIT_ALU_OR_MEM_SKIP = 1 << WAIT_ALU_OR_MEM_SKIP_bit;
 
-   (* onehot *)
-   reg [NB_STATES-1:0] state;
+   reg [NB_STATES-1:0] state; /* synthesis syn_encoding="onehot" */
 
    // The signals (internal and external) that are determined
    // combinatorially from state and other signals.
@@ -436,8 +434,7 @@ module FemtoRV32(
       end else begin
 
 	 // See note [1] at the end of this file.
-	 (* parallel_case *)
-	 case(1'b1)
+	 case(1'b1) /* synthesis parallel_case */
 
            state[WAIT_INSTR_bit]: begin
               if(!mem_rbusy) begin // may be high when executing from SPI flash
@@ -445,7 +442,7 @@ module FemtoRV32(
 		 if (~current_cache_hit | fetch_second_half) begin
                     cached_addr <= mem_addr[ADDR_WIDTH-1:2];
                     cached_data <= mem_rdata;
-		 end;
+		 end
 
 		 // Decode instruction
 		 rs1 <= registerFile[decompressed[19:15]];
