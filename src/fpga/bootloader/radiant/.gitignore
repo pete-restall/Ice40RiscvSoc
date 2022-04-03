@@ -1,0 +1,10 @@
+default/**/*
+simulation/**/*
+!simulation/*/.spf
+*.dir/**/*
+drc.log
+hdlparser.log
+transcript
+promote.xml
+reportview.xml
+*_tcl.html
