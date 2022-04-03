@@ -26,6 +26,10 @@ cp ${HDLDIR}/*.pcf "${OUTDIR}";
 . "${VENV_ACTIVATE}";
 python -m src.bootloader "${OUTDIR}";
 
+# TODO: We exit here because we don't want the yosys / nextpnr-ice40 build since they lack comprehensive timing constraints.
+# We're using Radiant for builds, so work out how to incorporate it into the script (if at all...)
+exit 0;
+
 yosys -q -p "synth_ice40 -relut -top ${MODULE_NAME} -json ${OUT_YOSYS_JSON_FILENAME}" ${MODULE_VERILOG_FILENAME} ${HDLDIR}/**/*.v;
 nextpnr-ice40 --force --json ${OUT_YOSYS_JSON_FILENAME} --pcf ${OUTDIR}/board.pcf --asc ${OUT_PNR_ASC_FILENAME} --freq ${CLK_FREQUENCY_MHZ} --${DEVICE} --package ${PACKAGE} --opt-timing;
 
