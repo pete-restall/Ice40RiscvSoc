@@ -12,12 +12,19 @@ class InferredMemoryBlock:
 		self._is_rom = is_rom
 		self._contents_filename = contents_filename
 
-	@block
 	def generators(self):
 		contents_filename = self._contents_filename
 
 		@block
 		def encapsulated(clk, bus_rstrb, bus_rdata, bus_wmask, bus_wdata, is_rom, cells, bus_address):
+			word_address = Signal(modbv(min=0, max=2**(len(bus_address) - 2)))
+
+			@always_comb
+			def address_slicer():
+				nonlocal bus_address
+				nonlocal word_address
+				word_address.next = bus_address[:2]
+
 			@block
 			def initial(cells):
 				nonlocal clk
@@ -36,9 +43,9 @@ class InferredMemoryBlock:
 				nonlocal bus_rstrb
 				nonlocal bus_rdata
 				nonlocal cells
-				nonlocal bus_address
+				nonlocal word_address
 				if bus_rstrb:
-					bus_rdata.next = cells[bus_address[:2]] # The :2 doesn't work - still synthesises to :0
+					bus_rdata.next = cells[word_address] # The :2 doesn't work - still synthesises to :0
 
 			@always(clk.posedge)
 			def write():
@@ -56,12 +63,12 @@ class InferredMemoryBlock:
 					cells[bus_address[:2]](32, 24).next = bus_wdata(32, 24)
 
 			if is_rom:
-				return initial(self._cells), read
+				return initial(self._cells), read, address_slicer
 
 			if contents_filename:
-				return initial(self._cells), read, write
+				return initial(self._cells), read, write, address_slicer
 
-			return read, write
+			return read, write, address_slicer
 
 		return encapsulated(self._clk, self._bus.rstrb, self._bus.rdata, self._bus.wmask, self._bus.wdata, self._is_rom, self._cells, self._bus.address)
 

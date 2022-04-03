@@ -19,7 +19,11 @@ def Main(
 	flash_io1,
 	flash_io2,
 	flash_io3,
-	_flash_ss):
+	_flash_ss,
+
+	_led_r,
+	_led_g,
+	_led_b):
 
 	_reset = ResetSignal(val=bool(1), active=bool(0), isasync=True) # TODO: should be tied to something
 	irq = Signal(bool(0)) # TODO: should be tied to peripherals to enable IRQ
@@ -38,7 +42,7 @@ def Main(
 	def rom():
 		nonlocal clk_core
 		nonlocal core_bus
-		rom_num_words = 12 * (4096 // 32)
+		rom_num_words = 16 * (4096 // 32)
 		rom_bus = DeviceBus(core_bus, 0, rom_num_words - 4)
 		rom = InferredMemoryBlock(
 			clk_core,
@@ -47,7 +51,17 @@ def Main(
 			is_rom=True,
 			contents_filename='../out/firmware.mem')
 
-		return rom.generators(), rom_bus.generators().subs # TODO: BIT OF A MESS - BECAUSE THE 'generators()' FUNCTION IS NOT MARKED @block; BUT IF IT'S MARKED @block THEN THE SIGNALS CANNOT BE INFERRED FOR THE CO-SIMULATION TESTS.  THE TESTS ARE FINE (SHOULDN'T MARK generator() WITH @block) SO NEED A BETTER STRUCTURE; NEEDS TO BE IN @block AS WELL TO ALLOW NAMESPACING, OTHERWISE THE NAMES WILL COLLIDE IN THE VERILOG...
+		@block
+		def rom_block():
+			nonlocal rom
+			return rom.generators().subs
+
+		@block
+		def rom_bus_block():
+			nonlocal rom_bus
+			return rom_bus.generators().subs
+
+		return rom_block(), rom_bus_block() # TODO: BIT OF A MESS - BECAUSE THE 'generators()' FUNCTION IS NOT MARKED @block; BUT IF IT'S MARKED @block THEN THE SIGNALS CANNOT BE INFERRED FOR THE CO-SIMULATION TESTS.  THE TESTS ARE FINE (SHOULDN'T MARK generator() WITH @block) SO NEED A BETTER STRUCTURE; NEEDS TO BE IN @block AS WELL TO ALLOW NAMESPACING, OTHERWISE THE NAMES WILL COLLIDE IN THE VERILOG...
 
 	@always(clk_master.posedge)
 	def whatevs():
@@ -65,6 +79,23 @@ def Main(
 				flash_io0.next = 1
 			else:
 				flash_io0.next = 0
+
+	@block
+	def leds(address, wmask, wdata):
+		@always(clk_master.posedge)
+		def led_writer():
+			nonlocal _led_r
+			nonlocal _led_g
+			nonlocal _led_b
+			nonlocal address
+			nonlocal wmask
+			nonlocal wdata
+			if wmask != 0 and address == 0x400004:
+				_led_r.next = wdata[0]
+				_led_g.next = wdata[1]
+				_led_b.next = wdata[2]
+
+		return led_writer
 
 	@always_comb
 	def outputs():
@@ -85,7 +116,7 @@ def Main(
 		nonlocal _flash_ss
 		_flash_ss.next = 1
 
-	return core, rom(), outputs, whatevs # TODO: REMOVE 'outputs' WHEN MORE OF THE DESIGN IS COMPLETE...
+	return core, rom(), outputs, whatevs, leds(core_bus.address, core_bus.wmask, core_bus.wdata) # TODO: REMOVE 'outputs' WHEN MORE OF THE DESIGN IS COMPLETE...
 
 class Bootloader:
 	def __init__(self):
@@ -103,6 +134,10 @@ class Bootloader:
 		flash_io3 = Signal(bool(0))
 		_flash_ss = Signal(bool(1))
 
+		_led_r = Signal(bool(1))
+		_led_g = Signal(bool(1))
+		_led_b = Signal(bool(1))
+
 		self.main = Main(
 			clk_master,
 
@@ -116,7 +151,11 @@ class Bootloader:
 			flash_io1,
 			flash_io2,
 			flash_io3,
-			_flash_ss)
+			_flash_ss,
+
+			_led_r,
+			_led_g,
+			_led_b)
 
 	def to_verilog(self, dirname):
 		self.main.convert(
