@@ -45,8 +45,7 @@ def Main(
 			rom_bus,
 			rom_num_words,
 			is_rom=True,
-			contents=[0x0000006f],
-			fill_value=1)
+			contents_filename='../out/firmware.mem')
 
 		return rom.generators(), rom_bus.generators().subs # TODO: BIT OF A MESS - BECAUSE THE 'generators()' FUNCTION IS NOT MARKED @block; BUT IF IT'S MARKED @block THEN THE SIGNALS CANNOT BE INFERRED FOR THE CO-SIMULATION TESTS.  THE TESTS ARE FINE (SHOULDN'T MARK generator() WITH @block) SO NEED A BETTER STRUCTURE; NEEDS TO BE IN @block AS WELL TO ALLOW NAMESPACING, OTHERWISE THE NAMES WILL COLLIDE IN THE VERILOG...
 
@@ -76,6 +75,9 @@ def Main(
 			spi_miso.next = 0
 		else:
 			spi_miso.next = 0
+
+		nonlocal spi_sclk
+		spi_sclk.next = 0
 
 		nonlocal flash_sclk
 		flash_sclk.next = 0

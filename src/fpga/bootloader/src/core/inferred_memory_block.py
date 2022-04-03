@@ -1,39 +1,125 @@
 from myhdl import *
 
-@block
-def InferredMemoryBlock(clk, bus, num_words, is_rom=False, contents=None, fill_value=0):
-	if is_rom and not contents:
-		raise ValueError("ROM needs to be initialised as part of the bitstream")
+class InferredMemoryBlock:
+	def __init__(self, clk, bus, num_words, contents_filename=None, is_rom=False):
+		if is_rom and not contents_filename:
+			raise ValueError("ROM needs to be initialised as part of the bitstream")
 
-	cells = []
-	if contents is not None:
-		cells = [Signal(intbv(val=int(value), min=0, max=2**32)) for value in contents]
+		self._cells = [Signal(intbv(min=0, max=2**32)) for _ in range(0, num_words)]
+		self._cells[0].driven = 'reg'
+		self._clk = clk
+		self._bus = bus
+		self._is_rom = is_rom
+		self._contents_filename = contents_filename
 
-	cells.extend([Signal(intbv(val=fill_value, min=0, max=2**32)) for _ in range(0, num_words - len(contents))])
-	cells[0].driven = 'reg'
-	word_address = bus.address(len(bus.address), 2)
+	@block
+	def generators(self):
+		contents_filename = self._contents_filename
 
-	@always(clk.posedge)
-	def read():
-		nonlocal bus
-		nonlocal cells
-		if bus.rstrb:
-			bus.rdata.next = cells[word_address.val]
+		@block
+		def encapsulated(clk, bus_rstrb, bus_rdata, bus_wmask, bus_wdata, is_rom, cells, bus_address):
+			@block
+			def initial(cells):
+				nonlocal clk
 
-	@always(clk.posedge)
-	def write():
-		nonlocal bus
-		nonlocal cells
-		if bus.wmask & 1:
-			cells[word_address](8, 0).next = bus.wdata(8, 0)
-		if bus.wmask & 2:
-			cells[word_address](16, 8).next = bus.wdata(16, 8)
-		if bus.wmask & 4:
-			cells[word_address](24, 16).next = bus.wdata(24, 16)
-		if bus.wmask & 8:
-			cells[word_address](32, 24).next = bus.wdata(32, 24)
+				@always(cells[0])
+				def unused():
+					pass
 
-	if is_rom:
-		return read
+				return unused
 
-	return read, write
+			nonlocal contents_filename
+			initial.verilog_code = 'initial begin\n\t$$readmemh("' + contents_filename + '", $cells);\nend\n'
+
+			@always(clk.posedge)
+			def read():
+				nonlocal bus_rstrb
+				nonlocal bus_rdata
+				nonlocal cells
+				nonlocal bus_address
+				if bus_rstrb:
+					bus_rdata.next = cells[bus_address[:2]] # The :2 doesn't work - still synthesises to :0
+
+			@always(clk.posedge)
+			def write():
+				nonlocal bus_wmask
+				nonlocal bus_wdata
+				nonlocal cells
+				nonlocal bus_address
+				if bus_wmask & 1:
+					cells[bus_address[:2]](8, 0).next = bus_wdata(8, 0)
+				if bus_wmask & 2:
+					cells[bus_address[:2]](16, 8).next = bus_wdata(16, 8)
+				if bus_wmask & 4:
+					cells[bus_address[:2]](24, 16).next = bus_wdata(24, 16)
+				if bus_wmask & 8:
+					cells[bus_address[:2]](32, 24).next = bus_wdata(32, 24)
+
+			if is_rom:
+				return initial(self._cells), read
+
+			if contents_filename:
+				return initial(self._cells), read, write
+
+			return read, write
+
+		return encapsulated(self._clk, self._bus.rstrb, self._bus.rdata, self._bus.wmask, self._bus.wdata, self._is_rom, self._cells, self._bus.address)
+
+# TODO !
+"""
+We want this block to generate something like the following to infer EBR correctly.  The write with mask is important to infer the word size of the cells
+(Synplify appears to ignore the reg declaration).  The cells must be reg.  The rdata must be reg (EBR registered output).
+
+---
+
+reg [31:0] rom0_InferredMemoryBlock0_generators0_encapsulated0_cells [0:2047];
+wire [23:0] Femtorv32Processor0_Femtorv32ProcessorExplicit0_mem_addr;
+reg [31:0] Femtorv32Processor0_Femtorv32ProcessorExplicit0_mem_rdata;
+wire Femtorv32Processor0_Femtorv32ProcessorExplicit0_mem_rstrb;
+
+wire[10:0] word_address = Femtorv32Processor0_Femtorv32ProcessorExplicit0_mem_addr[12:2];
+always @(posedge clk_core) begin
+	if (Femtorv32Processor0_Femtorv32ProcessorExplicit0_mem_rstrb) begin
+		Femtorv32Processor0_Femtorv32ProcessorExplicit0_mem_rdata <= rom0_InferredMemoryBlock0_generators0_encapsulated0_cells[word_address];
+	end
+
+	if (core_bus_wmask) begin
+		rom0_InferredMemoryBlock0_generators0_encapsulated0_cells[word_address] <= core_bus_wdata & {
+			{8{core_bus_wmask[3]}},
+			{8{core_bus_wmask[2]}},
+			{8{core_bus_wmask[1]}},
+			{8{core_bus_wmask[0]}}};
+	end
+end
+
+---
+
+A simple program for blinking the RGB LEDs:
+
+.global _boot
+.text
+
+_boot:
+	lui x8, 0x00400
+	addi x8, x8, 0x004
+	li x9, 1
+
+ledFlash:
+	lui x11, (10000 & ((1 << 20) - 1) << 12) >> 12
+
+delay:
+	nop
+	addi x11, x11, -1
+	bne x11, x0, delay
+
+shift:
+	slli x9, x9, 1
+	andi x9, x9, 7
+	bne x9, x0, write
+	ori x9, x9, 1
+
+write:
+	xori x10, x9, 7
+	sw x10, 0(x8)
+	j ledFlash
+"""
