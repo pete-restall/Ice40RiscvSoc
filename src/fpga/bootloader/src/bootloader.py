@@ -38,6 +38,7 @@ def Main(
 		irq,
 		reset_address=0x000000)
 
+	# TODO: TEMPORARY BLOCK TO KEEP THE SYNTHESISER HAPPY WHILST STANDING UP THE APPLICATION - NEEDS TO BE BETTER THOUGHT OUT / PARTITIONED / TESTED
 	@block
 	def rom():
 		nonlocal clk_core
@@ -61,15 +62,14 @@ def Main(
 			nonlocal rom_bus
 			return rom_bus.generators().subs
 
-		return rom_block(), rom_bus_block() # TODO: BIT OF A MESS - BECAUSE THE 'generators()' FUNCTION IS NOT MARKED @block; BUT IF IT'S MARKED @block THEN THE SIGNALS CANNOT BE INFERRED FOR THE CO-SIMULATION TESTS.  THE TESTS ARE FINE (SHOULDN'T MARK generator() WITH @block) SO NEED A BETTER STRUCTURE; NEEDS TO BE IN @block AS WELL TO ALLOW NAMESPACING, OTHERWISE THE NAMES WILL COLLIDE IN THE VERILOG...
+		return rom_block(), rom_bus_block()
 
+	# TODO: TEMPORARY BLOCK TO KEEP THE SYNTHESISER HAPPY WHILST STANDING UP THE APPLICATION
 	@always(clk_master.posedge)
 	def whatevs():
 		nonlocal flash_io0
 		nonlocal core_bus
-		nonlocal _reset
 		nonlocal irq
-		_reset.next = 1
 		irq.next = 0
 		core_bus.rbusy.next = 0
 		core_bus.wbusy.next = 0
@@ -80,6 +80,7 @@ def Main(
 			else:
 				flash_io0.next = 0
 
+	# TODO: TEMPORARY BLOCK TO KEEP THE SYNTHESISER HAPPY WHILST STANDING UP THE APPLICATION
 	@block
 	def leds(address, wmask, wdata):
 		@always(clk_master.posedge)
@@ -97,6 +98,28 @@ def Main(
 
 		return led_writer
 
+	# TODO: TEMPORARY BLOCK TO KEEP THE SYNTHESISER HAPPY WHILST STANDING UP THE APPLICATION - NEEDS TO BE BETTER THOUGHT OUT / PARTITIONED / TESTED
+	@block
+	def reset(_reset):
+		nonlocal clk_master
+		reset_counter = Signal(intbv(val=0, min=0, max=2**16))
+
+		@always_comb
+		def predicate():
+			nonlocal _reset
+			nonlocal reset_counter
+			_reset.next = not _reset.active if reset_counter == 0xffff else _reset.active
+
+		@always(clk_master.posedge)
+		def timer():
+			nonlocal _reset
+			nonlocal reset_counter
+			if _reset == _reset.active:
+				reset_counter.next = reset_counter + 1
+
+		return predicate, timer
+
+	# TODO: TEMPORARY BLOCK TO KEEP THE SYNTHESISER HAPPY WHILST STANDING UP THE APPLICATION
 	@always_comb
 	def outputs():
 		nonlocal _spi_ss
@@ -116,7 +139,7 @@ def Main(
 		nonlocal _flash_ss
 		_flash_ss.next = 1
 
-	return core, rom(), outputs, whatevs, leds(core_bus.address, core_bus.wmask, core_bus.wdata) # TODO: REMOVE 'outputs' WHEN MORE OF THE DESIGN IS COMPLETE...
+	return core, rom(), reset(_reset), outputs, whatevs, leds(core_bus.address, core_bus.wmask, core_bus.wdata) # TODO: REMOVE 'outputs' WHEN MORE OF THE DESIGN IS COMPLETE...
 
 class Bootloader:
 	def __init__(self):

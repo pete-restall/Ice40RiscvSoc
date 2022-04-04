@@ -40,27 +40,23 @@ class InferredMemoryBlock:
 
 			@always(clk.posedge)
 			def read():
+				nonlocal cells
 				nonlocal bus_rstrb
 				nonlocal bus_rdata
-				nonlocal cells
 				nonlocal word_address
 				if bus_rstrb:
-					bus_rdata.next = cells[word_address] # The :2 doesn't work - still synthesises to :0
+					bus_rdata.next = cells[word_address]
+
+			word_wmask = ConcatSignal(*[bus_wmask(3)] * 4, *[bus_wmask(2)] * 4, *[bus_wmask(1)] * 4, *[bus_wmask(0)] * 4)
 
 			@always(clk.posedge)
 			def write():
-				nonlocal bus_wmask
-				nonlocal bus_wdata
 				nonlocal cells
-				nonlocal bus_address
-				if bus_wmask & 1:
-					cells[bus_address[:2]](8, 0).next = bus_wdata(8, 0)
-				if bus_wmask & 2:
-					cells[bus_address[:2]](16, 8).next = bus_wdata(16, 8)
-				if bus_wmask & 4:
-					cells[bus_address[:2]](24, 16).next = bus_wdata(24, 16)
-				if bus_wmask & 8:
-					cells[bus_address[:2]](32, 24).next = bus_wdata(32, 24)
+				nonlocal word_wmask
+				nonlocal bus_wdata
+				nonlocal word_address
+				if word_wmask:
+					cells[word_address].next = bus_wdata & word_wmask
 
 			if is_rom:
 				return initial(self._cells), read, address_slicer
