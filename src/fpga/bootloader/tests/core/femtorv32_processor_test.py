@@ -14,7 +14,7 @@ _MAXIMUM_IO_WRITE_VALUE = (1 << _MAXIMUM_IO_WRITE_VALUE_BITS) - 1
 class Femtorv32Fixture:
 	def __init__(self):
 		seed = random.getrandbits(32)
-		print(f'Using non-determinism seed: {seed}')
+		print(f"Using non-determinism seed: {seed}")
 		random.seed(seed)
 
 		self.io_writes = []
@@ -72,9 +72,9 @@ class Femtorv32Fixture:
 				return
 
 			invalid = 0
-			c_jal_2 = int('0b001_00000000100_01', base=2) # c.jal 2
-			c_li_x1_value = int('0b010_0_00001_00000_01', base=2) | ((1 << 12) if (value & 0x20) else 0) | ((value & 0x1f) << 2) # c.li x1, value
-			sw_x1_ioaddress_x0 = int('0b0000000_00001_00000_010_00000_0100011', base=2) | ((io_address & 0x0fe0) << 20) | ((io_address & 0x1f) << 7) # sw x1, io_address(x0)
+			c_jal_2 = int("0b001_00000000100_01", base=2) # c.jal 2
+			c_li_x1_value = int("0b010_0_00001_00000_01", base=2) | ((1 << 12) if (value & 0x20) else 0) | ((value & 0x1f) << 2) # c.li x1, value
+			sw_x1_ioaddress_x0 = int("0b0000000_00001_00000_010_00000_0100011", base=2) | ((io_address & 0x0fe0) << 20) | ((io_address & 0x1f) << 7) # sw x1, io_address(x0)
 
 			c_nop = 1
 			program = [
@@ -125,7 +125,7 @@ class Femtorv32Fixture:
 		return self.dut
 
 class TestFemtorv32:
-	@pytest.fixture(scope='function')
+	@pytest.fixture(scope="function")
 	def fixture(self):
 		return Femtorv32Fixture()
 

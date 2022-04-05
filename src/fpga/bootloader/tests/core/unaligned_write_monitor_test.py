@@ -7,7 +7,7 @@ from src.core.unaligned_write_monitor import UnalignedWriteMonitor
 class UnalignedWriteMonitorFixture:
 	def __init__(self):
 		seed = random.getrandbits(32)
-		print(f'Using non-determinism seed: {seed}')
+		print(f"Using non-determinism seed: {seed}")
 		random.seed(seed)
 
 		self._bus = Femtorv32Bus()
@@ -45,7 +45,7 @@ class UnalignedWriteMonitorFixture:
 		return random.randint(self._bus.address.min, self._bus.address.max - 1) & ~3
 
 class TestUnalignedWriteMonitor:
-	@pytest.fixture(scope='function')
+	@pytest.fixture(scope="function")
 	def fixture(self):
 		return UnalignedWriteMonitorFixture()
 

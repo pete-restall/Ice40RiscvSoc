@@ -56,7 +56,7 @@ class TristateOutputDriverFixture:
 		return self.dut
 
 class TestOutputTristateDriver:
-	@pytest.fixture(scope='function')
+	@pytest.fixture(scope="function")
 	def fixture(self):
 		return TristateOutputDriverFixture()
 

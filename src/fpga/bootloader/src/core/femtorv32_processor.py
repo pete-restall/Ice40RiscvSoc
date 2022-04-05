@@ -78,7 +78,7 @@ $instance_name (
 """
 
 	return Femtorv32ProcessorExplicit(
-		instance_name='processor_' + uuid.uuid4().hex,
+		instance_name="processor_" + uuid.uuid4().hex,
 		clk=clk,
 		reset=_reset,
 		interrupt_request=irq,

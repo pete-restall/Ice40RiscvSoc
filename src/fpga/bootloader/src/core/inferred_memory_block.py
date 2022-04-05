@@ -6,7 +6,7 @@ class InferredMemoryBlock:
 			raise ValueError("ROM needs to be initialised as part of the bitstream")
 
 		self._cells = [Signal(intbv(min=0, max=2**32)) for _ in range(0, num_words)]
-		self._cells[0].driven = 'reg'
+		self._cells[0].driven = "reg"
 		self._clk = clk
 		self._bus = bus
 		self._is_rom = is_rom

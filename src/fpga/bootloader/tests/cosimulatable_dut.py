@@ -8,15 +8,14 @@ class CosimulatableDut:
 	def __init__(self, dut, initial_values=True, extra_signals={}):
 		self.cosim_path = mkdtemp()
 		this_path = os.path.dirname(os.path.realpath(__file__))
-		package_path = this_path + '/..'
-		root_path = package_path + '/..'
+		package_path = this_path + "/.."
+		root_path = package_path + "/.."
 
-		verilog_timescale = \
-			str(_timescale_ps) + 'ps/' + str(_timescale_ps) + 'ps'
+		verilog_timescale = str(_timescale_ps) + "ps/" + str(_timescale_ps) + "ps"
 
 		dut.convert(
-			hdl='Verilog',
-			name='dut',
+			hdl="Verilog",
+			name="dut",
 			directory=self.cosim_path,
 			testbench=True,
 			initial_values=initial_values,
@@ -32,28 +31,28 @@ class CosimulatableDut:
 			"end\\n" +
 			"#g' " + self.cosim_path + "/tb_dut.v")
 
-		hdl_lib = package_path + '/src/hdl'
-		lattice_lib = root_path + '/thirdparty/lattice'
-		iverilog_cmd = ('iverilog ' +
-			'-g 2001 ' +
-			'-DBENCH ' +
-			'-y ' + lattice_lib + '/ ' +
-			'-y ' + hdl_lib + '/femtorv32/ ' +
-			'-o ' + self.cosim_path + '/dut.o ' +
-			self.cosim_path + '/dut.v ' +
-			self.cosim_path + '/tb_dut.v')
+		hdl_lib = package_path + "/src/hdl"
+		lattice_lib = root_path + "/thirdparty/lattice"
+		iverilog_cmd = ("iverilog " +
+			"-g 2001 " +
+			"-DBENCH " +
+			"-y " + lattice_lib + "/ " +
+			"-y " + hdl_lib + "/femtorv32/ " +
+			"-o " + self.cosim_path + "/dut.o " +
+			self.cosim_path + "/dut.v " +
+			self.cosim_path + "/tb_dut.v")
 
-		print('iverilog_cmd =', iverilog_cmd)
+		print("iverilog_cmd =", iverilog_cmd)
 		os.system(iverilog_cmd)
 
-		cosim_cmd = ('vvp ' +
-			'-n -v -m ' + root_path + '/build/icarus/myhdl.vpi ' +
-			self.cosim_path + '/dut.o ' +
-			'-lxt2')
+		cosim_cmd = ("vvp " +
+			"-n -v -m " + root_path + "/build/icarus/myhdl.vpi " +
+			self.cosim_path + "/dut.o " +
+			"-lxt2")
 
-		print('cosim_cmd =', cosim_cmd)
+		print("cosim_cmd =", cosim_cmd)
 		signals = {**dut.argdict, **extra_signals}
-		print('signals =', signals)
+		print("signals =", signals)
 		self.dut = Cosimulation(cosim_cmd, **signals)
 
 	def run(self, generators, **kwargs):

@@ -11,7 +11,7 @@ class Femtorv32BusFixture:
 		return self._bus
 
 class TestFemtorv32Bus:
-	@pytest.fixture(scope='function')
+	@pytest.fixture(scope="function")
 	def fixture(self):
 		return Femtorv32BusFixture()
 

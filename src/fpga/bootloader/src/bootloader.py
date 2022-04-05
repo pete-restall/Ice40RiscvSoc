@@ -50,7 +50,7 @@ def Main(
 			rom_bus,
 			rom_num_words,
 			is_rom=True,
-			contents_filename='../out/firmware.mem')
+			contents_filename="../out/firmware.mem")
 
 		@block
 		def rom_block():
@@ -182,13 +182,13 @@ class Bootloader:
 
 	def to_verilog(self, dirname):
 		self.main.convert(
-			hdl='Verilog',
+			hdl="Verilog",
 			name=self.__class__.__name__,
 			directory=dirname,
 			testbench=False,
 			initial_values=False)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 	if len(sys.argv) != 2:
 		print("Specify an output directory name for the generated Verilog artefact(s)")
 		exit(1)

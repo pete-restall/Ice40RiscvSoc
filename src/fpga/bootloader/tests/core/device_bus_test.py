@@ -8,7 +8,7 @@ from tests.cosimulatable_dut import CosimulatableDut
 class DeviceBusFixture:
 	def __init__(self):
 		seed = random.getrandbits(32)
-		print(f'Using non-determinism seed: {seed}')
+		print(f"Using non-determinism seed: {seed}")
 		random.seed(seed)
 
 		self._processor_bus = Femtorv32Bus()
@@ -78,7 +78,7 @@ class DeviceBusFixture:
 		return random.randint(self._processor_bus.address.min, self._processor_bus.address.max)
 
 class TestDeviceBus:
-	@pytest.fixture(scope='function')
+	@pytest.fixture(scope="function")
 	def fixture(self):
 		return DeviceBusFixture()
 
