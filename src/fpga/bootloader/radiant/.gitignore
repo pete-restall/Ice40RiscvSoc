@@ -9,3 +9,5 @@ promote.xml
 reportview.xml
 *_tcl.html
 .recovery
+.floorplanner.ini
+.ng_run_manager.ini
