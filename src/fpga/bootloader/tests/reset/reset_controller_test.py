@@ -39,6 +39,10 @@ class ResetControllerFixture:
 		self.clk.next = bool(1)
 		yield delay(1)
 
+	def clock_fall(self):
+		self.clk.next = bool(0)
+		yield delay(1)
+
 	def generators(self):
 		if self._dut is None:
 			self._dut = CosimulatableDut(self.reset_controller.generators()).dut
@@ -46,6 +50,16 @@ class ResetControllerFixture:
 		return self._dut
 
 class TestResetController:
+	ACTIVE_IN_OUT_SCENARIOS = [
+		"active_in,active_out",
+		[
+			[bool(0), bool(0)],
+			[bool(0), bool(1)],
+			[bool(1), bool(0)],
+			[bool(1), bool(1)]
+		]
+	]
+
 	@pytest.fixture(scope="function")
 	def fixture(self):
 		return ResetControllerFixture()
@@ -76,11 +90,7 @@ class TestResetController:
 		with pytest.raises(ValueError):
 			ResetController(fixture.clk, fixture.reset_in, fixture.reset_out, invalid_num_assertion_cycles)
 
-	@pytest.mark.parametrize("active_in,active_out", [
-		[bool(0), bool(0)],
-		[bool(0), bool(1)],
-		[bool(1), bool(0)],
-		[bool(1), bool(1)]])
+	@pytest.mark.parametrize(*ACTIVE_IN_OUT_SCENARIOS)
 	def test_reset_out_is_active_after_first_clock_edge_when_inactive_reset_in(self, fixture, active_in, active_out):
 		fixture.num_assertion_cycles = fixture.any_reasonable_num_assertion_cycles(min=2)
 		fixture.reset_in = ResetSignal(val=not active_in, active=active_in, isasync=True)
@@ -94,11 +104,7 @@ class TestResetController:
 
 		self.run(fixture, test)
 
-	@pytest.mark.parametrize("active_in,active_out", [
-		[bool(0), bool(0)],
-		[bool(0), bool(1)],
-		[bool(1), bool(0)],
-		[bool(1), bool(1)]])
+	@pytest.mark.parametrize(*ACTIVE_IN_OUT_SCENARIOS)
 	def test_reset_out_is_active_after_first_clock_edge_when_active_reset_in(self, fixture, active_in, active_out):
 		fixture.num_assertion_cycles = fixture.any_reasonable_num_assertion_cycles(min=2)
 		fixture.reset_in = ResetSignal(val=active_in, active=active_in, isasync=True)
@@ -109,5 +115,150 @@ class TestResetController:
 			nonlocal fixture
 			yield fixture.clock_rise()
 			assert fixture.reset_out == fixture.reset_out.active
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize(*ACTIVE_IN_OUT_SCENARIOS)
+	def test_reset_out_is_deactived_on_rising_edge_after_num_assertion_cycles_when_inactive_reset_in(self, fixture, active_in, active_out):
+		fixture.reset_in = ResetSignal(val=not active_in, active=active_in, isasync=True)
+		fixture.reset_out = ResetSignal(val=not active_out, active=active_out, isasync=False)
+
+		@instance
+		def test():
+			nonlocal fixture
+			for _ in range(0, fixture.num_assertion_cycles - 1):
+				yield fixture.clock_rise()
+				assert fixture.reset_out == fixture.reset_out.active
+				yield fixture.clock_fall()
+				assert fixture.reset_out == fixture.reset_out.active
+
+			yield fixture.clock_rise()
+			assert fixture.reset_out != fixture.reset_out.active
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize(*ACTIVE_IN_OUT_SCENARIOS)
+	def test_reset_out_is_not_deactived_after_num_assertion_cycles_when_active_reset_in(self, fixture, active_in, active_out):
+		fixture.reset_in = ResetSignal(val=active_in, active=active_in, isasync=True)
+		fixture.reset_out = ResetSignal(val=not active_out, active=active_out, isasync=False)
+
+		@instance
+		def test():
+			nonlocal fixture
+			for _ in range(0, fixture.num_assertion_cycles):
+				yield fixture.clock_rise()
+				assert fixture.reset_out == fixture.reset_out.active
+				yield fixture.clock_fall()
+				assert fixture.reset_out == fixture.reset_out.active
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize(*ACTIVE_IN_OUT_SCENARIOS)
+	def test_reset_out_is_not_deactived_after_num_assertion_cycles_when_inactive_reset_in_becomes_active_during_clock_high(self, fixture, active_in, active_out):
+		fixture.reset_in = ResetSignal(val=not active_in, active=active_in, isasync=True)
+		fixture.reset_out = ResetSignal(val=not active_out, active=active_out, isasync=False)
+		fixture.num_assertion_cycles = fixture.any_reasonable_num_assertion_cycles(min=2)
+		trigger_after = random.randint(0, fixture.num_assertion_cycles - 2)
+
+		@instance
+		def test():
+			nonlocal fixture
+			for i in range(0, fixture.num_assertion_cycles):
+				yield fixture.clock_rise()
+
+				if i == trigger_after:
+					fixture.reset_in.next = fixture.reset_in.active
+					yield delay(1)
+
+				yield fixture.clock_fall()
+
+			assert fixture.reset_out == fixture.reset_out.active
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize(*ACTIVE_IN_OUT_SCENARIOS)
+	def test_reset_out_is_not_deactived_after_num_assertion_cycles_when_inactive_reset_in_becomes_active_during_clock_low(self, fixture, active_in, active_out):
+		fixture.reset_in = ResetSignal(val=not active_in, active=active_in, isasync=True)
+		fixture.reset_out = ResetSignal(val=not active_out, active=active_out, isasync=False)
+		fixture.num_assertion_cycles = fixture.any_reasonable_num_assertion_cycles(min=2)
+		trigger_after = random.randint(0, fixture.num_assertion_cycles - 2)
+
+		@instance
+		def test():
+			nonlocal fixture
+			for i in range(0, fixture.num_assertion_cycles):
+				if i == trigger_after:
+					fixture.reset_in.next = fixture.reset_in.active
+					yield delay(1)
+
+				yield fixture.clock_rise()
+				yield fixture.clock_fall()
+
+			assert fixture.reset_out == fixture.reset_out.active
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize(*ACTIVE_IN_OUT_SCENARIOS)
+	def test_reset_out_is_not_deactivated_after_num_assertion_cycles_when_reset_in_stays_active(self, fixture, active_in, active_out):
+		fixture.reset_in = ResetSignal(val=active_in, active=active_in, isasync=True)
+		fixture.reset_out = ResetSignal(val=not active_out, active=active_out, isasync=False)
+
+		@instance
+		def test():
+			nonlocal fixture
+			for i in range(0, fixture.num_assertion_cycles):
+				yield fixture.clock_rise()
+				yield fixture.clock_fall()
+
+			assert fixture.reset_out == fixture.reset_out.active
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize(*ACTIVE_IN_OUT_SCENARIOS)
+	def test_reset_out_is_deactivated_after_num_assertion_cycles_when_reset_in_goes_inactive_during_clock_low(self, fixture, active_in, active_out):
+		fixture.reset_in = ResetSignal(val=active_in, active=active_in, isasync=True)
+		fixture.reset_out = ResetSignal(val=not active_out, active=active_out, isasync=False)
+		fixture.num_assertion_cycles = fixture.any_reasonable_num_assertion_cycles(min=3)
+		deactivate_after = random.randint(1, fixture.num_assertion_cycles - 2)
+
+		@instance
+		def test():
+			nonlocal fixture
+			for i in range(0, fixture.num_assertion_cycles + deactivate_after - 1):
+				if i == deactivate_after:
+					fixture.reset_in.next = not fixture.reset_in.active
+					yield delay(1)
+
+				yield fixture.clock_rise()
+				yield fixture.clock_fall()
+				assert fixture.reset_out == fixture.reset_out.active
+
+			yield fixture.clock_rise()
+			assert fixture.reset_out != fixture.reset_out.active
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize(*ACTIVE_IN_OUT_SCENARIOS)
+	def test_reset_out_is_deactivated_after_num_assertion_cycles_when_reset_in_goes_inactive_during_clock_high(self, fixture, active_in, active_out):
+		fixture.reset_in = ResetSignal(val=active_in, active=active_in, isasync=True)
+		fixture.reset_out = ResetSignal(val=not active_out, active=active_out, isasync=False)
+		fixture.num_assertion_cycles = fixture.any_reasonable_num_assertion_cycles(min=3)
+		deactivate_after = random.randint(1, fixture.num_assertion_cycles - 2)
+
+		@instance
+		def test():
+			nonlocal fixture
+			for i in range(0, fixture.num_assertion_cycles + deactivate_after):
+				yield fixture.clock_rise()
+
+				if i == deactivate_after:
+					fixture.reset_in.next = not fixture.reset_in.active
+					yield delay(1)
+
+				yield fixture.clock_fall()
+				assert fixture.reset_out == fixture.reset_out.active
+
+			yield fixture.clock_rise()
+			assert fixture.reset_out != fixture.reset_out.active
 
 		self.run(fixture, test)
