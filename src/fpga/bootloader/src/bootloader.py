@@ -4,6 +4,7 @@ from src.core.device_bus import DeviceBus
 from src.core.femtorv32_processor import Femtorv32Processor
 from src.core.femtorv32_bus import Femtorv32Bus
 from src.core.inferred_memory_block import InferredMemoryBlock
+from src.reset.reset_controller import ResetController
 
 @block
 def Main(
@@ -37,6 +38,13 @@ def Main(
 		core_bus,
 		irq,
 		reset_address=0x000000)
+
+	reset_controller = ResetController(
+		clk_core,
+		reset_in=ResetSignal(val=bool(0), active=bool(1), isasync=True),
+		reset_out=_reset,
+		num_assertion_cycles=65536)
+
 
 	# TODO: TEMPORARY BLOCK TO KEEP THE SYNTHESISER HAPPY WHILST STANDING UP THE APPLICATION - NEEDS TO BE BETTER THOUGHT OUT / PARTITIONED / TESTED
 	@block
@@ -98,27 +106,6 @@ def Main(
 
 		return led_writer
 
-	# TODO: TEMPORARY BLOCK TO KEEP THE SYNTHESISER HAPPY WHILST STANDING UP THE APPLICATION - NEEDS TO BE BETTER THOUGHT OUT / PARTITIONED / TESTED
-	@block
-	def reset(_reset):
-		nonlocal clk_master
-		reset_counter = Signal(intbv(val=0, min=0, max=2**16))
-
-		@always_comb
-		def predicate():
-			nonlocal _reset
-			nonlocal reset_counter
-			_reset.next = not _reset.active if reset_counter == 0xffff else _reset.active
-
-		@always(clk_master.posedge)
-		def timer():
-			nonlocal _reset
-			nonlocal reset_counter
-			if _reset == _reset.active:
-				reset_counter.next = reset_counter + 1
-
-		return predicate, timer
-
 	# TODO: TEMPORARY BLOCK TO KEEP THE SYNTHESISER HAPPY WHILST STANDING UP THE APPLICATION
 	@always_comb
 	def outputs():
@@ -139,7 +126,17 @@ def Main(
 		nonlocal _flash_ss
 		_flash_ss.next = 1
 
-	return core, rom(), reset(_reset), outputs, whatevs, leds(core_bus.address, core_bus.wmask, core_bus.wdata) # TODO: REMOVE 'outputs' WHEN MORE OF THE DESIGN IS COMPLETE...
+# TODO:
+# Before reset controller, but manually crafted verilog reset:
+# lut 1488
+# pfu 356
+#
+# After reset controller - investigate the extra usage:
+# lut 1979
+# pfu 352
+
+
+	return core, rom(), reset_controller.generators().subs, outputs, whatevs, leds(core_bus.address, core_bus.wmask, core_bus.wdata) # TODO: REMOVE 'outputs' WHEN MORE OF THE DESIGN IS COMPLETE...
 
 class Bootloader:
 	def __init__(self):
