@@ -1,8 +1,9 @@
 /******************************************************************************/
 // FemtoRV32, a collection of minimalistic RISC-V RV32 cores.
 //
-// This version: The "Gracilis", with full interrupt and RVC compressed
-//               instructions support, minus multiply and divide.
+// This version: The "Gracilis" (plus "Tachyon" split-execution), with full 
+//               interrupt and RVC compressed instructions support, minus
+//               multiply and divide.
 //               A single VERILOG file, compact & understandable code.
 //
 // Instruction set: RV32IC + CSR + MRET
@@ -128,23 +129,21 @@ module FemtoRV32(
    //    (1 for ADD/SUB, 0 for ADDI, and Iimm used by ADDI overlaps bit 30 !)
    // - instr[30] is 1 for SRA (do sign extension) and 0 for SRL
 
-   wire [31:0] aluOut =
-     (funct3Is[0]  ? instr[30] & instr[5] ? aluMinus[31:0] : aluPlus : 32'b0) |
-     (funct3Is[2]  ? {31'b0, LT}                                     : 32'b0) |
-     (funct3Is[3]  ? {31'b0, LTU}                                    : 32'b0) |
-     (funct3Is[4]  ? aluIn1 ^ aluIn2                                 : 32'b0) |
-     (funct3Is[6]  ? aluIn1 | aluIn2                                 : 32'b0) |
-     (funct3Is[7]  ? aluIn1 & aluIn2                                 : 32'b0) |
-     (funct3IsShift ? aluReg                                         : 32'b0) ;
+   wire [31:0] aluOut = aluReg;
 
    wire funct3IsShift = funct3Is[1] | funct3Is[5];
 
    always @(posedge clk) begin
       if(aluWr) begin
-         if (funct3IsShift) begin  // SLL, SRA, SRL
-	    aluReg <= aluIn1;
-	    aluShamt <= aluIn2[4:0];
-	 end
+	    aluShamt <= funct3IsShift ? aluIn2[4:0] : 5'b0;
+	    aluReg <=
+       (funct3Is[0]  ? instr[30] & instr[5] ? aluMinus[31:0] : aluPlus : 32'b0) |
+       (funct3Is[2]  ? {31'b0, LT}                                     : 32'b0) |
+       (funct3Is[3]  ? {31'b0, LTU}                                    : 32'b0) |
+       (funct3Is[4]  ? aluIn1 ^ aluIn2                                 : 32'b0) |
+       (funct3Is[6]  ? aluIn1 | aluIn2                                 : 32'b0) |
+       (funct3Is[7]  ? aluIn1 & aluIn2                                 : 32'b0) |
+       (funct3IsShift ? aluIn1                                         : 32'b0) ;
       end
 
 `ifdef NRV_TWOLEVEL_SHIFTER
@@ -170,13 +169,15 @@ module FemtoRV32(
    // The predicate for conditional branches.
    /***************************************************************************/
 
-   wire predicate =
+   wire predicate_ =
         funct3Is[0] &  EQ  | // BEQ
         funct3Is[1] & !EQ  | // BNE
         funct3Is[4] &  LT  | // BLT
         funct3Is[5] & !LT  | // BGE
         funct3Is[6] &  LTU | // BLTU
         funct3Is[7] & !LTU ; // BGEU
+
+   reg predicate;
 
    /***************************************************************************/
    // Program counter and branch target computation.
@@ -193,14 +194,11 @@ module FemtoRV32(
    // An adder used to compute branch address, JAL address and AUIPC.
    // branch->PC+Bimm    AUIPC->PC+Uimm    JAL->PC+Jimm
    // Equivalent to PCplusImm = PC + (isJAL ? Jimm : isAUIPC ? Uimm : Bimm)
-   wire [ADDR_WIDTH-1:0] PCplusImm = PC + ( instr[3] ? Jimm[ADDR_WIDTH-1:0] :
-					    instr[4] ? Uimm[ADDR_WIDTH-1:0] :
-					               Bimm[ADDR_WIDTH-1:0] );
+   reg [ADDR_WIDTH-1:0]  PCplusImm;
 
    // A separate adder to compute the destination of load/store.
    // testing instr[5] is equivalent to testing isStore in this context.
-   wire [ADDR_WIDTH-1:0] loadstore_addr = rs1[ADDR_WIDTH-1:0] +
-		   (instr[5] ? Simm[ADDR_WIDTH-1:0] : Iimm[ADDR_WIDTH-1:0]);
+   reg [ADDR_WIDTH-1:0]  loadstore_addr;
 
    /* verilator lint_off WIDTH */
    assign mem_addr =   state[WAIT_INSTR_bit] | state[FETCH_INSTR_bit] ?
@@ -219,8 +217,8 @@ module FemtoRV32(
    // Interrupt enable and lock logic
    wire interrupt = interrupt_request_sticky & mstatus & ~mcause;
 
-   // Processor accepts interrupts in EXECUTE state.   
-   wire interrupt_accepted = interrupt & state[EXECUTE_bit];        
+   // Processor accepts interrupts in EXECUTE2 state.   
+   wire interrupt_accepted = interrupt & state[EXECUTE2_bit];        
 
    // If current interrupt is accepted, there already might be the next one,
    //  which should not be missed:
@@ -271,7 +269,7 @@ module FemtoRV32(
 	 mstatus <= 0;
       end else begin
 	 // Execute a CSR opcode
-	 if (isSYSTEM & (instr[14:12] != 0) & state[EXECUTE_bit]) begin
+	 if (isSYSTEM & (instr[14:12] != 0) & state[EXECUTE2_bit]) begin
 	    if (sel_mstatus) mstatus <= CSR_write[3];
 	    if (sel_mtvec  ) mtvec   <= CSR_write[ADDR_WIDTH-1:0];
 	 end
@@ -376,15 +374,17 @@ module FemtoRV32(
 
    localparam FETCH_INSTR_bit          = 0;
    localparam WAIT_INSTR_bit           = 1;
-   localparam EXECUTE_bit              = 2;
-   localparam WAIT_ALU_OR_MEM_bit      = 3;
-   localparam WAIT_ALU_OR_MEM_SKIP_bit = 4;
+   localparam EXECUTE1_bit             = 2;
+   localparam EXECUTE2_bit             = 3;
+   localparam WAIT_ALU_OR_MEM_bit      = 4;
+   localparam WAIT_ALU_OR_MEM_SKIP_bit = 5;
 
-   localparam NB_STATES                = 5;
+   localparam NB_STATES                = 6;
 
    localparam FETCH_INSTR          = 1 << FETCH_INSTR_bit;
    localparam WAIT_INSTR           = 1 << WAIT_INSTR_bit;
-   localparam EXECUTE              = 1 << EXECUTE_bit;
+   localparam EXECUTE1             = 1 << EXECUTE1_bit;
+   localparam EXECUTE2             = 1 << EXECUTE2_bit;
    localparam WAIT_ALU_OR_MEM      = 1 << WAIT_ALU_OR_MEM_bit;
    localparam WAIT_ALU_OR_MEM_SKIP = 1 << WAIT_ALU_OR_MEM_SKIP_bit;
 
@@ -395,19 +395,19 @@ module FemtoRV32(
 
    // register write-back enable.
    wire writeBack = ~(isBranch | isStore ) & (
-            state[EXECUTE_bit] | 
+            state[EXECUTE2_bit] | 
 	    state[WAIT_ALU_OR_MEM_bit] | 
             state[WAIT_ALU_OR_MEM_SKIP_bit]
    );
 
    // The memory-read signal.
-   assign mem_rstrb = state[EXECUTE_bit] & isLoad | state[FETCH_INSTR_bit];
+   assign mem_rstrb = state[EXECUTE2_bit] & isLoad | state[FETCH_INSTR_bit];
 
    // The mask for memory-write.
-   assign mem_wmask = {4{state[EXECUTE_bit] & isStore}} & STORE_wmask;
+   assign mem_wmask = {4{state[EXECUTE2_bit] & isStore}} & STORE_wmask;
 
    // aluWr starts computation (shifts) in the ALU.
-   assign aluWr = state[EXECUTE_bit] & isALU;
+   assign aluWr = state[EXECUTE2_bit] & isALU;
 
    wire jumpToPCplusImm = isJAL | (isBranch & predicate);
 `ifdef NRV_IS_IO_ADDR
@@ -457,12 +457,28 @@ module FemtoRV32(
                     state <= FETCH_INSTR;
 		 end else begin
                     fetch_second_half <= 0;
-                    state <= EXECUTE;
+                    state <= EXECUTE1;
 		 end
               end
            end
 
-           state[EXECUTE_bit]: begin
+           state[EXECUTE1_bit]: begin
+            // branch->PC+Bimm    AUIPC->PC+Uimm    JAL->PC+Jimm
+            // Equivalent to:
+            //  PCplusImm <= PC + (isJAL ? Jimm : isAUIPC ? Uimm : Bimm)
+              PCplusImm <= PC + ( instr[3] ? Jimm[ADDR_WIDTH-1:0] :
+                					    instr[4] ? Uimm[ADDR_WIDTH-1:0] :
+					                              Bimm[ADDR_WIDTH-1:0] );
+
+      	   // testing instr[5] is equivalent to testing isStore in this context.
+            loadstore_addr <= rs1[ADDR_WIDTH-1:0] +
+                  (instr[5] ? Simm[ADDR_WIDTH-1:0] : Iimm[ADDR_WIDTH-1:0]);
+
+            predicate <= predicate_;
+            state <= EXECUTE2;
+           end
+
+           state[EXECUTE2_bit]: begin
               if (interrupt) begin
 		 PC     <= mtvec;
 		 mepc   <= PC_new;
