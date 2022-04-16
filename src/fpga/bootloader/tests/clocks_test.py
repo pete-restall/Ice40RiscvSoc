@@ -128,6 +128,19 @@ class TestClocks:
 
 		self.run(fixture, test)
 
+	def test_clk_20MHz_toggles_at_a_fifth_of_100MHz_on_rising_edges_with_50_percent_duty_cycle(self, fixture):
+		@instance
+		def test():
+			edge_expectations = [0, 0, 1, 1, 1, 1, 1, 0, 0, 0] * 10
+
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			for expected in edge_expectations:
+				yield fixture.clock_toggle()
+				assert fixture.clocks.clk_20MHz == expected
+
+		self.run(fixture, test)
+
 	def test_clk_12_5MHz_toggles_at_an_eigth_of_100MHz_on_rising_edges(self, fixture):
 		@instance
 		def test():

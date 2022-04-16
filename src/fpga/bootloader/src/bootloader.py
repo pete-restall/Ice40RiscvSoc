@@ -51,7 +51,7 @@ def Main(
 		return clocks.generators().subs
 
 	# TODO - THESE SHOULD BE ENCAPSULATED FURTHER (INTO A 'Core' MODULE) BUT FOR NOW, USE FEMTORV32 DIRECTLY...
-	clk_core = clocks.clk_25MHz
+	clk_core = clocks.clk_20MHz
 	core_bus = Femtorv32Bus()
 	core = Femtorv32Processor(
 		_reset,
