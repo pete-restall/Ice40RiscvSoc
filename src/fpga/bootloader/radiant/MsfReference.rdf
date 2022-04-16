@@ -9,6 +9,9 @@
         <Source name="../src/hdl/femtorv32/FemtoRV32.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
+        <Source name="../src/hdl/Pll100MHz/Pll100MHz.ipx" type="IPX_Module" type_short="IPX">
+            <Options/>
+        </Source>
         <Source name="simulation/simulation.spf" type="Simulation Project File" type_short="SPF">
             <Options/>
         </Source>

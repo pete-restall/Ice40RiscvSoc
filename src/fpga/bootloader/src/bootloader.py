@@ -1,5 +1,6 @@
 import sys
 from myhdl import *
+from src.clocks import Clocks
 from src.core.device_bus import DeviceBus
 from src.core.femtorv32_processor import Femtorv32Processor
 from src.core.femtorv32_bus import Femtorv32Bus
@@ -29,8 +30,28 @@ def Main(
 	_reset = ResetSignal(val=bool(1), active=bool(0), isasync=True) # TODO: should be tied to something
 	irq = Signal(bool(0)) # TODO: should be tied to peripherals to enable IRQ
 
+	clk_100MHz = Signal(bool(0))
+
+	@block
+	def pll_for_ice_sugar(clk_master, _reset, clk_100MHz):
+		@always(clk_master.posedge)
+		def unused():
+			pass
+
+		clk_master.read = True
+		clk_100MHz.driven = "wire"
+		pll_for_ice_sugar.verilog_code = "wire unused; Pll100MHz pll_100MHz (.ref_clk_i($clk_master), .rst_n_i($_reset), .outcore_o(unused), .outglobal_o($clk_100MHz));"
+
+		return unused
+
+	clocks = Clocks(clk_100MHz, ResetSignal(val=bool(0), active=bool(1), isasync=True))
+
+	@block
+	def clocks_generator():
+		return clocks.generators().subs
+
 	# TODO - THESE SHOULD BE ENCAPSULATED FURTHER (INTO A 'Core' MODULE) BUT FOR NOW, USE FEMTORV32 DIRECTLY...
-	clk_core = clk_master # TODO: SHOULD BE A DIVIDED CLOCK
+	clk_core = clocks.clk_25MHz
 	core_bus = Femtorv32Bus()
 	core = Femtorv32Processor(
 		_reset,
@@ -73,7 +94,7 @@ def Main(
 		return rom_block(), rom_bus_block()
 
 	# TODO: TEMPORARY BLOCK TO KEEP THE SYNTHESISER HAPPY WHILST STANDING UP THE APPLICATION
-	@always(clk_master.posedge)
+	@always(clk_core.posedge)
 	def whatevs():
 		nonlocal flash_io0
 		nonlocal core_bus
@@ -85,13 +106,19 @@ def Main(
 		if core_bus.wmask:
 			if core_bus.wdata & 1:
 				flash_io0.next = 1
+				flash_io1.next = 1
+				flash_io2.next = 1
+				flash_io3.next = 1
 			else:
 				flash_io0.next = 0
+				flash_io1.next = 1
+				flash_io2.next = 1
+				flash_io3.next = 1
 
 	# TODO: TEMPORARY BLOCK TO KEEP THE SYNTHESISER HAPPY WHILST STANDING UP THE APPLICATION
 	@block
 	def leds(address, wmask, wdata):
-		@always(clk_master.posedge)
+		@always(clk_core.posedge)
 		def led_writer():
 			nonlocal _led_r
 			nonlocal _led_g
@@ -113,9 +140,9 @@ def Main(
 
 		nonlocal spi_miso
 		if _spi_ss:
-			spi_miso.next = 0
+			spi_mosi.next = spi_miso
 		else:
-			spi_miso.next = 0
+			spi_mosi.next = spi_miso
 
 		nonlocal spi_sclk
 		spi_sclk.next = 0
@@ -126,17 +153,15 @@ def Main(
 		nonlocal _flash_ss
 		_flash_ss.next = 1
 
-# TODO:
-# Before reset controller, but manually crafted verilog reset:
-# lut 1488
-# pfu 356
-#
-# After reset controller - investigate the extra usage:
-# lut 1979
-# pfu 352
-
-
-	return core, rom(), reset_controller.generators().subs, outputs, whatevs, leds(core_bus.address, core_bus.wmask, core_bus.wdata) # TODO: REMOVE 'outputs' WHEN MORE OF THE DESIGN IS COMPLETE...
+	return (
+		clocks_generator(),
+		core,
+		rom(),
+		reset_controller.generators().subs,
+		pll_for_ice_sugar(clk_master, _reset, clk_100MHz),  # TODO: REMOVE WHEN ACTUAL HARDWARE AVAILABLE
+		outputs, # TODO: REMOVE WHEN MORE OF THE DESIGN IS COMPLETE
+		whatevs,  # TODO: REMOVE WHEN MORE OF THE DESIGN IS COMPLETE
+		leds(core_bus.address, core_bus.wmask, core_bus.wdata))  # TODO: REMOVE WHEN MORE OF THE DESIGN IS COMPLETE
 
 class Bootloader:
 	def __init__(self):
