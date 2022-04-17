@@ -407,7 +407,7 @@ module FemtoRV32(
    assign mem_wmask = {4{state[EXECUTE2_bit] & isStore}} & STORE_wmask;
 
    // aluWr starts computation (shifts) in the ALU.
-   assign aluWr = state[EXECUTE2_bit] & isALU;
+   assign aluWr = state[EXECUTE1_bit] & isALU;
 
    wire jumpToPCplusImm = isJAL | (isBranch & predicate);
 `ifdef NRV_IS_IO_ADDR
