@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e;
 THISDIR="$(dirname "$(readlink -f "$0")")";
-MYHDL_TOVERILOG_PATH="${THISDIR}/.venv/lib64/python3.*/site-packages/myhdl/conversion/_toVerilog.py";
+MYHDL_TOVERILOG_PATH="${THISDIR}/.venv/src/myhdl/myhdl/conversion/_toVerilog.py";
 MYHDL_TOVERILOG_RESOLVED_PATH="$(ls ${MYHDL_TOVERILOG_PATH})";
 
 if [ ! -f "${MYHDL_TOVERILOG_RESOLVED_PATH}" ]; then
