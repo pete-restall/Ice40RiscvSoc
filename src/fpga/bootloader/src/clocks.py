@@ -12,33 +12,27 @@ class Clocks:
 		self._clk_100MHz = clk_100MHz
 		self._reset = reset
 		self._counter = Counter(clk_100MHz, reset, 0, 7)
-		self._counter_5 = Counter(clk_100MHz, reset, 0, 4)
+		self._counter_5_pos = Counter(clk_100MHz, reset, 0, 4, negedge=False)
+		self._counter_5_neg = Counter(clk_100MHz, reset, 0, 4, negedge=True)
 		self._divide_by_5 = Signal(bool(0))
 
 	def generators(self):
 		@block
-		def encapsulated(clk, reset, counter, counter_5, out):
-			latched_negedge_2 = Signal(bool(0))
-
-			@always_seq(clk.negedge, reset)
-			def latch_negedge_2():
-				nonlocal counter_5
-				nonlocal latched_negedge_2
-				latched_negedge_2.next = counter_5.output[1]
-
+		def encapsulated(counter, counter_5_pos, counter_5_neg, div_5_with_50pc_duty):
 			@always_comb
 			def divide_by_5():
-				nonlocal counter_5
-				nonlocal latched_negedge_2
-				out.next = counter_5.output[1] | latched_negedge_2
+				nonlocal div_5_with_50pc_duty
+				nonlocal counter_5_pos
+				nonlocal counter_5_neg
+				div_5_with_50pc_duty.next = counter_5_pos.output[1] | counter_5_neg.output[1]
 
 			@block
 			def namespaced(sub_block):
 				return sub_block.generators().subs
 
-			return namespaced(counter), namespaced(counter_5), latch_negedge_2, divide_by_5
+			return namespaced(counter), namespaced(counter_5_pos), namespaced(counter_5_neg), divide_by_5
 
-		return encapsulated(self._clk_100MHz, self._reset, self._counter, self._counter_5, self._divide_by_5)
+		return encapsulated(self._counter, self._counter_5_pos, self._counter_5_neg, self._divide_by_5)
 
 	@property
 	def clk_50MHz(self):

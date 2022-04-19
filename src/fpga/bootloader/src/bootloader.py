@@ -27,20 +27,20 @@ def Main(
 	_led_g,
 	_led_b):
 
-	_reset = ResetSignal(val=bool(1), active=bool(0), isasync=True) # TODO: should be tied to something
+	_reset = ResetSignal(val=bool(0), active=bool(0), isasync=True) # TODO: should be tied to something
 	irq = Signal(bool(0)) # TODO: should be tied to peripherals to enable IRQ
 
 	clk_100MHz = Signal(bool(0))
 
 	@block
-	def pll_for_ice_sugar(clk_master, _reset, clk_100MHz):
+	def pll_for_ice_sugar(clk_master, clk_100MHz):
 		@always(clk_master.posedge)
 		def unused():
 			pass
 
 		clk_master.read = True
 		clk_100MHz.driven = "wire"
-		pll_for_ice_sugar.verilog_code = "wire unused; Pll100MHz pll_100MHz (.ref_clk_i($clk_master), .rst_n_i($_reset), .outcore_o(unused), .outglobal_o($clk_100MHz));"
+		pll_for_ice_sugar.verilog_code = "wire unused; wire _pll_reset = 1'b1; Pll100MHz pll_100MHz (.ref_clk_i($clk_master), .rst_n_i(_pll_reset), .outcore_o(unused), .outglobal_o($clk_100MHz));"
 
 		return unused
 
@@ -51,7 +51,7 @@ def Main(
 		return clocks.generators().subs
 
 	# TODO - THESE SHOULD BE ENCAPSULATED FURTHER (INTO A 'Core' MODULE) BUT FOR NOW, USE FEMTORV32 DIRECTLY...
-	clk_core = clocks.clk_20MHz
+	clk_core = clocks.clk_20MHz # TODO: 20MHz SEEMS TO HAVE NEGATIVE SLACK BETWEEN THE PC AND BLOCK RAM...
 	core_bus = Femtorv32Bus()
 	core = Femtorv32Processor(
 		_reset,
@@ -64,7 +64,7 @@ def Main(
 		clk_core,
 		reset_in=ResetSignal(val=bool(0), active=bool(1), isasync=True),
 		reset_out=_reset,
-		num_assertion_cycles=65536)
+		num_assertion_cycles=1024)
 
 
 	# TODO: TEMPORARY BLOCK TO KEEP THE SYNTHESISER HAPPY WHILST STANDING UP THE APPLICATION - NEEDS TO BE BETTER THOUGHT OUT / PARTITIONED / TESTED
@@ -158,7 +158,7 @@ def Main(
 		core,
 		rom(),
 		reset_controller.generators().subs,
-		pll_for_ice_sugar(clk_master, _reset, clk_100MHz),  # TODO: REMOVE WHEN ACTUAL HARDWARE AVAILABLE
+		pll_for_ice_sugar(clk_master, clk_100MHz),  # TODO: REMOVE WHEN ACTUAL HARDWARE AVAILABLE
 		outputs, # TODO: REMOVE WHEN MORE OF THE DESIGN IS COMPLETE
 		whatevs,  # TODO: REMOVE WHEN MORE OF THE DESIGN IS COMPLETE
 		leds(core_bus.address, core_bus.wmask, core_bus.wdata))  # TODO: REMOVE WHEN MORE OF THE DESIGN IS COMPLETE

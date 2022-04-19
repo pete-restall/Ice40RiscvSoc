@@ -1,7 +1,7 @@
 from myhdl import *
 
 class Counter:
-	def __init__(self, clk, reset, min, max):
+	def __init__(self, clk, reset, min, max, negedge=False):
 		if clk is None:
 			raise TypeError("Clock must be specified")
 
@@ -12,6 +12,7 @@ class Counter:
 			raise ValueError(f"Maximum must be greater than minimum; min={min}, max={max}")
 
 		self._clk = clk
+		self._clk_edge = clk.negedge if negedge else clk.posedge
 		self._reset = reset
 		self._output = Signal(
 			modbv(val=min, min=min, max=max + 1) if Counter.is_binary_counter(min, max)
@@ -23,8 +24,8 @@ class Counter:
 
 	def generators(self):
 		@block
-		def encapsulated(clk, reset, counter, is_counter_intbv):
-			@always_seq(clk.posedge, reset)
+		def encapsulated(clk_edge, reset, counter, is_counter_intbv):
+			@always_seq(clk_edge, reset)
 			def counter_intbv_increment():
 				nonlocal counter
 				if counter == counter.max - 1:
@@ -32,14 +33,14 @@ class Counter:
 				else:
 					counter.next = counter + 1
 
-			@always_seq(clk.posedge, reset)
+			@always_seq(clk_edge, reset)
 			def counter_modbv_increment():
 				nonlocal counter
 				counter.next = counter + 1
 
 			return counter_intbv_increment if is_counter_intbv else counter_modbv_increment
 
-		return encapsulated(self._clk, self._reset, self._output, isinstance(self._output.val, intbv))
+		return encapsulated(self._clk_edge, self._reset, self._output, isinstance(self._output.val, intbv)) # TODO: THIS MODBV TEST DOES NOT WORK WHEN SYNTHESISED
 
 	@property
 	def output(self):
