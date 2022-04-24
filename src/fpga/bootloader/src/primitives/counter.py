@@ -14,8 +14,9 @@ class Counter:
 		self._clk = clk
 		self._clk_edge = clk.negedge if negedge else clk.posedge
 		self._reset = reset
+		self._is_binary_counter = Counter.is_binary_counter(min, max)
 		self._output = Signal(
-			modbv(val=min, min=min, max=max + 1) if Counter.is_binary_counter(min, max)
+			modbv(val=min, min=min, max=max + 1) if self._is_binary_counter
 			else intbv(val=min, min=min, max=max + 1))
 
 	@staticmethod
@@ -24,7 +25,7 @@ class Counter:
 
 	def generators(self):
 		@block
-		def encapsulated(clk_edge, reset, counter, is_counter_intbv):
+		def encapsulated(clk_edge, reset, counter, is_binary_counter):
 			@always_seq(clk_edge, reset)
 			def counter_intbv_increment():
 				nonlocal counter
@@ -38,9 +39,9 @@ class Counter:
 				nonlocal counter
 				counter.next = counter + 1
 
-			return counter_intbv_increment if is_counter_intbv else counter_modbv_increment
+			return counter_modbv_increment if is_binary_counter else counter_intbv_increment
 
-		return encapsulated(self._clk_edge, self._reset, self._output, isinstance(self._output.val, intbv)) # TODO: THIS MODBV TEST DOES NOT WORK WHEN SYNTHESISED
+		return encapsulated(self._clk_edge, self._reset, self._output, self._is_binary_counter)
 
 	@property
 	def output(self):
