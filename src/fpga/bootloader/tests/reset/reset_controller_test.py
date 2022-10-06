@@ -69,15 +69,15 @@ class TestResetController:
 		sim.run()
 
 	def test_constructor_with_no_clk_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)clock must be specified"):
 			ResetController(None, fixture.reset_in, fixture.reset_out, fixture.num_assertion_cycles)
 
 	def test_constructor_with_no_reset_in_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)reset input signal must be specified"):
 			ResetController(fixture.clk, None, fixture.reset_out, fixture.num_assertion_cycles)
 
 	def test_constructor_with_no_reset_out_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)reset output signal must be specified"):
 			ResetController(fixture.clk, fixture.reset_in, None, fixture.num_assertion_cycles)
 
 	@pytest.mark.parametrize("invalid_num_assertion_cycles", [
@@ -87,7 +87,7 @@ class TestResetController:
 		-10
 	])
 	def test_constructor_with_invalid_num_assertion_cycles_raises_value_error(self, fixture, invalid_num_assertion_cycles):
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match=r"(?i)assertion cycles must be at least 1"):
 			ResetController(fixture.clk, fixture.reset_in, fixture.reset_out, invalid_num_assertion_cycles)
 
 	@pytest.mark.parametrize(*ACTIVE_IN_OUT_SCENARIOS)

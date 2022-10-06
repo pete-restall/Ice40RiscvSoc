@@ -6,13 +6,13 @@ class Register:
 			raise TypeError("Clock must be specified")
 
 		if reset is None:
-			raise TypeError("Reset input must be specified; tie it inactive if it is not required")
+			raise TypeError("Reset signal must be specified; tie it inactive if it is not required")
 
 		if input is None:
 			raise TypeError("Input signal(s) must be specified")
 
 		if write_enable is None:
-			raise TypeError("Write Enable must be specified; tie it active if it is not required")
+			raise TypeError("Write-Enable signal must be specified; tie it active if it is not required")
 
 		if reset_value is None:
 			raise TypeError("Reset Value must not be None if it has been specified (defaults to 0 if unspecified)")

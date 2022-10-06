@@ -54,11 +54,11 @@ class TestUnalignedWriteMonitor:
 		sim.run()
 
 	def test_constructor_with_no_reset_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)reset signal must be specified"):
 			UnalignedWriteMonitor(None, fixture.bus)
 
 	def test_constructor_with_no_bus_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)bus must be specified"):
 			UnalignedWriteMonitor(fixture._reset, None)
 
 	scenarios = [

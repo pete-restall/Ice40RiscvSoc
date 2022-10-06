@@ -88,16 +88,15 @@ class TestDeviceBus:
 
 	def test_constructor_with_no_bus_raises_type_error(self, fixture):
 		num_addressable_words = fixture.any_num_addressable_words()
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)bus must be specified"):
 			DeviceBus(None, fixture.any_base_address_allowing(num_addressable_words), num_addressable_words)
 
 	def test_constructor_with_negative_base_address_raises_value_error(self, fixture):
 		for invalid_base_address in range(-8, 0):
-			with pytest.raises(ValueError):
+			with pytest.raises(ValueError, match=r"(?i)base address must be in the range"):
 				DeviceBus(fixture.processor_bus, invalid_base_address, num_addressable_words=16)
 
 	@pytest.mark.parametrize("invalid_base_address,num_addressable_words,num_address_bits", [
-		(0, 2**24 // 4 + 1, 0),
 		(4, 2**24 // 4, 0),
 		(4, 1, 24),
 		(2**24 - 8, 1, 4)
@@ -109,7 +108,7 @@ class TestDeviceBus:
 		num_addressable_words,
 		num_address_bits):
 
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match=r"(?i)base address must be in the range"):
 			DeviceBus(fixture.processor_bus, invalid_base_address, num_addressable_words, num_address_bits)
 
 	@pytest.mark.parametrize("invalid_base_address,num_addressable_words,num_address_bits", [
@@ -121,9 +120,9 @@ class TestDeviceBus:
 		(16, 8, -1),
 		(16, 8, 5),
 		(2**18 - 2048, 1024, -1),
-		(2**18 - 4096, 1024, 11),
+		(2**18 - 4096, 1024, 18),
 		(2**18 + 2048, 1024, -1),
-		(2**18 + 4096, 1024, 11)
+		(2**18 + 4096, 1024, 18)
 	])
 	def test_constructor_with_base_address_not_aligned_to_num_address_bits_raises_value_error(
 		self,
@@ -132,16 +131,16 @@ class TestDeviceBus:
 		num_addressable_words,
 		num_address_bits):
 
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match=r"(?i)address must be aligned"):
 			DeviceBus(fixture.processor_bus, invalid_base_address, num_addressable_words, num_address_bits)
 
 	def test_constructor_with_negative_num_addressable_words_raises_value_error(self, fixture):
 		for invalid_num_addressable_words in range(-3, 0):
-			with pytest.raises(ValueError):
+			with pytest.raises(ValueError, match=r"(?i)addressable words must be at least 1"):
 				DeviceBus(fixture.processor_bus, fixture.any_base_address_allowing(100), invalid_num_addressable_words)
 
 	def test_constructor_with_zero_num_addressable_words_raises_value_error(self, fixture):
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match=r"(?i)addressable words must be at least 1"):
 			DeviceBus(fixture.processor_bus, fixture.any_base_address_allowing(100), num_addressable_words=0)
 
 	@pytest.mark.parametrize("num_addressable_words,num_address_bits", [
@@ -158,11 +157,11 @@ class TestDeviceBus:
 		num_addressable_words,
 		num_address_bits):
 
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match=r"(?i)address space is not enough"):
 			DeviceBus(fixture.processor_bus, fixture.any_base_address_allowing(num_addressable_words), num_addressable_words, num_address_bits)
 
 	def test_constructor_with_num_address_bits_greater_than_bus_address_width_raises_value_error(self, fixture):
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match=r"(?i)address space exceeds address bus width"):
 			DeviceBus(
 				fixture.processor_bus,
 				fixture.any_base_address_allowing(100),

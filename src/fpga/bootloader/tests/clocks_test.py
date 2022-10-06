@@ -77,11 +77,11 @@ class TestClocks:
 		sim.run()
 
 	def test_constructor_with_no_clk_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)clock (100MHz) must be specified"):
 			Clocks(None, fixture.reset)
 
 	def test_constructor_with_no_reset_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)reset signal must be specified"):
 			Clocks(fixture.clk_100MHz, None)
 
 	def test_clk_50MHz_is_low_on_initial_state(self, fixture):

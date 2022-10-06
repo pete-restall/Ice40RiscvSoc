@@ -38,7 +38,7 @@ class DeviceBus:
 
 		self._bus = bus
 		self._base_address = base_address
-		self._address = Signal(modbv(val=0, min=0, max=2**num_address_bits))#self._bus.address(num_address_bits, 0)
+		self._address = Signal(modbv(val=0, min=0, max=2**num_address_bits))
 		self._rstrb = Signal(bool(0))
 		self._wmask = Signal(intbv(val=0, min=0, max=16))
 

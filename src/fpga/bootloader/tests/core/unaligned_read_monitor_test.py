@@ -63,11 +63,11 @@ class TestUnalignedReadMonitor:
 		sim.run()
 
 	def test_constructor_with_no_reset_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)reset signal must be specified"):
 			UnalignedReadMonitor(None, fixture.bus)
 
 	def test_constructor_with_no_bus_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)bus must be specified"):
 			UnalignedReadMonitor(fixture._reset, None)
 
 	def test_unaligned_flag_is_false_after_strobe_rising_edge_when_both_address_lsbs_are_clear(self, fixture):

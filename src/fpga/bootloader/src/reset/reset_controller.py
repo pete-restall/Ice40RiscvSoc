@@ -6,10 +6,10 @@ class ResetController:
 			raise TypeError("Clock must be specified")
 
 		if reset_in is None:
-			raise TypeError("Reset input must be specified; tie it inactive if it is not required")
+			raise TypeError("Reset input signal must be specified; tie it inactive if it is not required")
 
 		if reset_out is None:
-			raise TypeError("Reset output must be specified")
+			raise TypeError("Reset output signal must be specified")
 
 		if num_assertion_cycles < 1:
 			raise ValueError("Number of assertion cycles must be at least 1")

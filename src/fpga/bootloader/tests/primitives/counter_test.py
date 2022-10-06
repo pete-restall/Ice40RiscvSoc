@@ -103,20 +103,20 @@ class CounterTestSuite(ABC):
 		sim.run()
 
 	def test_constructor_with_no_clk_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)clock must be specified"):
 			Counter(None, fixture.reset, fixture.min, fixture.max, fixture.negedge)
 
 	def test_constructor_with_no_reset_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)reset signal must be specified"):
 			Counter(fixture.clk, None, fixture.min, fixture.max, fixture.negedge)
 
 	@pytest.mark.parametrize("relative_max", [-1, -2, -3, -10])
 	def test_constructor_with_max_greater_than_min_raises_value_error(self, fixture, relative_max):
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match=r"(?i)maximum must be greater than minimum"):
 			Counter(fixture.clk, fixture.reset, fixture.min, fixture.min + relative_max, fixture.negedge)
 
 	def test_constructor_with_min_and_max_the_same_raises_value_error(self, fixture):
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match=r"(?i)maximum must be greater than minimum"):
 			Counter(fixture.clk, fixture.reset, fixture.min, fixture.min, fixture.negedge)
 
 	def test_output_is_modbv_signal_when_min_is_zero_and_max_is_power_of_two_take_one(self, fixture):

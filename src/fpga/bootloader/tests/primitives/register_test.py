@@ -116,24 +116,24 @@ class RegisterTestSuite(ABC):
 		sim.run()
 
 	def test_constructor_with_no_clk_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)clock must be specified"):
 			Register(None, fixture.reset, fixture.input, fixture.reset_value, fixture.write_enable, fixture.is_write_enable_active_high, fixture.negedge)
 
 	def test_constructor_with_no_reset_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)reset signal must be specified"):
 			Register(fixture.clk, None, fixture.input, fixture.reset_value, fixture.write_enable, fixture.is_write_enable_active_high, fixture.negedge)
 
 	def test_constructor_with_no_input_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match=r"(?i)input signal\(s\) must be specified"):
 			Register(fixture.clk, fixture.reset, None, fixture.reset_value, fixture.write_enable, fixture.is_write_enable_active_high, fixture.negedge)
 
 	def test_constructor_with_no_reset_value_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
-			Register(fixture.clk, fixture.reset, fixture.input, None, fixture.write_enable, fixture.is_write_enable_active_high, fixture.negedge)
+		with pytest.raises(TypeError, match=r"(?i)reset value must not be none if it has been specified"):
+			Register(fixture.clk, fixture.reset, fixture.input, fixture.write_enable, None, fixture.is_write_enable_active_high, fixture.negedge)
 
 	def test_constructor_with_no_write_enable_raises_type_error(self, fixture):
-		with pytest.raises(TypeError):
-			Register(fixture.clk, fixture.reset, fixture.input, fixture.reset_value, None, fixture.is_write_enable_active_high, fixture.negedge)
+		with pytest.raises(TypeError, match=r"(?i)write-enable signal must be specified"):
+			Register(fixture.clk, fixture.reset, fixture.input, None, fixture.reset_value, fixture.is_write_enable_active_high, fixture.negedge)
 
 	def test_output_is_intbv_signal_when_input_is_intbv(self, fixture):
 		expected = Signal(intbv(val=123))

@@ -6,7 +6,7 @@ class Counter:
 			raise TypeError("Clock must be specified")
 
 		if reset is None:
-			raise TypeError("Reset input must be specified; tie it inactive if it is not required")
+			raise TypeError("Reset signal must be specified; tie it inactive if it is not required")
 
 		if max <= min:
 			raise ValueError(f"Maximum must be greater than minimum; min={min}, max={max}")

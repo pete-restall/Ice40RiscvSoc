@@ -7,7 +7,7 @@ class Clocks:
 			raise TypeError("Master Clock (100MHz) must be specified")
 
 		if reset is None:
-			raise TypeError("Reset input must be specified; tie it inactive if it is not required")
+			raise TypeError("Reset signal must be specified; tie it inactive if it is not required")
 
 		self._clk_100MHz = clk_100MHz
 		self._reset = reset
