@@ -63,12 +63,14 @@ class CounterFixture:
 		self.reset.next = not self.reset.active
 
 	def clock_pulse(self):
+		yield self.clock_active()
+		yield self.clock_inactive()
+
+	def clock_active(self):
 		if self._negedge:
 			yield self.clock_fall()
-			yield self.clock_rise()
 		else:
 			yield self.clock_rise()
-			yield self.clock_fall()
 
 	def clock_rise(self):
 		self._clk.next = bool(1)
@@ -77,12 +79,6 @@ class CounterFixture:
 	def clock_fall(self):
 		self._clk.next = bool(0)
 		yield delay(1)
-
-	def clock_active(self):
-		if self._negedge:
-			yield self.clock_fall()
-		else:
-			yield self.clock_rise()
 
 	def clock_inactive(self):
 		if self._negedge:
