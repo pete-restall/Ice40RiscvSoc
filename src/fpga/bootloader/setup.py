@@ -6,7 +6,7 @@ setup(
 	description="",
 	author="Pete Restall",
 	author_email="pete@restall.net",
-	url="https://github.com/lophtware/MssFrequencyReference",
+	url="https://github.com/lophtware/MsfFrequencyReference",
 	packages=find_packages(include=["src"]),
 	install_requires=["wheel", "myhdl"],
 	setup_requires=["pytest-runner"],
