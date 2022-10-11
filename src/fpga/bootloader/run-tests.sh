@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e;
 THISDIR="$(dirname "$(readlink -f "$0")")";
-RUN_TESTS="python ${THISDIR}/setup.py test";
+RUN_TESTS="pytest";
 VENV_ACTIVATE="${THISDIR}/../.venv/bin/activate";
 
 if [ ! -f "${VENV_ACTIVATE}" ]; then
@@ -12,7 +12,7 @@ fi
 . "${VENV_ACTIVATE}";
 
 if [ $# -gt 0 ]; then
-	${RUN_TESTS} --addopts $*;
+	${RUN_TESTS} $*;
 else
 	# Icarus Verilog and MyHDL have some sort of memory leak that prevents
 	# running the entire suite in a single process, so iterate over and run
