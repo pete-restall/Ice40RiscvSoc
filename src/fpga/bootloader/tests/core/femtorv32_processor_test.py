@@ -50,9 +50,9 @@ class Femtorv32Fixture:
 		def generator():
 			nonlocal self
 			self.clk.next = 1
-			yield delay(1)
+			yield delay(cycles(1))
 			self.clk.next = 0
-			yield delay(1)
+			yield delay(cycles(1))
 
 		return generator
 

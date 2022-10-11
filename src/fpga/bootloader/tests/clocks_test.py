@@ -2,7 +2,7 @@ import pytest
 import random
 from myhdl import *
 from src.clocks import Clocks
-from tests.cosimulatable_dut import CosimulatableDut
+from tests.cosimulatable_dut import CosimulatableDut, cycles
 
 class ClocksFixture:
 	def __init__(self):
@@ -32,9 +32,9 @@ class ClocksFixture:
 
 	def _reset_async(self):
 		self.reset.next = self.reset.active
-		yield delay(1)
+		yield delay(cycles(1))
 		self.reset.next = not self.reset.active
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def _reset_sync(self):
 		self.reset.next = self.reset.active
@@ -47,15 +47,15 @@ class ClocksFixture:
 
 	def clock_rise(self):
 		self._clk_100MHz.next = bool(1)
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def clock_fall(self):
 		self._clk_100MHz.next = bool(0)
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def clock_toggle(self):
 		self._clk_100MHz.next = not self._clk_100MHz.val
-		yield delay(1)
+		yield delay(cycles(1))
 
 	@property
 	def clk_100MHz(self):

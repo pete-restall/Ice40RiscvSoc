@@ -63,6 +63,9 @@ class CosimulatableDut:
 
 		assert completed == 0
 
+def cycles(n):
+	return ps(n)
+
 def ps(t):
 	return int(t / _timescale_ps)
 

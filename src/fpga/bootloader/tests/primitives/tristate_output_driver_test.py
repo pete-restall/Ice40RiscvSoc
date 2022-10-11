@@ -71,7 +71,7 @@ class TestOutputTristateDriver:
 			fixture.reset(False)
 			fixture.enable()
 			fixture.output(True)
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.pin == True
 
 		self.run(fixture, test)
@@ -83,7 +83,7 @@ class TestOutputTristateDriver:
 			fixture.reset(False)
 			fixture.enable()
 			fixture.output(False)
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.pin == False
 
 		self.run(fixture, test)
@@ -95,7 +95,7 @@ class TestOutputTristateDriver:
 			fixture.reset(False)
 			fixture.disable()
 			fixture.output(True)
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.pin is None
 
 		self.run(fixture, test)
@@ -107,7 +107,7 @@ class TestOutputTristateDriver:
 			fixture.reset(True)
 			fixture.enable()
 			fixture.output(True)
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.pin is None
 
 		self.run(fixture, test)

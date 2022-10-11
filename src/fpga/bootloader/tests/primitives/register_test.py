@@ -3,7 +3,7 @@ import random
 from abc import ABC, abstractmethod
 from myhdl import *
 from src.primitives.register import Register
-from tests.cosimulatable_dut import CosimulatableDut
+from tests.cosimulatable_dut import CosimulatableDut, cycles
 
 class RegisterFixture:
 	def __init__(self, is_write_enable_active_high, negedge):
@@ -47,9 +47,9 @@ class RegisterFixture:
 
 	def _reset_async(self):
 		self.reset.next = self.reset.active
-		yield delay(1)
+		yield delay(cycles(1))
 		self.reset.next = not self.reset.active
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def _reset_sync(self):
 		self.reset.next = self.reset.active
@@ -68,11 +68,11 @@ class RegisterFixture:
 
 	def clock_rise(self):
 		self._clk.next = bool(1)
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def clock_fall(self):
 		self._clk.next = bool(0)
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def clock_inactive(self):
 		if self.negedge:
@@ -235,7 +235,7 @@ class RegisterTestSuite(ABC):
 			yield fixture.ensure_initial_state()
 			fixture.enable_writes()
 			fixture.input.next = fixture.any_input_value_except(fixture.reset_value)
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.register.output.val == fixture.reset_value
 
 		self.run(fixture, test)
@@ -392,7 +392,7 @@ class RegisterTestSuite(ABC):
 
 			fixture.enable_writes(write_enable)
 			fixture.reset.next = reset_active
-			yield delay(1)
+			yield delay(cycles(1))
 
 			assert fixture.register.output.val == fixture.reset_value
 

@@ -4,6 +4,9 @@ from myhdl import *
 from src.core.femtorv32_bus import Femtorv32Bus
 from src.core.unaligned_write_monitor import UnalignedWriteMonitor
 
+def cycles(n):
+	return n
+
 class UnalignedWriteMonitorFixture:
 	def __init__(self):
 		seed = random.getrandbits(32)
@@ -151,7 +154,7 @@ class TestUnalignedWriteMonitor:
 			fixture.release_from_reset()
 			fixture.set_wmask(wmask)
 			fixture.set_address(fixture.any_address_without_two_lsbs() | address_lsbs)
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.monitor.unaligned == is_unaligned
 
 		self.run(fixture, test)
@@ -164,7 +167,7 @@ class TestUnalignedWriteMonitor:
 			fixture.hold_in_reset()
 			fixture.set_wmask(wmask)
 			fixture.set_address(fixture.any_address_without_two_lsbs() | address_lsbs)
-			yield delay(1)
+			yield delay(cycles(1))
 			assert not fixture.monitor.unaligned
 
 		self.run(fixture, test)

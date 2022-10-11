@@ -4,6 +4,9 @@ from myhdl import *
 from src.core.femtorv32_bus import Femtorv32Bus
 from src.core.unaligned_read_monitor import UnalignedReadMonitor
 
+def cycles(n):
+	return n
+
 class UnalignedReadMonitorFixture:
 	def __init__(self):
 		seed = random.getrandbits(32)
@@ -47,11 +50,11 @@ class UnalignedReadMonitorFixture:
 
 	def strobe_rise(self):
 		self._bus.rstrb.next = 1
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def strobe_fall(self):
 		self._bus.rstrb.next = 0
-		yield delay(1)
+		yield delay(cycles(1))
 
 class TestUnalignedReadMonitor:
 	@pytest.fixture(scope="function")

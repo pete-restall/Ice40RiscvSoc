@@ -3,7 +3,7 @@ import random
 from abc import ABC, abstractmethod
 from myhdl import *
 from src.primitives.counter import Counter
-from tests.cosimulatable_dut import CosimulatableDut
+from tests.cosimulatable_dut import CosimulatableDut, cycles
 
 class CounterFixture:
 	def __init__(self, negedge):
@@ -53,9 +53,9 @@ class CounterFixture:
 
 	def _reset_async(self):
 		self.reset.next = self.reset.active
-		yield delay(1)
+		yield delay(cycles(1))
 		self.reset.next = not self.reset.active
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def _reset_sync(self):
 		self.reset.next = self.reset.active
@@ -74,11 +74,11 @@ class CounterFixture:
 
 	def clock_rise(self):
 		self._clk.next = bool(1)
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def clock_fall(self):
 		self._clk.next = bool(0)
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def clock_inactive(self):
 		if self._negedge:
@@ -248,7 +248,7 @@ class CounterTestSuite(ABC):
 
 			yield fixture.clock_active()
 			fixture.reset.next = fixture.reset.active
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.counter.output == fixture.min
 
 		self.run(fixture, test)
@@ -272,7 +272,7 @@ class CounterTestSuite(ABC):
 			yield fixture.clock_pulse()
 
 			fixture.reset.next = fixture.reset.active
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.counter.output == fixture.min
 
 		self.run(fixture, test)
@@ -297,7 +297,7 @@ class CounterTestSuite(ABC):
 
 			yield fixture.clock_active()
 			fixture.reset.next = fixture.reset.active
-			yield delay(1)
+			yield delay(cycles(1))
 			yield fixture.clock_inactive()
 			assert fixture.counter.output == fixture.min + 2
 
@@ -322,7 +322,7 @@ class CounterTestSuite(ABC):
 			yield fixture.clock_pulse()
 
 			fixture.reset.next = fixture.reset.active
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.counter.output == fixture.min + 1
 
 		self.run(fixture, test)
@@ -347,7 +347,7 @@ class CounterTestSuite(ABC):
 
 			yield fixture.clock_active()
 			fixture.reset.next = fixture.reset.active
-			yield delay(1)
+			yield delay(cycles(1))
 			yield fixture.clock_inactive()
 			yield fixture.clock_active()
 			assert fixture.counter.output == fixture.min

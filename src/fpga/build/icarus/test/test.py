@@ -14,9 +14,12 @@ c = Signal(intbv(3))
 
 cosim = Cosimulation("vvp -v -m ../myhdl.vpi tb_test.o", a=a, b=b, c=c)
 
+def cycles(n):
+    return n
+
 def stimulus(a, b):
     for i in range(10):
-        yield delay(10)
+        yield delay(cycles(10))
         # print "Python a=%s b=%s" % (a, b)
         a.next = a + 1
         b.next = b + 2
@@ -28,7 +31,3 @@ def response(c):
 
 sim = Simulation(stimulus(a=a, b=b), response(c=c), cosim)
 sim.run()
-
-
-    
-    

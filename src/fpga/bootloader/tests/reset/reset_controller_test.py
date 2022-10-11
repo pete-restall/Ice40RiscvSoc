@@ -2,7 +2,7 @@ import pytest
 import random
 from myhdl import *
 from src.reset.reset_controller import ResetController
-from tests.cosimulatable_dut import CosimulatableDut
+from tests.cosimulatable_dut import CosimulatableDut, cycles
 
 class ResetControllerFixture:
 	def __init__(self):
@@ -37,11 +37,11 @@ class ResetControllerFixture:
 
 	def clock_rise(self):
 		self.clk.next = bool(1)
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def clock_fall(self):
 		self.clk.next = bool(0)
-		yield delay(1)
+		yield delay(cycles(1))
 
 	def generators(self):
 		if self._dut is None:
@@ -168,7 +168,7 @@ class TestResetController:
 
 				if i == trigger_after:
 					fixture.reset_in.next = fixture.reset_in.active
-					yield delay(1)
+					yield delay(cycles(1))
 
 				yield fixture.clock_fall()
 
@@ -189,7 +189,7 @@ class TestResetController:
 			for i in range(0, fixture.num_assertion_cycles):
 				if i == trigger_after:
 					fixture.reset_in.next = fixture.reset_in.active
-					yield delay(1)
+					yield delay(cycles(1))
 
 				yield fixture.clock_rise()
 				yield fixture.clock_fall()
@@ -227,7 +227,7 @@ class TestResetController:
 			for i in range(0, fixture.num_assertion_cycles + deactivate_after):
 				if i == deactivate_after:
 					fixture.reset_in.next = not fixture.reset_in.active
-					yield delay(1)
+					yield delay(cycles(1))
 
 				yield fixture.clock_rise()
 				yield fixture.clock_fall()
@@ -253,13 +253,13 @@ class TestResetController:
 
 				if i == deactivate_after:
 					fixture.reset_in.next = not fixture.reset_in.active
-					yield delay(1)
+					yield delay(cycles(1))
 
 				yield fixture.clock_fall()
 				assert fixture.reset_out == fixture.reset_out.active
 
 			yield fixture.clock_rise()
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.reset_out != fixture.reset_out.active
 
 		self.run(fixture, test)

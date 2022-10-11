@@ -3,7 +3,7 @@ import random
 from myhdl import *
 from src.core.device_bus import DeviceBus
 from src.core.femtorv32_bus import Femtorv32Bus
-from tests.cosimulatable_dut import CosimulatableDut
+from tests.cosimulatable_dut import CosimulatableDut, cycles
 
 class DeviceBusFixture:
 	def __init__(self):
@@ -197,7 +197,7 @@ class TestDeviceBus:
 		def test():
 			nonlocal fixture
 			fixture.processor_bus.address.next = fixture.any_address()
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.device_bus.address.val == fixture.processor_bus.address(len(fixture.device_bus.address), 0).val
 
 		self.run(fixture, test)
@@ -231,7 +231,7 @@ class TestDeviceBus:
 			nonlocal fixture
 			wdata = fixture.any_word()
 			fixture.processor_bus.wdata.next = wdata
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.device_bus.wdata.val == wdata
 
 		self.run(fixture, test)
@@ -246,7 +246,7 @@ class TestDeviceBus:
 			for too_high in range(fixture.num_addressable_words * 4, fixture.num_addressable_words * 4 + 10):
 				fixture.processor_bus.address.next = fixture.base_address + too_high
 				fixture.processor_bus.wmask.next = 1
-				yield delay(1)
+				yield delay(cycles(1))
 				assert not fixture.device_bus.wmask
 
 		self.run(fixture, test)
@@ -261,7 +261,7 @@ class TestDeviceBus:
 			for too_low in range(-10, 0):
 				fixture.processor_bus.address.next = fixture.base_address + too_low
 				fixture.processor_bus.wmask.next = 0x0f
-				yield delay(1)
+				yield delay(cycles(1))
 				assert not fixture.device_bus.wmask
 
 		self.run(fixture, test)
@@ -277,7 +277,7 @@ class TestDeviceBus:
 				wmask = fixture.any_word() & 0x0f
 				fixture.processor_bus.address.next = fixture.base_address + offset
 				fixture.processor_bus.wmask.next = wmask
-				yield delay(1)
+				yield delay(cycles(1))
 				assert fixture.device_bus.wmask == wmask
 
 		self.run(fixture, test)
@@ -288,7 +288,7 @@ class TestDeviceBus:
 		def test():
 			nonlocal fixture
 			fixture.device_bus.wbusy.next = wbusy
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.processor_bus.wbusy.val == wbusy
 
 		self.run(fixture, test)
@@ -299,7 +299,7 @@ class TestDeviceBus:
 			nonlocal fixture
 			rdata = fixture.any_word()
 			fixture.device_bus.rdata.next = rdata
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.processor_bus.rdata.val == rdata
 
 		self.run(fixture, test)
@@ -314,7 +314,7 @@ class TestDeviceBus:
 			for too_high in range(fixture.num_addressable_words * 4, fixture.num_addressable_words * 4 + 10):
 				fixture.processor_bus.address.next = fixture.base_address + too_high
 				fixture.processor_bus.rstrb.next = 1
-				yield delay(1)
+				yield delay(cycles(1))
 				assert not fixture.device_bus.rstrb
 
 		self.run(fixture, test)
@@ -330,7 +330,7 @@ class TestDeviceBus:
 			for too_low in range(-10, 0):
 				fixture.processor_bus.address.next = base_address + too_low
 				fixture.processor_bus.rstrb.next = 1
-				yield delay(1)
+				yield delay(cycles(1))
 				assert not bus.rstrb
 
 		self.run(fixture, test, bus.generators())
@@ -346,7 +346,7 @@ class TestDeviceBus:
 			for offset in range(0, num_addressable_words * 4):
 				fixture.processor_bus.address.next = base_address + offset
 				fixture.processor_bus.rstrb.next = 1
-				yield delay(1)
+				yield delay(cycles(1))
 				assert bus.rstrb
 
 		self.run(fixture, test, bus.generators())
@@ -357,7 +357,7 @@ class TestDeviceBus:
 		def test():
 			nonlocal fixture
 			fixture.device_bus.rbusy.next = rbusy
-			yield delay(1)
+			yield delay(cycles(1))
 			assert fixture.processor_bus.rbusy.val == rbusy
 
 		self.run(fixture, test)
