@@ -126,7 +126,7 @@ class TestResetController:
 		@instance
 		def test():
 			nonlocal fixture
-			for _ in range(0, fixture.num_assertion_cycles - 1):
+			for _ in range(0, fixture.num_assertion_cycles):
 				yield fixture.clock_rise()
 				assert fixture.reset_out == fixture.reset_out.active
 				yield fixture.clock_fall()
@@ -224,7 +224,7 @@ class TestResetController:
 		@instance
 		def test():
 			nonlocal fixture
-			for i in range(0, fixture.num_assertion_cycles + deactivate_after - 1):
+			for i in range(0, fixture.num_assertion_cycles + deactivate_after):
 				if i == deactivate_after:
 					fixture.reset_in.next = not fixture.reset_in.active
 					yield delay(1)
@@ -248,7 +248,7 @@ class TestResetController:
 		@instance
 		def test():
 			nonlocal fixture
-			for i in range(0, fixture.num_assertion_cycles + deactivate_after):
+			for i in range(0, fixture.num_assertion_cycles + deactivate_after + 1):
 				yield fixture.clock_rise()
 
 				if i == deactivate_after:
@@ -259,6 +259,7 @@ class TestResetController:
 				assert fixture.reset_out == fixture.reset_out.active
 
 			yield fixture.clock_rise()
+			yield delay(1)
 			assert fixture.reset_out != fixture.reset_out.active
 
 		self.run(fixture, test)

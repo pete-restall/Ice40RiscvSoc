@@ -22,7 +22,7 @@ class ResetController:
 	def generators(self):
 		@block
 		def encapsulated(clk, reset_in, reset_out, num_assertion_cycles):
-			reset_counter = Signal(intbv(val=0, min=0, max=num_assertion_cycles))
+			reset_counter = Signal(intbv(val=0, min=0, max=num_assertion_cycles + 1))
 			reset_edge = reset_in.posedge if reset_in.active == bool(1) else reset_in.negedge
 
 			@always(clk.posedge, reset_edge)
