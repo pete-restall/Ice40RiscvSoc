@@ -31,29 +31,62 @@ class Accumulator:
 			raise ValueError(f"Constant addend must not be zero")
 
 		self._clk = clk
-		self._clk_edge = clk.negedge if negedge else clk.posedge
+		self._is_clk_negedge = negedge
 		self._reset = reset
 		self._en = en
 		self._en_level = is_en_active_high
 		self._addend = addend
 		self._output = Signal(modbv(val=0, min=0, max=2**width))
+		self._overflow = Signal(bool(0))
 
 	def generators(self):
 		en_level = self._en_level
+		is_clk_negedge = self._is_clk_negedge
 
 		@block
-		def encapsulated(clk_edge, reset, en, acc, addend):
-			@always_seq(clk_edge, reset)
-			def accumulate():
-				nonlocal acc, addend
-				nonlocal en, en_level
-				if en == en_level:
-					acc.next = acc + addend
+		def encapsulated(clk, reset, en, acc, addend, overflow):
+			clk.read = True
+			reset.read = True
+			en.read = True
+			acc.driven = "reg"
+			overflow.driven = "reg"
 
-			return accumulate
+			@always(clk)
+			def unused():
+				pass
 
-		return encapsulated(self._clk_edge, self._reset, self._en, self._output, self._addend)
+			nonlocal is_clk_negedge
+			clk_edge = "negedge" if is_clk_negedge else "posedge"
+
+			nonlocal en_level
+			en_active = "$en == 0" if en_level == 0 else "$en != 0"
+
+			reset_active = "$reset == 0" if reset.active == 0 else "$reset != 0"
+			reset_edge = "negedge" if reset.active == 0 else "posedge"
+			reset_sensitivity = f", {reset_edge} $reset" if reset.active == 1 and reset.isasync else ""
+
+			encapsulated.verilog_code = \
+f"""
+always @({clk_edge} $clk{reset_sensitivity}) begin
+	if ({reset_active}) begin
+		$overflow <= 0;
+		$acc <= 0;
+	end else begin
+		if ({en_active}) begin
+			{{$overflow, $acc}} <= ($acc + $addend);
+		end
+	end
+end
+"""
+
+			return unused
+
+		return encapsulated(self._clk, self._reset, self._en, self._output, self._addend, self._overflow)
 
 	@property
 	def output(self):
 		return self._output
+
+	@property
+	def overflow(self):
+		return self._overflow

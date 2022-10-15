@@ -398,7 +398,7 @@ class AccumulatorTestSuite(ABC):
 		self.run(fixture, test)
 
 	@pytest.mark.parametrize("is_reset_active_high", [False, True])
-	def test_output_remains_zero_on_first_ubactive_clock_edge_after_asynchronous_reset_goes_inactive(self, fixture, is_reset_active_high):
+	def test_output_remains_zero_on_first_inactive_clock_edge_after_asynchronous_reset_goes_inactive(self, fixture, is_reset_active_high):
 		fixture.reset = ResetSignal(bool(is_reset_active_high), active=is_reset_active_high, isasync=True)
 
 		@instance
@@ -507,6 +507,195 @@ class AccumulatorTestSuite(ABC):
 			fixture.reset.next = is_reset_active_high
 			yield delay(cycles(1))
 			assert fixture.accumulator.output == 0
+
+		self.run(fixture, test)
+
+	def test_overflow_is_boolean_signal(self, fixture):
+		expected = Signal(bool(0))
+		accumulator = Accumulator(fixture.clk, fixture.reset, fixture.en, fixture.width, fixture.addend, fixture.is_en_active_high, fixture.negedge)
+		assert isinstance(accumulator.overflow, expected.__class__)
+		assert isinstance(accumulator.overflow.val, expected.val.__class__)
+
+	def test_overflow_is_false_on_initial_state(self, fixture):
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			assert not fixture.accumulator.overflow
+
+		self.run(fixture, test)
+
+	def test_overflow_is_false_on_first_active_clock_edge(self, fixture):
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			yield fixture.clock_active()
+			assert not fixture.accumulator.overflow
+
+		self.run(fixture, test)
+
+	def test_overflow_is_false_on_first_inactive_clock_edge(self, fixture):
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			yield fixture.clock_pulse()
+			assert not fixture.accumulator.overflow
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize("accumulator_width,addend,num_clocks", [
+		[1, 1, 2],
+		[2, 3, 2],
+		[2, 3, 3],
+		[2, 3, 4],
+		[14, 1024, 16],
+		[14, 1023, 17]])
+	def test_overflow_is_true_on_active_clock_edge_when_accumulator_has_overflowed_with_constant_addend(self, fixture, accumulator_width, addend, num_clocks):
+		fixture.width = accumulator_width
+		fixture.addend = addend
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			for _ in range(0, num_clocks - 1):
+				yield fixture.clock_pulse()
+
+			yield fixture.clock_active()
+			assert fixture.accumulator.overflow
+
+		self.run(fixture, test)
+
+	def test_overflow_is_true_on_inactive_clock_edge_when_accumulator_has_overflowed_with_constant_addend(self, fixture):
+		fixture.width = 8
+		fixture.addend = 2**8 - 1
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			yield fixture.clock_pulse()
+			yield fixture.clock_active()
+			yield fixture.clock_inactive()
+			assert fixture.accumulator.overflow
+
+		self.run(fixture, test)
+
+	def test_overflow_remains_active_on_active_clock_edge_when_accumulator_has_repeatedly_overflowed_with_constant_addend(self, fixture):
+		fixture.width = 8
+		fixture.addend = 2**8 - 1
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			yield fixture.clock_pulse()
+			yield fixture.clock_pulse()
+			yield fixture.clock_active()
+			assert fixture.accumulator.overflow
+
+		self.run(fixture, test)
+
+	def test_overflow_is_reset_on_active_clock_edge_after_one_clock_cycle_when_accumulator_has_overflowed_with_constant_addend(self, fixture):
+		fixture.width = 8
+		fixture.addend = 2**7
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			yield fixture.clock_pulse()
+			yield fixture.clock_pulse()
+			yield fixture.clock_active()
+			assert not fixture.accumulator.overflow
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize("is_reset_active_high", [False, True])
+	def test_overflow_is_reset_on_active_clock_edge_when_synchronous_reset_goes_active_and_en_is_active(self, fixture, is_reset_active_high):
+		fixture.reset = ResetSignal(bool(is_reset_active_high), active=is_reset_active_high, isasync=False)
+		fixture.width = 8
+		fixture.addend = 2**8 - 1
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			yield fixture.clock_pulse()
+			yield fixture.clock_pulse()
+
+			nonlocal is_reset_active_high
+			fixture.reset.next = is_reset_active_high
+			yield fixture.clock_active()
+			assert not fixture.accumulator.overflow
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize("is_reset_active_high", [False, True])
+	def test_overflow_is_reset_on_active_clock_edge_when_synchronous_reset_goes_active_and_en_is_inactive(self, fixture, is_reset_active_high):
+		fixture.reset = ResetSignal(bool(is_reset_active_high), active=is_reset_active_high, isasync=False)
+		fixture.width = 8
+		fixture.addend = 2**8 - 1
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			yield fixture.clock_pulse()
+			yield fixture.clock_pulse()
+
+			nonlocal is_reset_active_high
+			fixture.en.next = not fixture.is_en_active_high
+			yield delay(cycles(1))
+
+			fixture.reset.next = is_reset_active_high
+			yield fixture.clock_active()
+			assert not fixture.accumulator.overflow
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize("is_reset_active_high", [False, True])
+	def test_overflow_is_reset_immediately_when_asynchronous_reset_goes_active_and_en_is_active(self, fixture, is_reset_active_high):
+		fixture.reset = ResetSignal(bool(is_reset_active_high), active=is_reset_active_high, isasync=True)
+		fixture.width = 8
+		fixture.addend = 2**8 - 1
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			yield fixture.clock_pulse()
+			yield fixture.clock_pulse()
+
+			nonlocal is_reset_active_high
+			fixture.reset.next = is_reset_active_high
+			yield delay(cycles(1))
+			assert not fixture.accumulator.overflow
+
+		self.run(fixture, test)
+
+	@pytest.mark.parametrize("is_reset_active_high", [False, True])
+	def test_overflow_is_reset_immediately_when_asynchronous_reset_goes_active_and_en_is_inactive(self, fixture, is_reset_active_high):
+		fixture.reset = ResetSignal(bool(is_reset_active_high), active=is_reset_active_high, isasync=True)
+		fixture.width = 8
+		fixture.addend = 2**8 - 1
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			yield fixture.clock_pulse()
+			yield fixture.clock_pulse()
+
+			nonlocal is_reset_active_high
+			fixture.en.next = not fixture.is_en_active_high
+			yield delay(cycles(1))
+
+			fixture.reset.next = is_reset_active_high
+			yield delay(cycles(1))
+			assert not fixture.accumulator.overflow
 
 		self.run(fixture, test)
 
