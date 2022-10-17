@@ -50,6 +50,8 @@ class Accumulator:
 			en.read = True
 			acc.driven = "reg"
 			overflow.driven = "reg"
+			if isinstance(addend, _SIGNAL_CLASS):
+				addend.read = True
 
 			@always(clk)
 			def unused():

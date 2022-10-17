@@ -1,4 +1,5 @@
 # TODO: clk, reset, en, clk_negedge and is_en_active_high should be put into a SequentialLogicControlBus class to simplify all of the implemented primitives so far.
+from audioop import add
 import pytest
 import random
 from abc import ABC, abstractmethod
@@ -16,7 +17,7 @@ class AccumulatorFixture:
 		self.reset = ResetSignal(val=bool(0), active=bool(0), isasync=False)
 		self.en = Signal(val=bool(is_en_active_high))
 		self.width = self.any_width()
-		self.addend = self.any_constant_addend()
+		self.addend = self.any_addend_value()
 		self._is_en_active_high = is_en_active_high
 		self._negedge = negedge
 		self._accumulator = None
@@ -28,8 +29,15 @@ class AccumulatorFixture:
 	def any_int_in_range(self, min, half_open_max):
 		return random.randint(min, half_open_max - 1)
 
-	def any_constant_addend(self):
+	def any_addend_value(self):
 		return self.any_int_in_range(1, 2**self.width)
+
+	def any_addend_value_except(self, excluded):
+		value = self.any_addend_value()
+		if value != excluded:
+			return value
+
+		return self.any_addend_value_except(excluded)
 
 	@property
 	def clk(self):
@@ -197,7 +205,7 @@ class AccumulatorTestSuite(ABC):
 			accumulator = Accumulator(fixture.clk, fixture.reset, fixture.en, width, 1, fixture.is_en_active_high, fixture.negedge)
 			assert accumulator.output.max == 2**width
 
-	def test_output_is_zero_on_initial_state(self, fixture):
+	def test_output_is_zero_on_initial_state_for_constant_addend(self, fixture):
 		@instance
 		def test():
 			nonlocal fixture
@@ -206,13 +214,50 @@ class AccumulatorTestSuite(ABC):
 
 		self.run(fixture, test)
 
-	def test_output_is_constant_addend_on_first_active_clock_edge(self, fixture):
+	def test_output_is_zero_on_initial_state_for_signal_addend(self, fixture):
+		fixture.addend = Signal(intbv(val=1, min=0, max=2**fixture.width))
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			assert fixture.accumulator.output == 0
+
+		self.run(fixture, test)
+
+	def test_output_is_addend_on_first_active_clock_edge_for_constant_addend(self, fixture):
 		@instance
 		def test():
 			nonlocal fixture
 			yield fixture.ensure_initial_state()
 			yield fixture.clock_active()
 			assert fixture.accumulator.output == fixture.addend
+
+		self.run(fixture, test)
+
+	def test_output_is_addend_on_first_active_clock_edge_for_non_zero_signal_addend(self, fixture):
+		fixture.addend = Signal(intbv(val=fixture.any_addend_value(), min=0, max=2**fixture.width))
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			fixture.addend.next = fixture.any_addend_value()
+			yield fixture.clock_active()
+			assert fixture.accumulator.output == fixture.addend
+
+		self.run(fixture, test)
+
+	def test_output_is_still_zero_on_first_active_clock_edge_for_zero_signal_addend(self, fixture):
+		fixture.addend = Signal(intbv(val=fixture.any_addend_value(), min=0, max=2**fixture.width))
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			fixture.addend.next = 0
+			yield fixture.clock_active()
+			assert fixture.accumulator.output == 0
 
 		self.run(fixture, test)
 
@@ -224,6 +269,20 @@ class AccumulatorTestSuite(ABC):
 			yield fixture.clock_active()
 			yield fixture.clock_inactive()
 			assert fixture.accumulator.output == fixture.addend
+
+		self.run(fixture, test)
+
+	def test_output_is_not_changed_on_inactive_clock_edge_for_signal_addend(self, fixture):
+		fixture.addend = Signal(intbv(val=fixture.any_addend_value(), min=0, max=2**fixture.width))
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			yield fixture.clock_active()
+			value_before_inactive_edge = int(fixture.accumulator.output)
+			yield fixture.clock_inactive()
+			assert fixture.accumulator.output == value_before_inactive_edge
 
 		self.run(fixture, test)
 
@@ -241,6 +300,39 @@ class AccumulatorTestSuite(ABC):
 
 		self.run(fixture, test)
 
+	def test_output_is_twice_signal_addend_on_second_active_clock_edge(self, fixture):
+		fixture.width = fixture.any_int_in_range(8, 16)
+		fixture.addend = Signal(intbv(val=fixture.any_int_in_range(1, 128), min=0, max=2**7))
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+			yield fixture.clock_pulse()
+			yield fixture.clock_active()
+			assert fixture.accumulator.output == fixture.addend * 2
+
+		self.run(fixture, test)
+
+	def test_output_is_accumulation_of_signal_addend_on_active_clock_edge_when_addend_changes(self, fixture):
+		fixture.width = fixture.any_int_in_range(8, 16)
+		fixture.addend = Signal(intbv(val=0, min=0, max=2**7))
+		addend_values = [fixture.any_int_in_range(1, 64) for _ in range(0, 2)]
+
+		@instance
+		def test():
+			nonlocal fixture
+			yield fixture.ensure_initial_state()
+
+			nonlocal addend_values
+			fixture.addend.next = addend_values[0]
+			yield fixture.clock_pulse()
+			fixture.addend.next = addend_values[1]
+			yield fixture.clock_active()
+			assert fixture.accumulator.output == addend_values[0] + addend_values[1]
+
+		self.run(fixture, test)
+
 	@pytest.mark.parametrize("accumulator_width,addend,num_clocks,residual", [
 		[1, 1, 2, 0],
 		[2, 3, 2, 2],
@@ -251,7 +343,9 @@ class AccumulatorTestSuite(ABC):
 	def test_output_is_residual_when_overflowed_by_constant_addend(self, fixture, accumulator_width, addend, num_clocks, residual):
 		fixture.width = accumulator_width
 		fixture.addend = addend
+		self._test_output_is_residual_when_overflowed(fixture, num_clocks, residual)
 
+	def _test_output_is_residual_when_overflowed(self, fixture, num_clocks, residual):
 		@instance
 		def test():
 			nonlocal fixture
@@ -265,6 +359,18 @@ class AccumulatorTestSuite(ABC):
 			assert fixture.accumulator.output == residual
 
 		self.run(fixture, test)
+
+	@pytest.mark.parametrize("accumulator_width,addend,num_clocks,residual", [
+		[1, 1, 2, 0],
+		[2, 3, 2, 2],
+		[2, 3, 3, 1],
+		[2, 3, 4, 0],
+		[14, 1024, 16, 0],
+		[14, 1023, 17, 1007]])
+	def test_output_is_residual_when_overflowed_by_signal_addend(self, fixture, accumulator_width, addend, num_clocks, residual):
+		fixture.width = accumulator_width
+		fixture.addend = Signal(intbv(val=addend, min=0, max=2**accumulator_width))
+		self._test_output_is_residual_when_overflowed(fixture, num_clocks, residual)
 
 	@pytest.mark.parametrize("is_reset_active_high", [False, True])
 	def test_output_is_not_zeroed_before_active_clock_edge_when_synchronous_reset_is_active(self, fixture, is_reset_active_high):
@@ -417,7 +523,9 @@ class AccumulatorTestSuite(ABC):
 	@pytest.mark.parametrize("is_reset_active_high", [False, True])
 	def test_output_is_constant_addend_on_first_active_clock_edge_after_asynchronous_reset_goes_inactive(self, fixture, is_reset_active_high):
 		fixture.reset = ResetSignal(bool(is_reset_active_high), active=is_reset_active_high, isasync=True)
+		self._test_output_is_constant_addend_on_first_active_clock_edge_after_asynchronous_reset_goes_inactive(fixture, is_reset_active_high)
 
+	def _test_output_is_constant_addend_on_first_active_clock_edge_after_asynchronous_reset_goes_inactive(self, fixture, is_reset_active_high):
 		@instance
 		def test():
 			nonlocal fixture
@@ -431,6 +539,12 @@ class AccumulatorTestSuite(ABC):
 			assert fixture.accumulator.output == fixture.addend
 
 		self.run(fixture, test)
+
+	@pytest.mark.parametrize("is_reset_active_high", [False, True])
+	def test_output_is_signal_addend_on_first_active_clock_edge_after_asynchronous_reset_goes_inactive(self, fixture, is_reset_active_high):
+		fixture.reset = ResetSignal(bool(is_reset_active_high), active=is_reset_active_high, isasync=True)
+		fixture.addend = Signal(modbv(val=fixture.any_addend_value_except(0), min=0, max=2**fixture.width))
+		self._test_output_is_constant_addend_on_first_active_clock_edge_after_asynchronous_reset_goes_inactive(fixture, is_reset_active_high)
 
 	def test_output_is_not_updated_when_en_goes_inactive(self, fixture):
 		@instance
@@ -458,19 +572,27 @@ class AccumulatorTestSuite(ABC):
 
 		self.run(fixture, test)
 
-	def test_output_resumes_accumulation_on_next_active_clock_edge_after_en_returns_to_active(self, fixture):
+	def test_output_resumes_accumulation_of_constant_addend_on_next_active_clock_edge_after_en_returns_to_active(self, fixture):
+		self._test_output_resumes_accumulation_on_next_active_clock_edge_after_en_returns_to_active(fixture)
+
+	def _test_output_resumes_accumulation_on_next_active_clock_edge_after_en_returns_to_active(self, fixture):
 		@instance
 		def test():
 			nonlocal fixture
 			yield fixture.ensure_initial_state()
-			fixture.en.next = not fixture.is_en_active_high
 			yield fixture.at_least_one_clock_pulse()
 			value_before_disabled = int(fixture.accumulator.output)
+			fixture.en.next = not fixture.is_en_active_high
+			yield fixture.at_least_one_clock_pulse()
 			fixture.en.next = fixture.is_en_active_high
 			yield fixture.clock_active()
 			assert fixture.accumulator.output == (value_before_disabled + fixture.addend) % fixture.accumulator.output.max
 
 		self.run(fixture, test)
+
+	def test_output_resumes_accumulation_of_signal_addend_on_next_active_clock_edge_after_en_returns_to_active(self, fixture):
+		fixture.addend = Signal(modbv(val=fixture.any_addend_value_except(0), min=0, max=2**fixture.width))
+		self._test_output_resumes_accumulation_on_next_active_clock_edge_after_en_returns_to_active(fixture)
 
 	@pytest.mark.parametrize("is_reset_active_high", [False, True])
 	def test_output_is_zeroed_on_active_clock_edge_when_synchronous_reset_goes_active_and_en_is_inactive(self, fixture, is_reset_active_high):
@@ -555,7 +677,9 @@ class AccumulatorTestSuite(ABC):
 	def test_overflow_is_true_on_active_clock_edge_when_accumulator_has_overflowed_with_constant_addend(self, fixture, accumulator_width, addend, num_clocks):
 		fixture.width = accumulator_width
 		fixture.addend = addend
+		self._test_overflow_is_true_on_active_clock_edge_when_accumulator_has_overflowed(fixture, num_clocks)
 
+	def _test_overflow_is_true_on_active_clock_edge_when_accumulator_has_overflowed(self, fixture, num_clocks):
 		@instance
 		def test():
 			nonlocal fixture
@@ -568,10 +692,24 @@ class AccumulatorTestSuite(ABC):
 
 		self.run(fixture, test)
 
+	@pytest.mark.parametrize("accumulator_width,addend,num_clocks", [
+		[1, 1, 2],
+		[2, 3, 2],
+		[2, 3, 3],
+		[2, 3, 4],
+		[14, 1024, 16],
+		[14, 1023, 17]])
+	def test_overflow_is_true_on_active_clock_edge_when_accumulator_has_overflowed_with_signal_addend(self, fixture, accumulator_width, addend, num_clocks):
+		fixture.width = accumulator_width
+		fixture.addend = Signal(modbv(val=addend, min=0, max=2**accumulator_width))
+		self._test_overflow_is_true_on_active_clock_edge_when_accumulator_has_overflowed(fixture, num_clocks)
+
 	def test_overflow_is_true_on_inactive_clock_edge_when_accumulator_has_overflowed_with_constant_addend(self, fixture):
 		fixture.width = 8
 		fixture.addend = 2**8 - 1
+		self._test_overflow_is_true_on_inactive_clock_edge_when_accumulator_has_overflowed(fixture)
 
+	def _test_overflow_is_true_on_inactive_clock_edge_when_accumulator_has_overflowed(self, fixture):
 		@instance
 		def test():
 			nonlocal fixture
@@ -583,10 +721,17 @@ class AccumulatorTestSuite(ABC):
 
 		self.run(fixture, test)
 
+	def test_overflow_is_true_on_inactive_clock_edge_when_accumulator_has_overflowed_with_signal_addend(self, fixture):
+		fixture.width = 8
+		fixture.addend = Signal(modbv(val=2**8 - 1, min=0, max=2**fixture.width))
+		self._test_overflow_is_true_on_inactive_clock_edge_when_accumulator_has_overflowed(fixture)
+
 	def test_overflow_remains_active_on_active_clock_edge_when_accumulator_has_repeatedly_overflowed_with_constant_addend(self, fixture):
 		fixture.width = 8
 		fixture.addend = 2**8 - 1
+		self._test_overflow_remains_active_on_active_clock_edge_when_accumulator_has_repeatedly_overflowed(fixture)
 
+	def _test_overflow_remains_active_on_active_clock_edge_when_accumulator_has_repeatedly_overflowed(self, fixture):
 		@instance
 		def test():
 			nonlocal fixture
@@ -598,10 +743,17 @@ class AccumulatorTestSuite(ABC):
 
 		self.run(fixture, test)
 
+	def test_overflow_remains_active_on_active_clock_edge_when_accumulator_has_repeatedly_overflowed_with_signal_addend(self, fixture):
+		fixture.width = 8
+		fixture.addend = Signal(modbv(val=2**8 - 1, min=0, max=2**fixture.width))
+		self._test_overflow_remains_active_on_active_clock_edge_when_accumulator_has_repeatedly_overflowed(fixture)
+
 	def test_overflow_is_reset_on_active_clock_edge_after_one_clock_cycle_when_accumulator_has_overflowed_with_constant_addend(self, fixture):
 		fixture.width = 8
 		fixture.addend = 2**7
+		self._test_overflow_is_reset_on_active_clock_edge_after_one_clock_cycle_when_accumulator_has_overflowed(fixture)
 
+	def _test_overflow_is_reset_on_active_clock_edge_after_one_clock_cycle_when_accumulator_has_overflowed(self, fixture):
 		@instance
 		def test():
 			nonlocal fixture
@@ -612,6 +764,11 @@ class AccumulatorTestSuite(ABC):
 			assert not fixture.accumulator.overflow
 
 		self.run(fixture, test)
+
+	def test_overflow_is_reset_on_active_clock_edge_after_one_clock_cycle_when_accumulator_has_overflowed_with_signal_addend(self, fixture):
+		fixture.width = 8
+		fixture.addend = Signal(modbv(val=2**7, min=0, max=2**fixture.width))
+		self._test_overflow_is_reset_on_active_clock_edge_after_one_clock_cycle_when_accumulator_has_overflowed(fixture)
 
 	@pytest.mark.parametrize("is_reset_active_high", [False, True])
 	def test_overflow_is_reset_on_active_clock_edge_when_synchronous_reset_goes_active_and_en_is_active(self, fixture, is_reset_active_high):
@@ -699,15 +856,11 @@ class AccumulatorTestSuite(ABC):
 
 		self.run(fixture, test)
 
-	# TODO:
-	# ...then tests for the signal addend cases; signal-based addends can also be 0...
-
 class TestAccumulatorForPositiveEdgesAndActiveHighEnable(AccumulatorTestSuite):
 	@pytest.fixture(scope="function")
 	def fixture(self):
 		return AccumulatorFixture(is_en_active_high=True, negedge=False)
 
-"""
 class TestAccumulatorForPositiveEdgesAndActiveLowEnable(AccumulatorTestSuite):
 	@pytest.fixture(scope="function")
 	def fixture(self):
@@ -722,4 +875,3 @@ class TestAccumulatorForNegativeEdgesAndActiveLowEnable(AccumulatorTestSuite):
 	@pytest.fixture(scope="function")
 	def fixture(self):
 		return AccumulatorFixture(is_en_active_high=False, negedge=True)
-"""
