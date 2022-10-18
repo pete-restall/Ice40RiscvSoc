@@ -3,82 +3,74 @@ import random
 from abc import ABC, abstractmethod
 from myhdl import *
 from src.primitives.register import Register
+from src.primitives.sequential_logic_control_bus import SequentialLogicControlBus
 from tests.cosimulatable_dut import CosimulatableDut, cycles
 
 class RegisterFixture:
-	def __init__(self, is_write_enable_active_high, negedge):
+	def __init__(self, is_write_enable_active_high, is_clk_posedge):
 		seed = random.getrandbits(32)
 		print(f"Using non-determinism seed: {seed}")
 		random.seed(seed)
 
-		self._clk = Signal(negedge)
-		self.reset = ResetSignal(val=bool(0), active=bool(0), isasync=False)
+		self.bus = SequentialLogicControlBus(
+			clk=Signal(not is_clk_posedge),
+			reset=ResetSignal(val=bool(0), active=bool(0), isasync=False),
+			en=Signal(not is_write_enable_active_high),
+			is_clk_posedge=is_clk_posedge,
+			is_en_active_high = is_write_enable_active_high)
+
 		self.input = Signal(intbv(val=0, min=0, max=2))
-		self.write_enable = Signal(not is_write_enable_active_high)
 		self.reset_value = 0
-		self.is_write_enable_active_high = is_write_enable_active_high
-		self.negedge = negedge
 		self._register = None
 		self._dut = None
 
 	@property
-	def clk(self):
-		return self._clk
-
-	@property
 	def register(self):
 		if self._register is None:
-			self._register = Register(
-				self._clk,
-				self.reset,
-				self.input,
-				self.write_enable,
-				self.reset_value,
-				self.is_write_enable_active_high,
-				self.negedge)
+			self._register = Register(self.bus, self.input, self.reset_value)
 
 		return self._register
 
 	def ensure_initial_state(self):
-		if self.reset.isasync:
+		if self.bus.reset.isasync:
 			yield self._reset_async()
 		else:
 			yield self._reset_sync()
 
 	def _reset_async(self):
-		self.reset.next = self.reset.active
+		self.bus.reset.next = self.bus.reset.active
 		yield delay(cycles(1))
-		self.reset.next = not self.reset.active
+		self.bus.reset.next = not self.bus.reset.active
 		yield delay(cycles(1))
 
 	def _reset_sync(self):
-		self.reset.next = self.reset.active
+		self.bus.reset.next = self.bus.reset.active
 		yield self.clock_pulse()
-		self.reset.next = not self.reset.active
+		self.bus.reset.next = not self.bus.reset.active
 
 	def clock_pulse(self):
 		yield self.clock_active()
 		yield self.clock_inactive()
 
 	def clock_active(self):
-		if self.negedge:
-			yield self.clock_fall()
-		else:
+		if self.bus.is_clk_posedge:
 			yield self.clock_rise()
+		else:
+			yield self.clock_fall()
 
 	def clock_rise(self):
-		self._clk.next = bool(1)
+		self.bus.clk.next = bool(1)
 		yield delay(cycles(1))
 
 	def clock_fall(self):
-		self._clk.next = bool(0)
+		self.bus.clk.next = bool(0)
 		yield delay(cycles(1))
 
 	def clock_inactive(self):
-		if self.negedge:
-			yield self.clock_rise()
-		else:
+		if self.bus.is_clk_posedge:
 			yield self.clock_fall()
+		else:
+			yield self.clock_rise()
 
 	def any_reset_value(self):
 		return self.any_input_value()
@@ -97,7 +89,7 @@ class RegisterFixture:
 		self.enable_writes(False)
 
 	def enable_writes(self, enabled=True):
-		self.write_enable.next = self.is_write_enable_active_high if enabled else not self.is_write_enable_active_high
+		self.bus.en.next = self.bus.is_en_active_high if enabled else not self.bus.is_en_active_high
 
 	def generators(self):
 		if self._dut is None:
@@ -116,24 +108,16 @@ class RegisterTestSuite(ABC):
 		sim.run()
 
 	def test_constructor_with_no_clk_raises_type_error(self, fixture):
-		with pytest.raises(TypeError, match=r"(?i)clock must be specified"):
-			Register(None, fixture.reset, fixture.input, fixture.reset_value, fixture.write_enable, fixture.is_write_enable_active_high, fixture.negedge)
-
-	def test_constructor_with_no_reset_raises_type_error(self, fixture):
-		with pytest.raises(TypeError, match=r"(?i)reset signal must be specified"):
-			Register(fixture.clk, None, fixture.input, fixture.reset_value, fixture.write_enable, fixture.is_write_enable_active_high, fixture.negedge)
+		with pytest.raises(TypeError, match=r"(?i)bus .+ must be specified"):
+			Register(None, fixture.input, fixture.reset_value)
 
 	def test_constructor_with_no_input_raises_type_error(self, fixture):
 		with pytest.raises(TypeError, match=r"(?i)input signal\(s\) must be specified"):
-			Register(fixture.clk, fixture.reset, None, fixture.reset_value, fixture.write_enable, fixture.is_write_enable_active_high, fixture.negedge)
+			Register(fixture.bus, None, fixture.reset_value)
 
 	def test_constructor_with_no_reset_value_raises_type_error(self, fixture):
 		with pytest.raises(TypeError, match=r"(?i)reset value must not be none if it has been specified"):
-			Register(fixture.clk, fixture.reset, fixture.input, fixture.write_enable, None, fixture.is_write_enable_active_high, fixture.negedge)
-
-	def test_constructor_with_no_write_enable_raises_type_error(self, fixture):
-		with pytest.raises(TypeError, match=r"(?i)write-enable signal must be specified"):
-			Register(fixture.clk, fixture.reset, fixture.input, None, fixture.reset_value, fixture.is_write_enable_active_high, fixture.negedge)
+			Register(fixture.bus, fixture.input, None)
 
 	def test_output_is_intbv_signal_when_input_is_intbv(self, fixture):
 		expected = Signal(intbv(val=123))
@@ -179,7 +163,7 @@ class RegisterTestSuite(ABC):
 		[bool(1), True]])
 	def test_output_is_reset_value_on_initial_state_when_write_enable_is_active(self, fixture, reset_active, is_reset_async):
 		fixture.input = Signal(intbv(val=0, min=0, max=65536))
-		fixture.reset = ResetSignal(val=not reset_active, active=reset_active, isasync=is_reset_async)
+		fixture.bus = fixture.bus.with_reset(ResetSignal(val=not reset_active, active=reset_active, isasync=is_reset_async))
 		fixture.reset_value = fixture.any_reset_value()
 
 		@instance
@@ -198,7 +182,7 @@ class RegisterTestSuite(ABC):
 		[bool(1), True]])
 	def test_output_is_reset_value_on_initial_state_when_write_enable_is_inactive(self, fixture, reset_active, is_reset_async):
 		fixture.input = Signal(intbv(val=0, min=0, max=65536))
-		fixture.reset = ResetSignal(val=not reset_active, active=reset_active, isasync=is_reset_async)
+		fixture.bus = fixture.bus.with_reset(ResetSignal(val=not reset_active, active=reset_active, isasync=is_reset_async))
 		fixture.reset_value = fixture.any_reset_value()
 
 		@instance
@@ -280,7 +264,7 @@ class RegisterTestSuite(ABC):
 		[bool(1), bool(1)]])
 	def test_output_is_reset_value_on_active_clock_edge_when_synchronous_reset_is_active(self, fixture, reset_active, write_enable):
 		fixture.input = Signal(intbv(val=0, min=0, max=2**32))
-		fixture.reset = ResetSignal(val=not reset_active, active=reset_active, isasync=False)
+		fixture.bus = fixture.bus.with_reset(ResetSignal(val=not reset_active, active=reset_active, isasync=False))
 		fixture.reset_value = fixture.any_reset_value()
 
 		@instance
@@ -291,7 +275,7 @@ class RegisterTestSuite(ABC):
 			fixture.input.next = fixture.any_input_value_except(fixture.reset_value)
 			yield fixture.clock_pulse()
 
-			fixture.reset.next = reset_active
+			fixture.bus.reset.next = reset_active
 			yield fixture.clock_active()
 			assert fixture.register.output.val == fixture.reset_value
 
@@ -304,7 +288,7 @@ class RegisterTestSuite(ABC):
 		[bool(1), bool(1)]])
 	def test_output_is_latched_value_on_inactive_clock_edge_when_synchronous_reset_is_active(self, fixture, reset_active, write_enable):
 		fixture.input = Signal(intbv(val=0, min=0, max=2**32))
-		fixture.reset = ResetSignal(val=not reset_active, active=reset_active, isasync=False)
+		fixture.bus = fixture.bus.with_reset(ResetSignal(val=not reset_active, active=reset_active, isasync=False))
 		fixture.reset_value = fixture.any_reset_value()
 
 		@instance
@@ -317,7 +301,7 @@ class RegisterTestSuite(ABC):
 			yield fixture.clock_active()
 
 			fixture.enable_writes(write_enable)
-			fixture.reset.next = reset_active
+			fixture.bus.reset.next = reset_active
 			yield fixture.clock_inactive()
 
 			assert fixture.register.output.val == latched_value
@@ -331,7 +315,7 @@ class RegisterTestSuite(ABC):
 		[bool(1), bool(1)]])
 	def test_output_is_reset_value_on_active_clock_edge_when_asynchronous_reset_is_active(self, fixture, reset_active, write_enable):
 		fixture.input = Signal(intbv(val=0, min=0, max=2**32))
-		fixture.reset = ResetSignal(val=not reset_active, active=reset_active, isasync=True)
+		fixture.bus = fixture.bus.with_reset(ResetSignal(val=not reset_active, active=reset_active, isasync=True))
 		fixture.reset_value = fixture.any_reset_value()
 
 		@instance
@@ -340,7 +324,7 @@ class RegisterTestSuite(ABC):
 			yield fixture.ensure_initial_state()
 			fixture.enable_writes(write_enable)
 			fixture.input.next = fixture.any_input_value_except(fixture.reset_value)
-			fixture.reset.next = reset_active
+			fixture.bus.reset.next = reset_active
 			yield fixture.clock_active()
 			assert fixture.register.output.val == fixture.reset_value
 
@@ -353,7 +337,7 @@ class RegisterTestSuite(ABC):
 		[bool(1), bool(1)]])
 	def test_output_is_reset_value_on_inactive_clock_edge_when_asynchronous_reset_is_active(self, fixture, reset_active, write_enable):
 		fixture.input = Signal(intbv(val=0, min=0, max=2**32))
-		fixture.reset = ResetSignal(val=not reset_active, active=reset_active, isasync=True)
+		fixture.bus = fixture.bus.with_reset(ResetSignal(val=not reset_active, active=reset_active, isasync=True))
 		fixture.reset_value = fixture.any_reset_value()
 
 		@instance
@@ -365,7 +349,7 @@ class RegisterTestSuite(ABC):
 			yield fixture.clock_active()
 
 			fixture.enable_writes(write_enable)
-			fixture.reset.next = reset_active
+			fixture.bus.reset.next = reset_active
 			yield fixture.clock_inactive()
 
 			assert fixture.register.output.val == fixture.reset_value
@@ -379,7 +363,7 @@ class RegisterTestSuite(ABC):
 		[bool(1), bool(1)]])
 	def test_output_is_reset_value_without_clock_edge_when_asynchronous_reset_is_active(self, fixture, reset_active, write_enable):
 		fixture.input = Signal(intbv(val=0, min=0, max=2**32))
-		fixture.reset = ResetSignal(val=not reset_active, active=reset_active, isasync=True)
+		fixture.bus = fixture.bus.with_reset(ResetSignal(val=not reset_active, active=reset_active, isasync=True))
 		fixture.reset_value = fixture.any_reset_value()
 
 		@instance
@@ -391,7 +375,7 @@ class RegisterTestSuite(ABC):
 			yield fixture.clock_active()
 
 			fixture.enable_writes(write_enable)
-			fixture.reset.next = reset_active
+			fixture.bus.reset.next = reset_active
 			yield delay(cycles(1))
 
 			assert fixture.register.output.val == fixture.reset_value
@@ -401,19 +385,19 @@ class RegisterTestSuite(ABC):
 class TestRegisterForPositiveEdgesAndActiveHighWriteEnable(RegisterTestSuite):
 	@pytest.fixture(scope="function")
 	def fixture(self):
-		return RegisterFixture(is_write_enable_active_high=True, negedge=False)
+		return RegisterFixture(is_write_enable_active_high=True, is_clk_posedge=True)
 
 class TestRegisterForNegativeEdgesAndActiveHighWriteEnable(RegisterTestSuite):
 	@pytest.fixture(scope="function")
 	def fixture(self):
-		return RegisterFixture(is_write_enable_active_high=True, negedge=True)
+		return RegisterFixture(is_write_enable_active_high=True, is_clk_posedge=False)
 
 class TestRegisterForPositiveEdgesAndActiveLowWriteEnable(RegisterTestSuite):
 	@pytest.fixture(scope="function")
 	def fixture(self):
-		return RegisterFixture(is_write_enable_active_high=False, negedge=False)
+		return RegisterFixture(is_write_enable_active_high=False, is_clk_posedge=True)
 
 class TestRegisterForNegativeEdgesAndActiveLowWriteEnable(RegisterTestSuite):
 	@pytest.fixture(scope="function")
 	def fixture(self):
-		return RegisterFixture(is_write_enable_active_high=False, negedge=True)
+		return RegisterFixture(is_write_enable_active_high=False, is_clk_posedge=False)

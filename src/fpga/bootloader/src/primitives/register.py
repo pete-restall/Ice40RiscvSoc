@@ -1,38 +1,31 @@
 from myhdl import *
 
 class Register:
-	def __init__(self, clk, reset, input, write_enable, reset_value=0, is_write_enable_active_high=True, negedge=False):
-		if clk is None:
-			raise TypeError("Clock must be specified")
-
-		if reset is None:
-			raise TypeError("Reset signal must be specified; tie it inactive if it is not required")
+	def __init__(self, bus, input, reset_value=0):
+		if bus is None:
+			raise TypeError("Sequential Logic Control Bus (ie. clk, reset, en) must be specified")
 
 		if input is None:
 			raise TypeError("Input signal(s) must be specified")
 
-		if write_enable is None:
-			raise TypeError("Write-Enable signal must be specified; tie it active if it is not required")
-
 		if reset_value is None:
 			raise TypeError("Reset Value must not be None if it has been specified (defaults to 0 if unspecified)")
 
-		self._clk = clk
-		self._clk_edge = clk.negedge if negedge else clk.posedge
-		self._reset = reset
-		self._write_enable = write_enable
-		self._write_enable_level = is_write_enable_active_high
+		self._bus = bus
 		self._input = input
 		self._output = Signal(
 			modbv(val=reset_value, min=input.min, max=input.max) if isinstance(input.val, modbv)
 			else intbv(val=reset_value, min=input.min, max=input.max))
 
 	def generators(self):
-		we_active_level = self._write_enable_level
+		is_clk_posedge = self._bus.is_clk_posedge
+		we_active_level = self._bus.is_en_active_high
 
 		@block
-		def encapsulated(clk_edge, reset, we, d, q):
-			@always_seq(clk_edge, reset)
+		def encapsulated(clk, reset, we, d, q):
+			nonlocal is_clk_posedge
+
+			@always_seq(clk.posedge if is_clk_posedge else clk.negedge, reset)
 			def latching():
 				nonlocal we, we_active_level
 				nonlocal d, q
@@ -41,7 +34,7 @@ class Register:
 
 			return latching
 
-		return encapsulated(self._clk_edge, self._reset, self._write_enable, self._input, self._output)
+		return encapsulated(self._bus.clk, self._bus.reset, self._bus.en, self._input, self._output)
 
 	@property
 	def output(self):
