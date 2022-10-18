@@ -1,3 +1,4 @@
+# TODO: clk SHOULD BE PART OF THIS BUS
 from myhdl import *
 
 class Femtorv32Bus():
