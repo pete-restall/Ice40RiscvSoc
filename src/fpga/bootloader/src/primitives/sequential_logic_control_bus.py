@@ -53,7 +53,13 @@ class SequentialLogicControlBus:
 		return SequentialLogicControlBus(self._clk, self._reset, en, self._is_clk_posedge, self._is_en_active_high)
 
 	def with_inverted_clk(self):
-		return SequentialLogicControlBus(self._clk, self._reset, self._en, not self._is_clk_posedge, self._is_en_active_high)
+		return self.with_clk_posedge(not self._is_clk_posedge)
+
+	def with_clk_posedge(self, is_clk_posedge):
+		return SequentialLogicControlBus(self._clk, self._reset, self._en, is_clk_posedge, self._is_en_active_high)
 
 	def with_inverted_en(self):
-		return SequentialLogicControlBus(self._clk, self._reset, self._en, self._is_clk_posedge, not self._is_en_active_high)
+		return self.with_en_active_high(not self._is_en_active_high)
+
+	def with_en_active_high(self, is_en_active_high):
+		return SequentialLogicControlBus(self._clk, self._reset, self._en, self._is_clk_posedge, is_en_active_high)

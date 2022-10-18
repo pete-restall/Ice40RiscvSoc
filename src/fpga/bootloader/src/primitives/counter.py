@@ -1,19 +1,14 @@
 from myhdl import *
 
 class Counter:
-	def __init__(self, clk, reset, min, max, negedge=False):
-		if clk is None:
-			raise TypeError("Clock must be specified")
-
-		if reset is None:
-			raise TypeError("Reset signal must be specified; tie it inactive if it is not required")
+	def __init__(self, bus, min, max):
+		if bus is None:
+			raise TypeError("Sequential Logic Control Bus (ie. clk, reset, en) must be specified")
 
 		if max <= min:
 			raise ValueError(f"Maximum must be greater than minimum; min={min}, max={max}")
 
-		self._clk = clk
-		self._clk_edge = clk.negedge if negedge else clk.posedge
-		self._reset = reset
+		self._bus = bus
 		self._is_binary_counter = Counter.is_binary_counter(min, max)
 		self._output = Signal(
 			modbv(val=min, min=min, max=max + 1) if self._is_binary_counter
@@ -24,24 +19,33 @@ class Counter:
 		return min == 0 and ((max + 1) & max) == 0
 
 	def generators(self):
+		is_clk_posedge = self._bus.is_clk_posedge
+		en_active_level = self._bus.is_en_active_high
+
 		@block
-		def encapsulated(clk_edge, reset, counter, is_binary_counter):
-			@always_seq(clk_edge, reset)
+		def encapsulated(clk, reset, en, counter, is_binary_counter):
+			nonlocal is_clk_posedge
+
+			@always_seq(clk.posedge if is_clk_posedge else clk.negedge, reset)
 			def counter_intbv_increment():
 				nonlocal counter
-				if counter == counter.max - 1:
-					counter.next = counter.min
-				else:
-					counter.next = counter + 1
+				nonlocal en, en_active_level
+				if en == en_active_level:
+					if counter == counter.max - 1:
+						counter.next = counter.min
+					else:
+						counter.next = counter + 1
 
-			@always_seq(clk_edge, reset)
+			@always_seq(clk.posedge if is_clk_posedge else clk.negedge, reset)
 			def counter_modbv_increment():
 				nonlocal counter
-				counter.next = counter + 1
+				nonlocal en, en_active_level
+				if en == en_active_level:
+					counter.next = counter + 1
 
 			return counter_modbv_increment if is_binary_counter else counter_intbv_increment
 
-		return encapsulated(self._clk_edge, self._reset, self._output, self._is_binary_counter)
+		return encapsulated(self._bus.clk, self._bus.reset, self._bus.en, self._output, self._is_binary_counter)
 
 	@property
 	def output(self):

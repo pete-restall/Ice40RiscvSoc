@@ -14,7 +14,7 @@ class SequentialLogicControlBusFixture:
 		self.reset = self.dummy_reset()
 		self.en = self.dummy_en()
 		self.is_en_active_high = True
-		self._dut = None
+		self._bus = None
 
 	def dummy_clk(self):
 		return Signal(bool(0))
@@ -153,6 +153,19 @@ class TestSequentialLogicControlBus:
 		new_bus = fixture.bus.with_inverted_clk()
 		self._assert_same_except(fixture.bus, new_bus, 'is_clk_posedge')
 
+	@pytest.mark.parametrize("is_clk_posedge", [False, True])
+	def test_with_clk_posedge_is_not_same_instance(self, fixture, is_clk_posedge):
+		assert fixture.bus.with_clk_posedge(is_clk_posedge) is not fixture.bus
+
+	@pytest.mark.parametrize("is_clk_posedge", [False, True])
+	def test_with_clk_posedge_is_new_instance_with_given_is_clk_posedge(self, fixture, is_clk_posedge):
+		assert fixture.bus.with_clk_posedge(is_clk_posedge).is_clk_posedge == is_clk_posedge
+
+	@pytest.mark.parametrize("is_clk_posedge", [False, True])
+	def test_with_clk_posedge_is_new_instance_with_same_non_is_clk_posedge_properties(self, fixture, is_clk_posedge):
+		new_bus = fixture.bus.with_clk_posedge(is_clk_posedge)
+		self._assert_same_except(fixture.bus, new_bus, 'is_clk_posedge')
+
 	def test_with_inverted_en_is_not_same_instance(self, fixture):
 		assert fixture.bus.with_inverted_en() is not fixture.bus
 
@@ -163,4 +176,17 @@ class TestSequentialLogicControlBus:
 
 	def test_with_inverted_en_is_new_instance_with_same_non_is_en_active_high_properties(self, fixture):
 		new_bus = fixture.bus.with_inverted_en()
+		self._assert_same_except(fixture.bus, new_bus, 'is_en_active_high')
+
+	@pytest.mark.parametrize("is_en_active_high", [False, True])
+	def test_with_en_active_high_is_not_same_instance(self, fixture, is_en_active_high):
+		assert fixture.bus.with_en_active_high(is_en_active_high) is not fixture.bus
+
+	@pytest.mark.parametrize("is_en_active_high", [False, True])
+	def test_with_en_active_high_is_new_instance_with_given_is_en_active_high(self, fixture, is_en_active_high):
+		assert fixture.bus.with_en_active_high(is_en_active_high).is_en_active_high == is_en_active_high
+
+	@pytest.mark.parametrize("is_en_active_high", [False, True])
+	def test_with_en_active_high_is_new_instance_with_same_non_is_en_active_high_properties(self, fixture, is_en_active_high):
+		new_bus = fixture.bus.with_en_active_high(is_en_active_high)
 		self._assert_same_except(fixture.bus, new_bus, 'is_en_active_high')
