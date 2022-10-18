@@ -27,15 +27,15 @@ class SequentialLogicControlBusFixture:
 
 	@property
 	def bus(self):
-		if self._dut is None:
-			self._dut = SequentialLogicControlBus(
+		if self._bus is None:
+			self._bus = SequentialLogicControlBus(
 				self.clk,
 				self.reset,
 				self.en,
 				self.is_clk_posedge,
 				self.is_en_active_high)
 
-		return self._dut
+		return self._bus
 
 class TestSequentialLogicControlBus:
 	@pytest.fixture(scope="function")
