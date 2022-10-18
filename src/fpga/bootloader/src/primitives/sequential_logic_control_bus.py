@@ -9,7 +9,7 @@ class SequentialLogicControlBus:
 			raise TypeError("Reset signal must be specified; tie it inactive if it is not required")
 
 		if en is None:
-			raise TypeError("Enable signal must be specified; tie it active if it is not required")
+			raise TypeError("Enable signal must be specified; use a boolean constant or tie it active if it is not required")
 
 		if is_clk_posedge is None:
 			raise TypeError("Active clock edge must be specified; the default is active high")

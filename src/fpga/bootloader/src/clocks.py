@@ -1,5 +1,6 @@
 from myhdl import *
 from src.primitives.counter import Counter
+from src.primitives.sequential_logic_control_bus import SequentialLogicControlBus
 
 class Clocks:
 	def __init__(self, clk_100MHz, reset):
@@ -9,11 +10,10 @@ class Clocks:
 		if reset is None:
 			raise TypeError("Reset signal must be specified; tie it inactive if it is not required")
 
-		self._clk_100MHz = clk_100MHz
-		self._reset = reset
-		self._counter = Counter(clk_100MHz, reset, 0, 7)
-		self._counter_5_pos = Counter(clk_100MHz, reset, 0, 4, negedge=False)
-		self._counter_5_neg = Counter(clk_100MHz, reset, 0, 4, negedge=True)
+		self._bus = SequentialLogicControlBus(clk_100MHz, reset, en=True, is_clk_posedge=True, is_en_active_high=True)
+		self._counter = Counter(self._bus, 0, 7)
+		self._counter_5_pos = Counter(self._bus.with_clk_posedge(True), 0, 4)
+		self._counter_5_neg = Counter(self._bus.with_clk_posedge(False), 0, 4)
 		self._divide_by_5 = Signal(bool(0))
 
 	def generators(self):
