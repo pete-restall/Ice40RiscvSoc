@@ -3,15 +3,9 @@ from myhdl import *
 _SIGNAL_CLASS = Signal(bool(0)).__class__
 
 class Accumulator:
-	def __init__(self, clk, reset, en, width, addend, is_en_active_high=True, negedge=False):
-		if clk is None:
-			raise TypeError("Clock must be specified")
-
-		if reset is None:
-			raise TypeError("Reset signal must be specified; tie it inactive if it is not required")
-
-		if en is None:
-			raise TypeError("Enable signal must be specified; tie it active if it is not required")
+	def __init__(self, bus, width, addend):
+		if bus is None:
+			raise TypeError("Sequential Logic Control Bus (ie. clk, reset, en) must be specified")
 
 		if width is None:
 			raise TypeError("Accumulator width must be specified")
@@ -30,18 +24,14 @@ class Accumulator:
 		if not is_signal_addend and addend == 0:
 			raise ValueError(f"Constant addend must not be zero")
 
-		self._clk = clk
-		self._is_clk_negedge = negedge
-		self._reset = reset
-		self._en = en
-		self._en_level = is_en_active_high
+		self._bus = bus
 		self._addend = addend
 		self._output = Signal(modbv(val=0, min=0, max=2**width))
 		self._overflow = Signal(bool(0))
 
 	def generators(self):
-		en_level = self._en_level
-		is_clk_negedge = self._is_clk_negedge
+		en_level = self._bus.is_en_active_high
+		is_clk_posedge = self._bus.is_clk_posedge
 
 		@block
 		def encapsulated(clk, reset, en, acc, addend, overflow):
@@ -57,15 +47,15 @@ class Accumulator:
 			def unused():
 				pass
 
-			nonlocal is_clk_negedge
-			clk_edge = "negedge" if is_clk_negedge else "posedge"
+			nonlocal is_clk_posedge
+			clk_edge = "posedge" if is_clk_posedge else "negedge"
 
 			nonlocal en_level
 			en_active = "$en == 0" if en_level == 0 else "$en != 0"
 
 			reset_active = "$reset == 0" if reset.active == 0 else "$reset != 0"
 			reset_edge = "negedge" if reset.active == 0 else "posedge"
-			reset_sensitivity = f", {reset_edge} $reset" if reset.active == 1 and reset.isasync else ""
+			reset_sensitivity = f", {reset_edge} $reset" if reset.active != 0 and reset.isasync else ""
 
 			encapsulated.verilog_code = \
 f"""
@@ -83,7 +73,7 @@ end
 
 			return unused
 
-		return encapsulated(self._clk, self._reset, self._en, self._output, self._addend, self._overflow)
+		return encapsulated(self._bus.clk, self._bus.reset, self._bus.en, self._output, self._addend, self._overflow)
 
 	@property
 	def output(self):
