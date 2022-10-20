@@ -10,6 +10,7 @@ class Clocks:
 		if reset is None:
 			raise TypeError("Reset signal must be specified; tie it inactive if it is not required")
 
+		# TODO: WE NEED TO FIGURE OUT SOME WAY OF ADDING /* synthesis syn_insert_buffer = "SB_GB" */ TO THE HIGH FAN-OUT CLOCKS TO ENSURE THEY USE A GLOBAL BUFFER TO MEET TIMING CONSTRAINTS AND EASE CONGESTION
 		self._bus = SequentialLogicControlBus(clk_100MHz, reset, en=True, is_clk_posedge=True, is_en_active_high=True)
 		self._counter = Counter(self._bus, 0, 7)
 		self._counter_5_pos = Counter(self._bus.with_clk_posedge(True), 0, 4)
