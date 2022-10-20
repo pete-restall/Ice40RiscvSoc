@@ -61,7 +61,7 @@ def Femtorv32Processor(
 """
 wire[31:0] wide_mem_addr_bus_$instance_name;
 assign $mem_addr = wide_mem_addr_bus_$instance_name[('h$addr_width - 1):0];
-FemtoRV32 #(
+FemtoRV32IAC #(
 	.ADDR_WIDTH ('h$addr_width),
 	.RESET_ADDR ('h$reset_addr))
 $instance_name (

@@ -24,7 +24,7 @@
 `define NRV_INTERRUPTS
 `define NRV_TWOLEVEL_SHIFTER
 
-module FemtoRV32(
+module FemtoRV32IAC(
 	input clk,
 
 	output [31:0] mem_addr, // address bus
