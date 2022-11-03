@@ -5,27 +5,27 @@ import scala.collection.immutable.LinearSeq
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
-class SpramStateMachineBuilder(private val dut: Ice40Spram16k16.IoBundle, private val factoryStack: List[Sampling => WithNextSampling]) {
+class SpramStateMachineBuilder(private val spram: Ice40Spram16k16.IoBundle, private val factoryStack: List[Sampling => WithNextSampling]) {
 	def powerOn() = new SpramStateMachineBuilder(
-		dut,
-		(nextState => new SpramPowerOnState(dut, nextState)) :: factoryStack)
+		spram,
+		(nextState => new SpramPowerOnState(spram, nextState)) :: factoryStack)
 
 	def populateWith(words: Seq[Int], startingFromAddress: Int = 0) = new SpramStateMachineBuilder(
-		dut,
+		spram,
 		((nextState: Sampling) => new SpramWriteSeqState(
-			dut,
+			spram,
 			address=startingFromAddress,
 			words=words,
 			nextState=nextState)) :: factoryStack)
 
 	def startReadingFrom(address: Int) = new SpramStateMachineBuilder(
-		dut,
-		(nextState => new SpramPrimeReadState(dut, address, nextState)) :: factoryStack)
+		spram,
+		(nextState => new SpramPrimeReadState(spram, address, nextState)) :: factoryStack)
 
 	def assertContentsEqualTo(expectedWords: Seq[Int], startingFromAddress: Int = 0) = new SpramStateMachineBuilder(
-		dut,
+		spram,
 		((nextState: Sampling) => new SpramAssertingReadState(
-			dut,
+			spram,
 			startingFromAddress,
 			expectedWords,
 			SimulationEndsSuccessfullyState)) :: factoryStack)
