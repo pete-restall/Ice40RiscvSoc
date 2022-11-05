@@ -8,6 +8,7 @@ import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 class EbramWriteSeqState(
 	private val ebram: Ice40Ebram4k.IoBundle,
 	private var address: Int,
+	private var mask: Int,
 	private val words: Seq[Int],
 	private val nextState: Sampling) extends WithNextSampling {
 
@@ -21,7 +22,7 @@ class EbramWriteSeqState(
 
 		ebram.CEW #= true
 		ebram.WE #= true
-		ebram.MASK_N #= 0x0000
+		ebram.MASK_N #= mask
 		ebram.ADW #= address
 		ebram.DI #= word.next()
 		address = if (address < ebram.ADW.maxValue) address + 1 else 0
@@ -29,5 +30,5 @@ class EbramWriteSeqState(
 		return this
 	}
 
-	override def withNext(nextState: Sampling) = new EbramWriteSeqState(ebram, address, words, nextState)
+	override def withNext(nextState: Sampling) = new EbramWriteSeqState(ebram, address, mask, words, nextState)
 }

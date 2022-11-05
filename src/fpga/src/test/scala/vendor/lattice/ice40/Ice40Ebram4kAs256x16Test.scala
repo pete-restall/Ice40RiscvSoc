@@ -5,7 +5,6 @@ import scala.util.Random
 
 import org.scalatest.flatspec._
 import spinal.core._
-import spinal.core.sim._
 
 import uk.co.lophtware.msfreference.tests.givenwhenthen._
 import uk.co.lophtware.msfreference.tests.simulation._
@@ -17,14 +16,24 @@ class Ice40Ebram4kAs256x16Test extends AnyFlatSpec with SimulationFixture[Ice40E
 
 	"PDP4K" must "be able to store 256 16-bit words" in simulator { fixture =>
 		val words = ArraySeq.fill(256) { Random.nextInt(1 << 16) }
-		var state = fixture
+		var test = fixture
 			.given.populatedWith(words)
 			.when.readingFrom(address=0)
 			.then.contentsMustEqual(words)
-			.asStateMachine
 
-		fixture.readClockDomain.withRevertedClockEdge.onSamplings { state = state.onSampling() }
-		fixture.readClockDomain.forkStimulus(period=10)
-		fixture.writeClockDomain.forkStimulus(period=10)
+		fixture.wireStimuliWithStateMachine(test.asStateMachine)
+	}
+
+	it must "be able to mask written bits" in simulator { fixture =>
+		val words = ArraySeq.fill(256) { Random.nextInt(1 << 16) }
+		val mask = Random.nextInt(1 << 16)
+		val maskedWords = words.map(x => x & ~mask).toArray
+		var test = fixture
+			.given.writeMaskOf(mask)
+			.and.populatedWith(words)
+			.when.readingFrom(address=0)
+			.then.contentsMustEqual(maskedWords)
+
+		fixture.wireStimuliWithStateMachine(test.asStateMachine)
 	}
 }

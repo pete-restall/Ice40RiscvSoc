@@ -5,21 +5,31 @@ import scala.collection.immutable.LinearSeq
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
-class EbramStateMachineBuilder(private val ebram: Ice40Ebram4k.IoBundle, private val factoryStack: List[Sampling => WithNextSampling]) {
+class EbramStateMachineBuilder(
+	private val ebram: Ice40Ebram4k.IoBundle,
+	private val writeMask: Int,
+	private val factoryStack: List[Sampling => WithNextSampling]) {
+
+	def setWriteMaskTo(mask: Int) = new EbramStateMachineBuilder(ebram, mask, factoryStack)
+
 	def populateWith(words: Seq[Int], startingFromAddress: Int = 0) = new EbramStateMachineBuilder(
 		ebram,
+		writeMask,
 		((nextState: Sampling) => new EbramWriteSeqState(
 			ebram,
 			address=startingFromAddress,
 			words=words,
+			mask=writeMask,
 			nextState=nextState)) :: factoryStack)
 
 	def startReadingFrom(address: Int) = new EbramStateMachineBuilder(
 		ebram,
+		writeMask,
 		(nextState => new EbramPrimeReadState(ebram, address, nextState)) :: factoryStack)
 
 	def assertContentsEqualTo(expectedWords: Seq[Int], startingFromAddress: Int = 0) = new EbramStateMachineBuilder(
 		ebram,
+		writeMask,
 		((nextState: Sampling) => new EbramAssertingReadState(
 			ebram,
 			startingFromAddress,
