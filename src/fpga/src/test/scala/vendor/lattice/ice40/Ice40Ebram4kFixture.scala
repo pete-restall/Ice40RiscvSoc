@@ -7,7 +7,8 @@ import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.{EbramGiven
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
 class Ice40Ebram4kFixture(readWidth: BitCount, writeWidth: BitCount) extends Component {
-	val dut = new Ice40Ebram4k(readWidth, writeWidth)
+	private val dut = new Ice40Ebram4k(readWidth, writeWidth)
+
 	val io = new Ice40Ebram4k.IoBundle(readWidth, writeWidth)
 	io <> dut.io
 	noIoPrefix()
