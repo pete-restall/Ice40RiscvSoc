@@ -23,6 +23,6 @@ class Ice40Spram16k16Test extends AnyFlatSpec with SimulationFixture[Ice40Spram1
 			.when.readingFrom(address=0)
 			.then.contentsMustEqual(words)
 
-		fixture.wireStimuliWithStateMachine(test.asStateMachine)
+		fixture.wireStimuliUsing(test.asStateMachine)
 	}
 }

@@ -16,7 +16,7 @@ class Ice40Spram16k16Fixture extends Component {
 
 	def given = new SpramGiven(new SpramStateMachineBuilder(io, List[Sampling => WithNextSampling]()))
 
-	def wireStimuliWithStateMachine(initialState: Sampling) = {
+	def wireStimuliUsing(initialState: Sampling) = {
 		var state = initialState
 		clockDomain.withRevertedClockEdge.onSamplings { state = state.onSampling() }
 		clockDomain.forkStimulus(period=10)
