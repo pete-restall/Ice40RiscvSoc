@@ -8,7 +8,7 @@ import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 class EbramWriteSeqState(
 	private val ebram: Ice40Ebram4k.IoBundle,
 	private var address: Int,
-	private var mask: Int,
+	private val mask: Int,
 	private val words: Seq[Int],
 	private val nextState: Sampling) extends WithNextSampling {
 

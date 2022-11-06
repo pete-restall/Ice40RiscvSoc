@@ -19,7 +19,7 @@ class Ice40Ebram4kFixture(readWidth: BitCount, writeWidth: BitCount) extends Com
 
 	def given = new EbramGiven(new EbramStateMachineBuilder(io, writeMask=0, factoryStack=List[Sampling => WithNextSampling]()))
 
-	def wireStimuliWithStateMachine(initialState: Sampling) = {
+	def wireStimuliUsing(initialState: Sampling) = {
 		var state = initialState
 		readClockDomain.withRevertedClockEdge.onSamplings { state = state.onSampling() }
 		readClockDomain.forkStimulus(period=10)

@@ -21,7 +21,7 @@ class Ice40Ebram4kAs256x16Test extends AnyFlatSpec with SimulationFixture[Ice40E
 			.when.readingFrom(address=0)
 			.then.contentsMustEqual(words)
 
-		fixture.wireStimuliWithStateMachine(test.asStateMachine)
+		fixture.wireStimuliUsing(test.asStateMachine)
 	}
 
 	it must "be able to mask written bits" in simulator { fixture =>
@@ -34,6 +34,6 @@ class Ice40Ebram4kAs256x16Test extends AnyFlatSpec with SimulationFixture[Ice40E
 			.when.readingFrom(address=0)
 			.then.contentsMustEqual(maskedWords)
 
-		fixture.wireStimuliWithStateMachine(test.asStateMachine)
+		fixture.wireStimuliUsing(test.asStateMachine)
 	}
 }
