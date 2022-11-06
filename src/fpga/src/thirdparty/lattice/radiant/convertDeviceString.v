@@ -9,8 +9,7 @@
 	reg decimalFlag;
 	reg [255:0] reverseVal;
 	integer concatDec[255:0];
-        reg [1:9] characterInitialisation;
-        reg [1:8] character;
+        reg [7:0] character;
 
         reg [7:0] checkType;
         begin 
@@ -28,9 +27,8 @@
             for (i=MAX_STRING_LENGTH-1; i>=1 ; i=i-1) begin 
                 for (j=1; j<=8; j=j+1) begin 
 
-                    characterInitialisation[j] = attributeValue[i*8-j];
+                    character[8 - j] = attributeValue[i*8-j];
                 end 
-		character[1:8] = characterInitialisation[1:8];
 
                 //Check to see if binary or hex
                 if (checkType === "N") begin 
