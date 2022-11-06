@@ -64,6 +64,26 @@ class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component 
 		io.DO(2) := native.io.DO(9)
 		io.DO(1) := native.io.DO(5)
 		io.DO(0) := native.io.DO(1)
+	} else if (readWidth.value == 2 && writeWidth.value == 2) {
+		native.io.DI(15) := False
+		native.io.DI(14) := False
+		native.io.DI(13) := False
+		native.io.DI(12) := False
+		native.io.DI(11) := io.DI(1)
+		native.io.DI(10) := False
+		native.io.DI(9) := False
+		native.io.DI(8) := False
+		native.io.DI(7) := False
+		native.io.DI(6) := False
+		native.io.DI(5) := False
+		native.io.DI(4) := False
+		native.io.DI(3) := io.DI(0)
+		native.io.DI(2) := False
+		native.io.DI(1) := False
+		native.io.DI(0) := False
+
+		io.DO(1) := native.io.DO(11)
+		io.DO(0) := native.io.DO(3)
 	} else {
 		native.io.DI := io.DI
 		io.DO := native.io.DO
