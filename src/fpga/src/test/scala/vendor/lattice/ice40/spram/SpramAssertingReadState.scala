@@ -1,5 +1,7 @@
 package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram
 
+import org.scalatest.AppendedClues._
+import org.scalatest.matchers.must.Matchers._
 import spinal.core.sim._
 
 import uk.co.lophtware.msfreference.tests.simulation._
@@ -24,7 +26,7 @@ class SpramAssertingReadState(
 		address = if (address < spram.AD.maxValue) address + 1 else 0
 		spram.AD #= address
 
-		assert(spram.DO.toInt == word.next(), s"at address ${readAddress}")
+		spram.DO.toInt must be(word.next()) withClue s"at address ${readAddress}"
 		return this
 	}
 
