@@ -22,7 +22,7 @@ class EbramWriteSeqState(
 
 		ebram.CEW #= true
 		ebram.WE #= true
-		ebram.MASK_N #= mask
+		ebram.MASK_N.map { _ #= mask }
 		ebram.ADW #= address
 		ebram.DI #= word.next()
 		address = if (address < ebram.ADW.maxValue) address + 1 else 0

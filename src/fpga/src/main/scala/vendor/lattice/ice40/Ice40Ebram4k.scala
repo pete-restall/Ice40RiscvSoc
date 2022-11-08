@@ -6,15 +6,15 @@ class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component 
 	val io = new Ice40Ebram4k.IoBundle(readWidth, writeWidth)
 
 	private val native = new NativeIce40Ebram4k(readWidth, writeWidth)
-	native.io.ADW := io.ADW
-	native.io.ADR := io.ADR
+	native.io.ADW := io.ADW.resized
+	native.io.ADR := io.ADR.resized
 	native.io.CKW := io.CKW
 	native.io.CKR := io.CKR
 	native.io.CEW := io.CEW
 	native.io.CER := io.CER
 	native.io.RE := io.RE
 	native.io.WE := io.WE
-	native.io.MASK_N := io.MASK_N // TODO: FORCE MASK_N TO ALL ZERO IF writeWidth != 16
+	native.io.MASK_N := io.MASK_N.getOrElse(B(0))
 
 	if (readWidth.value == 8 && writeWidth.value == 8) { // TODO: READ WIDTH AND WRITE WIDTH ARE INDEPENDENT
 		native.io.DI := (
@@ -57,16 +57,24 @@ class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component 
 object Ice40Ebram4k {
 	case class IoBundle(readWidth: BitCount, writeWidth: BitCount) extends Bundle {
 		val DI = in Bits(writeWidth)
-		val ADW = in UInt(11 bits) // TODO: DYNAMICALLY ALTER WIDTH BASED ON writeWidth - AND TEST FOR THIS...
-		val ADR = in UInt(11 bits) // TODO: DYNAMICALLY ALTER WIDTH BASED ON readWidth - AND TEST FOR THIS...
+		val ADW = in UInt(addressBusWidthFor("writeWidth", writeWidth))
+		val ADR = in UInt(addressBusWidthFor("readWidth", readWidth))
 		val CKW = in Bool()
 		val CKR = in Bool()
 		val CEW = in Bool()
 		val CER = in Bool()
 		val RE = in Bool()
 		val WE = in Bool()
-		val MASK_N = in Bits(16 bits) // TODO: CONDITIONALLY EXPOSE THIS ONLY *IFF* writeWidth == 16 bits (AND TEST FOR IT, OBVIOUSLY); val MASK_N = (writeWidth == 16 bits) generate (in Bits(16 bits))
+		val MASK_N = if (writeWidth.value == 16) Some(in Bits(16 bits)) else None
 		val DO = out Bits(readWidth)
+
+		private def addressBusWidthFor(argName: String, dataBusWidth: BitCount) = dataBusWidth match {
+			case BitCount(16) => 8 bits
+			case BitCount(8) => 9 bits
+			case BitCount(4) => 10 bits
+			case BitCount(2) => 11 bits
+			case _ => throw new IllegalArgumentException(s"Data bus width must be either 2, 4, 8 or 16 bits; arg=${argName}, value=${dataBusWidth}")
+		}
 	}
 }
 
