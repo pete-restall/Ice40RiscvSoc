@@ -12,13 +12,12 @@ class EbramStateMachineBuilder(
 
 	def setWriteMaskTo(mask: Int) = new EbramStateMachineBuilder(ebram, mask, factoryStack)
 
-	def populateWith(words: Seq[Int], startingFromAddress: Int = 0) = new EbramStateMachineBuilder(
+	def populateWith(addressesAndWords: Seq[(Int, Int)]) = new EbramStateMachineBuilder(
 		ebram,
 		writeMask,
 		((nextState: Sampling) => new EbramWriteSeqState(
 			ebram,
-			address=startingFromAddress,
-			words=words,
+			addressesAndWords=addressesAndWords,
 			mask=writeMask,
 			nextState=nextState)) :: factoryStack)
 
