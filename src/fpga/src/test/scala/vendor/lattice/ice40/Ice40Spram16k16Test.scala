@@ -7,7 +7,6 @@ import org.scalatest.flatspec._
 
 import uk.co.lophtware.msfreference.tests.givenwhenthen._
 import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.{SpramGiven, SpramWhen, SpramThen}
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
 class Ice40Spram16k16Test extends AnyFlatSpec with SimulationFixture[Ice40Spram16k16Fixture] {

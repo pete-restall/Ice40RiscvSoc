@@ -8,7 +8,6 @@ import spinal.core._
 
 import uk.co.lophtware.msfreference.tests.givenwhenthen._
 import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.{EbramGiven, EbramWhen, EbramThen}
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
 class Ice40Ebram4kAs256x16Test extends AnyFlatSpec with SimulationFixture[Ice40Ebram4kFixture] {
