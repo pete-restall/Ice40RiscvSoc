@@ -12,11 +12,11 @@ class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component 
 	native.io.CKR := io.CKR
 	native.io.CEW := io.CEW
 	native.io.CER := io.CER
-	native.io.RE := io.RE
+	native.io.RE := io.RE // TODO: TN02002 SAYS RE IS ONLY USED FOR 256x16 - THIS HAS BEEN VERIFIED IN SIMULATION; DO CHANGES REGARDLESS OF RE.  MAKE RE AN Option[Bool] AND WRITE SOME TESTS TO CODIFY / VERIFY THIS...
 	native.io.WE := io.WE
 	native.io.MASK_N := io.MASK_N.getOrElse(B(0))
 
-	if (readWidth.value == 8 && writeWidth.value == 8) { // TODO: READ WIDTH AND WRITE WIDTH ARE INDEPENDENT
+	if (writeWidth.value == 8) {
 		native.io.DI := (
 			14 -> io.DI(7),
 			12 -> io.DI(6),
@@ -27,7 +27,9 @@ class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component 
 			2 -> io.DI(1),
 			0 -> io.DI(0),
 			default -> False)
+	}
 
+	if (readWidth.value == 8) {
 		io.DO := (
 			7 -> native.io.DO(14),
 			6 -> native.io.DO(12),
@@ -38,18 +40,22 @@ class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component 
 			1 -> native.io.DO(2),
 			0 -> native.io.DO(0))
 
-	} else if (readWidth.value == 4 && writeWidth.value == 4) {
+	}
+
+	if (readWidth.value == 4 && writeWidth.value == 4) {
 		native.io.DI := (13 -> io.DI(3), 9 -> io.DI(2), 5 -> io.DI(1), 1 -> io.DI(0), default -> False)
 		io.DO := (3 -> native.io.DO(13), 2 -> native.io.DO(9), 1 -> native.io.DO(5), 0 -> native.io.DO(1))
 
 	} else if (readWidth.value == 2 && writeWidth.value == 2) {
 		native.io.DI := (11 -> io.DI(1), 3 -> io.DI(0), default -> False)
 		io.DO := (1 -> native.io.DO(11), 0 -> native.io.DO(3))
-
-	} else {
-		native.io.DI := io.DI
-		io.DO := native.io.DO
 	}
+
+	if (writeWidth.value == 16)
+		native.io.DI := io.DI
+
+	if (readWidth.value == 16)
+		io.DO := native.io.DO
 
 	noIoPrefix()
 }
@@ -78,7 +84,7 @@ object Ice40Ebram4k {
 	}
 }
 
-private class NativeIce40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends BlackBox {
+private class NativeIce40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends BlackBox { // TODO: RENAME TO Ice40NativeEbram4k and move to another file
 	val io = new NativeIce40Ebram4k.IoBundle()
 
 	noIoPrefix()

@@ -27,13 +27,12 @@ class EbramStateMachineBuilder(
 		writeMask,
 		(nextState => new EbramPrimeReadState(ebram, address, nextState)) :: factoryStack)
 
-	def assertContentsEqualTo(expectedWords: Seq[Int], startingFromAddress: Int = 0) = new EbramStateMachineBuilder(
+	def assertContentsEqualTo(expectedAddressesAndWords: Seq[(Int, Int)]) = new EbramStateMachineBuilder(
 		ebram,
 		writeMask,
 		((nextState: Sampling) => new EbramAssertingReadState(
 			ebram,
-			startingFromAddress,
-			expectedWords,
+			expectedAddressesAndWords,
 			SimulationEndsSuccessfullyState)) :: factoryStack)
 
 	def build(): Sampling = collapsed(SimulationMissingTerminalState)

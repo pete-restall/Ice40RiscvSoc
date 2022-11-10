@@ -9,26 +9,30 @@ import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
 class EbramAssertingReadState(
 	private val ebram: Ice40Ebram4k.IoBundle,
-	private var address: Int,
-	private val expectedWords: Seq[Int],
+	private val expectedAddressesAndWords: Seq[(Int, Int)],
 	private val nextState: Sampling) extends WithNextSampling {
 
-	private val word = expectedWords.iterator
+	private val addressAndWord = expectedAddressesAndWords.iterator
+	private var currentAddressAndWord = addressAndWord.nextOption()
 
 	override def onSampling(): Sampling = {
-		if (!word.hasNext)
+		if (currentAddressAndWord.isEmpty)
 			return nextState.onSampling()
 
 		ebram.CER #= true
 		ebram.RE #= true
 
-		val readAddress = address
-		address = if (address < ebram.ADR.maxValue) address + 1 else 0
-		ebram.ADR #= address
+		val nextAddressAndWord = addressAndWord.nextOption()
+		ebram.ADR #= nextAddressAndWord.orElse(Some((0, 0))).map(x => wrappedAddress(x._1)).get
 
-		ebram.DO.toInt must be(word.next()) withClue s"at address ${readAddress}"
+		val (address, expectedWord) = currentAddressAndWord.get
+		ebram.DO.toInt must be(expectedWord) withClue s"at address ${address}"
+
+		currentAddressAndWord = nextAddressAndWord
 		return this
 	}
 
-	override def withNext(nextState: Sampling) = new EbramAssertingReadState(ebram, address, expectedWords, nextState)
+	private def wrappedAddress(address: Int) = address % (ebram.ADR.maxValue + 1)
+
+	override def withNext(nextState: Sampling) = new EbramAssertingReadState(ebram, expectedAddressesAndWords, nextState)
 }
