@@ -42,14 +42,17 @@ class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component 
 
 	}
 
-	if (readWidth.value == 4 && writeWidth.value == 4) {
+	if (writeWidth.value == 4)
 		native.io.DI := (13 -> io.DI(3), 9 -> io.DI(2), 5 -> io.DI(1), 1 -> io.DI(0), default -> False)
+
+	if (readWidth.value == 4)
 		io.DO := (3 -> native.io.DO(13), 2 -> native.io.DO(9), 1 -> native.io.DO(5), 0 -> native.io.DO(1))
 
-	} else if (readWidth.value == 2 && writeWidth.value == 2) {
+	if (writeWidth.value == 2)
 		native.io.DI := (11 -> io.DI(1), 3 -> io.DI(0), default -> False)
+
+	if (readWidth.value == 2)
 		io.DO := (1 -> native.io.DO(11), 0 -> native.io.DO(3))
-	}
 
 	if (writeWidth.value == 16)
 		native.io.DI := io.DI
