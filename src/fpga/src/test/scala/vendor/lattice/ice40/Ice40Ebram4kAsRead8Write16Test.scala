@@ -14,7 +14,7 @@ class Ice40Ebram4kAsRead8Write16Test extends AnyFlatSpec with SimulationFixture[
 
 	"PDP4K" must "be able to read two interlaced 8-bit bytes from a single 16-bit word" in simulator { fixture =>
 		val word = Random.nextInt(1 << 16)
-		val bytes = interleaved(word)
+		val bytes = fixture.wordToInterleavedBytes(word)
 		var test = fixture
 			.given.populatedWith(word)
 			.when.readingFrom(address=0)
@@ -25,23 +25,11 @@ class Ice40Ebram4kAsRead8Write16Test extends AnyFlatSpec with SimulationFixture[
 		fixture.wireStimuliUsing(test.asStateMachine)
 	}
 
-	private def interleaved(word: Int): Array[Int] = Array(interleaved(word, startBit=14), interleaved(word, startBit=15))
-
-	private def interleaved(word: Int, startBit: Int) = {
-		var byte = 0
-		var mask = 1 << startBit
-		for (i <- 7 downto 0) {
-			byte = byte | (if ((word & mask) != 0) 1 << i else 0)
-			mask >>= 2
-		}
-		byte
-	}
-
 	it must "be able to mask written bits" in simulator { fixture =>
 		val word = Random.nextInt(1 << 16)
 		val mask = Random.nextInt(1 << 16)
 		val maskedWord = word & ~mask
-		val bytes = interleaved(maskedWord)
+		val bytes = fixture.wordToInterleavedBytes(maskedWord)
 		var test = fixture
 			.given.writeMaskOf(mask)
 			.and.populatedWith(word)
