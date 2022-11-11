@@ -12,7 +12,7 @@ class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component 
 	native.io.CKR := io.CKR
 	native.io.CEW := io.CEW
 	native.io.CER := io.CER
-	native.io.RE := io.RE // TODO: TN02002 SAYS RE IS ONLY USED FOR 256x16 - THIS HAS BEEN VERIFIED IN SIMULATION; DO CHANGES REGARDLESS OF RE.  MAKE RE AN Option[Bool] AND WRITE SOME TESTS TO CODIFY / VERIFY THIS...
+	native.io.RE := io.RE
 	native.io.WE := io.WE
 	native.io.MASK_N := io.MASK_N.getOrElse(B(0))
 
