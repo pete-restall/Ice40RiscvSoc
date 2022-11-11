@@ -20,7 +20,7 @@ trait SimulationFixture[TDut <: Component] extends TestSuiteMixin { this: TestSu
 			softResetActiveLevel = LOW,
 			clockEnableActiveLevel = HIGH))
 
-	abstract override def withFixture(test: NoArgTest): Outcome = {
+	abstract override def withFixture(test: NoArgTest): Outcome = { // TODO: ALLOW A SINGLETON VERSION OF THIS TO REDUCE WORK FOR THE NonSimulationFixture USERS...
 		sim = SimConfig
 			.withWave
 			.withIVerilog
@@ -36,7 +36,7 @@ trait SimulationFixture[TDut <: Component] extends TestSuiteMixin { this: TestSu
 		super.withFixture(test)
 	}
 
-	protected def dutFactory(): TDut
+	protected def dutFactory(): TDut = ???
 
 	protected def simulator(test: TDut => Any) = {
 		sim.doSim { dut =>
@@ -45,6 +45,13 @@ trait SimulationFixture[TDut <: Component] extends TestSuiteMixin { this: TestSu
 			while (true) {
 				sleep(10)
 			}
+		}
+	}
+
+	protected def spinalContext(test: () => Any) = {
+		sim.doSim { dut =>
+			test()
+			simSuccess()
 		}
 	}
 }
