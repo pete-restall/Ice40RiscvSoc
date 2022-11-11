@@ -2,12 +2,20 @@ package uk.co.lophtware.msfreference.tests.simulation
 
 import org.scalatest.TestSuite
 import spinal.core._
+import spinal.core.sim._
 
-trait NonSimulationFixture extends SimulationFixture[NonSimulationFixture.DummyComponent] { this: TestSuite =>
-	protected override def dutFactory(): NonSimulationFixture.DummyComponent = new NonSimulationFixture.DummyComponent()
+trait NonSimulationFixture {
+	protected def spinalContext(test: () => Any) = {
+		NonSimulationFixture.dummySim.doSim { dut =>
+			test()
+			simSuccess()
+		}
+	}
 }
 
 object NonSimulationFixture {
 	case class DummyComponent() extends Component {
 	}
+
+	private lazy val dummySim = SimulationFixture.createSimulation().compile(new DummyComponent())
 }
