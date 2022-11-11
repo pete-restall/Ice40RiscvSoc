@@ -22,4 +22,16 @@ class Ice40Ebram4kAs1024x4Test extends AnyFlatSpec with SimulationFixture[Ice40E
 
 		fixture.wireStimuliUsing(test.asStateMachine)
 	}
+
+	it must "not be able to mask written bits" in simulator { fixture =>
+		val unmaskedWords = ArraySeq.fill(1024) { Random.nextInt(1 << 4) }
+		val ignoredMask = Random.nextInt(1 << 16)
+		var test = fixture
+			.given.writeMaskOf(ignoredMask)
+			.and.populatedWith(unmaskedWords)
+			.when.readingFrom(address=0)
+			.then.contentsMustEqual(unmaskedWords)
+
+		fixture.wireStimuliUsing(test.asStateMachine)
+	}
 }
