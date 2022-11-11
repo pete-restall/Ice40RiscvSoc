@@ -1,8 +1,5 @@
 package uk.co.lophtware.msfreference.tests.simulation
 
-import scala.io.Source
-import scala.util.Using
-
 import org.scalatest._
 import spinal.core._
 import spinal.core.sim._
