@@ -5,7 +5,7 @@ import spinal.core._
 class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component {
 	val io = new Ice40Ebram4k.IoBundle(readWidth, writeWidth)
 
-	private val native = new NativeIce40Ebram4k(readWidth, writeWidth)
+	private val native = new Ice40NativeEbram4k(readWidth, writeWidth)
 	native.io.ADW := io.ADW.resized
 	native.io.ADR := io.ADR.resized
 	native.io.CKW := io.CKW
@@ -84,31 +84,5 @@ object Ice40Ebram4k {
 			case BitCount(2) => 11 bits
 			case _ => throw new IllegalArgumentException(s"Data bus width must be either 2, 4, 8 or 16 bits; arg=${argName}, value=${dataBusWidth}")
 		}
-	}
-}
-
-private class NativeIce40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends BlackBox { // TODO: RENAME TO Ice40NativeEbram4k and move to another file
-	val io = new NativeIce40Ebram4k.IoBundle()
-
-	noIoPrefix()
-	setDefinitionName("PDP4K")
-	addGenerics(
-		("DATA_WIDTH_R" -> readWidth.value.toString),
-		("DATA_WIDTH_W" -> writeWidth.value.toString))
-}
-
-private object NativeIce40Ebram4k {
-	case class IoBundle() extends Bundle {
-		val DI = in Bits(16 bits)
-		val ADW = in UInt(11 bits)
-		val ADR = in UInt(11 bits)
-		val CKW = in Bool()
-		val CKR = in Bool()
-		val CEW = in Bool()
-		val CER = in Bool()
-		val RE = in Bool()
-		val WE = in Bool()
-		val MASK_N = in Bits(16 bits)
-		val DO = out Bits(16 bits)
 	}
 }
