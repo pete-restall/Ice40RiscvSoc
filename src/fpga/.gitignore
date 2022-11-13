@@ -1,15 +1,7 @@
-# TODO: REMOVE THE PYTEST STUFF ONCE THE MYHDL STUFF HAS BEEN REMOVED
-**/__pycache__
-**/.pytest_cache
-**/.eggs
-**/.venv
-**/*.egg-info
-bootloader/out/*
-
 .bloop
 .bsp
 .metals
 simWorkspace
-target
+target/
 tmp
 verbose.log
