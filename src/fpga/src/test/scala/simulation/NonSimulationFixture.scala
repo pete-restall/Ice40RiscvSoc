@@ -17,5 +17,5 @@ object NonSimulationFixture {
 	case class DummyComponent() extends Component {
 	}
 
-	private lazy val dummySim = SimulationFixture.createSimulation().compile(new DummyComponent())
+	private lazy val dummySim = LightweightSimulationFixture.createSimulation().compile(new DummyComponent())
 }

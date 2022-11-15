@@ -6,11 +6,11 @@ import spinal.core.sim._
 
 import uk.co.lophtware.msfreference.tests.simulation.EnvFile
 
-abstract trait SimulationFixture[TDut <: Component] extends SimulationFixtureBase[TDut] { this: TestSuite =>
-	protected abstract override def createSimulation(): SpinalSimConfig = SimulationFixture.createSimulation()
+trait LightweightSimulationFixture[TDut <: Component] extends SimulationFixtureBase[TDut] { this: TestSuite =>
+	protected abstract override def createSimulation(): SpinalSimConfig = LightweightSimulationFixture.createSimulation()
 }
 
-object SimulationFixture {
+object LightweightSimulationFixture {
 	private val envFile = new EnvFile(".env")
 	private val envVars = sys.env.withDefault(unknown => envFile(unknown))
 
@@ -25,12 +25,9 @@ object SimulationFixture {
 
 	def createSimulation() = SimConfig
 		.withWave
-		.withIVerilog
+		.withVerilator
 		.workspacePath(envVars("SPINALSIM_WORKSPACE"))
 		.cachePath(s"${envVars("SPINALSIM_WORKSPACE")}/.pluginsCache")
 		.withConfig(config)
 		.allOptimisation
-		.addSimulatorFlag(s"-y ${envVars("SIMULATOR_VERILOG_LIBRARY_PATH")}")
-		.addIncludeDir(envVars("SIMULATOR_VERILOG_PATCHED_INCLUDE_PATH"))
-		.addIncludeDir(envVars("SIMULATOR_VERILOG_INCLUDE_PATH"))
 }
