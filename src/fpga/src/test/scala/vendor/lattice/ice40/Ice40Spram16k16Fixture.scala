@@ -9,8 +9,6 @@ import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
 class Ice40Spram16k16Fixture extends Component {
 	val io = Ice40Spram16k16.IoBundle()
-	noIoPrefix()
-
 	private val dut = new Ice40Spram16k16
 	io <> dut.io
 
