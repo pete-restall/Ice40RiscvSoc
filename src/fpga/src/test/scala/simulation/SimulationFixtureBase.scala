@@ -17,8 +17,7 @@ abstract trait SimulationFixtureBase[TDut <: Component] extends TestSuiteMixin {
 	protected def simulator(test: TDut => Any) = {
 		sim.doSim { dut =>
 			SimTimeout(1_000_000)
-			val result = test(dut)
-			if (result == null || !result.isInstanceOf[Assertion]) {
+			if (test(dut) == SimulationFixtureBase.waitForExplicitSimulationTermination) {
 				while (true) {
 					sleep(10)
 				}
@@ -27,4 +26,8 @@ abstract trait SimulationFixtureBase[TDut <: Component] extends TestSuiteMixin {
 	}
 
 	protected def dutFactory(): TDut = ???
+}
+
+object SimulationFixtureBase {
+	val waitForExplicitSimulationTermination = "Wait for explicit simSuccess(), simFailure() or timeout"
 }

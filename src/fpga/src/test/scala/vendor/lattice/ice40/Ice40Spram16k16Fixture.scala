@@ -20,6 +20,7 @@ class Ice40Spram16k16Fixture extends Component {
 		var state = initialState
 		clockDomain.withRevertedClockEdge.onSamplings { state = state.onSampling() }
 		clockDomain.forkStimulus(period=10)
+		SimulationFixtureBase.waitForExplicitSimulationTermination
 	}
 
 	override val clockDomain = ClockDomain(clock=io.CK)

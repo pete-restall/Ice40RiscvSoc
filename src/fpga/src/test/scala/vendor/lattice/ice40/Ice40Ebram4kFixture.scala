@@ -24,6 +24,7 @@ class Ice40Ebram4kFixture(readWidth: BitCount, writeWidth: BitCount) extends Com
 		readClockDomain.withRevertedClockEdge.onSamplings { state = state.onSampling() }
 		readClockDomain.forkStimulus(period=10)
 		writeClockDomain.forkStimulus(period=10)
+		SimulationFixtureBase.waitForExplicitSimulationTermination
 	}
 
 	def wordToInterleavedBytes(word: Int): Array[Int] = wordToInterleavedQuantity(word, numOutBits=8)
