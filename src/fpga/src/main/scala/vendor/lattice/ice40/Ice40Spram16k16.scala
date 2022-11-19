@@ -7,6 +7,7 @@ class Ice40Spram16k16 extends BlackBox {
 
 	noIoPrefix()
 	setDefinitionName("SP256K")
+	mapCurrentClockDomain(clock=io.CK)
 }
 
 object Ice40Spram16k16 {
