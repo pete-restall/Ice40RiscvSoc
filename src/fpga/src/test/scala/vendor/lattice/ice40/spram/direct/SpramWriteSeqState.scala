@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.raw
+package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.direct
 
 import spinal.core.sim._
 

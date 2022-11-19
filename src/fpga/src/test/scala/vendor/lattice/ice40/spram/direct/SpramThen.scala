@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.raw
+package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.direct
 
 import uk.co.lophtware.msfreference.tests.givenwhenthen._
 import uk.co.lophtware.msfreference.tests.simulation._
