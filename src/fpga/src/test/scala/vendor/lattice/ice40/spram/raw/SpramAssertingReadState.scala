@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram
+package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.raw
 
 import org.scalatest.AppendedClues._
 import org.scalatest.matchers.must.Matchers._

@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram
+package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.raw
 
 import scala.collection.immutable.LinearSeq
 

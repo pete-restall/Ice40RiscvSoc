@@ -4,7 +4,7 @@ import spinal.core._
 import spinal.core.sim._
 
 import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.{SpramGiven, SpramStateMachineBuilder}
+import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.raw.{SpramGiven, SpramStateMachineBuilder}
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
 class Ice40Spram16k16Fixture extends Component {
