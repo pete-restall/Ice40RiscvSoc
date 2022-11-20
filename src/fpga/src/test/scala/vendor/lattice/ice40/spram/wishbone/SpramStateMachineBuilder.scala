@@ -3,6 +3,7 @@ package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.wishbone
 import scala.collection.immutable.LinearSeq
 
 import spinal.core._
+import spinal.core.sim._
 import spinal.lib.bus.wishbone.Wishbone
 
 import uk.co.lophtware.msfreference.tests.simulation._
@@ -16,8 +17,8 @@ class SpramStateMachineBuilder(
 	private val isSpramDirect: Bool,
 	private val factoryStack: List[Sampling => WithNextSampling]) {
 
-	def powerOn() =
-		withFactory(nextState => new SpramPowerOnState(spram, nextState))
+	def powerOn() = usingDirectSpramAccess()
+		.withFactory(nextState => new SpramPowerOnState(spram, nextState))
 		.withFactory(nextState => new WishboneNybbleSelectState(wishbone, 0x0f, nextState))
 
 	private def withFactory(factory: (Sampling) => WithNextSampling) = new SpramStateMachineBuilder(
@@ -32,17 +33,16 @@ class SpramStateMachineBuilder(
 	def usingWishboneSpramAccess() = withFactory(nextState => SpramAccessMethodState.wishbone(isSpramDirect, nextState))
 
 	def populateWith(words: Seq[Int], startingFromAddress: Int = 0) = withFactory(nextState =>
-		new SpramWriteSeqState(
-			spram,
-			address=startingFromAddress,
-			words=words,
-			nextState=nextState))
+		new SimulationBranchState(
+			() => isSpramDirect.toBoolean,
+			new SpramWriteSeqState(spram, startingFromAddress, words, nextState),
+			new WishboneSpramWriteSeqState(clockDomain, wishbone, startingFromAddress, words, nextState)))
 
 	def startReadingFrom(address: Int) = withFactory(nextState => new SpramPrimeReadState(spram, address, nextState))
 
 	def assertContentsEqualTo(expectedWords: Seq[Int], startingFromAddress: Int = 0) = withFactory(_ =>
 		new SimulationBranchState(
-			() => isSpramDirect == true,
+			() => isSpramDirect.toBoolean,
 			new SpramAssertingReadState(
 				spram,
 				startingFromAddress,

@@ -7,7 +7,11 @@ class SpramGiven(private val builder: SpramStateMachineBuilder) extends GivenAnd
 
 	def accessedDirectly: GivenAnd[SpramGiven, SpramWhen] = new SpramGiven(builder.usingDirectSpramAccess())
 
+	def accessedOverWishbone: GivenAnd[SpramGiven, SpramWhen] = new SpramGiven(builder.usingWishboneSpramAccess())
+
 	def populatedWith(words: Seq[Int]): GivenAnd[SpramGiven, SpramWhen] = new SpramGiven(builder.populateWith(words))
+
+	def singleWordWrittenTo(word: Int, atAddress: Int): GivenAnd[SpramGiven, SpramWhen] = new SpramGiven(builder.populateWith(List(word), atAddress))
 
 	override def when: SpramWhen = new SpramWhen(builder)
 

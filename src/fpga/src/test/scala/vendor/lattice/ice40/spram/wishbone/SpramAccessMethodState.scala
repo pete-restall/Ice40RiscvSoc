@@ -13,7 +13,7 @@ class SpramAccessMethodState(
 
 	override def onSampling(): Sampling = {
 		isSpramDirectSelector #= isSpramDirect
-		nextState.onSampling()
+		nextState
 	}
 
 	override def withNext(nextState: Sampling) = new SpramAccessMethodState(isSpramDirectSelector, isSpramDirect, nextState)

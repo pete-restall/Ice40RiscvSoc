@@ -5,6 +5,8 @@ import uk.co.lophtware.msfreference.tests.givenwhenthen._
 class SpramWhen(private val builder: SpramStateMachineBuilder) extends WhenAnd[SpramWhen, SpramThen] {
 	def readingFrom(address: Int): WhenAnd[SpramWhen, SpramThen] = new SpramWhen(builder.startReadingFrom(address))
 
+	def accessedDirectly: WhenAnd[SpramWhen, SpramThen] = new SpramWhen(builder.usingDirectSpramAccess)
+
 	def accessedOverWishbone: WhenAnd[SpramWhen, SpramThen] = new SpramWhen(builder.usingWishboneSpramAccess)
 
 	override def then: SpramThen = new SpramThen(builder)

@@ -16,20 +16,32 @@ class Ice40Spram16k16WishboneBusAdapterIntegrationTest extends AnyFlatSpec with 
 	protected override def dutFactory() = new Ice40Spram16k16WishboneBusAdapterIntegrationFixture()
 
 	"Ice40Spram16k16WishboneBusAdapter Wishbone bus" must "respond to a simple read" in simulator { fixture =>
-		val words = ArraySeq.fill(Ice40Spram16k16.NumberOfWords) { Random.nextInt(1 << 16) }
+		val word = fixture.anyData()
 		val address = fixture.anyAddress()
-		val expectedWord = words(address)
 		var test = fixture
 			.given.spramIsPoweredOn
 			.and.accessedDirectly
-			.and.populatedWith(words)
+			.and.singleWordWrittenTo(word, atAddress=address)
 			.when.accessedOverWishbone
-			.then.singleWordMustEqual(expectedWord, atAddress=address)
+			.then.singleWordMustEqual(word, atAddress=address)
 
 		fixture.wireStimuliUsing(test.asStateMachine)
 	}
 
-	// TODO: SIMPLE WRITE OF ONE WORD
+	it must "respond to a simple write" in simulator { fixture =>
+		val word = fixture.anyData()
+		val address = fixture.anyAddress()
+		var test = fixture
+			.given.spramIsPoweredOn
+			.and.accessedOverWishbone
+			.and.singleWordWrittenTo(word, atAddress=address)
+			.when.accessedDirectly
+			.and.readingFrom(address)
+			.then.singleWordMustEqual(word, atAddress=address)
+
+		fixture.wireStimuliUsing(test.asStateMachine)
+	}
+
 	// TODO: SIMPLE NON-PIPELINED READ OF THREE WORDS
 	// TODO: SIMPLE PIPELINED READ OF THREE WORDS
 	// TODO: SIMPLE NON-PIPELINED WRITE OF THREE WORDS
