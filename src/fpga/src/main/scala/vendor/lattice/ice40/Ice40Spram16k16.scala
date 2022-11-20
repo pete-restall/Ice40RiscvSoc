@@ -23,4 +23,6 @@ object Ice40Spram16k16 {
 		val PWROFF_N = in Bool()
 		val DO = out Bits(16 bits)
 	}
+
+	val NumberOfWords = 256 * 1024 / 16
 }
