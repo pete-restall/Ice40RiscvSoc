@@ -17,7 +17,7 @@ class Ice40Spram16k16Test extends AnyFlatSpec with SimulationFixture[Ice40Spram1
 	"SB_SPRAM256KA" must "be able to store 256Kib of 16-bit words" in simulator { fixture =>
 		val words = ArraySeq.fill(NumberOfWords) { Random.nextInt(1 << 16) }
 		var test = fixture
-			.given.spramIsPoweredOn()
+			.given.spramIsPoweredOn
 			.and.populatedWith(words)
 			.when.readingFrom(address=0)
 			.then.contentsMustEqual(words)
