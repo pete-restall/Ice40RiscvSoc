@@ -7,7 +7,7 @@ import spinal.core.sim._
 abstract trait SimulationFixtureBase[TDut <: Component] extends TestSuiteMixin { this: TestSuite =>
 	private var sim: SimCompiled[TDut] = _
 
-	abstract override def withFixture(test: NoArgTest): Outcome = {
+	protected abstract override def withFixture(test: NoArgTest): Outcome = {
 		sim = createSimulation().compile(dutFactory())
 		super.withFixture(test)
 	}
