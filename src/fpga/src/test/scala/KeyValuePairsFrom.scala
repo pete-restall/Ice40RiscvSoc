@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.simulation
+package uk.co.lophtware.msfreference.tests
 
 object KeyValuePairsFrom {
 	private val comment = """^\s*(#.*)?$""".r
