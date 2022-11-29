@@ -8,7 +8,7 @@ class Ice40Spram16k16WishboneBusAdapter extends Component {
 	var io = new Ice40Spram16k16WishboneBusAdapter.IoBundle()
 	noIoPrefix()
 
-	io.wishbone.ACK := RegNext(io.wishbone.STB) init(False)
+	io.wishbone.ACK := (RegNext(io.wishbone.STB) init(False)) && io.wishbone.CYC
 	io.wishbone.DAT_MISO := io.spram.DO
 
 	io.spram.AD := io.wishbone.ADR
