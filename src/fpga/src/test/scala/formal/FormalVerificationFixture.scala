@@ -8,11 +8,19 @@ import uk.co.lophtware.msfreference.tests.EnvFile
 
 abstract trait FormalVerificationFixture[TDut <: Component] extends TestSuiteMixin with FormalAssertions { this: TestSuite =>
 	private var fixtureDut: TDut = _
+	private var runningStage: String = "NONE"
 
 	abstract override def run(testName: Option[String], args: Args): Status = {
+		run("BMC", createBoundedModelSimulation(), testName, args)
+		.thenRun(run("INDUCTIVE", createInductiveSimulation(), testName, args))
+	}
+
+	private def run(stage: String, simulation: SpinalFormalConfig, testName: Option[String], args: Args): Status = {
+		runningStage = stage
+
 		var status: Status = null
 		val runTests = () => super.run(testName, args)
-		createSimulation().doVerify(new Component {
+		simulation.workspaceName(s"${this.getClass.getName}_${stage}").doVerify(new Component {
 			val dut = FormalDut(dutFactory())
 			fixtureDut = dut
 
@@ -22,7 +30,11 @@ abstract trait FormalVerificationFixture[TDut <: Component] extends TestSuiteMix
 		status
 	}
 
-	private def createSimulation(): SpinalFormalConfig = FormalVerificationFixture.createSimulation()
+	private def createBoundedModelSimulation(): SpinalFormalConfig = FormalVerificationFixture.createBoundedModelSimulation()
+
+	private def createInductiveSimulation(): SpinalFormalConfig = FormalVerificationFixture.createInductiveSimulation()
+
+	override def suiteName: String = runningStage
 
 	protected def dutFactory(): TDut = ???
 
@@ -41,9 +53,15 @@ object FormalVerificationFixture {
 			softResetActiveLevel = LOW,
 			clockEnableActiveLevel = HIGH)).includeFormal
 
-	def createSimulation() = new SpinalFormalConfig()
+	def createBoundedModelSimulation() = new SpinalFormalConfig()
 		.withSymbiYosys
 		.withBMC(depth=100)
+		.workspacePath(envVars("SPINALSIM_WORKSPACE"))
+		.withConfig(config)
+
+	def createInductiveSimulation() = new SpinalFormalConfig()
+		.withSymbiYosys
+		.withProve(depth=200)
 		.workspacePath(envVars("SPINALSIM_WORKSPACE"))
 		.withConfig(config)
 }
