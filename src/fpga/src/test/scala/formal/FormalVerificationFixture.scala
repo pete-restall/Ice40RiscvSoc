@@ -21,10 +21,12 @@ abstract trait FormalVerificationFixture[TDut <: Component] extends TestSuiteMix
 
 		var status: Status = null
 		val runTests = () => super.run(testName, args)
-		simulation.workspaceName(s"${TestsPackage.relativeClassNameOf(getClass)}_${stage}").doVerify(new Component {
+		val workspaceName = s"${TestsPackage.relativeClassNameOf(getClass)}_${stage}"
+		simulation.workspaceName(workspaceName).doVerify(new Component {
 			val dut = FormalDut(dutFactory())
 			fixtureDut = dut
 
+			setDefinitionName(workspaceName)
 			assumeInitial(ClockDomain.current.isResetActive)
 			status = runTests()
 		})
