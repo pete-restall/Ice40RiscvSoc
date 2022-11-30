@@ -5,6 +5,7 @@ import spinal.core._
 import spinal.core.formal._
 
 import uk.co.lophtware.msfreference.tests.EnvFile
+import uk.co.lophtware.msfreference.tests.TestsPackage
 
 abstract trait FormalVerificationFixture[TDut <: Component] extends TestSuiteMixin with FormalAssertions { this: TestSuite =>
 	private var fixtureDut: TDut = _
@@ -20,7 +21,7 @@ abstract trait FormalVerificationFixture[TDut <: Component] extends TestSuiteMix
 
 		var status: Status = null
 		val runTests = () => super.run(testName, args)
-		simulation.workspaceName(s"${this.getClass.getName}_${stage}").doVerify(new Component {
+		simulation.workspaceName(s"${TestsPackage.relativeClassNameOf(getClass)}_${stage}").doVerify(new Component {
 			val dut = FormalDut(dutFactory())
 			fixtureDut = dut
 

@@ -5,9 +5,12 @@ import spinal.core._
 import spinal.core.sim._
 
 import uk.co.lophtware.msfreference.tests.EnvFile
+import uk.co.lophtware.msfreference.tests.TestsPackage
 
 abstract trait SimulationFixture[TDut <: Component] extends SimulationFixtureBase[TDut] { this: TestSuite =>
-	protected abstract override def createSimulation(): SpinalSimConfig = SimulationFixture.createSimulation()
+	protected abstract override def createSimulation(): SpinalSimConfig = SimulationFixture
+		.createSimulation()
+		.workspaceName(TestsPackage.relativeClassNameOf(getClass))
 }
 
 object SimulationFixture {
