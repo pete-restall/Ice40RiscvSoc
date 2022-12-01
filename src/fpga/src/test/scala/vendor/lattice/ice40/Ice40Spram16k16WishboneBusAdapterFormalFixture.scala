@@ -4,8 +4,10 @@ import spinal.core._
 import spinal.core.formal._
 
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16WishboneBusAdapter
+import uk.co.lophtware.msfreference.tests.IHaveWishboneSlave
+import spinal.lib.bus.wishbone.Wishbone
 
-class Ice40Spram16k16WishboneBusAdapterFormalFixture extends Component {
+class Ice40Spram16k16WishboneBusAdapterFormalFixture extends Component with IHaveWishboneSlave { // TODO: RENAME TO '*VerificationFixture'
 	val io = new Ice40Spram16k16WishboneBusAdapter.IoBundle()
 	private val dut = new Ice40Spram16k16WishboneBusAdapter()
 	io <> dut.io
@@ -21,4 +23,6 @@ class Ice40Spram16k16WishboneBusAdapterFormalFixture extends Component {
 		anyseq(io.spram.DO)
 		this
 	}
+
+	def asWishboneSlave: Wishbone = io.wishbone
 }

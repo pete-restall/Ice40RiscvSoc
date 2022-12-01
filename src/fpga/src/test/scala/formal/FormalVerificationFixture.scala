@@ -11,7 +11,7 @@ abstract trait FormalVerificationFixture[TDut <: Component] extends TestSuiteMix
 	private var fixtureDut: TDut = _
 	private var runningStage: String = "NONE"
 
-	abstract override def run(testName: Option[String], args: Args): Status = {
+	abstract override def runTests(testName: Option[String], args: Args): Status = {
 		run("BMC", createBoundedModelSimulation(), testName, args)
 		.thenRun(run("INDUCTIVE", createInductiveSimulation(), testName, args))
 	}
@@ -20,7 +20,7 @@ abstract trait FormalVerificationFixture[TDut <: Component] extends TestSuiteMix
 		runningStage = stage
 
 		var status: Status = null
-		val runTests = () => super.run(testName, args)
+		val runTests = () => super.runTests(testName, args)
 		val workspaceName = s"${TestsPackage.relativeClassNameOf(getClass)}_${stage}"
 		simulation.workspaceName(workspaceName).doVerify(new Component {
 			val dut = FormalDut(dutFactory())
