@@ -159,6 +159,7 @@ class Ice40Spram16k16WishboneBusAdapterTest extends AnyFlatSpec with Lightweight
 
 	it must "assert Wishbone ACK one cycle after Wishbone STB goes high" in simulator { fixture =>
 		fixture.clockDomain.forkStimulus(period=10)
+		fixture.io.wishbone.CYC #= true
 		fixture.io.wishbone.STB #= true
 		fixture.clockDomain.waitSampling()
 		fixture.io.wishbone.ACK.toBoolean must be(false)
@@ -168,6 +169,7 @@ class Ice40Spram16k16WishboneBusAdapterTest extends AnyFlatSpec with Lightweight
 
 	it must "unassert Wishbone ACK one cycle after Wishbone STB goes low" in simulator { fixture =>
 		fixture.clockDomain.forkStimulus(period=10)
+		fixture.io.wishbone.CYC #= true
 		fixture.io.wishbone.STB #= true
 		fixture.clockDomain.waitSampling()
 		fixture.io.wishbone.STB #= false
