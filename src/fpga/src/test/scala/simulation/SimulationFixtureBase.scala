@@ -14,7 +14,7 @@ abstract trait SimulationFixtureBase[TDut <: Component] extends TestSuiteMixin {
 
 	protected def createSimulation(): SpinalSimConfig = ???
 
-	protected def simulator(test: TDut => Any) = {
+	protected def simulator(test: TDut => Any) = {// TODO: NULL CHECKS FOR test
 		sim.doSim { dut =>
 			SimTimeout(1_000_000)
 			if (test(dut) == SimulationFixtureBase.waitForExplicitSimulationTermination) {

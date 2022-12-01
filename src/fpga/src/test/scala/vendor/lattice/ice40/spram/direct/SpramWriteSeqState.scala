@@ -5,7 +5,7 @@ import spinal.core.sim._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
-class SpramWriteSeqState(
+class SpramWriteSeqState( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
 	private val spram: Ice40Spram16k16.IoBundle,
 	private var address: Int,
 	private val words: Seq[Int],

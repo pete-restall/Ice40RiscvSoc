@@ -5,7 +5,7 @@ import spinal.lib.bus.wishbone._
 
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class WishboneNybbleSelectState(
+class WishboneNybbleSelectState( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
 	private val spram: Wishbone,
 	private val nybbleSelector: Int,
 	private val nextState: Sampling) extends WithNextSampling {

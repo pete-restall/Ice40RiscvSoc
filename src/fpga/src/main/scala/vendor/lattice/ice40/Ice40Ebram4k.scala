@@ -2,7 +2,7 @@ package uk.co.lophtware.msfreference.vendor.lattice.ice40
 
 import spinal.core._
 
-class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component {
+class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component { // TODO: NULL CHECKS FOR readWidth and writeWidth
 	val io = new Ice40Ebram4k.IoBundle(readWidth, writeWidth)
 
 	private val native = new Ice40NativeEbram4k(readWidth, writeWidth)
@@ -64,7 +64,7 @@ class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component 
 }
 
 object Ice40Ebram4k {
-	case class IoBundle(readWidth: BitCount, writeWidth: BitCount) extends Bundle {
+	case class IoBundle(readWidth: BitCount, writeWidth: BitCount) extends Bundle { // TODO: NULL CHECKS FOR readWidth and writeWidth
 		val DI = in Bits(writeWidth)
 		val ADW = in UInt(addressBusWidthFor("writeWidth", writeWidth))
 		val ADR = in UInt(addressBusWidthFor("readWidth", readWidth))

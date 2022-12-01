@@ -8,7 +8,7 @@ import spinal.lib.wishbone.sim.{WishboneDriver, WishboneTransaction}
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
-class WishboneSpramWriteSeqState(
+class WishboneSpramWriteSeqState( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
 	private val clockDomain: ClockDomain,
 	private val spram: Wishbone,
 	private var address: Int,

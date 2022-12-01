@@ -5,7 +5,7 @@ import spinal.core.sim._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
-class SpramPowerOnState(
+class SpramPowerOnState( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
 	private val spram: Ice40Spram16k16.IoBundle,
 	private val nextState: Sampling) extends WithNextSampling {
 

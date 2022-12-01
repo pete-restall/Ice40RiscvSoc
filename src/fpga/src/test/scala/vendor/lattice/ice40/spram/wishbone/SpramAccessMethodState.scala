@@ -6,7 +6,7 @@ import spinal.core.sim._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
-class SpramAccessMethodState(
+class SpramAccessMethodState( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
 	private val isSpramDirectSelector: Bool,
 	private val isSpramDirect: Boolean,
 	private val nextState: Sampling) extends WithNextSampling {

@@ -5,7 +5,7 @@ import scala.collection.immutable.LinearSeq
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
-class SpramStateMachineBuilder(private val spram: Ice40Spram16k16.IoBundle, private val factoryStack: List[Sampling => WithNextSampling]) {
+class SpramStateMachineBuilder(private val spram: Ice40Spram16k16.IoBundle, private val factoryStack: List[Sampling => WithNextSampling]) { // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
 	def powerOn() = withFactory(nextState => new SpramPowerOnState(spram, nextState))
 
 	private def withFactory(factory: (Sampling) => WithNextSampling) = new SpramStateMachineBuilder(spram, factory :: factoryStack)

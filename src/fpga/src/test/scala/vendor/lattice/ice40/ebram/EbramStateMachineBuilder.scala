@@ -5,7 +5,7 @@ import scala.collection.immutable.LinearSeq
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
-class EbramStateMachineBuilder(
+class EbramStateMachineBuilder( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
 	private val ebram: Ice40Ebram4k.IoBundle,
 	private val writeMask: Int,
 	private val factoryStack: List[Sampling => WithNextSampling]) {

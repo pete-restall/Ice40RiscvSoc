@@ -7,7 +7,7 @@ import spinal.core.sim._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
-class EbramAssertingReadState(
+class EbramAssertingReadState(// TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
 	private val ebram: Ice40Ebram4k.IoBundle,
 	private val expectedAddressesAndWords: Seq[(Int, Int)],
 	private val nextState: Sampling) extends WithNextSampling {
@@ -34,5 +34,5 @@ class EbramAssertingReadState(
 
 	private def wrappedAddress(address: Int) = address % (ebram.ADR.maxValue + 1)
 
-	override def withNext(nextState: Sampling) = new EbramAssertingReadState(ebram, expectedAddressesAndWords, nextState)
+	override def withNext(nextState: Sampling) = new EbramAssertingReadState(ebram, expectedAddressesAndWords, nextState) // TODO: NULL CHECKS FOR nextState
 }

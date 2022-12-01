@@ -5,7 +5,7 @@ import spinal.core.sim._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
-class EbramPrimeReadState(
+class EbramPrimeReadState(// TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
 	private val ebram: Ice40Ebram4k.IoBundle,
 	private val address: Int,
 	private val nextState: Sampling) extends WithNextSampling {

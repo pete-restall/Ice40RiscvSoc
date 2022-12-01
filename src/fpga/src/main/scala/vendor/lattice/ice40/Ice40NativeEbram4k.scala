@@ -2,7 +2,7 @@ package uk.co.lophtware.msfreference.vendor.lattice.ice40
 
 import spinal.core._
 
-private class Ice40NativeEbram4k(readWidth: BitCount, writeWidth: BitCount) extends BlackBox {
+private class Ice40NativeEbram4k(readWidth: BitCount, writeWidth: BitCount) extends BlackBox { // TODO: NULL CHECKS FOR readWidth and writeWidth
 	val io = new Ice40NativeEbram4k.IoBundle()
 
 	noIoPrefix()
