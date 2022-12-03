@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests
+package uk.co.lophtware.msfreference.tests.bus.wishbone
 
 import scala.util.Random
 
@@ -7,8 +7,8 @@ import org.scalatest.Inspectors
 import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 
+import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusDataExpander
 import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.WishboneBusDataExpander
 
 class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
 	"WishboneBusDataExpander" must "not accept null slave configuration" in spinalContext { () =>

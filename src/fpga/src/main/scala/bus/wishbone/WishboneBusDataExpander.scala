@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference
+package uk.co.lophtware.msfreference.bus.wishbone
 
 import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}

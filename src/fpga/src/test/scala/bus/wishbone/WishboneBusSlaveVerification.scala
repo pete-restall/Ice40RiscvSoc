@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests
+package uk.co.lophtware.msfreference.tests.bus.wishbone
 
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
