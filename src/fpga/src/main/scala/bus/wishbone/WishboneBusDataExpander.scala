@@ -11,8 +11,8 @@ class WishboneBusDataExpander(slaveConfig: WishboneConfig, numberOfSlaves: Int) 
 	Option(io.master.STALL).map(x => x := isAnyHigh(slave => slave.STALL))
 	Option(io.master.RTY).map(x => x := isAnyHigh(slave => slave.RTY))
 
-	val dataSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.dataWidth)
-	val selSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.selWidth)
+	private val dataSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.dataWidth)
+	private val selSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.selWidth)
 	for ((slave, (i, j), (m, n)) <- io.slaves.lazyZip(dataSliceIndices).lazyZip(selSliceIndices)) {
 		slave.ADR := io.master.ADR
 		slave.CYC := io.master.CYC
