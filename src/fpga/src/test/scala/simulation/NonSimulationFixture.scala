@@ -7,7 +7,7 @@ import spinal.core.sim._
 trait NonSimulationFixture {
 	protected def spinalContext(test: () => Any) = {// TODO: NULL CHECKS FOR test
 		NonSimulationFixture.dummySim.doSim { dut =>
-			test()
+			new Component { test() }
 			simSuccess()
 		}
 	}
