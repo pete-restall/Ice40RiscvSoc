@@ -12,7 +12,7 @@ class WishboneBusDataExpander(slaveConfig: WishboneConfig, numberOfSlaves: Int) 
 	Option(io.master.RTY).map(x => x := isAnyHigh(slave => slave.RTY))
 
 	private val dataSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.dataWidth)
-	private val selSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.selWidth)
+	private val selSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.selWidth) // TODO: BUG - WHEN slaveConfig.selWidth IS 0 THEN EXCEPTION OCCURS...
 	for ((slave, (i, j), (m, n)) <- io.slaves.lazyZip(dataSliceIndices).lazyZip(selSliceIndices)) {
 		slave.ADR := io.master.ADR
 		slave.CYC := io.master.CYC
