@@ -12,12 +12,12 @@ class WishboneBusDataExpander(slaveConfig: WishboneConfig, numberOfSlaves: Int) 
 	Option(io.master.RTY).map(x => x := isAnyHigh(slave => slave.RTY))
 
 	private val dataSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.dataWidth)
-	private val selSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.selWidth) // TODO: BUG - WHEN slaveConfig.selWidth IS 0 THEN EXCEPTION OCCURS...
+	private val selSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.selWidth)
 	for ((slave, (i, j), (m, n)) <- io.slaves.lazyZip(dataSliceIndices).lazyZip(selSliceIndices)) {
 		slave.ADR := io.master.ADR
 		slave.CYC := io.master.CYC
 		slave.STB := io.master.STB
-		slave.SEL := io.master.SEL(m downto n)
+		Option(slave.SEL).map(_ := io.master.SEL(m downto n))
 		slave.WE := io.master.WE
 		slave.DAT_MOSI := io.master.DAT_MOSI(i downto j)
 		io.master.DAT_MISO(i downto j) := slave.DAT_MISO
@@ -28,10 +28,16 @@ class WishboneBusDataExpander(slaveConfig: WishboneConfig, numberOfSlaves: Int) 
 	private def isAnyHigh(isSet: (Wishbone) => Bool) = io.slaves.foldLeft(False)((acc, slave) => acc || isSet(slave))
 
 	private def sliceIndices(numberOfSlices: Int, sliceWidth: Int) = {
-		val sliceLeftIndices = sliceWidth - 1 until numberOfSlices * sliceWidth by sliceWidth
-		val sliceRightIndices = 0 until numberOfSlices * sliceWidth by sliceWidth
+		lazy val invalidIndices = Array.fill(numberOfSlices)(-1)
+		val sliceLeftIndices: Iterable[Int] = sliceIndexRangeFor(sliceWidth - 1, numberOfSlices, sliceWidth).getOrElse(invalidIndices)
+		val sliceRightIndices: Iterable[Int] = sliceIndexRangeFor(0, numberOfSlices, sliceWidth).getOrElse(invalidIndices)
 		sliceLeftIndices.zip(sliceRightIndices)
 	}
+
+	private def sliceIndexRangeFor(start: Int, numberOfSlices: Int, sliceWidth: Int) = if (sliceWidth > 0) {
+		Some(start until numberOfSlices * sliceWidth by sliceWidth)
+	} else None
+
 	// TODO: PLUS ALL THE WIRING OF THE OTHER LINES NOT LISTED ABOVE (TGA, TGC, TGD_MISO, TGD_MOSI, LOCK, CTI, BTE, ETC.)
 }
 
