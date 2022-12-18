@@ -8,7 +8,7 @@ class PriorityEncoder(private val numberOfInputs: Int) extends Component {
 	private val dontCares = Array.fill(numberOfInputs)('-').mkString
 	private val zeroes = Array.fill(numberOfInputs)('0').mkString
 
-	switch(io.inputs.asBits) {
+	switch(io.inputs.asBits(0 until numberOfInputs)) {
 		for (index <- 0 until numberOfInputs) {
 			is(bitmaskFor(index)) {
 				io.output := index
@@ -39,4 +39,6 @@ object PriorityEncoder {
 		val output = out UInt(log2Up(numberOfInputs) bits)
 		val isValid = out Bool()
 	}
+
+	// TODO: WE WANT AN apply(Bool, Bool, *Seq[Bool]) FACTORY METHOD HERE THAT AUTOMATICALLY CREATES A PriorityDecoder AND ASSIGNS THE INPUTS
 }
