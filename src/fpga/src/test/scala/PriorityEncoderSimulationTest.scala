@@ -5,13 +5,17 @@ import scala.util.Random
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
+import spinal.core._
 import spinal.core.sim._
 
 import uk.co.lophtware.msfreference.PriorityEncoder
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class PriorityEncoderSimulationTest(numberOfInputs: Int) extends AnyFlatSpec with LightweightSimulationFixture[PriorityEncoderFixture] with TableDrivenPropertyChecks {
-	protected override def dutFactory() = new PriorityEncoderFixture(numberOfInputs)
+class PriorityEncoderSimulationTest(numberOfInputs: Int, dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec
+	with LightweightSimulationFixture[PriorityEncoderFixture]
+	with TableDrivenPropertyChecks {
+
+	protected override def dutFactory() = new PriorityEncoderFixture(numberOfInputs, dutCreatedViaApplyFactory)
 
 	"PriorityEncoder isValid" must "be false when all inputs are false" in simulator { fixture =>
 		fixture.io.inputs.foreach(input => input #= false)

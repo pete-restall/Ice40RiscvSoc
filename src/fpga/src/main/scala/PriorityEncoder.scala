@@ -30,15 +30,28 @@ class PriorityEncoder(private val numberOfInputs: Int) extends Component {
 }
 
 object PriorityEncoder {
-	case class IoBundle(numberOfInputs: Int) extends Bundle {
-		if (numberOfInputs < 2) {
-			throw new IllegalArgumentException(s"Number of inputs must be at least 2; arg=numberOfInputs, value=${numberOfInputs}")
+	case class IoBundle(private val numberOfInputs: Int) extends Bundle {
+		if (numberOfInputs < 1) {
+			throw new IllegalArgumentException(s"Number of inputs must be at least 1; arg=numberOfInputs, value=${numberOfInputs}")
 		}
 
 		val inputs = in Vec(Bool, numberOfInputs)
-		val output = out UInt(log2Up(numberOfInputs) bits)
+		val output = out UInt(Math.max(1, log2Up(numberOfInputs)) bits)
 		val isValid = out Bool()
 	}
 
-	// TODO: WE WANT AN apply(Bool, Bool, *Seq[Bool]) FACTORY METHOD HERE THAT AUTOMATICALLY CREATES A PriorityDecoder AND ASSIGNS THE INPUTS
+	def apply(highestPriorityInput: Bool, otherInputs: Bool*): PriorityEncoder = {
+		if (highestPriorityInput == null) {
+			throw new IllegalArgumentException("At least one input must be specified; arg=highestPriorityInput, value=null")
+		}
+
+		val indexOfNull = otherInputs.indexOf(null)
+		if (indexOfNull >= 0) {
+			throw new IllegalArgumentException(s"Inputs must all be specified; arg=otherInputs, value=null, index=${indexOfNull}")
+		}
+
+		val encoder = new PriorityEncoder(otherInputs.length + 1)
+		encoder.io.inputs <> Vec(highestPriorityInput +: otherInputs)
+		encoder
+	}
 }
