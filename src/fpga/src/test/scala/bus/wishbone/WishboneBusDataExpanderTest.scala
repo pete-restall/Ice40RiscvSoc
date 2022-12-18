@@ -13,7 +13,7 @@ import uk.co.lophtware.msfreference.tests.simulation._
 class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
 	"WishboneBusDataExpander" must "not accept null slave configuration" in spinalContext { () =>
 		val thrown = the [IllegalArgumentException] thrownBy(new WishboneBusDataExpander(null, 1))
-		thrown.getMessage must include("arg=slaveConfig")
+		thrown.getMessage must (include("arg=slaveConfig") and include("null"))
 	}
 
 	private val lessThanOneNumberOfSlaves = tableFor("numberOfSlaves", List(0, -1, -2, -33, -1234))
