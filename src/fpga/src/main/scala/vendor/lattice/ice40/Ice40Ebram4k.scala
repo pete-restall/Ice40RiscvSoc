@@ -64,7 +64,7 @@ class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount) extends Component 
 }
 
 object Ice40Ebram4k {
-	case class IoBundle(readWidth: BitCount, writeWidth: BitCount) extends Bundle { // TODO: NULL CHECKS FOR readWidth and writeWidth
+	case class IoBundle(private val readWidth: BitCount, private val writeWidth: BitCount) extends Bundle { // TODO: NULL CHECKS FOR readWidth and writeWidth
 		val DI = in Bits(writeWidth)
 		val ADW = in UInt(addressBusWidthFor("writeWidth", writeWidth))
 		val ADR = in UInt(addressBusWidthFor("readWidth", readWidth))
