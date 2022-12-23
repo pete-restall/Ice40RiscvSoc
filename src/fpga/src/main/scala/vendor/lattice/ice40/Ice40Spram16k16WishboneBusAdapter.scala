@@ -45,4 +45,20 @@ object Ice40Spram16k16WishboneBusAdapter {
 		useLOCK=false,
 		useRTY=false,
 		useSTALL=false)
+
+	def apply(spram: Ice40Spram16k16): Ice40Spram16k16WishboneBusAdapter = {
+		if (spram == null) {
+			throw new IllegalArgumentException("An iCE40 SPRAM block must be specified; arg=spram, value=null")
+		}
+
+		val adapter = new Ice40Spram16k16WishboneBusAdapter()
+		adapter.io.spram.DO := 0
+		spram.io.AD := adapter.io.spram.AD
+		spram.io.DI := adapter.io.spram.DI
+		spram.io.MASKWE := adapter.io.spram.MASKWE
+		spram.io.WE := adapter.io.spram.WE
+		spram.io.CS := adapter.io.spram.CS
+
+		adapter
+	}
 }
