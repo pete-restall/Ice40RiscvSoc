@@ -1,0 +1,52 @@
+package uk.co.lophtware.msfreference.tests
+
+import scala.util.Random
+
+import org.scalatest.flatspec._
+import org.scalatest.matchers.must.Matchers._
+import org.scalatest.prop.TableDrivenPropertyChecks
+
+import uk.co.lophtware.msfreference.SeqPairingExtensions._
+
+class SeqPairingExtensionsTest extends AnyFlatSpec with TableDrivenPropertyChecks {
+	"The asPairedSeq method" must "not accept a null sequence of items" in {
+		val nullItems: Seq[Any] = null
+		val thrown = the [IllegalArgumentException] thrownBy(nullItems.asPairedSeq)
+		thrown.getMessage must (include("arg=items") and include("null"))
+	}
+
+	it must "return an empty sequence when given an empty sequence" in {
+		Seq.empty.asPairedSeq must be(Seq.empty)
+	}
+
+	private val oddNumbers = tableFor("oddNumber", List(1, 3, 5, 7, 9, oddNumberBetween(10, 100)))
+
+	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+
+	private def oddNumberBetween(minInclusive: Int, maxExclusive: Int) = Random.between(minInclusive, maxExclusive - 1) | 1
+
+	it must "not accept an odd number of items" in {
+		forAll(oddNumbers) { oddNumber =>
+			val items = Seq.fill(oddNumber) { Random.nextInt() }
+			val thrown = the [IllegalArgumentException] thrownBy(items.asPairedSeq)
+			thrown.getMessage must (include("arg=items") and include("even number"))
+		}
+	}
+
+	it must "return a single sequence of two items when given two items" in {
+		val twoItems = Seq.fill(2) { Random.nextPrintableChar() }
+		twoItems.asPairedSeq must equal(Array(twoItems))
+	}
+
+	it must "return two sequences of paired items when given four items" in {
+		val twoPairs = Seq.fill(2) { Seq.fill(2) { Random.nextPrintableChar() } }
+		val fourItems = twoPairs.flatten
+		fourItems.asPairedSeq must equal(twoPairs)
+	}
+
+	it must "return three sequences of paired items when given six items" in {
+		val threePairs = Seq.fill(3) { Seq.fill(2) { Random.nextInt() } }
+		val sixItems = threePairs.flatten
+		sixItems.asPairedSeq must equal(threePairs)
+	}
+}
