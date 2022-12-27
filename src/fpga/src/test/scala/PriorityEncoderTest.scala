@@ -57,13 +57,13 @@ class PriorityEncoderTest extends AnyFlatSpec with NonSimulationFixture with Tab
 	}
 
 	"PriorityEncoder companion's apply() method" must "not accept a null highestPriorityInput" in spinalContext { () =>
-		val thrown = the [IllegalArgumentException] thrownBy(PriorityEncoder(null))
+		val thrown = the [IllegalArgumentException] thrownBy PriorityEncoder(null)
 		thrown.getMessage must (include("arg=highestPriorityInput") and include("null"))
 	}
 
 	it must "not accept any null inputs" in spinalContext { () =>
 		val inputsContainingNull = Random.shuffle(anyOtherInputs() :+ null)
-		val thrown = the [IllegalArgumentException] thrownBy(PriorityEncoder(anyInput(), inputsContainingNull:_*))
+		val thrown = the [IllegalArgumentException] thrownBy PriorityEncoder(anyInput(), inputsContainingNull:_*)
 		thrown.getMessage must (include("arg=otherInputs") and include("null"))
 	}
 

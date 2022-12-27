@@ -16,7 +16,7 @@ class Ice40Spram16k16WishboneBusAdapterFactoryTest extends AnyFlatSpec
 	protected override def dutFactory() = new Ice40Spram16k16WishboneBusAdapterFactoryFixture()
 
 	"Ice40Spram16k16WishboneBusAdapter companion's apply() method" must "not accept a null SPRAM" in simulator { fixture =>
-		val thrown = the [IllegalArgumentException] thrownBy(Ice40Spram16k16WishboneBusAdapter(null))
+		val thrown = the [IllegalArgumentException] thrownBy Ice40Spram16k16WishboneBusAdapter(null)
 		thrown.getMessage must (include("arg=spram") and include("null"))
 	}
 

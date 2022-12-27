@@ -11,7 +11,7 @@ import uk.co.lophtware.msfreference.SeqPairingExtensions._
 class SeqPairingExtensionsTest extends AnyFlatSpec with TableDrivenPropertyChecks {
 	"The asPairedSeq method" must "not accept a null sequence of items" in {
 		val nullItems: Seq[Any] = null
-		val thrown = the [IllegalArgumentException] thrownBy(nullItems.asPairedSeq)
+		val thrown = the [IllegalArgumentException] thrownBy nullItems.asPairedSeq
 		thrown.getMessage must (include("arg=items") and include("null"))
 	}
 
@@ -28,7 +28,7 @@ class SeqPairingExtensionsTest extends AnyFlatSpec with TableDrivenPropertyCheck
 	it must "not accept an odd number of items" in {
 		forAll(oddNumbers) { oddNumber =>
 			val items = Seq.fill(oddNumber) { Random.nextInt() }
-			val thrown = the [IllegalArgumentException] thrownBy(items.asPairedSeq)
+			val thrown = the [IllegalArgumentException] thrownBy items.asPairedSeq
 			thrown.getMessage must (include("arg=items") and include("even number"))
 		}
 	}
