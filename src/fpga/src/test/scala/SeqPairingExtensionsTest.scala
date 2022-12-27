@@ -16,7 +16,7 @@ class SeqPairingExtensionsTest extends AnyFlatSpec with TableDrivenPropertyCheck
 	}
 
 	it must "return an empty sequence when given an empty sequence" in {
-		Seq.empty.asPairedSeq must be(Seq.empty)
+		Seq.empty[Any].asPairedSeq must be(Seq.empty)
 	}
 
 	private val oddNumbers = tableFor("oddNumber", List(1, 3, 5, 7, 9, oddNumberBetween(10, 100)))
@@ -33,20 +33,38 @@ class SeqPairingExtensionsTest extends AnyFlatSpec with TableDrivenPropertyCheck
 		}
 	}
 
-	it must "return a single sequence of two items when given two items" in {
+	it must "return a single sequence of two items in the same order when given two items" in {
 		val twoItems = Seq.fill(2) { Random.nextPrintableChar() }
 		twoItems.asPairedSeq must equal(Array(twoItems))
 	}
 
-	it must "return two sequences of paired items when given four items" in {
+	it must "return two same-order sequences of paired items when given four items" in {
 		val twoPairs = Seq.fill(2) { Seq.fill(2) { Random.nextPrintableChar() } }
 		val fourItems = twoPairs.flatten
 		fourItems.asPairedSeq must equal(twoPairs)
 	}
 
-	it must "return three sequences of paired items when given six items" in {
+	it must "return three same-order sequences of paired items when given six items" in {
 		val threePairs = Seq.fill(3) { Seq.fill(2) { Random.nextInt() } }
 		val sixItems = threePairs.flatten
 		sixItems.asPairedSeq must equal(threePairs)
+	}
+
+	it must "return ten same-order sequences of paired items when given twenty items" in {
+		val tenPairs = Seq.fill(10) { Seq.fill(2) { Random.nextInt() } }
+		val twentyItems = tenPairs.flatten
+		twentyItems.asPairedSeq must equal(tenPairs)
+	}
+
+	it must "allow implicit conversions from List" in {
+		val pairedItems = Seq.fill(50) { Seq.fill(2) { Random.nextInt() } }
+		val list = pairedItems.flatten.toList
+		list.asPairedSeq must equal(pairedItems)
+	}
+
+	it must "allow implicit conversions from Array" in {
+		val pairedItems = Seq.fill(50) { Seq.fill(2) { Random.nextInt() } }
+		val array = pairedItems.flatten.toArray
+		array.asPairedSeq must equal(pairedItems)
 	}
 }
