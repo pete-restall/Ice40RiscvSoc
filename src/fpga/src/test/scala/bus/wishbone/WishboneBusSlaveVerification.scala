@@ -7,7 +7,7 @@ import spinal.core.formal._
 
 import uk.co.lophtware.msfreference.tests.formal._
 
-class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](private val slaveDutFactory: () => TDut) extends AnyFlatSpec with FormalVerificationFixture[TDut] {
+class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](slaveDutFactory: () => TDut) extends AnyFlatSpec with FormalVerificationFixture[TDut] {
 	protected override def dutFactory() = slaveDutFactory()
 
 	"Wishbone Master interface" must "hold CYC inactive in reset" in verification { dut =>

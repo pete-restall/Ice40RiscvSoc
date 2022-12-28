@@ -3,7 +3,7 @@ package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram
 import uk.co.lophtware.msfreference.tests.givenwhenthen._
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class EbramThen(private val builder: EbramStateMachineBuilder, private val readingFromAddress: Int) extends Then with And[EbramThen] {
+class EbramThen(builder: EbramStateMachineBuilder, readingFromAddress: Int) extends Then with And[EbramThen] {
 	def contentsMustEqual(expectedWords: Seq[Int]): EbramThen = {
 		var address = readingFromAddress - 1
 		contentsMustEqual(expectedWords.map(word => { address += 1; (address -> word) }): _*)

@@ -2,7 +2,7 @@ package uk.co.lophtware.msfreference
 
 import spinal.core._
 
-class PriorityEncoder(private val numberOfInputs: Int) extends Component {
+class PriorityEncoder(numberOfInputs: Int) extends Component {
 	val io = new PriorityEncoder.IoBundle(numberOfInputs)
 
 	private val dontCares = Array.fill(numberOfInputs)('-').mkString
