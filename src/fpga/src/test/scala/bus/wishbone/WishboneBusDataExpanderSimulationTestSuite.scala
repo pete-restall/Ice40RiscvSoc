@@ -22,6 +22,21 @@ class WishboneBusDataExpanderSimulationTestSuite extends AnyFlatSpec {
 				tgcWidth=0,
 				tgdWidth=0,
 				useBTE=false),
+			numberOfSlaves=1),
+		new WishboneBusDataExpanderSimulationTest(
+			slaveConfig=new WishboneConfig(
+				addressWidth=16,
+				dataWidth=16,
+				selWidth=4,
+				useSTALL=false,
+				useLOCK=false,
+				useERR=false,
+				useRTY=false,
+				useCTI=false,
+				tgaWidth=0,
+				tgcWidth=0,
+				tgdWidth=0,
+				useBTE=false),
 			numberOfSlaves=2),
 		new WishboneBusDataExpanderSimulationTest(
 			slaveConfig=new WishboneConfig(
