@@ -34,4 +34,13 @@ object WishboneConfigTestDoubles {
 			tgcWidth,
 			tgdWidth,
 			useBTE)
+
+	def stubDifferentTo(other: WishboneConfig): WishboneConfig = {
+		val stubbed = stub()
+		if (stubbed != other) {
+			stubbed
+		} else {
+			stubDifferentTo(other)
+		}
+	}
 }

@@ -7,10 +7,23 @@ import spinal.lib.bus.wishbone.WishboneConfig
 
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusDataExpander
 
-class WishboneBusDataExpanderFixture(slaveConfig: WishboneConfig, numberOfSlaves: Int) extends Component {
+class WishboneBusDataExpanderFixture(slaveConfig: WishboneConfig, numberOfSlaves: Int, dutCreatedViaApplyFactory: Boolean) extends Component {
 	val io = new WishboneBusDataExpander.IoBundle(slaveConfig, numberOfSlaves)
-	private val dut = new WishboneBusDataExpander(slaveConfig, numberOfSlaves)
-	io <> dut.io
+	private val dut = createAndWireDut()
+
+	private def createAndWireDut() = if (dutCreatedViaApplyFactory) createWiredDutViaApplyFactory() else createAndWireDutManually()
+
+	private def createWiredDutViaApplyFactory() = {
+		val dut = WishboneBusDataExpander(io.slaves.head, io.slaves.tail.toSeq:_*)
+		io.master <> dut.io.master
+		dut
+	}
+
+	private def createAndWireDutManually() = {
+		val dut = new WishboneBusDataExpander(slaveConfig, numberOfSlaves)
+		io <> dut.io
+		dut
+	}
 
 	def anyAddress() = Random.nextLong(1 << slaveConfig.addressWidth)
 

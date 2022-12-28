@@ -6,6 +6,7 @@ import org.scalatest.flatspec._
 import org.scalatest.Inspectors
 import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
+import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusDataExpander
 import uk.co.lophtware.msfreference.tests.simulation._
@@ -162,5 +163,35 @@ class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture 
 			val expander = new WishboneBusDataExpander(slaveConfig, anyNumberOfSlaves())
 			expander.io.master.config.useBTE must be(value)
 		}}
+	}
+
+	"WishboneBusDataExpander companion's apply() method" must "not accept a null first slave" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusDataExpander(null)
+		thrown.getMessage must (include("arg=firstSlave") and include("null"))
+	}
+
+	private def dummySlave() = stubSlaveWith(WishboneConfigTestDoubles.dummy())
+
+	private def stubSlaveWith(config: WishboneConfig) = new Wishbone(config)
+
+	it must "not accept any null slaves" in spinalContext { () =>
+		val otherSlavesWithNull = Random.shuffle(Seq.fill(3) { dummySlave() } :+ null)
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusDataExpander(dummySlave(), otherSlavesWithNull:_*)
+		thrown.getMessage must (include("arg=otherSlaves") and include("null"))
+	}
+
+	it must "not accept any slave with a different configuration" in spinalContext { () =>
+		val firstConfig = WishboneConfigTestDoubles.stub()
+		val secondConfig = WishboneConfigTestDoubles.stubDifferentTo(firstConfig)
+		val slaves = Random.shuffle(Seq.fill(10) { stubSlaveWith(firstConfig) } :+ stubSlaveWith(secondConfig))
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusDataExpander(slaves.head, slaves.tail:_*)
+		thrown.getMessage must (include("arg=otherSlaves") and include("same configuration"))
+	}
+
+	it must "compare slave configurations by value and not by reference" in spinalContext { () =>
+		val firstConfig = WishboneConfigTestDoubles.stub()
+		val secondConfig = firstConfig.copy()
+		val slaves = Random.shuffle(Seq.fill(10) { stubSlaveWith(firstConfig) } :+ stubSlaveWith(secondConfig))
+		noException must be thrownBy(WishboneBusDataExpander(slaves.head, slaves.tail:_*))
 	}
 }

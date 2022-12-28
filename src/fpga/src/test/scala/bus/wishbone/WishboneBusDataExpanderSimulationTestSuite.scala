@@ -7,7 +7,11 @@ import spinal.lib.bus.wishbone.WishboneConfig
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusDataExpander
 
 class WishboneBusDataExpanderSimulationTestSuite extends AnyFlatSpec {
-	override def nestedSuites: IndexedSeq[Suite] = Array(
+	override def nestedSuites: IndexedSeq[Suite] =
+		createTestCasesWith(dutCreatedViaApplyFactory=false) ++
+		createTestCasesWith(dutCreatedViaApplyFactory=true)
+
+	private def createTestCasesWith(dutCreatedViaApplyFactory: Boolean) = Array(
 		new WishboneBusDataExpanderSimulationTest(
 			slaveConfig=new WishboneConfig(
 				addressWidth=16,
@@ -22,7 +26,8 @@ class WishboneBusDataExpanderSimulationTestSuite extends AnyFlatSpec {
 				tgcWidth=0,
 				tgdWidth=0,
 				useBTE=false),
-			numberOfSlaves=1),
+			numberOfSlaves=1,
+			dutCreatedViaApplyFactory=dutCreatedViaApplyFactory),
 		new WishboneBusDataExpanderSimulationTest(
 			slaveConfig=new WishboneConfig(
 				addressWidth=16,
@@ -37,7 +42,8 @@ class WishboneBusDataExpanderSimulationTestSuite extends AnyFlatSpec {
 				tgcWidth=0,
 				tgdWidth=0,
 				useBTE=false),
-			numberOfSlaves=2),
+			numberOfSlaves=2,
+			dutCreatedViaApplyFactory=dutCreatedViaApplyFactory),
 		new WishboneBusDataExpanderSimulationTest(
 			slaveConfig=new WishboneConfig(
 				addressWidth=16,
@@ -52,7 +58,8 @@ class WishboneBusDataExpanderSimulationTestSuite extends AnyFlatSpec {
 				tgcWidth=0,
 				tgdWidth=0,
 				useBTE=false),
-			numberOfSlaves=2),
+			numberOfSlaves=2,
+			dutCreatedViaApplyFactory=dutCreatedViaApplyFactory),
 		new WishboneBusDataExpanderSimulationTest(
 			slaveConfig=new WishboneConfig(
 				addressWidth=16,
@@ -67,7 +74,8 @@ class WishboneBusDataExpanderSimulationTestSuite extends AnyFlatSpec {
 				tgcWidth=0,
 				tgdWidth=0,
 				useBTE=false),
-			numberOfSlaves=2),
+			numberOfSlaves=2,
+			dutCreatedViaApplyFactory=dutCreatedViaApplyFactory),
 		new WishboneBusDataExpanderSimulationTest(
 			slaveConfig=new WishboneConfig(
 				addressWidth=16,
@@ -82,5 +90,6 @@ class WishboneBusDataExpanderSimulationTestSuite extends AnyFlatSpec {
 				tgcWidth=0,
 				tgdWidth=0,
 				useBTE=false),
-			numberOfSlaves=2))
+			numberOfSlaves=2,
+			dutCreatedViaApplyFactory=dutCreatedViaApplyFactory))
 }

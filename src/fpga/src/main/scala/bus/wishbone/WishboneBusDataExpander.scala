@@ -67,4 +67,25 @@ object WishboneBusDataExpander {
 
 		val slaves = Array.fill(numberOfSlaves) { spinal.lib.master(new Wishbone(slaveConfig)) }
 	}
+
+	def apply(firstSlave: Wishbone, otherSlaves: Wishbone*): WishboneBusDataExpander = {
+		if (firstSlave == null) {
+			throw new IllegalArgumentException("Wishbone slaves must all be specified; arg=firstSlave, value=null")
+		}
+
+		val indexOfNull = otherSlaves.indexOf(null)
+		if (indexOfNull >= 0) {
+			throw new IllegalArgumentException(s"Wishbone slaves must all be specified; arg=otherSlaves, value=null, index=${indexOfNull}")
+		}
+
+		val indexOfDifferingConfig = otherSlaves.indexWhere(x => x.config != firstSlave.config)
+		if (indexOfDifferingConfig >= 0) {
+			throw new IllegalArgumentException(s"Wishbone slaves must all have the same configuration; arg=otherSlaves, index=${indexOfDifferingConfig}")
+		}
+
+		val expander = new WishboneBusDataExpander(firstSlave.config, 1 + otherSlaves.length)
+		expander.io.slaves.head <> firstSlave
+		expander.io.slaves.tail.zip(otherSlaves).foreach { case(x, y) => x <> y }
+		expander
+	}
 }

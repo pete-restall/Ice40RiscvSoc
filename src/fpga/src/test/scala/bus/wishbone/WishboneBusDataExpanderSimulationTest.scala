@@ -13,12 +13,12 @@ import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusDataExpander
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class WishboneBusDataExpanderSimulationTest(slaveConfig: WishboneConfig, numberOfSlaves: Int) extends AnyFlatSpec
+class WishboneBusDataExpanderSimulationTest(slaveConfig: WishboneConfig, numberOfSlaves: Int, dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec
 	with LightweightSimulationFixture[WishboneBusDataExpanderFixture]
 	with TableDrivenPropertyChecks
 	with Inspectors {
 
-	protected override def dutFactory() = new WishboneBusDataExpanderFixture(slaveConfig, numberOfSlaves)
+	protected override def dutFactory() = new WishboneBusDataExpanderFixture(slaveConfig, numberOfSlaves, dutCreatedViaApplyFactory)
 
 	"WishboneBusDataExpander slaves" must "all have the same ADR as the master" in simulator { fixture =>
 		fixture.io.master.ADR #= fixture.anyAddress()
