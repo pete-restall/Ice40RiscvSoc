@@ -11,7 +11,7 @@ class PriorityEncoderFixture(numberOfInputs: Int, dutCreatedViaApplyFactory: Boo
 	private def createAndWireDut() = if (dutCreatedViaApplyFactory) createWiredDutViaApplyFactory() else createAndWireDutManually()
 
 	private def createWiredDutViaApplyFactory() = {
-		val dut = PriorityEncoder(io.inputs.head, io.inputs.drop(1).toSeq:_*)
+		val dut = PriorityEncoder(io.inputs.head, io.inputs.tail.toSeq:_*)
 		io.isValid := dut.io.isValid
 		io.output := dut.io.output
 		dut
