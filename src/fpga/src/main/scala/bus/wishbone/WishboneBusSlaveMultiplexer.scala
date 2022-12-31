@@ -30,7 +30,7 @@ class WishboneBusSlaveMultiplexer(busConfig: WishboneConfig, numberOfSlaves: Int
 
 		if (numberOfSlaves < io.selector.maxValue + 1) {
 			default {
-				io.master.DAT_MISO := 0
+				io.master.DAT_MISO := 0 // TODO: MAKE THIS CONFIGURABLE, THEN (FOR EXAMPLE) A SPECIFIC OPCODE CAN BE EXECUTED ON AN INVALID ADDRESS ACCESS BY A CPU'S INSTRUCTION BUS
 				if (io.master.ERR != null) {
 					io.master.ERR := io.master.STB
 					io.master.ACK := False
