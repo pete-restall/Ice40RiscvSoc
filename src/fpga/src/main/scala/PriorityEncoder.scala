@@ -2,6 +2,8 @@ package uk.co.lophtware.msfreference
 
 import spinal.core._
 
+import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
+
 class PriorityEncoder(numberOfInputs: Int) extends Component {
 	val io = new PriorityEncoder.IoBundle(numberOfInputs)
 
@@ -36,7 +38,7 @@ object PriorityEncoder {
 		}
 
 		val inputs = in Vec(Bool, numberOfInputs)
-		val output = out UInt(Math.max(1, log2Up(numberOfInputs)) bits)
+		val output = out UInt(numberOfInputs.toCombinationalBitWidth)
 		val isValid = out Bool()
 	}
 
