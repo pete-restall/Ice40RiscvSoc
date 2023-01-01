@@ -15,7 +15,7 @@ class Ice40Ebram4kAs256x16Test extends AnyFlatSpec with SimulationFixture[Ice40E
 
 	"PDP4K" must "be able to store 256 16-bit words" in simulator { fixture =>
 		val words = ArraySeq.fill(256) { Random.nextInt(1 << 16) }
-		var test = fixture
+		val test = fixture
 			.given.populatedWith(words)
 			.when.readingFrom(address=0)
 			.then.contentsMustEqual(words)
@@ -27,7 +27,7 @@ class Ice40Ebram4kAs256x16Test extends AnyFlatSpec with SimulationFixture[Ice40E
 		val words = ArraySeq.fill(256) { Random.nextInt(1 << 16) }
 		val mask = Random.nextInt(1 << 16)
 		val maskedWords = words.map(x => x & ~mask).toArray
-		var test = fixture
+		val test = fixture
 			.given.writeMaskOf(mask)
 			.and.populatedWith(words)
 			.when.readingFrom(address=0)

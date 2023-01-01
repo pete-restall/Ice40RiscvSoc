@@ -15,7 +15,7 @@ class Ice40Ebram4kAs1024x4Test extends AnyFlatSpec with SimulationFixture[Ice40E
 
 	"PDP4K" must "be able to store 1024 4-bit nybbles" in simulator { fixture =>
 		val words = ArraySeq.fill(1024) { Random.nextInt(1 << 4) }
-		var test = fixture
+		val test = fixture
 			.given.populatedWith(words)
 			.when.readingFrom(address=0)
 			.then.contentsMustEqual(words)
@@ -26,7 +26,7 @@ class Ice40Ebram4kAs1024x4Test extends AnyFlatSpec with SimulationFixture[Ice40E
 	it must "not be able to mask written bits" in simulator { fixture =>
 		val unmaskedWords = ArraySeq.fill(1024) { Random.nextInt(1 << 4) }
 		val ignoredMask = Random.nextInt(1 << 16)
-		var test = fixture
+		val test = fixture
 			.given.writeMaskOf(ignoredMask)
 			.and.populatedWith(unmaskedWords)
 			.when.readingFrom(address=0)

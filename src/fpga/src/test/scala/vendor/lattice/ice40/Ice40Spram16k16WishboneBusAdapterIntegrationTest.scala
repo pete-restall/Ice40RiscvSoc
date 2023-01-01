@@ -18,7 +18,7 @@ class Ice40Spram16k16WishboneBusAdapterIntegrationTest extends AnyFlatSpec with 
 	"Ice40Spram16k16WishboneBusAdapter Wishbone bus" must "respond to a simple read" in simulator { fixture =>
 		val word = fixture.anyData()
 		val address = fixture.anyAddress()
-		var test = fixture
+		val test = fixture
 			.given.spramIsPoweredOn
 			.and.accessedDirectly
 			.and.singleWordWrittenTo(word, atAddress=address)
@@ -31,7 +31,7 @@ class Ice40Spram16k16WishboneBusAdapterIntegrationTest extends AnyFlatSpec with 
 	it must "respond to a simple write" in simulator { fixture =>
 		val word = fixture.anyData()
 		val address = fixture.anyAddress()
-		var test = fixture
+		val test = fixture
 			.given.spramIsPoweredOn
 			.and.accessedOverWishbone
 			.and.singleWordWrittenTo(word, atAddress=address)
