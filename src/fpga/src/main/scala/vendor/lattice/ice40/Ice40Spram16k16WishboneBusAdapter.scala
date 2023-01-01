@@ -8,7 +8,7 @@ class Ice40Spram16k16WishboneBusAdapter extends Component {
 	val io = new Ice40Spram16k16WishboneBusAdapter.IoBundle()
 	noIoPrefix()
 
-	io.wishbone.ACK := (RegNext(io.wishbone.STB) init(False)) && io.wishbone.CYC
+	io.wishbone.ACK := (RegNext(io.wishbone.STB) init(False)) && io.wishbone.CYC // TODO: THE ACK IS IMMEDIATE ON STB IF IT'S A WRITE TRANSACTION...
 	io.wishbone.DAT_MISO := io.spram.DO
 
 	io.spram.AD := io.wishbone.ADR
