@@ -12,7 +12,14 @@ import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusDataExpander
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
-	"WishboneBusDataExpander" must "not accept null slave configuration" in spinalContext { () =>
+	"WishboneBusDataExpander" must "not use the 'io' prefix for signals" in spinalContext { () =>
+		val expander = new WishboneBusDataExpander(WishboneConfigTestDoubles.dummy(), anyNumberOfSlaves())
+		expander.io.name must be("")
+	}
+
+	private def anyNumberOfSlaves() = Random.between(1, 32)
+
+	it must "not accept null slave configuration" in spinalContext { () =>
 		val thrown = the [IllegalArgumentException] thrownBy(new WishboneBusDataExpander(null, 1))
 		thrown.getMessage must (include("arg=slaveConfig") and include("null"))
 	}
@@ -29,8 +36,6 @@ class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture 
 	}
 
 	private val numberOfSlaves = tableFor("numberOfSlaves", List(1, 2, 3, anyNumberOfSlaves()))
-
-	private def anyNumberOfSlaves() = Random.between(1, 32)
 
 	it must "have IO for the number of slaves passed to the constructor" in spinalContext { () =>
 		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {

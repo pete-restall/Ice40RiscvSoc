@@ -13,7 +13,14 @@ import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusSlaveMultiplexer
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
-	"WishboneBusSlaveMultiplexer" must "not accept null bus configuration" in spinalContext { () =>
+	"WishboneBusSlaveMultiplexer" must "not use the 'io' prefix for signals" in spinalContext { () =>
+		val mux = new WishboneBusSlaveMultiplexer(WishboneConfigTestDoubles.dummy(), anyNumberOfSlaves())
+		mux.io.name must be("")
+	}
+
+	private def anyNumberOfSlaves() = Random.between(1, 32)
+
+	it must "not accept null bus configuration" in spinalContext { () =>
 		val thrown = the [IllegalArgumentException] thrownBy(new WishboneBusSlaveMultiplexer(null, 1))
 		thrown.getMessage must (include("arg=busConfig") and include("null"))
 	}
@@ -30,8 +37,6 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 	}
 
 	private val numberOfSlaves = tableFor("numberOfSlaves", List(1, 2, 3, anyNumberOfSlaves()))
-
-	private def anyNumberOfSlaves() = Random.between(1, 32)
 
 	it must "have IO for the number of slaves passed to the constructor" in spinalContext { () =>
 		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {

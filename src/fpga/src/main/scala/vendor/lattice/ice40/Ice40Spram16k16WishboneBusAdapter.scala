@@ -5,7 +5,7 @@ import spinal.lib.bus.wishbone._
 import spinal.lib.slave
 
 class Ice40Spram16k16WishboneBusAdapter extends Component {
-	var io = new Ice40Spram16k16WishboneBusAdapter.IoBundle()
+	val io = new Ice40Spram16k16WishboneBusAdapter.IoBundle()
 	noIoPrefix()
 
 	io.wishbone.ACK := (RegNext(io.wishbone.STB) init(False)) && io.wishbone.CYC

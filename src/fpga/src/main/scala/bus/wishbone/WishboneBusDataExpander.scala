@@ -5,6 +5,7 @@ import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
 class WishboneBusDataExpander(slaveConfig: WishboneConfig, numberOfSlaves: Int) extends Component {
 	val io = new WishboneBusDataExpander.IoBundle(slaveConfig, numberOfSlaves)
+	noIoPrefix()
 
 	io.master.ACK := areAllHigh(slave => slave.ACK)
 	Option(io.master.ERR).map(x => x := isAnyHigh(slave => slave.ERR))

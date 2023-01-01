@@ -11,11 +11,16 @@ import uk.co.lophtware.msfreference.PriorityEncoder
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class PriorityEncoderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {
+	"PriorityEncoder" must "not use the 'io' prefix for signals" in spinalContext { () =>
+		val encoder = new PriorityEncoder(numberOfInputs=1)
+		encoder.io.name must be("")
+	}
+
 	private val lessThanOneNumberOfInputs = tableFor("numberOfInputs", List(0, -1, -2, -11, -1024))
 
 	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
 
-	"PriorityEncoder" must "not accept less than 1 input" in spinalContext { () =>
+	it must "not accept less than 1 input" in spinalContext { () =>
 		forAll(lessThanOneNumberOfInputs) { (numberOfInputs: Int) => {
 			val thrown = the [IllegalArgumentException] thrownBy(new PriorityEncoder(numberOfInputs))
 			thrown.getMessage must include("arg=numberOfInputs")

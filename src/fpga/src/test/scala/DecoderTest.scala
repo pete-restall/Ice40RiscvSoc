@@ -11,7 +11,12 @@ import uk.co.lophtware.msfreference.Decoder
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class DecoderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {
-	"Decoder" must "not accept a null inputWidth" in spinalContext { () =>
+	"Decoder" must "not use the 'io' prefix for signals" in spinalContext { () =>
+		val decoder = new Decoder(1 bit)
+		decoder.io.name must be("")
+	}
+
+	it must "not accept a null inputWidth" in spinalContext { () =>
 		val thrown = the [IllegalArgumentException] thrownBy(new Decoder(null))
 		thrown.getMessage must (include("arg=inputWidth") and include("null"))
 	}

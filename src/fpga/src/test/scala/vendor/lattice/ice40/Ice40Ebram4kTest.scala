@@ -9,6 +9,21 @@ import uk.co.lophtware.msfreference.tests.simulation.NonSimulationFixture
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
 class Ice40Ebram4kTest extends AnyFlatSpec with NonSimulationFixture with Matchers with TableDrivenPropertyChecks {
+	"Ice40Ebram4k" must "not use the 'io' prefix for signals" in spinalContext { () =>
+		val ebram = new Ice40Ebram4k(readWidth=16 bits, writeWidth=16 bits)
+		ebram.io.name must be("")
+	}
+
+	it must "not not accept a null readWidth" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy(new Ice40Ebram4k(readWidth=null, writeWidth=16 bits))
+		thrown.getMessage must (include("arg=readWidth") and include("null"))
+	}
+
+	it must "not not accept a null writeWidth" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy(new Ice40Ebram4k(readWidth=16 bits, writeWidth=null))
+		thrown.getMessage must (include("arg=writeWidth") and include("null"))
+	}
+
 	private val validWidths = List(2 bits, 4 bits, 8 bits, 16 bits)
 	private val validWidthCombinations = tableFor(("readWidth", "writeWidth"), for {
 		readWidth <- validWidths
@@ -17,7 +32,7 @@ class Ice40Ebram4kTest extends AnyFlatSpec with NonSimulationFixture with Matche
 
 	private def tableFor[A](headers: (String, String), values: Iterable[(A, A)]) = Table(headers) ++ values
 
-	"PDP4K" must "be able to set read and write widths independently" in spinalContext { () =>
+	it must "be able to set read and write widths independently" in spinalContext { () =>
 		forAll(validWidthCombinations) { (readWidth: BitCount, writeWidth: BitCount) =>
 			val ebram = new Ice40Ebram4k(readWidth, writeWidth)
 			ebram.io.DO.getWidth must be(readWidth.value)

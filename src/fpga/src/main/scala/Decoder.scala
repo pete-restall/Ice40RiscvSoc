@@ -4,6 +4,8 @@ import spinal.core._
 
 class Decoder(inputWidth: BitCount) extends Component {
 	val io = new Decoder.IoBundle(inputWidth)
+	noIoPrefix()
+
 	io.outputs.zipWithIndex.foreach { case(output, index) => output := (io.input === index) }
 }
 

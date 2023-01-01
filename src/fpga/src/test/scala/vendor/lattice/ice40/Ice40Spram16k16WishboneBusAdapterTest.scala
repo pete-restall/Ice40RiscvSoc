@@ -11,6 +11,11 @@ import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16Wishbone
 class Ice40Spram16k16WishboneBusAdapterTest extends AnyFlatSpec with LightweightSimulationFixture[Ice40Spram16k16WishboneBusAdapterFixture] {
 	protected override def dutFactory() = new Ice40Spram16k16WishboneBusAdapterFixture()
 
+	"Ice40Spram16k16WishboneBusAdapter" must "not use the 'io' prefix for signals" in simulator { fixture =>
+		val adapter = new Ice40Spram16k16WishboneBusAdapter()
+		adapter.io.name must be("")
+	}
+
 	"Ice40Spram16k16WishboneBusAdapter Wishbone bus" must "have a 14-bit address width" in simulator { fixture =>
 		fixture.io.wishbone.ADR.getWidth must be(14)
 	}

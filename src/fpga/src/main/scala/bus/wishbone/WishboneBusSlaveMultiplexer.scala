@@ -7,6 +7,7 @@ import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
 
 class WishboneBusSlaveMultiplexer(busConfig: WishboneConfig, numberOfSlaves: Int) extends Component {
 	val io = new WishboneBusSlaveMultiplexer.IoBundle(busConfig, numberOfSlaves)
+	noIoPrefix()
 
 	io.slaves.zipWithIndex.foreach { case(slave, index) =>
 		slave.DAT_MOSI := io.master.DAT_MOSI

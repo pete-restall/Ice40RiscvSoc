@@ -6,6 +6,7 @@ import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
 
 class PriorityEncoder(numberOfInputs: Int) extends Component {
 	val io = new PriorityEncoder.IoBundle(numberOfInputs)
+	noIoPrefix()
 
 	private val dontCares = Array.fill(numberOfInputs)('-').mkString
 	private val zeroes = Array.fill(numberOfInputs)('0').mkString
