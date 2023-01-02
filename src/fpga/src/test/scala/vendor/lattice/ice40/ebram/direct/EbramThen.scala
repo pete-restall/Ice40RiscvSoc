@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram
+package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.direct
 
 import uk.co.lophtware.msfreference.tests.givenwhenthen._
 import uk.co.lophtware.msfreference.tests.simulation._

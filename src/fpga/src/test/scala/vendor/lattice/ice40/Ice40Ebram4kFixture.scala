@@ -4,7 +4,7 @@ import spinal.core._
 import spinal.core.sim._
 
 import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.{EbramGiven, EbramStateMachineBuilder}
+import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.direct.{EbramGiven, EbramStateMachineBuilder}
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
 class Ice40Ebram4kFixture(readWidth: BitCount, writeWidth: BitCount) extends Component {// TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
