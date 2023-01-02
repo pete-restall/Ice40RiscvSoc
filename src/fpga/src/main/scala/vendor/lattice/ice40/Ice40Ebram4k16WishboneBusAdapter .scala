@@ -53,4 +53,29 @@ object Ice40Ebram4k16WishboneBusAdapter {
 		useLOCK=false,
 		useRTY=false,
 		useSTALL=false)
+
+	def apply(ebram: Ice40Ebram4k): Ice40Ebram4k16WishboneBusAdapter = {
+		if (ebram == null) {
+			throw new IllegalArgumentException("An iCE40 EBRAM block must be specified; arg=ebram, value=null")
+		}
+
+		if (ebram.io.DI.getWidth != 16 || ebram.io.DO.getWidth != 16) {
+			throw new IllegalArgumentException(s"The iCE40 EBRAM block's data bus must be 16 bits wide; arg=ebram, readWidth=${ebram.io.DO.getWidth bits}, writeWidth=${ebram.io.DI.getWidth bits}")
+		}
+
+		val adapter = new Ice40Ebram4k16WishboneBusAdapter()
+		adapter.io.ebram.DO := ebram.io.DO
+		ebram.io.DI := adapter.io.ebram.DI
+		ebram.io.ADW := adapter.io.ebram.ADW
+		ebram.io.ADR := adapter.io.ebram.ADR
+		ebram.io.CEW := adapter.io.ebram.CEW
+		ebram.io.CER := adapter.io.ebram.CER
+		ebram.io.RE := adapter.io.ebram.RE
+		ebram.io.WE := adapter.io.ebram.WE
+		ebram.io.MASK_N.map(_ := adapter.io.ebram.MASK_N)
+		ebram.io.CKR := adapter.clockDomain.clock.pull()
+		ebram.io.CKW := adapter.clockDomain.clock.pull()
+
+		adapter
+	}
 }

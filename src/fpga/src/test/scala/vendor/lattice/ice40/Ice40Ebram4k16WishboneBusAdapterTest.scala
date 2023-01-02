@@ -2,11 +2,13 @@ package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
 
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
+import org.scalatest.prop.TableDrivenPropertyChecks
+import spinal.core._
 
 import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k16WishboneBusAdapter
+import uk.co.lophtware.msfreference.vendor.lattice.ice40.{Ice40Ebram4k, Ice40Ebram4k16WishboneBusAdapter}
 
-class Ice40Ebram4k16WishboneBusAdapterTest extends AnyFlatSpec with NonSimulationFixture {
+class Ice40Ebram4k16WishboneBusAdapterTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {
 	"Ice40Ebram4k16WishboneBusAdapter" must "not use the 'io' prefix for signals" in spinalContext { () =>
 		val adapter = new Ice40Ebram4k16WishboneBusAdapter()
 		adapter.io.name must be("")
@@ -80,5 +82,30 @@ class Ice40Ebram4k16WishboneBusAdapterTest extends AnyFlatSpec with NonSimulatio
 	it must "not have a stall flag" in spinalContext { () => // TODO: THE STALL FLAG DETERMINES IF THE BUS IS PIPELINED...WE WANT PIPELINING...
 		val adapter = new Ice40Ebram4k16WishboneBusAdapter()
 		adapter.io.wishbone.STALL must be(null)
+	}
+
+	"Ice40Ebram4k16WishboneBusAdapter companion's apply() method" must "not accept a null EBRAM" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy Ice40Ebram4k16WishboneBusAdapter(null)
+		thrown.getMessage must (include("arg=ebram") and include("null"))
+	}
+
+	private val invalidWidths = tableFor("invalidWidth", List(2 bits, 4 bits, 8 bits))
+
+	private def tableFor[A](headers: (String), values: Iterable[A]) = Table(headers) ++ values
+
+	it must "not accept EBRAMs with read widths other than 16 bits" in spinalContext { () =>
+		forAll(invalidWidths) { (invalidReadWidth: BitCount) => {
+			val invalidEbram = new Ice40Ebram4k(invalidReadWidth, 16 bits)
+			val thrown = the [IllegalArgumentException] thrownBy(Ice40Ebram4k16WishboneBusAdapter(invalidEbram))
+			thrown.getMessage must (include("arg=ebram") and include("16 bits"))
+		}}
+	}
+
+	it must "not accept EBRAMs with write widths other than 16 bits" in spinalContext { () =>
+		forAll(invalidWidths) { (invalidWriteWidth: BitCount) => {
+			val invalidEbram = new Ice40Ebram4k(16 bits, invalidWriteWidth)
+			val thrown = the [IllegalArgumentException] thrownBy(Ice40Ebram4k16WishboneBusAdapter(invalidEbram))
+			thrown.getMessage must (include("arg=ebram") and include("16 bits"))
+		}}
 	}
 }
