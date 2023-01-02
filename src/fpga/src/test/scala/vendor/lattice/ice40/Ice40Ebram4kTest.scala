@@ -14,12 +14,12 @@ class Ice40Ebram4kTest extends AnyFlatSpec with NonSimulationFixture with Matche
 		ebram.io.name must be("")
 	}
 
-	it must "not not accept a null readWidth" in spinalContext { () =>
+	it must "not accept a null readWidth" in spinalContext { () =>
 		val thrown = the [IllegalArgumentException] thrownBy(new Ice40Ebram4k(readWidth=null, writeWidth=16 bits))
 		thrown.getMessage must (include("arg=readWidth") and include("null"))
 	}
 
-	it must "not not accept a null writeWidth" in spinalContext { () =>
+	it must "not accept a null writeWidth" in spinalContext { () =>
 		val thrown = the [IllegalArgumentException] thrownBy(new Ice40Ebram4k(readWidth=16 bits, writeWidth=null))
 		thrown.getMessage must (include("arg=writeWidth") and include("null"))
 	}
