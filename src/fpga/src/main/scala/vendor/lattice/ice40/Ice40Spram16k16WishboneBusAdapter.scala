@@ -52,7 +52,7 @@ object Ice40Spram16k16WishboneBusAdapter {
 		}
 
 		val adapter = new Ice40Spram16k16WishboneBusAdapter()
-		adapter.io.spram.DO := 0
+		adapter.io.spram.DO := 0 // TODO: OOPS, MISSING FUNCTIONALITY !
 		spram.io.AD := adapter.io.spram.AD
 		spram.io.DI := adapter.io.spram.DI
 		spram.io.MASKWE := adapter.io.spram.MASKWE
