@@ -18,9 +18,9 @@ class WishboneBusSelMappingAdapterTest extends AnyFlatSpec with NonSimulationFix
 		adapter.io.name must be("")
 	}
 
-	private def dummySelWidth() = 1 bits
+	private def dummySelWidth() = 1 bit
 
-	private def dummyMapper(sel: Bits) = 0
+	private def dummyMapper(sel: Bits) = B(0)
 
 	it must "not accept a null master bus configuration" in spinalContext { () =>
 		val thrown = the [IllegalArgumentException] thrownBy(new WishboneBusSelMappingAdapter(null, dummySelWidth(), dummyMapper))
@@ -36,7 +36,7 @@ class WishboneBusSelMappingAdapterTest extends AnyFlatSpec with NonSimulationFix
 
 	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
 
-	it must "not accept a slaveSelWidth value less than 0" in {
+	it must "not accept a slaveSelWidth value less than 0" in spinalContext { () =>
 		forAll(lessThanZero) { (invalidSelWidth: BitCount) => {
 			val thrown = the [IllegalArgumentException] thrownBy(new WishboneBusSelMappingAdapter(WishboneConfigTestDoubles.dummy(), invalidSelWidth, dummyMapper))
 			thrown.getMessage must include("arg=slaveSelWidth")
@@ -91,8 +91,8 @@ class WishboneBusSelMappingAdapterTest extends AnyFlatSpec with NonSimulationFix
 		adapter.io.slave.SEL must be(null)
 	}
 
-	"WishboneBusSelMappingAdapter companion's apply() method" must "not accept a null master" in spinalContext { () =>
-		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSelMappingAdapter(null, dummySlave(), dummyMapper)
+	"WishboneBusSelMappingAdapter companion's apply(master, slave, mapper) method" must "not accept a null master" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSelMappingAdapter(null.asInstanceOf[Wishbone], dummySlave(), dummyMapper)
 		thrown.getMessage must (include("arg=master") and include("null"))
 	}
 
@@ -103,7 +103,7 @@ class WishboneBusSelMappingAdapterTest extends AnyFlatSpec with NonSimulationFix
 	private def stubWishboneWith(config: WishboneConfig) = new Wishbone(config)
 
 	it must "not accept a null slave" in spinalContext { () =>
-		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSelMappingAdapter(dummyMaster(), null, dummyMapper)
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSelMappingAdapter(dummyMaster(), null.asInstanceOf[Wishbone], dummyMapper)
 		thrown.getMessage must (include("arg=slave") and include("null"))
 	}
 
@@ -149,5 +149,63 @@ class WishboneBusSelMappingAdapterTest extends AnyFlatSpec with NonSimulationFix
 		val slaveConfig = masterConfig.copy(selWidth=Random.between(0, 128))
 		val adapter = WishboneBusSelMappingAdapter(stubMasterWith(masterConfig), stubSlaveWith(slaveConfig), dummyMapper)
 		adapter.io.slave.config must equal(slaveConfig)
+	}
+
+	"WishboneBusSelMappingAdapter companion's apply(masterSelWidth, slave, mapper) method" must "not accept a null masterSelWidth" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSelMappingAdapter(null.asInstanceOf[BitCount], dummySlave(), dummyMapper)
+		thrown.getMessage must (include("arg=masterSelWidth") and include("null"))
+	}
+
+	it must "not accept a null slave" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSelMappingAdapter(dummySelWidth(), null, dummyMapper)
+		thrown.getMessage must (include("arg=slave") and include("null"))
+	}
+
+	it must "not accept a null slaveSelMapper function" in spinalContext { () =>
+		val master = dummyMaster()
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSelMappingAdapter(dummySelWidth(), dummySlave(), null)
+		thrown.getMessage must (include("arg=slaveSelMapper") and include("null"))
+	}
+
+	it must "use the given slave's Wishbone configuration for the master, with the given masterSelWidth" in spinalContext { () =>
+		val masterSelWidth = Random.between(0, 128)
+		val slaveConfig = WishboneConfigTestDoubles.stub()
+		val adapter = WishboneBusSelMappingAdapter(masterSelWidth bits, stubSlaveWith(slaveConfig), dummyMapper)
+		adapter.io.master.config must equal(slaveConfig.copy(selWidth=masterSelWidth))
+	}
+
+	it must "use the given slave's Wishbone configuration for the slave" in spinalContext { () =>
+		val slaveConfig = WishboneConfigTestDoubles.stub()
+		val adapter = WishboneBusSelMappingAdapter(dummySelWidth(), stubSlaveWith(slaveConfig), dummyMapper)
+		adapter.io.slave.config must equal(slaveConfig)
+	}
+
+	"WishboneBusSelMappingAdapter companion's apply(master, slaveSelWidth, mapper) method" must "not accept a null master" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSelMappingAdapter(null, dummySelWidth(), dummyMapper)
+		thrown.getMessage must (include("arg=master") and include("null"))
+	}
+
+	it must "not accept a null slaveSelWidth" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSelMappingAdapter(dummyMaster(), null.asInstanceOf[BitCount], dummyMapper)
+		thrown.getMessage must (include("arg=slaveSelWidth") and include("null"))
+	}
+
+	it must "not accept a null slaveSelMapper function" in spinalContext { () =>
+		val master = dummyMaster()
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSelMappingAdapter(dummyMaster(), dummySelWidth(), null)
+		thrown.getMessage must (include("arg=slaveSelMapper") and include("null"))
+	}
+
+	it must "use the given master's Wishbone configuration for the slave, with the given slaveSelWidth" in spinalContext { () =>
+		val slaveSelWidth = Random.between(0, 128)
+		val masterConfig = WishboneConfigTestDoubles.stub()
+		val adapter = WishboneBusSelMappingAdapter(stubMasterWith(masterConfig), slaveSelWidth bits, dummyMapper)
+		adapter.io.slave.config must equal(masterConfig.copy(selWidth=slaveSelWidth))
+	}
+
+	it must "use the given master's Wishbone configuration for the master" in spinalContext { () =>
+		val masterConfig = WishboneConfigTestDoubles.stub()
+		val adapter = WishboneBusSelMappingAdapter(stubMasterWith(masterConfig), dummySelWidth(), dummyMapper)
+		adapter.io.master.config must equal(masterConfig)
 	}
 }

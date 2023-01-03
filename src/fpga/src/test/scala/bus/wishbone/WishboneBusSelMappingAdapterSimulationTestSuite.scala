@@ -6,13 +6,16 @@ import spinal.core._
 import spinal.lib.bus.wishbone.WishboneConfig
 
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusSelMappingAdapter
+import uk.co.lophtware.msfreference.tests.bus.wishbone.WishboneBusSelMappingAdapterFixture.DutCreationMethod
 
 class WishboneBusSelMappingAdapterSimulationTestSuite extends AnyFlatSpec {
 	override def nestedSuites: IndexedSeq[Suite] =
-		createTestCasesWith(dutCreatedViaApplyFactory=false) ++
-		createTestCasesWith(dutCreatedViaApplyFactory=true)
+		createTestCasesWith(dutCreationMethod=DutCreationMethod.Constructor) ++
+		createTestCasesWith(dutCreationMethod=DutCreationMethod.FactoryTakingMasterAndSlave) ++
+		createTestCasesWith(dutCreationMethod=DutCreationMethod.FactoryTakingMaster) ++
+		createTestCasesWith(dutCreationMethod=DutCreationMethod.FactoryTakingSlave)
 
-	private def createTestCasesWith(dutCreatedViaApplyFactory: Boolean) = Array(
+	private def createTestCasesWith(dutCreationMethod: DutCreationMethod.Enum) = Array(
 		new WishboneBusSelMappingAdapterSimulationTest(
 			masterConfig=new WishboneConfig(
 				addressWidth=16,
@@ -29,7 +32,7 @@ class WishboneBusSelMappingAdapterSimulationTestSuite extends AnyFlatSpec {
 				useBTE=false),
 			slaveSelWidth=16 bits,
 			slaveSelAddend=0x1234,
-			dutCreatedViaApplyFactory=dutCreatedViaApplyFactory),
+			dutCreationMethod=dutCreationMethod),
 		new WishboneBusSelMappingAdapterSimulationTest(
 			masterConfig=new WishboneConfig(
 				addressWidth=16,
@@ -46,5 +49,5 @@ class WishboneBusSelMappingAdapterSimulationTestSuite extends AnyFlatSpec {
 				useBTE=false),
 			slaveSelWidth=16 bits,
 			slaveSelAddend=0x4321,
-			dutCreatedViaApplyFactory=dutCreatedViaApplyFactory))
+			dutCreationMethod=dutCreationMethod))
 }

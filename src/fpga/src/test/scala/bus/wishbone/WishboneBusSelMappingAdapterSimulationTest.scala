@@ -13,12 +13,13 @@ import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusSelMappingAdapter
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class WishboneBusSelMappingAdapterSimulationTest(masterConfig: WishboneConfig, slaveSelWidth: BitCount, slaveSelAddend: Int, dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec
+class WishboneBusSelMappingAdapterSimulationTest(masterConfig: WishboneConfig, slaveSelWidth: BitCount, slaveSelAddend: Int, dutCreationMethod: WishboneBusSelMappingAdapterFixture.DutCreationMethod.Enum)
+	extends AnyFlatSpec
 	with LightweightSimulationFixture[WishboneBusSelMappingAdapterFixture]
 	with TableDrivenPropertyChecks
 	with Inspectors {
 
-	protected override def dutFactory() = new WishboneBusSelMappingAdapterFixture(masterConfig, slaveSelWidth, slaveSelAddend, dutCreatedViaApplyFactory)
+	protected override def dutFactory() = new WishboneBusSelMappingAdapterFixture(masterConfig, slaveSelWidth, slaveSelAddend, dutCreationMethod)
 
 	"WishboneBusSelMappingAdapter slave" must "have the SEL mapped by the slaveSelMapper function" in simulator { fixture =>
 		if (fixture.io.slave.SEL != null) {

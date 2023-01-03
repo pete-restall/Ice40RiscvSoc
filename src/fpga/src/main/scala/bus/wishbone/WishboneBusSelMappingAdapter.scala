@@ -76,4 +76,32 @@ object WishboneBusSelMappingAdapter {
 		adapter.io.slave <> slave
 		adapter
 	}
+
+	def apply(masterSelWidth: BitCount, slave: Wishbone, slaveSelMapper: Bits => Bits): WishboneBusSelMappingAdapter = {
+		if (masterSelWidth == null) {
+			throw new IllegalArgumentException("Width of the Wishbone master's SEL component must be specified; arg=masterSelWidth, value=null")
+		}
+
+		if (slave == null) {
+			throw new IllegalArgumentException("Wishbone slave must be specified; arg=slave, value=null")
+		}
+
+		val adapter = new WishboneBusSelMappingAdapter(slave.config.copy(selWidth=masterSelWidth.value), slave.config.selWidth bits, slaveSelMapper)
+		adapter.io.slave <> slave
+		adapter
+	}
+
+	def apply(master: Wishbone, slaveSelWidth: BitCount, slaveSelMapper: Bits => Bits): WishboneBusSelMappingAdapter = {
+		if (master == null) {
+			throw new IllegalArgumentException("Wishbone master must be specified; arg=master, value=null")
+		}
+
+		if (slaveSelWidth == null) {
+			throw new IllegalArgumentException("Width of the Wishbone slave's SEL component must be specified; arg=slaveSelWidth, value=null")
+		}
+
+		val adapter = new WishboneBusSelMappingAdapter(master.config, slaveSelWidth, slaveSelMapper)
+		adapter.io.master <> master
+		adapter
+	}
 }
