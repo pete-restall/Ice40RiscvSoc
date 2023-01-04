@@ -53,7 +53,7 @@ class WishboneBusSelMappingAdapterTest extends AnyFlatSpec with NonSimulationFix
 		thrown.getMessage must (include("arg=slaveSelMapper") and include("null"))
 	}
 
-	it must "have a call slaveSelMapper when slaveSelWidth is zero" in spinalContext { () =>
+	it must "not call slaveSelMapper when slaveSelWidth is zero" in spinalContext { () =>
 		val selMapper = (_: Bits) => fail("The slaveSelMapper function must not be called when SEL is 0 bits wide (ie. null)")
 		val _ = new WishboneBusSelMappingAdapter(WishboneConfigTestDoubles.dummy(), 0 bits, selMapper)
 	}
