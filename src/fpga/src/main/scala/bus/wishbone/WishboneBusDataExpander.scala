@@ -8,9 +8,9 @@ class WishboneBusDataExpander(slaveConfig: WishboneConfig, numberOfSlaves: Int) 
 	noIoPrefix()
 
 	io.master.ACK := areAllHigh(slave => slave.ACK)
-	Option(io.master.ERR).map(x => x := isAnyHigh(slave => slave.ERR))
-	Option(io.master.STALL).map(x => x := isAnyHigh(slave => slave.STALL))
-	Option(io.master.RTY).map(x => x := isAnyHigh(slave => slave.RTY))
+	Option(io.master.ERR).map(_ := isAnyHigh(slave => slave.ERR))
+	Option(io.master.STALL).map(_ := isAnyHigh(slave => slave.STALL))
+	Option(io.master.RTY).map(_ := isAnyHigh(slave => slave.RTY))
 
 	private val dataSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.dataWidth)
 	private val selSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.selWidth)
