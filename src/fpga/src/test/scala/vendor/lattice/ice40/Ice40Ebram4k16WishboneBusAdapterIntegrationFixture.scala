@@ -29,8 +29,8 @@ class Ice40Ebram4k16WishboneBusAdapterIntegrationFixture extends Component {
 	ebram.io.WE := Mux(io.isEbramDirect, io.ebramDirect.WE, dut.io.ebram.WE)
 	ebram.io.DI := Mux(io.isEbramDirect, io.ebramDirect.DI, dut.io.ebram.DI)
 	ebram.io.MASK_N.map(_ := Mux(io.isEbramDirect, io.ebramDirect.MASK_N.get, dut.io.ebram.MASK_N))
-	ebram.io.CKR := clockDomain.clock.pull()
-	ebram.io.CKW := clockDomain.clock.pull()
+	ebram.io.CKR := clockDomain.readClockWire
+	ebram.io.CKW := clockDomain.readClockWire
 	dut.io.ebram.DO := ebram.io.DO
 	io.ebramDirect.DO := ebram.io.DO
 

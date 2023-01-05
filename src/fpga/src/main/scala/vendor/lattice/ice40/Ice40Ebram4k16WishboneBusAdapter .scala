@@ -73,8 +73,8 @@ object Ice40Ebram4k16WishboneBusAdapter {
 		ebram.io.RE := adapter.io.ebram.RE
 		ebram.io.WE := adapter.io.ebram.WE
 		ebram.io.MASK_N.map(_ := adapter.io.ebram.MASK_N)
-		ebram.io.CKR := adapter.clockDomain.clock.pull()
-		ebram.io.CKW := adapter.clockDomain.clock.pull()
+		ebram.io.CKR := adapter.clockDomain.readClockWire
+		ebram.io.CKW := adapter.clockDomain.readClockWire
 
 		adapter
 	}
