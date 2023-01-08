@@ -20,7 +20,7 @@ class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount, initialRows: Optio
 	native.io.CKR := io.CKR
 	native.io.CEW := io.CEW
 	native.io.CER := io.CER
-	native.io.RE := io.RE
+	native.io.RE := io.RE // TODO: THIS IS ONLY AVAILABLE FOR 256x16 CONFIGURATIONS - MAKE IT OPTIONAL !
 	native.io.WE := io.WE
 	native.io.MASK_N := io.MASK_N.getOrElse(B(0))
 
