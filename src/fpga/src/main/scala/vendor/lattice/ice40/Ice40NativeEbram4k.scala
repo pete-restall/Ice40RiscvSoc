@@ -2,7 +2,9 @@ package uk.co.lophtware.msfreference.vendor.lattice.ice40
 
 import spinal.core._
 
-private class Ice40NativeEbram4k(readWidth: BitCount, writeWidth: BitCount) extends BlackBox { // TODO: NULL CHECKS FOR readWidth and writeWidth
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+
+private class Ice40NativeEbram4k(readWidth: BitCount, writeWidth: BitCount, initialRows: Option[Seq[Seq[Byte]]] = None) extends BlackBox {
 	val io = new Ice40NativeEbram4k.IoBundle()
 
 	noIoPrefix()
@@ -10,6 +12,20 @@ private class Ice40NativeEbram4k(readWidth: BitCount, writeWidth: BitCount) exte
 	addGenerics(
 		("DATA_WIDTH_R" -> readWidth.value.toString),
 		("DATA_WIDTH_W" -> writeWidth.value.toString))
+
+	initialRows.map(row => addGenerics(row.zipWithIndex.map { case(bytes, rowIndex) =>
+		("INITVAL_" + nybbleToHex(rowIndex.toByte) -> bytesToHex(bytes))
+	}:_*))
+
+	private def nybbleToHex(byte: Byte) = ((if (byte < 10) '0' else 'A' - 10) + byte).toChar
+
+	private def bytesToHex(bytes: Seq[Byte]) = "0x" + String.valueOf(bytes.map(byteToHex).reverse.flatten.toArray)
+
+	private def byteToHex(byte: Byte) = Seq(nybbleToHex(upperNybble(byte)), nybbleToHex(lowerNybble(byte)))
+
+	private def upperNybble(byte: Byte) = ((byte >> 4) & 0x0f).toByte
+
+	private def lowerNybble(byte: Byte) = ((byte >> 0) & 0x0f).toByte
 }
 
 private object Ice40NativeEbram4k {

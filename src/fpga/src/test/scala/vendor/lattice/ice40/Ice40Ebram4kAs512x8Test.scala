@@ -10,8 +10,8 @@ import uk.co.lophtware.msfreference.tests.givenwhenthen._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
-class Ice40Ebram4kAs512x8Test extends AnyFlatSpec with SimulationFixture[Ice40Ebram4kFixture] {
-	protected override def dutFactory() = new Ice40Ebram4kFixture(8 bits, 8 bits)
+class Ice40Ebram4kAs512x8Test(dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec with SimulationFixture[Ice40Ebram4kFixture] {
+	protected override def dutFactory() = new Ice40Ebram4kFixture(8 bits, 8 bits, dutCreatedViaApplyFactory)
 
 	"PDP4K" must "be able to store 512 8-bit bytes" in simulator { fixture =>
 		val words = ArraySeq.fill(512) { Random.nextInt(1 << 8) }

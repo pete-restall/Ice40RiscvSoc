@@ -9,8 +9,8 @@ import uk.co.lophtware.msfreference.tests.givenwhenthen._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
-class Ice40Ebram4kAsRead8Write16Test extends AnyFlatSpec with SimulationFixture[Ice40Ebram4kFixture] {
-	protected override def dutFactory() = new Ice40Ebram4kFixture(8 bits, 16 bits)
+class Ice40Ebram4kAsRead8Write16Test(dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec with SimulationFixture[Ice40Ebram4kFixture] {
+	protected override def dutFactory() = new Ice40Ebram4kFixture(8 bits, 16 bits, dutCreatedViaApplyFactory)
 
 	"PDP4K" must "be able to read two interlaced 8-bit bytes from a single 16-bit word" in simulator { fixture =>
 		val word = Random.nextInt(1 << 16)

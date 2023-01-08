@@ -3,6 +3,10 @@ package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.direct
 import uk.co.lophtware.msfreference.tests.givenwhenthen._
 
 class EbramGiven(builder: EbramStateMachineBuilder) extends GivenAnd[EbramGiven, EbramWhen] {
+	def contentsHaveNotBeenInitialised: GivenAnd[EbramGiven, EbramWhen] = new EbramGiven(builder)
+
+	def contentsHaveBeenInitialised: GivenAnd[EbramGiven, EbramWhen] = new EbramGiven(builder)
+
 	def writeMaskOf(mask: Int): GivenAnd[EbramGiven, EbramWhen] = new EbramGiven(builder.setWriteMaskTo(mask))
 
 	def populatedWith(words: Int*): GivenAnd[EbramGiven, EbramWhen] = populatedWith(words)

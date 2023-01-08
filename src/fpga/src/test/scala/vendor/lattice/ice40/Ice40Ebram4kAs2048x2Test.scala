@@ -10,8 +10,8 @@ import uk.co.lophtware.msfreference.tests.givenwhenthen._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
-class Ice40Ebram4kAs2048x2Test extends AnyFlatSpec with SimulationFixture[Ice40Ebram4kFixture] {
-	protected override def dutFactory() = new Ice40Ebram4kFixture(2 bits, 2 bits)
+class Ice40Ebram4kAs2048x2Test(dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec with SimulationFixture[Ice40Ebram4kFixture] {
+	protected override def dutFactory() = new Ice40Ebram4kFixture(2 bits, 2 bits, dutCreatedViaApplyFactory)
 
 	"PDP4K" must "be able to store 2048 2-bit crumbs" in simulator { fixture =>
 		val words = ArraySeq.fill(2048) { Random.nextInt(1 << 2) }

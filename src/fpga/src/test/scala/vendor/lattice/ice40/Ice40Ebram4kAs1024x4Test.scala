@@ -10,8 +10,8 @@ import uk.co.lophtware.msfreference.tests.givenwhenthen._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
-class Ice40Ebram4kAs1024x4Test extends AnyFlatSpec with SimulationFixture[Ice40Ebram4kFixture] {
-	protected override def dutFactory() = new Ice40Ebram4kFixture(4 bits, 4 bits)
+class Ice40Ebram4kAs1024x4Test(dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec with SimulationFixture[Ice40Ebram4kFixture] {
+	protected override def dutFactory() = new Ice40Ebram4kFixture(4 bits, 4 bits, dutCreatedViaApplyFactory)
 
 	"PDP4K" must "be able to store 1024 4-bit nybbles" in simulator { fixture =>
 		val words = ArraySeq.fill(1024) { Random.nextInt(1 << 4) }

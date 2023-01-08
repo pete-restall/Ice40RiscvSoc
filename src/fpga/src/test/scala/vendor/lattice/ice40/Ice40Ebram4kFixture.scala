@@ -3,21 +3,40 @@ package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
 import spinal.core._
 import spinal.core.sim._
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.direct.{EbramGiven, EbramStateMachineBuilder}
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
-class Ice40Ebram4kFixture(readWidth: BitCount, writeWidth: BitCount) extends Component {// TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
+class Ice40Ebram4kFixture(readWidth: BitCount, writeWidth: BitCount, dutCreatedViaApplyFactory: Boolean) extends Component {
+	readWidth.mustNotBeNull("readWidth")
+	writeWidth.mustNotBeNull("writeWidth")
+
 	val io = new Ice40Ebram4k.IoBundle(readWidth, writeWidth)
-	private val dut = new Ice40Ebram4k(readWidth, writeWidth)
-	io <> dut.io
+	private val dut = createAndWireDut()
+
+	private def createAndWireDut() = if (dutCreatedViaApplyFactory) createWiredDutViaApplyFactory() else createAndWireDutManually()
+
+	private def createWiredDutViaApplyFactory() = {
+		val dut = Ice40Ebram4k(readWidth, writeWidth)
+		io <> dut.io
+		dut
+	}
+
+	private def createAndWireDutManually() = {
+		val dut = new Ice40Ebram4k(readWidth, writeWidth)
+		io <> dut.io
+		dut
+	}
 
 	private val readClockDomain = ClockDomain(clock=io.CKR, clockEnable=io.CER)
 	private val writeClockDomain = ClockDomain(clock=io.CKW, clockEnable=io.CEW)
 
 	def given = new EbramGiven(new EbramStateMachineBuilder(io, writeMask=0, factoryStack=List[Sampling => WithNextSampling]()))
 
-	def wireStimuliUsing(initialState: Sampling) = { // TODO: NULL CHECKS FOR initialState
+	def wireStimuliUsing(initialState: Sampling) = {
+		initialState.mustNotBeNull("initialState")
+
 		var state = initialState
 		readClockDomain.withRevertedClockEdge.onSamplings { state = state.onSampling() }
 		readClockDomain.forkStimulus(period=10)
