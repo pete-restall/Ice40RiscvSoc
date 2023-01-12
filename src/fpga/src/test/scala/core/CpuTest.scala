@@ -17,9 +17,9 @@ class CpuTest extends AnyFlatSpec with NonSimulationFixture {
 		cpu.io.name must be("")
 	}
 
-	private def anyResetVector() = Random.nextInt()
+	private def anyResetVector() = Random.between(0,0x100000000l)
 
-	private def anyMtvecInit() = Random.nextInt()
+	private def anyMtvecInit() = Random.between(0, 0x100000000l)
 
 	private def dummyYamlOutFilename() = None
 
