@@ -125,11 +125,11 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 		fixture.io.ebram.WE.toBoolean must be(true)
 	}
 
-	it must "assert EBRAM WE asynchronously when reading and Wishbone STB goes high" in simulator { fixture =>
+	it must "not assert EBRAM WE asynchronously when reading and Wishbone STB goes high" in simulator { fixture =>
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.STB #= true
 		sleep(1)
-		fixture.io.ebram.WE.toBoolean must be(true)
+		fixture.io.ebram.WE.toBoolean must be(false)
 	}
 
 	it must "not assert EBRAM WE asynchronously when writing and Wishbone STB is not high" in simulator { fixture =>

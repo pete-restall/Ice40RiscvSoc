@@ -18,7 +18,7 @@ class Ice40Ebram4k16WishboneBusAdapter extends Component {
 
 	io.ebram.MASK_N := ~io.wishbone.SEL
 	io.ebram.RE := io.wishbone.STB
-	io.ebram.WE := io.wishbone.STB
+	io.ebram.WE := io.wishbone.STB && io.wishbone.WE
 	io.ebram.CER := io.wishbone.CYC && !io.wishbone.WE
 	io.ebram.CEW := io.wishbone.CYC && io.wishbone.WE
 }
