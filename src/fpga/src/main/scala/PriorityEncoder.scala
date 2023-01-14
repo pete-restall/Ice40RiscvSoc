@@ -2,6 +2,7 @@ package uk.co.lophtware.msfreference
 
 import spinal.core._
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
 
 class PriorityEncoder(numberOfInputs: Int) extends Component {
@@ -35,7 +36,7 @@ class PriorityEncoder(numberOfInputs: Int) extends Component {
 object PriorityEncoder {
 	case class IoBundle(private val numberOfInputs: Int) extends Bundle {
 		if (numberOfInputs < 1) {
-			throw new IllegalArgumentException(s"Number of inputs must be at least 1; arg=numberOfInputs, value=${numberOfInputs}")
+			throw numberOfInputs.isOutOfRange("numberOfInputs", "Number of inputs must be at least 1")
 		}
 
 		val inputs = in Vec(Bool, numberOfInputs)
@@ -44,14 +45,8 @@ object PriorityEncoder {
 	}
 
 	def apply(highestPriorityInput: Bool, otherInputs: Bool*): PriorityEncoder = {
-		if (highestPriorityInput == null) {
-			throw new IllegalArgumentException("At least one input must be specified; arg=highestPriorityInput, value=null")
-		}
-
-		val indexOfNull = otherInputs.indexOf(null)
-		if (indexOfNull >= 0) {
-			throw new IllegalArgumentException(s"Inputs must all be specified; arg=otherInputs, value=null, index=${indexOfNull}")
-		}
+		highestPriorityInput.mustNotBeNull("highestPriorityInput", "At least one input must be specified")
+		otherInputs.mustNotContainNull("otherInputs", "All inputs must be specified")
 
 		val encoder = new PriorityEncoder(otherInputs.length + 1)
 		encoder.io.inputs <> Vec(highestPriorityInput +: otherInputs)

@@ -3,6 +3,7 @@ package uk.co.lophtware.msfreference.bus.wishbone
 import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
 
 class WishboneBusSlaveMultiplexer(busConfig: WishboneConfig, numberOfSlaves: Int) extends Component {
@@ -50,12 +51,9 @@ class WishboneBusSlaveMultiplexer(busConfig: WishboneConfig, numberOfSlaves: Int
 
 object WishboneBusSlaveMultiplexer {
 	case class IoBundle(private val busConfig: WishboneConfig, private val numberOfSlaves: Int) extends Bundle {
-		if (busConfig == null) {
-			throw new IllegalArgumentException("Wishbone slave configuration must be specified; arg=busConfig, value=null")
-		}
-
+		busConfig.mustNotBeNull("busConfig", "Wishbone slave configuration must be specified")
 		if (numberOfSlaves < 1) {
-			throw new IllegalArgumentException(s"Number of Wishbone slaves must be at least 1; arg=numberOfSlaves, value=${numberOfSlaves}")
+			throw numberOfSlaves.isOutOfRange("numberOfSlaves", "Number of Wishbone slaves must be at least 1")
 		}
 
 		val master = spinal.lib.slave(new Wishbone(busConfig))
@@ -66,18 +64,9 @@ object WishboneBusSlaveMultiplexer {
 	}
 
 	def apply(selector: UInt, firstSlave: Wishbone, otherSlaves: Wishbone*): WishboneBusSlaveMultiplexer = {
-		if (selector == null) {
-			throw new IllegalArgumentException("Wishbone slave selector must be specified; arg=selector, value=null")
-		}
-
-		if (firstSlave == null) {
-			throw new IllegalArgumentException("Wishbone slaves must all be specified; arg=firstSlave, value=null")
-		}
-
-		val indexOfNull = otherSlaves.indexOf(null)
-		if (indexOfNull >= 0) {
-			throw new IllegalArgumentException(s"Wishbone slaves must all be specified; arg=otherSlaves, value=null, index=${indexOfNull}")
-		}
+		selector.mustNotBeNull("selector", "Wishbone slave selector must be specified; arg=selector, value=null")
+		firstSlave.mustNotBeNull("firstSlave", "Wishbone slaves must all be specified; arg=firstSlave, value=null")
+		otherSlaves.mustNotContainNull("otherSlaves", "Wishbone slaves must all be specified")
 
 		val indexOfDifferingConfig = otherSlaves.indexWhere(x => x.config != firstSlave.config)
 		if (indexOfDifferingConfig >= 0) {

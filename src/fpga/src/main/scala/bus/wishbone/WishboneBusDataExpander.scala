@@ -3,6 +3,8 @@ package uk.co.lophtware.msfreference.bus.wishbone
 import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+
 class WishboneBusDataExpander(slaveConfig: WishboneConfig, numberOfSlaves: Int) extends Component {
 	val io = new WishboneBusDataExpander.IoBundle(slaveConfig, numberOfSlaves)
 	noIoPrefix()
@@ -44,12 +46,9 @@ class WishboneBusDataExpander(slaveConfig: WishboneConfig, numberOfSlaves: Int) 
 
 object WishboneBusDataExpander {
 	case class IoBundle(private val slaveConfig: WishboneConfig, private val numberOfSlaves: Int) extends Bundle {
-		if (slaveConfig == null) {
-			throw new IllegalArgumentException("Wishbone slave configuration must be specified; arg=slaveConfig, value=null")
-		}
-
+		slaveConfig.mustNotBeNull("slaveConfig", "Wishbone slave configuration must be specified")
 		if (numberOfSlaves < 1) {
-			throw new IllegalArgumentException(s"Number of Wishbone slaves must be at least 1; arg=numberOfSlaves, value=${numberOfSlaves}")
+			throw numberOfSlaves.isOutOfRange("numberOfSlaves", "Number of Wishbone slaves must be at least 1")
 		}
 
 		val master = spinal.lib.slave(new Wishbone(new WishboneConfig(
@@ -70,14 +69,8 @@ object WishboneBusDataExpander {
 	}
 
 	def apply(firstSlave: Wishbone, otherSlaves: Wishbone*): WishboneBusDataExpander = {
-		if (firstSlave == null) {
-			throw new IllegalArgumentException("Wishbone slaves must all be specified; arg=firstSlave, value=null")
-		}
-
-		val indexOfNull = otherSlaves.indexOf(null)
-		if (indexOfNull >= 0) {
-			throw new IllegalArgumentException(s"Wishbone slaves must all be specified; arg=otherSlaves, value=null, index=${indexOfNull}")
-		}
+		firstSlave.mustNotBeNull("firstSlave", "Wishbone slaves must all be specified")
+		otherSlaves.mustNotContainNull("otherSlaves", "Wishbone slaves must all be specified")
 
 		val indexOfDifferingConfig = otherSlaves.indexWhere(x => x.config != firstSlave.config)
 		if (indexOfDifferingConfig >= 0) {
