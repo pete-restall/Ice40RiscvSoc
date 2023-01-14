@@ -175,15 +175,15 @@ class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture 
 		thrown.getMessage must (include("arg=firstSlave") and include("null"))
 	}
 
-	private def dummySlave() = stubSlaveWith(WishboneConfigTestDoubles.dummy())
-
-	private def stubSlaveWith(config: WishboneConfig) = new Wishbone(config)
-
 	it must "not accept any null slaves" in spinalContext { () =>
 		val otherSlavesWithNull = Random.shuffle(Seq.fill(3) { dummySlave() } :+ null)
 		val thrown = the [IllegalArgumentException] thrownBy WishboneBusDataExpander(dummySlave(), otherSlavesWithNull:_*)
 		thrown.getMessage must (include("arg=otherSlaves") and include("null"))
 	}
+
+	private def dummySlave() = stubSlaveWith(WishboneConfigTestDoubles.dummy())
+
+	private def stubSlaveWith(config: WishboneConfig) = new Wishbone(config)
 
 	it must "not accept any slave with a different configuration" in spinalContext { () =>
 		val firstConfig = WishboneConfigTestDoubles.stub()
