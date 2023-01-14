@@ -3,7 +3,6 @@ package uk.co.lophtware.msfreference
 import spinal.core._
 
 import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
 
 class SimpleEncoder(numberOfInputs: Int) extends Component {
 	val io = new SimpleEncoder.IoBundle(numberOfInputs)
@@ -33,14 +32,7 @@ class SimpleEncoder(numberOfInputs: Int) extends Component {
 }
 
 object SimpleEncoder {
-	case class IoBundle(private val numberOfInputs: Int) extends Bundle {
-		if (numberOfInputs < 1) {
-			throw numberOfInputs.isOutOfRange("numberOfInputs", "Number of inputs must be at least 1")
-		}
-
-		val inputs = in Vec(Bool, numberOfInputs)
-		val output = out UInt(numberOfInputs.toCombinationalBitWidth)
-		val isValid = out Bool()
+	case class IoBundle(private val numberOfInputs: Int) extends Encoder.IoBundle(numberOfInputs) {
 	}
 
 	def apply(firstInput: Bool, otherInputs: Bool*): SimpleEncoder = {

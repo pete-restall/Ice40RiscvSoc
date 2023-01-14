@@ -3,7 +3,6 @@ package uk.co.lophtware.msfreference
 import spinal.core._
 
 import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
 
 class PriorityEncoder(numberOfInputs: Int) extends Component {
 	val io = new PriorityEncoder.IoBundle(numberOfInputs)
@@ -34,14 +33,7 @@ class PriorityEncoder(numberOfInputs: Int) extends Component {
 }
 
 object PriorityEncoder {
-	case class IoBundle(private val numberOfInputs: Int) extends Bundle {
-		if (numberOfInputs < 1) {
-			throw numberOfInputs.isOutOfRange("numberOfInputs", "Number of inputs must be at least 1")
-		}
-
-		val inputs = in Vec(Bool, numberOfInputs)
-		val output = out UInt(numberOfInputs.toCombinationalBitWidth)
-		val isValid = out Bool()
+	case class IoBundle(private val numberOfInputs: Int) extends Encoder.IoBundle(numberOfInputs) {
 	}
 
 	def apply(highestPriorityInput: Bool, otherInputs: Bool*): PriorityEncoder = {
