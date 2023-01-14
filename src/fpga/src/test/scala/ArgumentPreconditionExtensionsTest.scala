@@ -1,5 +1,7 @@
 package uk.co.lophtware.msfreference.tests
 
+import scala.util.Random
+
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
 
@@ -80,6 +82,116 @@ class ArgumentPreconditionExtensionsTest extends AnyFlatSpec {
 		val trimmedMessage = anyMessage().trim
 		val thrown = the [IllegalArgumentException] thrownBy(null.asInstanceOf[AnyRef].mustNotBeNull(trimmedArgName.wrappedInWhitespace, trimmedMessage.wrappedInWhitespace))
 		thrown.getMessage must be(s"${trimmedMessage}; arg=${trimmedArgName}, value=null")
+	}
+
+	"mustNotContainNull(argName)" must "not accept a null argName" in {
+		val thrown = the [IllegalArgumentException] thrownBy(anySeqWithoutNulls().mustNotContainNull(null))
+		thrown.getMessage must be("Argument name must be specified; arg=argName, value=null")
+	}
+
+	private def anySeqWithoutNulls() = Seq(new AnyRef())
+
+	it must "not accept an empty argName" in {
+		val thrown = the [IllegalArgumentException] thrownBy(anySeqWithoutNulls().mustNotContainNull(""))
+		thrown.getMessage must be("Argument name must be specified; arg=argName, value=")
+	}
+
+	it must "not accept a whitespace argName" in {
+		val whitespaceArgName = StringGenerator.anyWhitespace()
+		val thrown = the [IllegalArgumentException] thrownBy(anySeqWithoutNulls().mustNotContainNull(whitespaceArgName))
+		thrown.getMessage must be("Argument name must be specified; arg=argName, value=" + whitespaceArgName)
+	}
+
+	it must "not throw an exception when the sequence is empty" in {
+		noException must be thrownBy(Seq().mustNotContainNull(anyArgName()))
+	}
+
+	it must "not throw an exception when the sequence contains one non-null value" in {
+		noException must be thrownBy(Seq(new AnyRef).mustNotContainNull(anyArgName()))
+	}
+
+	it must "not throw an exception when the sequence contains all non-null values" in {
+		val noNulls = Seq.fill(Random.between(2, 100)) { new AnyRef }
+		noException must be thrownBy(noNulls.mustNotContainNull(anyArgName()))
+	}
+
+	it must "throw an IllegalArgumentException with the given (trimmed) argName and a default message when the value is null" in {
+		val trimmedArgName = anyArgName().trim
+		val thrown = the [IllegalArgumentException] thrownBy(null.asInstanceOf[Seq[AnyRef]].mustNotContainNull(trimmedArgName.wrappedInWhitespace))
+		thrown.getMessage must be(s"Sequence argument must not contain nulls; arg=${trimmedArgName}, value=null")
+	}
+
+	it must "throw an IllegalArgumentException with the given (trimmed) argName, a default message and the first offending index when the sequence contains null" in {
+		val containsNulls = Random.shuffle(sequenceOfNoNulls() ++ sequenceOfNulls())
+		val indexOfFirstNull = containsNulls.indexOf(null)
+		val trimmedArgName = anyArgName().trim
+		val thrown = the [IllegalArgumentException] thrownBy(containsNulls.mustNotContainNull(trimmedArgName.wrappedInWhitespace))
+		thrown.getMessage must be(s"Sequence argument must not contain nulls; arg=${trimmedArgName}, value=null, index=${indexOfFirstNull}")
+	}
+
+	private def sequenceOfNoNulls() = Seq.fill(Random.between(1, 100)) { new AnyRef }
+
+	private def sequenceOfNulls() = Seq.fill(Random.between(1, 100)) { null }
+
+	"mustNotContainNull(argName, message)" must "not accept a null argName" in {
+		val thrown = the [IllegalArgumentException] thrownBy(anySeqWithoutNulls().mustNotContainNull(null, anyMessage()))
+		thrown.getMessage must be("Argument name must be specified; arg=argName, value=null")
+	}
+
+	it must "not accept an empty argName" in {
+		val thrown = the [IllegalArgumentException] thrownBy(anySeqWithoutNulls().mustNotContainNull("", anyMessage()))
+		thrown.getMessage must be("Argument name must be specified; arg=argName, value=")
+	}
+
+	it must "not accept a whitespace argName" in {
+		val whitespaceArgName = StringGenerator.anyWhitespace()
+		val thrown = the [IllegalArgumentException] thrownBy(anySeqWithoutNulls().mustNotContainNull(whitespaceArgName, anyMessage()))
+		thrown.getMessage must be("Argument name must be specified; arg=argName, value=" + whitespaceArgName)
+	}
+
+	it must "not accept a null message" in {
+		val thrown = the [IllegalArgumentException] thrownBy(anySeqWithoutNulls().mustNotContainNull(anyArgName(), null))
+		thrown.getMessage must be("Exception message must be specified; arg=message, value=null")
+	}
+
+	it must "not accept an empty message" in {
+		val thrown = the [IllegalArgumentException] thrownBy(anySeqWithoutNulls().mustNotContainNull(anyArgName(), ""))
+		thrown.getMessage must be("Exception message must be specified; arg=message, value=")
+	}
+
+	it must "not accept a whitespace message" in {
+		val whitespaceMessage = StringGenerator.anyWhitespace()
+		val thrown = the [IllegalArgumentException] thrownBy(anySeqWithoutNulls().mustNotContainNull(anyArgName(), whitespaceMessage))
+		thrown.getMessage must be("Exception message must be specified; arg=message, value=" + whitespaceMessage)
+	}
+
+	it must "not throw an exception when the sequence is empty" in {
+		noException must be thrownBy(Seq().mustNotContainNull(anyArgName(), anyMessage()))
+	}
+
+	it must "not throw an exception when the sequence contains one non-null value" in {
+		noException must be thrownBy(Seq(new AnyRef).mustNotContainNull(anyArgName(), anyMessage()))
+	}
+
+	it must "not throw an exception when the sequence contains all non-null values" in {
+		val noNulls = Seq.fill(Random.between(2, 100)) { new AnyRef }
+		noException must be thrownBy(noNulls.mustNotContainNull(anyArgName(), anyMessage()))
+	}
+
+	it must "throw an IllegalArgumentException with the given (trimmed) argName and (trimmed) message when the value is null" in {
+		val trimmedArgName = anyArgName().trim
+		val trimmedMessage = anyMessage().trim
+		val thrown = the [IllegalArgumentException] thrownBy(null.asInstanceOf[Seq[AnyRef]].mustNotContainNull(trimmedArgName.wrappedInWhitespace, trimmedMessage.wrappedInWhitespace))
+		thrown.getMessage must be(s"${trimmedMessage}; arg=${trimmedArgName}, value=null")
+	}
+
+	it must "throw an IllegalArgumentException with the given (trimmed) argName, the (trimmed) message and the first offending index when the sequence contains null" in {
+		val containsNulls = Random.shuffle(sequenceOfNoNulls() ++ sequenceOfNulls())
+		val indexOfFirstNull = containsNulls.indexOf(null)
+		val trimmedArgName = anyArgName().trim
+		val trimmedMessage = anyMessage().trim
+		val thrown = the [IllegalArgumentException] thrownBy(containsNulls.mustNotContainNull(trimmedArgName.wrappedInWhitespace, trimmedMessage.wrappedInWhitespace))
+		thrown.getMessage must be(s"${trimmedMessage}; arg=${trimmedArgName}, value=null, index=${indexOfFirstNull}")
 	}
 
 	"mustBeSpecified(argName)" must "not accept a null argName" in {

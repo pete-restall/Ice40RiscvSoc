@@ -17,6 +17,19 @@ object ArgumentPreconditionExtensions {
 		}
 	}
 
+	implicit class NotContainNull[T <: AnyRef](argValue: Seq[T]) {
+		def mustNotContainNull(argName: String): Unit = argValue.mustNotContainNull(argName, "Sequence argument must not contain nulls")
+
+		def mustNotContainNull(argName: String, message: String): Unit = {
+			argValue.mustNotBeNull(argName, message)
+
+			val indexOfNull = argValue.indexOf(null)
+			if (indexOfNull >= 0) {
+				throw new IllegalArgumentException(s"${message.trim}; arg=${argName.trim}, value=null, index=${indexOfNull}")
+			}
+		}
+	}
+
 	implicit class Specified(argValue: String) {
 		def mustBeSpecified(argName: String): Unit = argValue.mustBeSpecified(argName, "Argument must be specified")
 
