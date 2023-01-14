@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference
+package uk.co.lophtware.msfreference.multiplexing
 
 import spinal.core._
 

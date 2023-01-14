@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests
+package uk.co.lophtware.msfreference.tests.multiplexing
 
 import org.scalatest.flatspec._
 import org.scalatest.Suite

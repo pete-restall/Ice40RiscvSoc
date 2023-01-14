@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests
+package uk.co.lophtware.msfreference.tests.multiplexing
 
 import scala.util.Random
 
@@ -8,7 +8,7 @@ import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.SimpleEncoder
+import uk.co.lophtware.msfreference.multiplexing.SimpleEncoder
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class SimpleEncoderSimulationTest(numberOfInputs: Int, dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec

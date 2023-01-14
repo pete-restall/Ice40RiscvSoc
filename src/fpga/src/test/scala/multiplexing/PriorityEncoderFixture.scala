@@ -1,8 +1,8 @@
-package uk.co.lophtware.msfreference.tests
+package uk.co.lophtware.msfreference.tests.multiplexing
 
 import spinal.core._
 
-import uk.co.lophtware.msfreference.PriorityEncoder
+import uk.co.lophtware.msfreference.multiplexing.PriorityEncoder
 
 class PriorityEncoderFixture(numberOfInputs: Int, dutCreatedViaApplyFactory: Boolean) extends Component {
 	val io = new PriorityEncoder.IoBundle(numberOfInputs)

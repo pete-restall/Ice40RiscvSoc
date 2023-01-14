@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests
+package uk.co.lophtware.msfreference.tests.multiplexing
 
 import scala.util.Random
 
@@ -7,12 +7,12 @@ import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 
-import uk.co.lophtware.msfreference.PriorityEncoder
+import uk.co.lophtware.msfreference.multiplexing.SimpleEncoder
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class PriorityEncoderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {
-	"PriorityEncoder" must "not use the 'io' prefix for signals" in spinalContext { () =>
-		val encoder = new PriorityEncoder(numberOfInputs=1)
+class SimpleEncoderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {
+	"SimpleEncoder" must "not use the 'io' prefix for signals" in spinalContext { () =>
+		val encoder = new SimpleEncoder(numberOfInputs=1)
 		encoder.io.name must be("")
 	}
 
@@ -22,7 +22,7 @@ class PriorityEncoderTest extends AnyFlatSpec with NonSimulationFixture with Tab
 
 	it must "not accept less than 1 input" in spinalContext { () =>
 		forAll(lessThanOneNumberOfInputs) { (numberOfInputs: Int) => {
-			val thrown = the [IllegalArgumentException] thrownBy(new PriorityEncoder(numberOfInputs))
+			val thrown = the [IllegalArgumentException] thrownBy(new SimpleEncoder(numberOfInputs))
 			thrown.getMessage must include("arg=numberOfInputs")
 		}}
 	}
@@ -33,7 +33,7 @@ class PriorityEncoderTest extends AnyFlatSpec with NonSimulationFixture with Tab
 
 	it must "have IO for the number of inputs passed to the constructor" in spinalContext { () =>
 		forAll(numberOfInputs) { (numberOfInputs: Int) => {
-			val encoder = new PriorityEncoder(numberOfInputs)
+			val encoder = new SimpleEncoder(numberOfInputs)
 			encoder.io.inputs.length must be(numberOfInputs)
 		}}
 	}
@@ -56,19 +56,19 @@ class PriorityEncoderTest extends AnyFlatSpec with NonSimulationFixture with Tab
 
 	it must "have an output width sufficient to cover all inputs" in spinalContext { () =>
 		forAll(outputWidthsVsNumberOfInputs) { (numberOfInputs: Int, outputWidth: Int) => {
-			val encoder = new PriorityEncoder(numberOfInputs)
+			val encoder = new SimpleEncoder(numberOfInputs)
 			encoder.io.output.getWidth must be(outputWidth)
 		}}
 	}
 
-	"PriorityEncoder companion's apply() method" must "not accept a null highestPriorityInput" in spinalContext { () =>
-		val thrown = the [IllegalArgumentException] thrownBy PriorityEncoder(null)
-		thrown.getMessage must (include("arg=highestPriorityInput") and include("null"))
+	"SimpleEncoder companion's apply() method" must "not accept a null firstInput" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy SimpleEncoder(null)
+		thrown.getMessage must (include("arg=firstInput") and include("null"))
 	}
 
 	it must "not accept any null inputs" in spinalContext { () =>
 		val inputsContainingNull = Random.shuffle(anyOtherInputs() :+ null)
-		val thrown = the [IllegalArgumentException] thrownBy PriorityEncoder(anyInput(), inputsContainingNull:_*)
+		val thrown = the [IllegalArgumentException] thrownBy SimpleEncoder(anyInput(), inputsContainingNull:_*)
 		thrown.getMessage must (include("arg=otherInputs") and include("null"))
 	}
 
@@ -76,10 +76,10 @@ class PriorityEncoderTest extends AnyFlatSpec with NonSimulationFixture with Tab
 
 	private def anyInput() = if (Random.nextBoolean()) True else False
 
-	it must "return a PriorityEncoder with the same number of IO as inputs" in spinalContext { () =>
+	it must "return a Encoder with the same number of IO as inputs" in spinalContext { () =>
 		forAll(numberOfInputs) { (numberOfInputs: Int) =>
-			val otherInputs = Seq.fill(numberOfInputs - 1) { anyInput() }
-			val encoder = PriorityEncoder(anyInput(), otherInputs:_*)
+			val otherInputs = List.fill(numberOfInputs - 1) { anyInput() }
+			val encoder = SimpleEncoder(anyInput(), otherInputs:_*)
 			encoder.io.inputs.length must be(numberOfInputs)
 		}
 	}

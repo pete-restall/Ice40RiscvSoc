@@ -1,8 +1,8 @@
-package uk.co.lophtware.msfreference.tests
+package uk.co.lophtware.msfreference.tests.multiplexing
 
 import spinal.core._
 
-import uk.co.lophtware.msfreference.Decoder
+import uk.co.lophtware.msfreference.multiplexing.Decoder
 
 class DecoderFixture(inputWidth: BitCount, dutCreatedViaApplyFactory: Boolean) extends Component {
 	val io = new Decoder.IoBundle(inputWidth)

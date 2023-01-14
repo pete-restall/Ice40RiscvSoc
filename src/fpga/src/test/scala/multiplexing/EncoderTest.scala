@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests
+package uk.co.lophtware.msfreference.tests.multiplexing
 
 import scala.util.Random
 
@@ -7,7 +7,7 @@ import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 
-import uk.co.lophtware.msfreference.Encoder
+import uk.co.lophtware.msfreference.multiplexing.Encoder
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class EncoderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {

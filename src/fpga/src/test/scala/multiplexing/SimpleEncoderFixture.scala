@@ -1,8 +1,8 @@
-package uk.co.lophtware.msfreference.tests
+package uk.co.lophtware.msfreference.tests.multiplexing
 
 import spinal.core._
 
-import uk.co.lophtware.msfreference.SimpleEncoder
+import uk.co.lophtware.msfreference.multiplexing.SimpleEncoder
 
 class SimpleEncoderFixture(numberOfInputs: Int, dutCreatedViaApplyFactory: Boolean) extends Component {
 	val io = new SimpleEncoder.IoBundle(numberOfInputs)
