@@ -72,13 +72,13 @@ class PriorityEncoderTest extends AnyFlatSpec with NonSimulationFixture with Tab
 		thrown.getMessage must (include("arg=otherInputs") and include("null"))
 	}
 
-	private def anyOtherInputs() = List.fill(anyNumberOfInputs() - 1) { anyInput() }
+	private def anyOtherInputs() = Seq.fill(anyNumberOfInputs() - 1) { anyInput() }
 
 	private def anyInput() = if (Random.nextBoolean()) True else False
 
 	it must "return a PriorityEncoder with the same number of IO as inputs" in spinalContext { () =>
 		forAll(numberOfInputs) { (numberOfInputs: Int) =>
-			val otherInputs = List.fill(numberOfInputs - 1) { anyInput() }
+			val otherInputs = Seq.fill(numberOfInputs - 1) { anyInput() }
 			val encoder = PriorityEncoder(anyInput(), otherInputs:_*)
 			encoder.io.inputs.length must be(numberOfInputs)
 		}
