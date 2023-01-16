@@ -9,6 +9,7 @@ import spinal.core._
 import spinal.core.sim._
 
 import uk.co.lophtware.msfreference.multiplexing.SimpleEncoder
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class SimpleEncoderSimulationTest(numberOfInputs: Int, dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec
@@ -46,9 +47,7 @@ class SimpleEncoderSimulationTest(numberOfInputs: Int, dutCreatedViaApplyFactory
 		fixture.io.output.toInt must be(0)
 	}
 
-	private val inputIndices = tableFor("index", 0 until numberOfInputs)
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val inputIndices = (0 until numberOfInputs).asTable("index")
 
 	it must "be index of true input when only one input is true" in simulator { fixture =>
 		forAll(inputIndices) { index =>

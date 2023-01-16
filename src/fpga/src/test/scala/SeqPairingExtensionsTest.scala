@@ -7,6 +7,7 @@ import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 
 import uk.co.lophtware.msfreference.SeqPairingExtensions._
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 
 class SeqPairingExtensionsTest extends AnyFlatSpec with TableDrivenPropertyChecks {
 	"The asPairedSeq method" must "not accept a null sequence of items" in {
@@ -19,9 +20,7 @@ class SeqPairingExtensionsTest extends AnyFlatSpec with TableDrivenPropertyCheck
 		Seq.empty[Any].asPairedSeq must be(Seq.empty)
 	}
 
-	private val oddNumbers = tableFor("oddNumber", List(1, 3, 5, 7, 9, oddNumberBetween(10, 100)))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val oddNumbers = Seq(1, 3, 5, 7, 9, oddNumberBetween(10, 100)).asTable("oddNumber")
 
 	private def oddNumberBetween(minInclusive: Int, maxExclusive: Int) = Random.between(minInclusive, maxExclusive - 1) | 1
 

@@ -9,6 +9,7 @@ import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusDataExpander
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
@@ -24,9 +25,7 @@ class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture 
 		thrown.getMessage must (include("arg=slaveConfig") and include("null"))
 	}
 
-	private val lessThanOneNumberOfSlaves = tableFor("numberOfSlaves", List(0, -1, -2, -33, -1234))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val lessThanOneNumberOfSlaves = Seq(0, -1, -2, -33, -1234).asTable("numberOfSlaves")
 
 	it must "not accept less than 1 slave" in spinalContext { () =>
 		forAll(lessThanOneNumberOfSlaves) { (numberOfSlaves: Int) => {
@@ -35,7 +34,7 @@ class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture 
 		}}
 	}
 
-	private val numberOfSlaves = tableFor("numberOfSlaves", List(1, 2, 3, anyNumberOfSlaves()))
+	private val numberOfSlaves = Seq(1, 2, 3, anyNumberOfSlaves()).asTable("numberOfSlaves")
 
 	it must "have IO for the number of slaves passed to the constructor" in spinalContext { () =>
 		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {
@@ -102,7 +101,7 @@ class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture 
 		expander.io.master.SEL.getWidth must be(totalSlaveSelWidth)
 	}
 
-	private val booleans = tableFor("value", List(true, false))
+	private val booleans = Seq(true, false).asTable("value")
 
 	it must "expose STALL to the master if used by the slaves" in spinalContext { () =>
 		forAll(booleans) { (value: Boolean) => {

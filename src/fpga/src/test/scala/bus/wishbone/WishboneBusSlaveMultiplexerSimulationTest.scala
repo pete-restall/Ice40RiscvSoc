@@ -11,6 +11,7 @@ import spinal.core.sim._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusSlaveMultiplexer
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class WishboneBusSlaveMultiplexerSimulationTest(busConfig: WishboneConfig, numberOfSlaves: Int, dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec
@@ -43,9 +44,7 @@ class WishboneBusSlaveMultiplexerSimulationTest(busConfig: WishboneConfig, numbe
 		forAll(fixture.io.slaves) { slave => slave.DAT_MOSI.toLong must be(fixture.io.master.DAT_MOSI.toLong) }
 	}
 
-	private val booleans = tableFor("value", List(true, false))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val booleans = Seq(true, false).asTable("value")
 
 	they must "all have a non-multiplexed master WE" in simulator { fixture =>
 		forAll(booleans) { (value: Boolean) => {

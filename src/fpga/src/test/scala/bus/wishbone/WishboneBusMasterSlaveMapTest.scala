@@ -10,6 +10,7 @@ import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusMasterSlaveMap
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class WishboneBusMasterSlaveMapTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
@@ -111,9 +112,7 @@ class WishboneBusMasterSlaveMapTest extends AnyFlatSpec with NonSimulationFixtur
 		slaveMap.slaves must be(slaves)
 	}
 
-	private val numberOfMasters = tableFor("numberOfMasters", List(1, 2, 3, 4 + anyNumberOfMasters()))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val numberOfMasters = Seq(1, 2, 3, 4 + anyNumberOfMasters()).asTable("numberOfMasters")
 
 	it must "have the same number of IO as masters" in spinalContext { () =>
 		forAll(numberOfMasters) { (numberOfMasters: Int) =>
@@ -122,7 +121,7 @@ class WishboneBusMasterSlaveMapTest extends AnyFlatSpec with NonSimulationFixtur
 		}
 	}
 
-	private val numberOfSlaves = tableFor("numberOfSlaves", List(1, 2, 3, 4 + anyNumberOfSlaves()))
+	private val numberOfSlaves = Seq(1, 2, 3, 4 + anyNumberOfSlaves()).asTable("numberOfSlaves")
 
 	it must "have the same number of IO as slaves" in spinalContext { () =>
 		forAll(numberOfSlaves) { (numberOfSlaves: Int) =>
@@ -131,7 +130,7 @@ class WishboneBusMasterSlaveMapTest extends AnyFlatSpec with NonSimulationFixtur
 		}
 	}
 
-	private val slavesVsIndexWidth = tableFor(("numberOfSlaves", "indexWidth"), List(
+	private val slavesVsIndexWidth = Seq(
 		(1, 1 bit),
 		(2, 1 bit),
 		(3, 2 bits),
@@ -143,9 +142,8 @@ class WishboneBusMasterSlaveMapTest extends AnyFlatSpec with NonSimulationFixtur
 		(9, 4 bits),
 		(16, 4 bits),
 		(17, 5 bits),
-		(128, 7 bits)))
-
-	private def tableFor[A, B](headers: (String, String), values: Iterable[(A, B)]) = Table(headers) ++ values
+		(128, 7 bits)
+	).asTable("numberOfSlaves", "indexWidth")
 
 	it must "have the slave selector IO wide enough for the given number of slaves" in spinalContext { () =>
 		forAll(slavesVsIndexWidth) { (numberOfSlaves: Int, indexWidth: BitCount) =>

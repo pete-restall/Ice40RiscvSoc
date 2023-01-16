@@ -11,6 +11,7 @@ import spinal.core.sim._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusAddressMappingAdapter
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class WishboneBusAddressMappingAdapterSimulationTest(masterConfig: WishboneConfig, slaveAddressWidth: BitCount, slaveAddressAddend: Int, dutCreationMethod: WishboneBusAddressMappingAdapterFixture.DutCreationMethod.Enum)
@@ -39,9 +40,7 @@ class WishboneBusAddressMappingAdapterSimulationTest(masterConfig: WishboneConfi
 		}
 	}
 
-	private val booleans = tableFor("value", List(true, false))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val booleans = Seq(true, false).asTable("value")
 
 	it must "have the same CYC as the master" in simulator { fixture =>
 		forAll(booleans) { (value: Boolean) =>

@@ -6,6 +6,7 @@ import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 import spinal.core.sim._
 
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.{Ice40Spram16k16, Ice40Spram16k16WishboneBusAdapter}
 
@@ -41,9 +42,7 @@ class Ice40Spram16k16WishboneBusAdapterFactoryTest extends AnyFlatSpec
 		fixture.io.spram.MASKWE.toInt must be(mask)
 	}
 
-	private val booleans = tableFor("value", List(true, false))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val booleans = Seq(true, false).asTable("value")
 
 	it must "wire the SPRAM's WE line" in simulator { fixture =>
 		forAll(booleans) { (value: Boolean) => {

@@ -6,6 +6,7 @@ import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 import spinal.core.sim._
 
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.{Ice40Ebram4k, Ice40Ebram4k16WishboneBusAdapter}
 
@@ -44,9 +45,7 @@ class Ice40Ebram4k16WishboneBusAdapterFactoryTest extends AnyFlatSpec
 		fixture.io.ebram.MASK_N.toInt must be(~mask & allMaskBits)
 	}
 
-	private val booleans = tableFor("value", List(true, false))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val booleans = Seq(true, false).asTable("value")
 
 	it must "wire the EBRAM's CER line" in simulator { fixture =>
 		forAll(booleans) { (value: Boolean) => {

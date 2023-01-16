@@ -8,6 +8,7 @@ import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 
 import uk.co.lophtware.msfreference.multiplexing.Decoder
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class DecoderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {
@@ -21,9 +22,7 @@ class DecoderTest extends AnyFlatSpec with NonSimulationFixture with TableDriven
 		thrown.getMessage must (include("arg=inputWidth") and include("null"))
 	}
 
-	private val lessThanOneInputWidth = tableFor("inputWidth", List(0 bits, -1 bits, -2 bits, -11 bits, -1024 bits))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val lessThanOneInputWidth = Seq(0 bits, -1 bits, -2 bits, -11 bits, -1024 bits).asTable("inputWidth")
 
 	it must "not accept an input width less than 1 bit" in spinalContext { () =>
 		forAll(lessThanOneInputWidth) { (inputWidth: BitCount) => {
@@ -32,7 +31,7 @@ class DecoderTest extends AnyFlatSpec with NonSimulationFixture with TableDriven
 		}}
 	}
 
-	private val sampleOfInputWidths = tableFor("inputWidth", List(1 bit, 2 bits, 3 bits, 4 bits, anyInputWidth()))
+	private val sampleOfInputWidths = Seq(1 bit, 2 bits, 3 bits, 4 bits, anyInputWidth()).asTable("inputWidth")
 
 	private def anyInputWidth() = Random.between(1, 8) bits
 

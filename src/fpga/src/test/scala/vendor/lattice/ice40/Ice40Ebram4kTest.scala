@@ -7,6 +7,7 @@ import org.scalatest.matchers.must._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation.NonSimulationFixture
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
@@ -103,12 +104,10 @@ class Ice40Ebram4kTest extends AnyFlatSpec with NonSimulationFixture with Matche
 	}
 
 	private val validWidths = List(2 bits, 4 bits, 8 bits, 16 bits)
-	private val validWidthCombinations = tableFor(("readWidth", "writeWidth"), for {
+	private val validWidthCombinations = (for {
 		readWidth <- validWidths
 		writeWidth <- validWidths
-	} yield (readWidth, writeWidth))
-
-	private def tableFor[A](headers: (String, String), values: Iterable[(A, A)]) = Table(headers) ++ values
+	} yield (readWidth, writeWidth)).asTable("readWidth", "writeWidth")
 
 	it must "be able to set read and write widths independently" in spinalContext { () =>
 		forAll(validWidthCombinations) { (readWidth: BitCount, writeWidth: BitCount) =>
@@ -118,9 +117,7 @@ class Ice40Ebram4kTest extends AnyFlatSpec with NonSimulationFixture with Matche
 		}
 	}
 
-	private val invalidWidths = tableFor("invalidWidth", List(0 bits, 1 bits, 3 bits, 5 bits, 12 bits, 17 bits, 32 bits))
-
-	private def tableFor[A](headers: (String), values: Iterable[A]) = Table(headers) ++ values
+	private val invalidWidths = Seq(0 bits, 1 bits, 3 bits, 5 bits, 12 bits, 17 bits, 32 bits).asTable("invalidWidth")
 
 	it must "not accept invalid read widths" in spinalContext { () =>
 		forAll(invalidWidths) { (invalidReadWidth: BitCount) => {
@@ -181,7 +178,7 @@ class Ice40Ebram4kTest extends AnyFlatSpec with NonSimulationFixture with Matche
 		ebram.io.MASK_N.get.getWidth must be(16)
 	}
 
-	private val widthsExcluding16Bits = tableFor("width", validWidths.filter(width => width.value != 16))
+	private val widthsExcluding16Bits = validWidths.filter(width => width.value != 16).asTable("width")
 
 	it must "have have no MASK_N if write width is not 16 bits" in spinalContext { () =>
 		forAll(widthsExcluding16Bits) { (writeWidth: BitCount) =>

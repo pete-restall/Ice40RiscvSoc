@@ -10,6 +10,7 @@ import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusSelMappingAdapter
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class WishboneBusSelMappingAdapterTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
@@ -32,9 +33,7 @@ class WishboneBusSelMappingAdapterTest extends AnyFlatSpec with NonSimulationFix
 		thrown.getMessage must (include("arg=slaveSelWidth") and include("null"))
 	}
 
-	private val lessThanZero = tableFor("invalidSelWidth", List(-1 bits, -2 bits, -33 bits, -1234 bits))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val lessThanZero = Seq(-1 bits, -2 bits, -33 bits, -1234 bits).asTable("invalidSelWidth")
 
 	it must "not accept a slaveSelWidth value less than 0" in spinalContext { () =>
 		forAll(lessThanZero) { (invalidSelWidth: BitCount) => {

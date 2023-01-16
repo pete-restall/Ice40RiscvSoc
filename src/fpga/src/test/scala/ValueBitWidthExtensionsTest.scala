@@ -6,11 +6,10 @@ import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 
 import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 
 class ValueBitWidthExtensionsTest extends AnyFlatSpec with TableDrivenPropertyChecks {
-	private val lessThanOne = tableFor("invalidValue", List(0, -1, -2, -33, -1234))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val lessThanOne = Seq(0, -1, -2, -33, -1234).asTable("invalidValue")
 
 	"The toCombinationalBitWidth method" must "not accept a value less than 1" in {
 		forAll(lessThanOne) { (invalidValue: Int) => {
@@ -19,7 +18,7 @@ class ValueBitWidthExtensionsTest extends AnyFlatSpec with TableDrivenPropertyCh
 		}}
 	}
 
-	private val numbersOfValuesVsBitWidths = tableFor(("value", "bitWidth"), List(
+	private val numbersOfValuesVsBitWidths = Seq(
 		(1, 1 bit),
 		(2, 1 bit),
 		(3, 2 bits),
@@ -33,9 +32,8 @@ class ValueBitWidthExtensionsTest extends AnyFlatSpec with TableDrivenPropertyCh
 		(33, 6 bits),
 		(64, 6 bits),
 		(128, 7 bits),
-		(65536, 16 bits)))
-
-	private def tableFor[A, B](header: (String, String), values: Iterable[(A, B)]) = Table(header) ++ values
+		(65536, 16 bits)
+	).asTable("value", "bitWidth")
 
 	it must "return the minimum number of bits required to represent the given number of values" in {
 		forAll(numbersOfValuesVsBitWidths) { (numberOfValues: Int, bitWidth: BitCount) => {

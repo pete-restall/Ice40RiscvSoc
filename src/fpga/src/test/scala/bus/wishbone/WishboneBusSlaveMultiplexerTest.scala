@@ -10,6 +10,7 @@ import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusSlaveMultiplexer
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
@@ -25,9 +26,7 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		thrown.getMessage must (include("arg=busConfig") and include("null"))
 	}
 
-	private val lessThanOneNumberOfSlaves = tableFor("numberOfSlaves", List(0, -1, -2, -33, -1234))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val lessThanOneNumberOfSlaves = Seq(0, -1, -2, -33, -1234).asTable("numberOfSlaves")
 
 	it must "not accept less than 1 slave" in spinalContext { () =>
 		forAll(lessThanOneNumberOfSlaves) { (numberOfSlaves: Int) => {
@@ -36,7 +35,7 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		}}
 	}
 
-	private val numberOfSlaves = tableFor("numberOfSlaves", List(1, 2, 3, anyNumberOfSlaves()))
+	private val numberOfSlaves = Seq(1, 2, 3, anyNumberOfSlaves()).asTable("numberOfSlaves")
 
 	it must "have IO for the number of slaves passed to the constructor" in spinalContext { () =>
 		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {
@@ -74,7 +73,7 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		mux.io.master.isMasterInterface must be(false)
 	}
 
-	private val sufficientlySizedSelectors = tableFor(("numberOfSlaves", "selectorWidth"), List(
+	private val sufficientlySizedSelectors = Seq(
 		(1, 1 bit),
 		(2, 1 bit),
 		(3, 2 bits),
@@ -85,9 +84,8 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		(32, 5 bits),
 		(33, 6 bits),
 		(65, 7 bits),
-		(128, 7 bits)))
-
-	private def tableFor[A, B](header: (String, String), values: Iterable[(A, B)]) = Table(header) ++ values
+		(128, 7 bits)
+	).asTable("numberOfSlaves", "selectorWidth")
 
 	it must "have a selector of adequate width for the number of slaves" in spinalContext{ () =>
 		forAll(sufficientlySizedSelectors) { (numberOfSlaves: Int, selectorWidth: BitCount) => {
@@ -105,7 +103,7 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 
 	private def stubSlaveWith(config: WishboneConfig) = new Wishbone(config)
 
-	private val narrowSelectors = tableFor(("numberOfSlaves", "selectorWidth"), List(
+	private val narrowSelectors = Seq(
 		(3, 1 bit),
 		(4, 1 bit),
 		(5, 1 bit),
@@ -113,7 +111,8 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		(6, 2 bits),
 		(9, 3 bits),
 		(65, 6 bits),
-		(129, 7 bits)))
+		(129, 7 bits)
+	).asTable("numberOfSlaves", "selectorWidth")
 
 	it must "not accept a selector that is not wide enough for the given number of slaves" in spinalContext { () =>
 		forAll(narrowSelectors) { (numberOfSlaves: Int, selectorWidth: BitCount) => {
@@ -129,7 +128,7 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		Seq.fill(numberOfSlaves) { stubSlaveWith(config) }
 	}
 
-	private val wideSelectors = tableFor(("numberOfSlaves", "selectorWidth"), List(
+	private val wideSelectors = Seq(
 		(1, 2 bits),
 		(2, 2 bits),
 		(3, 3 bits),
@@ -138,7 +137,8 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		(5, 8 bits),
 		(16, 5 bits),
 		(128, 8 bits),
-		(128, 16 bits)))
+		(128, 16 bits)
+	).asTable("numberOfSlaves", "selectorWidth")
 
 	it must "not accept a selector that is too wide for the given number of slaves" in spinalContext { () =>
 		forAll(wideSelectors) { (numberOfSlaves: Int, selectorWidth: BitCount) => {

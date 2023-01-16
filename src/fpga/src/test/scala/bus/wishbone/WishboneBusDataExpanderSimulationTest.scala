@@ -11,6 +11,7 @@ import spinal.core.sim._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusDataExpander
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class WishboneBusDataExpanderSimulationTest(slaveConfig: WishboneConfig, numberOfSlaves: Int, dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec
@@ -26,9 +27,7 @@ class WishboneBusDataExpanderSimulationTest(slaveConfig: WishboneConfig, numberO
 		forAll(fixture.io.slaves) { slave => slave.ADR.toLong must be(fixture.io.master.ADR.toLong) }
 	}
 
-	private val booleans = tableFor("value", List(true, false))
-
-	private def tableFor[A](header: (String), values: Iterable[A]) = Table(header) ++ values
+	private val booleans = Seq(true, false).asTable("value")
 
 	they must "all have the same CYC as the master" in simulator { fixture =>
 		forAll(booleans) { (value: Boolean) => {

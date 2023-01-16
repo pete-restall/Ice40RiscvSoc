@@ -5,6 +5,7 @@ import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 
+import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.{Ice40Ebram4k, Ice40Ebram4k16WishboneBusAdapter}
 
@@ -89,9 +90,7 @@ class Ice40Ebram4k16WishboneBusAdapterTest extends AnyFlatSpec with NonSimulatio
 		thrown.getMessage must (include("arg=ebram") and include("null"))
 	}
 
-	private val invalidWidths = tableFor("invalidWidth", List(2 bits, 4 bits, 8 bits))
-
-	private def tableFor[A](headers: (String), values: Iterable[A]) = Table(headers) ++ values
+	private val invalidWidths = Seq(2 bits, 4 bits, 8 bits).asTable("invalidWidth")
 
 	it must "not accept EBRAMs with read widths other than 16 bits" in spinalContext { () =>
 		forAll(invalidWidths) { (invalidReadWidth: BitCount) => {
