@@ -6,7 +6,7 @@ import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
 
 object Encoder {
-	abstract class IoBundle(numberOfInputs: Int) extends Bundle {
+	class IoBundle(numberOfInputs: Int) extends Bundle {
 		if (numberOfInputs < 1) {
 			throw numberOfInputs.isOutOfRange("numberOfInputs", "Number of inputs must be at least 1")
 		}
