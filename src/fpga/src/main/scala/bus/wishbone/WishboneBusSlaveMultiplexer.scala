@@ -51,7 +51,7 @@ class WishboneBusSlaveMultiplexer(busConfig: WishboneConfig, numberOfSlaves: Int
 
 object WishboneBusSlaveMultiplexer {
 	case class IoBundle(private val busConfig: WishboneConfig, private val numberOfSlaves: Int) extends Bundle {
-		busConfig.mustNotBeNull("busConfig", "Wishbone slave configuration must be specified")
+		busConfig.mustNotBeNull("busConfig", "Wishbone bus configuration must be specified")
 		if (numberOfSlaves < 1) {
 			throw numberOfSlaves.isOutOfRange("numberOfSlaves", "Number of Wishbone slaves must be at least 1")
 		}
