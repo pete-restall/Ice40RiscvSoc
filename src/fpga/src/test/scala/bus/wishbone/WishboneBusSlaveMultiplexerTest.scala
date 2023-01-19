@@ -177,7 +177,7 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		noException must be thrownBy(WishboneBusSlaveMultiplexer(stubSelectorFor(10), slaves.head, slaves.tail:_*))
 	}
 
-	it must "use the same Wishbone configuration as the slaves" in spinalContext { () =>
+	it must "use the same Wishbone configuration for the master as the slaves" in spinalContext { () =>
 		val slaves = stubSlavesWithSameConfig(Random.between(1, 10))
 		val mux = WishboneBusSlaveMultiplexer(stubSelectorFor(slaves.length), slaves.head, slaves.tail:_*)
 		mux.io.master.config must equal(slaves.head.config)
