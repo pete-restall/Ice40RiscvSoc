@@ -1,17 +1,29 @@
 // Generator : SpinalHDL v1.7.3    git head : aeaeece704fe43c766e0d36a93f2ecbb8a9f2003
 // Component : Core
-// Git hash  : d760d7c759943ec084b005722cdddca0f54f015e
+// Git hash  : 986a8cd00c6567a47307fe1dd700eb429d7deca6
 
 `timescale 1ns/1ps
 
 module Core (
-  output              led,
+  output              p23,
+  output              ledR,
+  output              ledG,
+  output              ledB,
   input               clk,
   input               reset
 );
 
   wire                cpu_1_interrupts_external;
   wire                cpu_1_interrupts_timer;
+  wire                ledDeviceWidthAdjusted_master_CYC;
+  wire                sharedSlaveMap_masters_0_slaveSelects_0;
+  wire                sharedSlaveMap_masters_0_slaveSelects_1;
+  wire                sharedSlaveMap_masters_1_slaveSelects_0;
+  wire                sharedSlaveMap_masters_1_slaveSelects_1;
+  wire                sharedSlaveArbiters_0_io_masters_0_request;
+  wire                sharedSlaveArbiters_0_io_masters_1_request;
+  wire                sharedSlaveArbiters_1_io_masters_0_request;
+  wire                sharedSlaveArbiters_1_io_masters_1_request;
   wire       [31:0]   cpu_1_ibus_DAT_MOSI;
   wire       [29:0]   cpu_1_ibus_ADR;
   wire                cpu_1_ibus_CYC;
@@ -28,7 +40,13 @@ module Core (
   wire                cpu_1_dbus_WE;
   wire       [2:0]    cpu_1_dbus_CTI;
   wire       [1:0]    cpu_1_dbus_BTE;
-  wire       [15:0]   ice40Ebram4k_6_DO_1;
+  wire       [31:0]   ledDevice_io_wishbone_DAT_MISO;
+  wire                ledDevice_io_wishbone_ACK;
+  wire                ledDevice_io_p23;
+  wire                ledDevice_io_ledR;
+  wire                ledDevice_io_ledG;
+  wire                ledDevice_io_ledB;
+  wire       [15:0]   ice40Ebram4k_2_DO_1;
   wire       [15:0]   lowInstructionEbram_wishbone_DAT_MISO;
   wire                lowInstructionEbram_wishbone_ACK;
   wire       [15:0]   lowInstructionEbram_ebram_DI;
@@ -39,7 +57,7 @@ module Core (
   wire                lowInstructionEbram_ebram_RE;
   wire                lowInstructionEbram_ebram_WE;
   wire       [15:0]   lowInstructionEbram_ebram_MASK_N;
-  wire       [15:0]   ice40Ebram4k_7_DO_1;
+  wire       [15:0]   ice40Ebram4k_3_DO_1;
   wire       [15:0]   highInstructionEbram_wishbone_DAT_MISO;
   wire                highInstructionEbram_wishbone_ACK;
   wire       [15:0]   highInstructionEbram_ebram_DI;
@@ -50,223 +68,144 @@ module Core (
   wire                highInstructionEbram_ebram_RE;
   wire                highInstructionEbram_ebram_WE;
   wire       [15:0]   highInstructionEbram_ebram_MASK_N;
-  wire       [15:0]   ice40Ebram4k_8_DO_1;
-  wire       [15:0]   lowInstructionEbram2_wishbone_DAT_MISO;
-  wire                lowInstructionEbram2_wishbone_ACK;
-  wire       [15:0]   lowInstructionEbram2_ebram_DI;
-  wire       [7:0]    lowInstructionEbram2_ebram_ADW;
-  wire       [7:0]    lowInstructionEbram2_ebram_ADR;
-  wire                lowInstructionEbram2_ebram_CEW;
-  wire                lowInstructionEbram2_ebram_CER;
-  wire                lowInstructionEbram2_ebram_RE;
-  wire                lowInstructionEbram2_ebram_WE;
-  wire       [15:0]   lowInstructionEbram2_ebram_MASK_N;
-  wire       [15:0]   ice40Ebram4k_9_DO_1;
-  wire       [15:0]   highInstructionEbram2_wishbone_DAT_MISO;
-  wire                highInstructionEbram2_wishbone_ACK;
-  wire       [15:0]   highInstructionEbram2_ebram_DI;
-  wire       [7:0]    highInstructionEbram2_ebram_ADW;
-  wire       [7:0]    highInstructionEbram2_ebram_ADR;
-  wire                highInstructionEbram2_ebram_CEW;
-  wire                highInstructionEbram2_ebram_CER;
-  wire                highInstructionEbram2_ebram_RE;
-  wire                highInstructionEbram2_ebram_WE;
-  wire       [15:0]   highInstructionEbram2_ebram_MASK_N;
-  wire       [15:0]   ice40Ebram4k_10_DO_1;
-  wire       [15:0]   temporaryEbramBlocks_4_wishbone_DAT_MISO;
-  wire                temporaryEbramBlocks_4_wishbone_ACK;
-  wire       [15:0]   temporaryEbramBlocks_4_ebram_DI;
-  wire       [7:0]    temporaryEbramBlocks_4_ebram_ADW;
-  wire       [7:0]    temporaryEbramBlocks_4_ebram_ADR;
-  wire                temporaryEbramBlocks_4_ebram_CEW;
-  wire                temporaryEbramBlocks_4_ebram_CER;
-  wire                temporaryEbramBlocks_4_ebram_RE;
-  wire                temporaryEbramBlocks_4_ebram_WE;
-  wire       [15:0]   temporaryEbramBlocks_4_ebram_MASK_N;
-  wire       [15:0]   ice40Ebram4k_11_DO_1;
-  wire       [15:0]   temporaryEbramBlocks_5_wishbone_DAT_MISO;
-  wire                temporaryEbramBlocks_5_wishbone_ACK;
-  wire       [15:0]   temporaryEbramBlocks_5_ebram_DI;
-  wire       [7:0]    temporaryEbramBlocks_5_ebram_ADW;
-  wire       [7:0]    temporaryEbramBlocks_5_ebram_ADR;
-  wire                temporaryEbramBlocks_5_ebram_CEW;
-  wire                temporaryEbramBlocks_5_ebram_CER;
-  wire                temporaryEbramBlocks_5_ebram_RE;
-  wire                temporaryEbramBlocks_5_ebram_WE;
-  wire       [15:0]   temporaryEbramBlocks_5_ebram_MASK_N;
-  wire       [31:0]   wishboneBusDataExpander_3_master_DAT_MISO;
-  wire                wishboneBusDataExpander_3_master_ACK;
-  wire       [15:0]   wishboneBusDataExpander_3_slaves_0_DAT_MOSI;
-  wire       [7:0]    wishboneBusDataExpander_3_slaves_0_ADR;
-  wire                wishboneBusDataExpander_3_slaves_0_CYC;
-  wire       [15:0]   wishboneBusDataExpander_3_slaves_0_SEL;
-  wire                wishboneBusDataExpander_3_slaves_0_STB;
-  wire                wishboneBusDataExpander_3_slaves_0_WE;
-  wire       [15:0]   wishboneBusDataExpander_3_slaves_1_DAT_MOSI;
-  wire       [7:0]    wishboneBusDataExpander_3_slaves_1_ADR;
-  wire                wishboneBusDataExpander_3_slaves_1_CYC;
-  wire       [15:0]   wishboneBusDataExpander_3_slaves_1_SEL;
-  wire                wishboneBusDataExpander_3_slaves_1_STB;
-  wire                wishboneBusDataExpander_3_slaves_1_WE;
-  wire       [31:0]   temporaryWideEbramBlock_master_DAT_MISO;
-  wire                temporaryWideEbramBlock_master_ACK;
-  wire       [31:0]   temporaryWideEbramBlock_slave_DAT_MOSI;
-  wire       [7:0]    temporaryWideEbramBlock_slave_ADR;
-  wire                temporaryWideEbramBlock_slave_CYC;
-  wire       [31:0]   temporaryWideEbramBlock_slave_SEL;
-  wire                temporaryWideEbramBlock_slave_STB;
-  wire                temporaryWideEbramBlock_slave_WE;
-  wire       [31:0]   wishboneBusDataExpander_4_master_DAT_MISO;
-  wire                wishboneBusDataExpander_4_master_ACK;
-  wire       [15:0]   wishboneBusDataExpander_4_slaves_0_DAT_MOSI;
-  wire       [7:0]    wishboneBusDataExpander_4_slaves_0_ADR;
-  wire                wishboneBusDataExpander_4_slaves_0_CYC;
-  wire       [15:0]   wishboneBusDataExpander_4_slaves_0_SEL;
-  wire                wishboneBusDataExpander_4_slaves_0_STB;
-  wire                wishboneBusDataExpander_4_slaves_0_WE;
-  wire       [15:0]   wishboneBusDataExpander_4_slaves_1_DAT_MOSI;
-  wire       [7:0]    wishboneBusDataExpander_4_slaves_1_ADR;
-  wire                wishboneBusDataExpander_4_slaves_1_CYC;
-  wire       [15:0]   wishboneBusDataExpander_4_slaves_1_SEL;
-  wire                wishboneBusDataExpander_4_slaves_1_STB;
-  wire                wishboneBusDataExpander_4_slaves_1_WE;
-  wire       [31:0]   temporaryWideEbramBlock2_master_DAT_MISO;
-  wire                temporaryWideEbramBlock2_master_ACK;
-  wire       [31:0]   temporaryWideEbramBlock2_slave_DAT_MOSI;
-  wire       [7:0]    temporaryWideEbramBlock2_slave_ADR;
-  wire                temporaryWideEbramBlock2_slave_CYC;
-  wire       [31:0]   temporaryWideEbramBlock2_slave_SEL;
-  wire                temporaryWideEbramBlock2_slave_STB;
-  wire                temporaryWideEbramBlock2_slave_WE;
-  wire       [31:0]   wishboneBusDataExpander_5_master_DAT_MISO;
-  wire                wishboneBusDataExpander_5_master_ACK;
-  wire       [15:0]   wishboneBusDataExpander_5_slaves_0_DAT_MOSI;
-  wire       [7:0]    wishboneBusDataExpander_5_slaves_0_ADR;
-  wire                wishboneBusDataExpander_5_slaves_0_CYC;
-  wire       [15:0]   wishboneBusDataExpander_5_slaves_0_SEL;
-  wire                wishboneBusDataExpander_5_slaves_0_STB;
-  wire                wishboneBusDataExpander_5_slaves_0_WE;
-  wire       [15:0]   wishboneBusDataExpander_5_slaves_1_DAT_MOSI;
-  wire       [7:0]    wishboneBusDataExpander_5_slaves_1_ADR;
-  wire                wishboneBusDataExpander_5_slaves_1_CYC;
-  wire       [15:0]   wishboneBusDataExpander_5_slaves_1_SEL;
-  wire                wishboneBusDataExpander_5_slaves_1_STB;
-  wire                wishboneBusDataExpander_5_slaves_1_WE;
-  wire       [31:0]   temporaryWideEbramBlock3_master_DAT_MISO;
-  wire                temporaryWideEbramBlock3_master_ACK;
-  wire       [31:0]   temporaryWideEbramBlock3_slave_DAT_MOSI;
-  wire       [7:0]    temporaryWideEbramBlock3_slave_ADR;
-  wire                temporaryWideEbramBlock3_slave_CYC;
-  wire       [31:0]   temporaryWideEbramBlock3_slave_SEL;
-  wire                temporaryWideEbramBlock3_slave_STB;
-  wire                temporaryWideEbramBlock3_slave_WE;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_2_master_DAT_MISO;
-  wire                wishboneBusSlaveMultiplexer_2_master_ACK;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_2_slaves_0_DAT_MOSI;
-  wire       [7:0]    wishboneBusSlaveMultiplexer_2_slaves_0_ADR;
-  wire                wishboneBusSlaveMultiplexer_2_slaves_0_CYC;
-  wire       [3:0]    wishboneBusSlaveMultiplexer_2_slaves_0_SEL;
-  wire                wishboneBusSlaveMultiplexer_2_slaves_0_STB;
-  wire                wishboneBusSlaveMultiplexer_2_slaves_0_WE;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_2_slaves_1_DAT_MOSI;
-  wire       [7:0]    wishboneBusSlaveMultiplexer_2_slaves_1_ADR;
-  wire                wishboneBusSlaveMultiplexer_2_slaves_1_CYC;
-  wire       [3:0]    wishboneBusSlaveMultiplexer_2_slaves_1_SEL;
-  wire                wishboneBusSlaveMultiplexer_2_slaves_1_STB;
-  wire                wishboneBusSlaveMultiplexer_2_slaves_1_WE;
-  wire       [31:0]   ibusSlaves_master_DAT_MISO;
-  wire                ibusSlaves_master_ACK;
-  wire       [31:0]   ibusSlaves_slave_DAT_MOSI;
-  wire       [7:0]    ibusSlaves_slave_ADR;
-  wire                ibusSlaves_slave_CYC;
-  wire       [3:0]    ibusSlaves_slave_SEL;
-  wire                ibusSlaves_slave_STB;
-  wire                ibusSlaves_slave_WE;
-  wire       [31:0]   ibus_adapter_io_wbm_DAT_MISO;
-  wire                ibus_adapter_io_wbm_ACK;
-  wire                ibus_adapter_io_wbm_ERR;
-  wire       [31:0]   ibus_adapter_io_wbs_DAT_MOSI;
-  wire       [29:0]   ibus_adapter_io_wbs_ADR;
-  wire                ibus_adapter_io_wbs_CYC;
-  wire       [3:0]    ibus_adapter_io_wbs_SEL;
-  wire                ibus_adapter_io_wbs_STB;
-  wire                ibus_adapter_io_wbs_WE;
-  wire       [31:0]   ledDevice_io_wishbone_DAT_MISO;
-  wire                ledDevice_io_wishbone_ACK;
-  wire                ledDevice_io_led;
-  wire       [31:0]   wishboneBusAddressMappingAdapter_3_master_DAT_MISO;
-  wire                wishboneBusAddressMappingAdapter_3_master_ACK;
-  wire       [31:0]   wishboneBusAddressMappingAdapter_3_slave_DAT_MOSI;
-  wire       [0:0]    wishboneBusAddressMappingAdapter_3_slave_ADR;
-  wire                wishboneBusAddressMappingAdapter_3_slave_CYC;
-  wire       [3:0]    wishboneBusAddressMappingAdapter_3_slave_SEL;
-  wire                wishboneBusAddressMappingAdapter_3_slave_STB;
-  wire                wishboneBusAddressMappingAdapter_3_slave_WE;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_3_master_DAT_MISO;
-  wire                wishboneBusSlaveMultiplexer_3_master_ACK;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_3_slaves_0_DAT_MOSI;
-  wire       [7:0]    wishboneBusSlaveMultiplexer_3_slaves_0_ADR;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_0_CYC;
-  wire       [3:0]    wishboneBusSlaveMultiplexer_3_slaves_0_SEL;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_0_STB;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_0_WE;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_3_slaves_1_DAT_MOSI;
-  wire       [7:0]    wishboneBusSlaveMultiplexer_3_slaves_1_ADR;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_1_CYC;
-  wire       [3:0]    wishboneBusSlaveMultiplexer_3_slaves_1_SEL;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_1_STB;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_1_WE;
-  wire       [31:0]   dbusSlaves_master_DAT_MISO;
-  wire                dbusSlaves_master_ACK;
-  wire       [31:0]   dbusSlaves_slave_DAT_MOSI;
-  wire       [7:0]    dbusSlaves_slave_ADR;
-  wire                dbusSlaves_slave_CYC;
-  wire       [3:0]    dbusSlaves_slave_SEL;
-  wire                dbusSlaves_slave_STB;
-  wire                dbusSlaves_slave_WE;
-  wire       [31:0]   dbus_adapter_io_wbm_DAT_MISO;
-  wire                dbus_adapter_io_wbm_ACK;
-  wire                dbus_adapter_io_wbm_ERR;
-  wire       [31:0]   dbus_adapter_io_wbs_DAT_MOSI;
-  wire       [29:0]   dbus_adapter_io_wbs_ADR;
-  wire                dbus_adapter_io_wbs_CYC;
-  wire       [3:0]    dbus_adapter_io_wbs_SEL;
-  wire                dbus_adapter_io_wbs_STB;
-  wire                dbus_adapter_io_wbs_WE;
-  wire       [29:0]   ibusAddress;
-  wire       [0:0]    ibusSlaveSelector;
-  wire       [29:0]   dbusAddress;
-  wire       [0:0]    dbusSlaveSelector;
+  wire       [31:0]   wishboneBusDataExpander_1_master_DAT_MISO;
+  wire                wishboneBusDataExpander_1_master_ACK;
+  wire       [15:0]   wishboneBusDataExpander_1_slaves_0_DAT_MOSI;
+  wire       [7:0]    wishboneBusDataExpander_1_slaves_0_ADR;
+  wire                wishboneBusDataExpander_1_slaves_0_CYC;
+  wire       [15:0]   wishboneBusDataExpander_1_slaves_0_SEL;
+  wire                wishboneBusDataExpander_1_slaves_0_STB;
+  wire                wishboneBusDataExpander_1_slaves_0_WE;
+  wire       [15:0]   wishboneBusDataExpander_1_slaves_1_DAT_MOSI;
+  wire       [7:0]    wishboneBusDataExpander_1_slaves_1_ADR;
+  wire                wishboneBusDataExpander_1_slaves_1_CYC;
+  wire       [15:0]   wishboneBusDataExpander_1_slaves_1_SEL;
+  wire                wishboneBusDataExpander_1_slaves_1_STB;
+  wire                wishboneBusDataExpander_1_slaves_1_WE;
+  wire       [31:0]   wideInstructionEbramBlock_master_DAT_MISO;
+  wire                wideInstructionEbramBlock_master_ACK;
+  wire       [31:0]   wideInstructionEbramBlock_slave_DAT_MOSI;
+  wire       [7:0]    wideInstructionEbramBlock_slave_ADR;
+  wire                wideInstructionEbramBlock_slave_CYC;
+  wire       [31:0]   wideInstructionEbramBlock_slave_SEL;
+  wire                wideInstructionEbramBlock_slave_STB;
+  wire                wideInstructionEbramBlock_slave_WE;
+  wire       [31:0]   ledDeviceWidthAdjusted_master_DAT_MISO;
+  wire                ledDeviceWidthAdjusted_master_ACK;
+  wire       [31:0]   ledDeviceWidthAdjusted_slave_DAT_MOSI;
+  wire       [0:0]    ledDeviceWidthAdjusted_slave_ADR;
+  wire                ledDeviceWidthAdjusted_slave_CYC;
+  wire       [3:0]    ledDeviceWidthAdjusted_slave_SEL;
+  wire                ledDeviceWidthAdjusted_slave_STB;
+  wire                ledDeviceWidthAdjusted_slave_WE;
+  wire       [31:0]   instructionEbramBlockWidthAdjusted_master_DAT_MISO;
+  wire                instructionEbramBlockWidthAdjusted_master_ACK;
+  wire       [31:0]   instructionEbramBlockWidthAdjusted_slave_DAT_MOSI;
+  wire       [7:0]    instructionEbramBlockWidthAdjusted_slave_ADR;
+  wire                instructionEbramBlockWidthAdjusted_slave_CYC;
+  wire       [3:0]    instructionEbramBlockWidthAdjusted_slave_SEL;
+  wire                instructionEbramBlockWidthAdjusted_slave_STB;
+  wire                instructionEbramBlockWidthAdjusted_slave_WE;
+  wire       [31:0]   ibusAdapter_io_wbm_DAT_MISO;
+  wire                ibusAdapter_io_wbm_ACK;
+  wire                ibusAdapter_io_wbm_ERR;
+  wire       [31:0]   ibusAdapter_io_wbs_DAT_MOSI;
+  wire       [29:0]   ibusAdapter_io_wbs_ADR;
+  wire                ibusAdapter_io_wbs_CYC;
+  wire       [3:0]    ibusAdapter_io_wbs_SEL;
+  wire                ibusAdapter_io_wbs_STB;
+  wire                ibusAdapter_io_wbs_WE;
+  wire       [31:0]   dbusAdapter_io_wbm_DAT_MISO;
+  wire                dbusAdapter_io_wbm_ACK;
+  wire                dbusAdapter_io_wbm_ERR;
+  wire       [31:0]   dbusAdapter_io_wbs_DAT_MOSI;
+  wire       [29:0]   dbusAdapter_io_wbs_ADR;
+  wire                dbusAdapter_io_wbs_CYC;
+  wire       [3:0]    dbusAdapter_io_wbs_SEL;
+  wire                dbusAdapter_io_wbs_STB;
+  wire                dbusAdapter_io_wbs_WE;
+  wire       [0:0]    sharedSlaveMap_masters_0_index;
+  wire                sharedSlaveMap_masters_0_isValid;
+  wire       [0:0]    sharedSlaveMap_masters_1_index;
+  wire                sharedSlaveMap_masters_1_isValid;
+  wire       [0:0]    priorityEncoder_2_output_1;
+  wire                priorityEncoder_2_isValid;
+  wire                sharedSlaveArbiters_0_io_encoder_inputs_0;
+  wire                sharedSlaveArbiters_0_io_encoder_inputs_1;
+  wire       [0:0]    sharedSlaveArbiters_0_io_grantedMasterIndex;
+  wire                sharedSlaveArbiters_0_io_masters_0_isError;
+  wire                sharedSlaveArbiters_0_io_masters_0_isStalled;
+  wire                sharedSlaveArbiters_0_io_masters_0_isGranted;
+  wire                sharedSlaveArbiters_0_io_masters_1_isError;
+  wire                sharedSlaveArbiters_0_io_masters_1_isStalled;
+  wire                sharedSlaveArbiters_0_io_masters_1_isGranted;
+  wire       [0:0]    priorityEncoder_3_output_1;
+  wire                priorityEncoder_3_isValid;
+  wire                sharedSlaveArbiters_1_io_encoder_inputs_0;
+  wire                sharedSlaveArbiters_1_io_encoder_inputs_1;
+  wire       [0:0]    sharedSlaveArbiters_1_io_grantedMasterIndex;
+  wire                sharedSlaveArbiters_1_io_masters_0_isError;
+  wire                sharedSlaveArbiters_1_io_masters_0_isStalled;
+  wire                sharedSlaveArbiters_1_io_masters_0_isGranted;
+  wire                sharedSlaveArbiters_1_io_masters_1_isError;
+  wire                sharedSlaveArbiters_1_io_masters_1_isStalled;
+  wire                sharedSlaveArbiters_1_io_masters_1_isGranted;
+  wire       [31:0]   masterMux_masters_0_DAT_MISO;
+  wire                masterMux_masters_0_ACK;
+  wire       [31:0]   masterMux_masters_1_DAT_MISO;
+  wire                masterMux_masters_1_ACK;
+  wire       [31:0]   masterMux_slave_DAT_MOSI;
+  wire       [29:0]   masterMux_slave_ADR;
+  wire                masterMux_slave_CYC;
+  wire       [3:0]    masterMux_slave_SEL;
+  wire                masterMux_slave_STB;
+  wire                masterMux_slave_WE;
 
   Cpu cpu_1 (
-    .ibus_CYC            (cpu_1_ibus_CYC                    ), //o
-    .ibus_STB            (cpu_1_ibus_STB                    ), //o
-    .ibus_ACK            (ibus_adapter_io_wbm_ACK           ), //i
-    .ibus_WE             (cpu_1_ibus_WE                     ), //o
-    .ibus_ADR            (cpu_1_ibus_ADR[29:0]              ), //o
-    .ibus_DAT_MISO       (ibus_adapter_io_wbm_DAT_MISO[31:0]), //i
-    .ibus_DAT_MOSI       (cpu_1_ibus_DAT_MOSI[31:0]         ), //o
-    .ibus_SEL            (cpu_1_ibus_SEL[3:0]               ), //o
-    .ibus_ERR            (ibus_adapter_io_wbm_ERR           ), //i
-    .ibus_CTI            (cpu_1_ibus_CTI[2:0]               ), //o
-    .ibus_BTE            (cpu_1_ibus_BTE[1:0]               ), //o
-    .dbus_CYC            (cpu_1_dbus_CYC                    ), //o
-    .dbus_STB            (cpu_1_dbus_STB                    ), //o
-    .dbus_ACK            (dbus_adapter_io_wbm_ACK           ), //i
-    .dbus_WE             (cpu_1_dbus_WE                     ), //o
-    .dbus_ADR            (cpu_1_dbus_ADR[29:0]              ), //o
-    .dbus_DAT_MISO       (dbus_adapter_io_wbm_DAT_MISO[31:0]), //i
-    .dbus_DAT_MOSI       (cpu_1_dbus_DAT_MOSI[31:0]         ), //o
-    .dbus_SEL            (cpu_1_dbus_SEL[3:0]               ), //o
-    .dbus_ERR            (dbus_adapter_io_wbm_ERR           ), //i
-    .dbus_CTI            (cpu_1_dbus_CTI[2:0]               ), //o
-    .dbus_BTE            (cpu_1_dbus_BTE[1:0]               ), //o
-    .interrupts_external (cpu_1_interrupts_external         ), //i
-    .interrupts_timer    (cpu_1_interrupts_timer            ), //i
-    .clk                 (clk                               ), //i
-    .reset               (reset                             )  //i
+    .ibus_CYC            (cpu_1_ibus_CYC                   ), //o
+    .ibus_STB            (cpu_1_ibus_STB                   ), //o
+    .ibus_ACK            (ibusAdapter_io_wbm_ACK           ), //i
+    .ibus_WE             (cpu_1_ibus_WE                    ), //o
+    .ibus_ADR            (cpu_1_ibus_ADR[29:0]             ), //o
+    .ibus_DAT_MISO       (ibusAdapter_io_wbm_DAT_MISO[31:0]), //i
+    .ibus_DAT_MOSI       (cpu_1_ibus_DAT_MOSI[31:0]        ), //o
+    .ibus_SEL            (cpu_1_ibus_SEL[3:0]              ), //o
+    .ibus_ERR            (ibusAdapter_io_wbm_ERR           ), //i
+    .ibus_CTI            (cpu_1_ibus_CTI[2:0]              ), //o
+    .ibus_BTE            (cpu_1_ibus_BTE[1:0]              ), //o
+    .dbus_CYC            (cpu_1_dbus_CYC                   ), //o
+    .dbus_STB            (cpu_1_dbus_STB                   ), //o
+    .dbus_ACK            (dbusAdapter_io_wbm_ACK           ), //i
+    .dbus_WE             (cpu_1_dbus_WE                    ), //o
+    .dbus_ADR            (cpu_1_dbus_ADR[29:0]             ), //o
+    .dbus_DAT_MISO       (dbusAdapter_io_wbm_DAT_MISO[31:0]), //i
+    .dbus_DAT_MOSI       (cpu_1_dbus_DAT_MOSI[31:0]        ), //o
+    .dbus_SEL            (cpu_1_dbus_SEL[3:0]              ), //o
+    .dbus_ERR            (dbusAdapter_io_wbm_ERR           ), //i
+    .dbus_CTI            (cpu_1_dbus_CTI[2:0]              ), //o
+    .dbus_BTE            (cpu_1_dbus_BTE[1:0]              ), //o
+    .interrupts_external (cpu_1_interrupts_external        ), //i
+    .interrupts_timer    (cpu_1_interrupts_timer           ), //i
+    .clk                 (clk                              ), //i
+    .reset               (reset                            )  //i
   );
-  Ice40Ebram4k ice40Ebram4k_6 (
+  unamed ledDevice (
+    .io_wishbone_CYC      (ledDeviceWidthAdjusted_slave_CYC           ), //i
+    .io_wishbone_STB      (ledDeviceWidthAdjusted_slave_STB           ), //i
+    .io_wishbone_ACK      (ledDevice_io_wishbone_ACK                  ), //o
+    .io_wishbone_WE       (ledDeviceWidthAdjusted_slave_WE            ), //i
+    .io_wishbone_ADR      (ledDeviceWidthAdjusted_slave_ADR           ), //i
+    .io_wishbone_DAT_MISO (ledDevice_io_wishbone_DAT_MISO[31:0]       ), //o
+    .io_wishbone_DAT_MOSI (ledDeviceWidthAdjusted_slave_DAT_MOSI[31:0]), //i
+    .io_wishbone_SEL      (ledDeviceWidthAdjusted_slave_SEL[3:0]      ), //i
+    .io_p23               (ledDevice_io_p23                           ), //o
+    .io_ledR              (ledDevice_io_ledR                          ), //o
+    .io_ledG              (ledDevice_io_ledG                          ), //o
+    .io_ledB              (ledDevice_io_ledB                          ), //o
+    .clk                  (clk                                        ), //i
+    .reset                (reset                                      )  //i
+  );
+  Ice40Ebram4k ice40Ebram4k_2 (
     .DI     (lowInstructionEbram_ebram_DI[15:0]    ), //i
     .ADW    (lowInstructionEbram_ebram_ADW[7:0]    ), //i
     .ADR    (lowInstructionEbram_ebram_ADR[7:0]    ), //i
@@ -277,17 +216,17 @@ module Core (
     .RE     (lowInstructionEbram_ebram_RE          ), //i
     .WE     (lowInstructionEbram_ebram_WE          ), //i
     .MASK_N (lowInstructionEbram_ebram_MASK_N[15:0]), //i
-    .DO_1   (ice40Ebram4k_6_DO_1[15:0]             )  //o
+    .DO_1   (ice40Ebram4k_2_DO_1[15:0]             )  //o
   );
   Ice40Ebram4k16WishboneBusAdapter lowInstructionEbram (
-    .wishbone_CYC      (wishboneBusDataExpander_3_slaves_0_CYC           ), //i
-    .wishbone_STB      (wishboneBusDataExpander_3_slaves_0_STB           ), //i
+    .wishbone_CYC      (wishboneBusDataExpander_1_slaves_0_CYC           ), //i
+    .wishbone_STB      (wishboneBusDataExpander_1_slaves_0_STB           ), //i
     .wishbone_ACK      (lowInstructionEbram_wishbone_ACK                 ), //o
-    .wishbone_WE       (wishboneBusDataExpander_3_slaves_0_WE            ), //i
-    .wishbone_ADR      (wishboneBusDataExpander_3_slaves_0_ADR[7:0]      ), //i
+    .wishbone_WE       (wishboneBusDataExpander_1_slaves_0_WE            ), //i
+    .wishbone_ADR      (wishboneBusDataExpander_1_slaves_0_ADR[7:0]      ), //i
     .wishbone_DAT_MISO (lowInstructionEbram_wishbone_DAT_MISO[15:0]      ), //o
-    .wishbone_DAT_MOSI (wishboneBusDataExpander_3_slaves_0_DAT_MOSI[15:0]), //i
-    .wishbone_SEL      (wishboneBusDataExpander_3_slaves_0_SEL[15:0]     ), //i
+    .wishbone_DAT_MOSI (wishboneBusDataExpander_1_slaves_0_DAT_MOSI[15:0]), //i
+    .wishbone_SEL      (wishboneBusDataExpander_1_slaves_0_SEL[15:0]     ), //i
     .ebram_DI          (lowInstructionEbram_ebram_DI[15:0]               ), //o
     .ebram_ADW         (lowInstructionEbram_ebram_ADW[7:0]               ), //o
     .ebram_ADR         (lowInstructionEbram_ebram_ADR[7:0]               ), //o
@@ -296,11 +235,11 @@ module Core (
     .ebram_RE          (lowInstructionEbram_ebram_RE                     ), //o
     .ebram_WE          (lowInstructionEbram_ebram_WE                     ), //o
     .ebram_MASK_N      (lowInstructionEbram_ebram_MASK_N[15:0]           ), //o
-    .ebram_DO          (ice40Ebram4k_6_DO_1[15:0]                        ), //i
+    .ebram_DO          (ice40Ebram4k_2_DO_1[15:0]                        ), //i
     .clk               (clk                                              ), //i
     .reset             (reset                                            )  //i
   );
-  Ice40Ebram4k_1 ice40Ebram4k_7 (
+  Ice40Ebram4k_1 ice40Ebram4k_3 (
     .DI     (highInstructionEbram_ebram_DI[15:0]    ), //i
     .ADW    (highInstructionEbram_ebram_ADW[7:0]    ), //i
     .ADR    (highInstructionEbram_ebram_ADR[7:0]    ), //i
@@ -311,17 +250,17 @@ module Core (
     .RE     (highInstructionEbram_ebram_RE          ), //i
     .WE     (highInstructionEbram_ebram_WE          ), //i
     .MASK_N (highInstructionEbram_ebram_MASK_N[15:0]), //i
-    .DO_1   (ice40Ebram4k_7_DO_1[15:0]              )  //o
+    .DO_1   (ice40Ebram4k_3_DO_1[15:0]              )  //o
   );
   Ice40Ebram4k16WishboneBusAdapter highInstructionEbram (
-    .wishbone_CYC      (wishboneBusDataExpander_3_slaves_1_CYC           ), //i
-    .wishbone_STB      (wishboneBusDataExpander_3_slaves_1_STB           ), //i
+    .wishbone_CYC      (wishboneBusDataExpander_1_slaves_1_CYC           ), //i
+    .wishbone_STB      (wishboneBusDataExpander_1_slaves_1_STB           ), //i
     .wishbone_ACK      (highInstructionEbram_wishbone_ACK                ), //o
-    .wishbone_WE       (wishboneBusDataExpander_3_slaves_1_WE            ), //i
-    .wishbone_ADR      (wishboneBusDataExpander_3_slaves_1_ADR[7:0]      ), //i
+    .wishbone_WE       (wishboneBusDataExpander_1_slaves_1_WE            ), //i
+    .wishbone_ADR      (wishboneBusDataExpander_1_slaves_1_ADR[7:0]      ), //i
     .wishbone_DAT_MISO (highInstructionEbram_wishbone_DAT_MISO[15:0]     ), //o
-    .wishbone_DAT_MOSI (wishboneBusDataExpander_3_slaves_1_DAT_MOSI[15:0]), //i
-    .wishbone_SEL      (wishboneBusDataExpander_3_slaves_1_SEL[15:0]     ), //i
+    .wishbone_DAT_MOSI (wishboneBusDataExpander_1_slaves_1_DAT_MOSI[15:0]), //i
+    .wishbone_SEL      (wishboneBusDataExpander_1_slaves_1_SEL[15:0]     ), //i
     .ebram_DI          (highInstructionEbram_ebram_DI[15:0]              ), //o
     .ebram_ADW         (highInstructionEbram_ebram_ADW[7:0]              ), //o
     .ebram_ADR         (highInstructionEbram_ebram_ADR[7:0]              ), //o
@@ -330,526 +269,471 @@ module Core (
     .ebram_RE          (highInstructionEbram_ebram_RE                    ), //o
     .ebram_WE          (highInstructionEbram_ebram_WE                    ), //o
     .ebram_MASK_N      (highInstructionEbram_ebram_MASK_N[15:0]          ), //o
-    .ebram_DO          (ice40Ebram4k_7_DO_1[15:0]                        ), //i
+    .ebram_DO          (ice40Ebram4k_3_DO_1[15:0]                        ), //i
     .clk               (clk                                              ), //i
     .reset             (reset                                            )  //i
   );
-  Ice40Ebram4k ice40Ebram4k_8 (
-    .DI     (lowInstructionEbram2_ebram_DI[15:0]    ), //i
-    .ADW    (lowInstructionEbram2_ebram_ADW[7:0]    ), //i
-    .ADR    (lowInstructionEbram2_ebram_ADR[7:0]    ), //i
-    .CKW    (clk                                    ), //i
-    .CKR    (clk                                    ), //i
-    .CEW    (lowInstructionEbram2_ebram_CEW         ), //i
-    .CER    (lowInstructionEbram2_ebram_CER         ), //i
-    .RE     (lowInstructionEbram2_ebram_RE          ), //i
-    .WE     (lowInstructionEbram2_ebram_WE          ), //i
-    .MASK_N (lowInstructionEbram2_ebram_MASK_N[15:0]), //i
-    .DO_1   (ice40Ebram4k_8_DO_1[15:0]              )  //o
-  );
-  Ice40Ebram4k16WishboneBusAdapter lowInstructionEbram2 (
-    .wishbone_CYC      (wishboneBusDataExpander_4_slaves_0_CYC           ), //i
-    .wishbone_STB      (wishboneBusDataExpander_4_slaves_0_STB           ), //i
-    .wishbone_ACK      (lowInstructionEbram2_wishbone_ACK                ), //o
-    .wishbone_WE       (wishboneBusDataExpander_4_slaves_0_WE            ), //i
-    .wishbone_ADR      (wishboneBusDataExpander_4_slaves_0_ADR[7:0]      ), //i
-    .wishbone_DAT_MISO (lowInstructionEbram2_wishbone_DAT_MISO[15:0]     ), //o
-    .wishbone_DAT_MOSI (wishboneBusDataExpander_4_slaves_0_DAT_MOSI[15:0]), //i
-    .wishbone_SEL      (wishboneBusDataExpander_4_slaves_0_SEL[15:0]     ), //i
-    .ebram_DI          (lowInstructionEbram2_ebram_DI[15:0]              ), //o
-    .ebram_ADW         (lowInstructionEbram2_ebram_ADW[7:0]              ), //o
-    .ebram_ADR         (lowInstructionEbram2_ebram_ADR[7:0]              ), //o
-    .ebram_CEW         (lowInstructionEbram2_ebram_CEW                   ), //o
-    .ebram_CER         (lowInstructionEbram2_ebram_CER                   ), //o
-    .ebram_RE          (lowInstructionEbram2_ebram_RE                    ), //o
-    .ebram_WE          (lowInstructionEbram2_ebram_WE                    ), //o
-    .ebram_MASK_N      (lowInstructionEbram2_ebram_MASK_N[15:0]          ), //o
-    .ebram_DO          (ice40Ebram4k_8_DO_1[15:0]                        ), //i
-    .clk               (clk                                              ), //i
-    .reset             (reset                                            )  //i
-  );
-  Ice40Ebram4k_1 ice40Ebram4k_9 (
-    .DI     (highInstructionEbram2_ebram_DI[15:0]    ), //i
-    .ADW    (highInstructionEbram2_ebram_ADW[7:0]    ), //i
-    .ADR    (highInstructionEbram2_ebram_ADR[7:0]    ), //i
-    .CKW    (clk                                     ), //i
-    .CKR    (clk                                     ), //i
-    .CEW    (highInstructionEbram2_ebram_CEW         ), //i
-    .CER    (highInstructionEbram2_ebram_CER         ), //i
-    .RE     (highInstructionEbram2_ebram_RE          ), //i
-    .WE     (highInstructionEbram2_ebram_WE          ), //i
-    .MASK_N (highInstructionEbram2_ebram_MASK_N[15:0]), //i
-    .DO_1   (ice40Ebram4k_9_DO_1[15:0]               )  //o
-  );
-  Ice40Ebram4k16WishboneBusAdapter highInstructionEbram2 (
-    .wishbone_CYC      (wishboneBusDataExpander_4_slaves_1_CYC           ), //i
-    .wishbone_STB      (wishboneBusDataExpander_4_slaves_1_STB           ), //i
-    .wishbone_ACK      (highInstructionEbram2_wishbone_ACK               ), //o
-    .wishbone_WE       (wishboneBusDataExpander_4_slaves_1_WE            ), //i
-    .wishbone_ADR      (wishboneBusDataExpander_4_slaves_1_ADR[7:0]      ), //i
-    .wishbone_DAT_MISO (highInstructionEbram2_wishbone_DAT_MISO[15:0]    ), //o
-    .wishbone_DAT_MOSI (wishboneBusDataExpander_4_slaves_1_DAT_MOSI[15:0]), //i
-    .wishbone_SEL      (wishboneBusDataExpander_4_slaves_1_SEL[15:0]     ), //i
-    .ebram_DI          (highInstructionEbram2_ebram_DI[15:0]             ), //o
-    .ebram_ADW         (highInstructionEbram2_ebram_ADW[7:0]             ), //o
-    .ebram_ADR         (highInstructionEbram2_ebram_ADR[7:0]             ), //o
-    .ebram_CEW         (highInstructionEbram2_ebram_CEW                  ), //o
-    .ebram_CER         (highInstructionEbram2_ebram_CER                  ), //o
-    .ebram_RE          (highInstructionEbram2_ebram_RE                   ), //o
-    .ebram_WE          (highInstructionEbram2_ebram_WE                   ), //o
-    .ebram_MASK_N      (highInstructionEbram2_ebram_MASK_N[15:0]         ), //o
-    .ebram_DO          (ice40Ebram4k_9_DO_1[15:0]                        ), //i
-    .clk               (clk                                              ), //i
-    .reset             (reset                                            )  //i
-  );
-  Ice40Ebram4k_4 ice40Ebram4k_10 (
-    .DI     (temporaryEbramBlocks_4_ebram_DI[15:0]    ), //i
-    .ADW    (temporaryEbramBlocks_4_ebram_ADW[7:0]    ), //i
-    .ADR    (temporaryEbramBlocks_4_ebram_ADR[7:0]    ), //i
-    .CKW    (clk                                      ), //i
-    .CKR    (clk                                      ), //i
-    .CEW    (temporaryEbramBlocks_4_ebram_CEW         ), //i
-    .CER    (temporaryEbramBlocks_4_ebram_CER         ), //i
-    .RE     (temporaryEbramBlocks_4_ebram_RE          ), //i
-    .WE     (temporaryEbramBlocks_4_ebram_WE          ), //i
-    .MASK_N (temporaryEbramBlocks_4_ebram_MASK_N[15:0]), //i
-    .DO_1   (ice40Ebram4k_10_DO_1[15:0]               )  //o
-  );
-  Ice40Ebram4k16WishboneBusAdapter temporaryEbramBlocks_4 (
-    .wishbone_CYC      (wishboneBusDataExpander_5_slaves_0_CYC           ), //i
-    .wishbone_STB      (wishboneBusDataExpander_5_slaves_0_STB           ), //i
-    .wishbone_ACK      (temporaryEbramBlocks_4_wishbone_ACK              ), //o
-    .wishbone_WE       (wishboneBusDataExpander_5_slaves_0_WE            ), //i
-    .wishbone_ADR      (wishboneBusDataExpander_5_slaves_0_ADR[7:0]      ), //i
-    .wishbone_DAT_MISO (temporaryEbramBlocks_4_wishbone_DAT_MISO[15:0]   ), //o
-    .wishbone_DAT_MOSI (wishboneBusDataExpander_5_slaves_0_DAT_MOSI[15:0]), //i
-    .wishbone_SEL      (wishboneBusDataExpander_5_slaves_0_SEL[15:0]     ), //i
-    .ebram_DI          (temporaryEbramBlocks_4_ebram_DI[15:0]            ), //o
-    .ebram_ADW         (temporaryEbramBlocks_4_ebram_ADW[7:0]            ), //o
-    .ebram_ADR         (temporaryEbramBlocks_4_ebram_ADR[7:0]            ), //o
-    .ebram_CEW         (temporaryEbramBlocks_4_ebram_CEW                 ), //o
-    .ebram_CER         (temporaryEbramBlocks_4_ebram_CER                 ), //o
-    .ebram_RE          (temporaryEbramBlocks_4_ebram_RE                  ), //o
-    .ebram_WE          (temporaryEbramBlocks_4_ebram_WE                  ), //o
-    .ebram_MASK_N      (temporaryEbramBlocks_4_ebram_MASK_N[15:0]        ), //o
-    .ebram_DO          (ice40Ebram4k_10_DO_1[15:0]                       ), //i
-    .clk               (clk                                              ), //i
-    .reset             (reset                                            )  //i
-  );
-  Ice40Ebram4k_4 ice40Ebram4k_11 (
-    .DI     (temporaryEbramBlocks_5_ebram_DI[15:0]    ), //i
-    .ADW    (temporaryEbramBlocks_5_ebram_ADW[7:0]    ), //i
-    .ADR    (temporaryEbramBlocks_5_ebram_ADR[7:0]    ), //i
-    .CKW    (clk                                      ), //i
-    .CKR    (clk                                      ), //i
-    .CEW    (temporaryEbramBlocks_5_ebram_CEW         ), //i
-    .CER    (temporaryEbramBlocks_5_ebram_CER         ), //i
-    .RE     (temporaryEbramBlocks_5_ebram_RE          ), //i
-    .WE     (temporaryEbramBlocks_5_ebram_WE          ), //i
-    .MASK_N (temporaryEbramBlocks_5_ebram_MASK_N[15:0]), //i
-    .DO_1   (ice40Ebram4k_11_DO_1[15:0]               )  //o
-  );
-  Ice40Ebram4k16WishboneBusAdapter temporaryEbramBlocks_5 (
-    .wishbone_CYC      (wishboneBusDataExpander_5_slaves_1_CYC           ), //i
-    .wishbone_STB      (wishboneBusDataExpander_5_slaves_1_STB           ), //i
-    .wishbone_ACK      (temporaryEbramBlocks_5_wishbone_ACK              ), //o
-    .wishbone_WE       (wishboneBusDataExpander_5_slaves_1_WE            ), //i
-    .wishbone_ADR      (wishboneBusDataExpander_5_slaves_1_ADR[7:0]      ), //i
-    .wishbone_DAT_MISO (temporaryEbramBlocks_5_wishbone_DAT_MISO[15:0]   ), //o
-    .wishbone_DAT_MOSI (wishboneBusDataExpander_5_slaves_1_DAT_MOSI[15:0]), //i
-    .wishbone_SEL      (wishboneBusDataExpander_5_slaves_1_SEL[15:0]     ), //i
-    .ebram_DI          (temporaryEbramBlocks_5_ebram_DI[15:0]            ), //o
-    .ebram_ADW         (temporaryEbramBlocks_5_ebram_ADW[7:0]            ), //o
-    .ebram_ADR         (temporaryEbramBlocks_5_ebram_ADR[7:0]            ), //o
-    .ebram_CEW         (temporaryEbramBlocks_5_ebram_CEW                 ), //o
-    .ebram_CER         (temporaryEbramBlocks_5_ebram_CER                 ), //o
-    .ebram_RE          (temporaryEbramBlocks_5_ebram_RE                  ), //o
-    .ebram_WE          (temporaryEbramBlocks_5_ebram_WE                  ), //o
-    .ebram_MASK_N      (temporaryEbramBlocks_5_ebram_MASK_N[15:0]        ), //o
-    .ebram_DO          (ice40Ebram4k_11_DO_1[15:0]                       ), //i
-    .clk               (clk                                              ), //i
-    .reset             (reset                                            )  //i
-  );
-  WishboneBusDataExpander wishboneBusDataExpander_3 (
-    .master_CYC        (temporaryWideEbramBlock_slave_CYC                ), //i
-    .master_STB        (temporaryWideEbramBlock_slave_STB                ), //i
-    .master_ACK        (wishboneBusDataExpander_3_master_ACK             ), //o
-    .master_WE         (temporaryWideEbramBlock_slave_WE                 ), //i
-    .master_ADR        (temporaryWideEbramBlock_slave_ADR[7:0]           ), //i
-    .master_DAT_MISO   (wishboneBusDataExpander_3_master_DAT_MISO[31:0]  ), //o
-    .master_DAT_MOSI   (temporaryWideEbramBlock_slave_DAT_MOSI[31:0]     ), //i
-    .master_SEL        (temporaryWideEbramBlock_slave_SEL[31:0]          ), //i
-    .slaves_0_CYC      (wishboneBusDataExpander_3_slaves_0_CYC           ), //o
-    .slaves_0_STB      (wishboneBusDataExpander_3_slaves_0_STB           ), //o
+  WishboneBusDataExpander wishboneBusDataExpander_1 (
+    .master_CYC        (wideInstructionEbramBlock_slave_CYC              ), //i
+    .master_STB        (wideInstructionEbramBlock_slave_STB              ), //i
+    .master_ACK        (wishboneBusDataExpander_1_master_ACK             ), //o
+    .master_WE         (wideInstructionEbramBlock_slave_WE               ), //i
+    .master_ADR        (wideInstructionEbramBlock_slave_ADR[7:0]         ), //i
+    .master_DAT_MISO   (wishboneBusDataExpander_1_master_DAT_MISO[31:0]  ), //o
+    .master_DAT_MOSI   (wideInstructionEbramBlock_slave_DAT_MOSI[31:0]   ), //i
+    .master_SEL        (wideInstructionEbramBlock_slave_SEL[31:0]        ), //i
+    .slaves_0_CYC      (wishboneBusDataExpander_1_slaves_0_CYC           ), //o
+    .slaves_0_STB      (wishboneBusDataExpander_1_slaves_0_STB           ), //o
     .slaves_0_ACK      (lowInstructionEbram_wishbone_ACK                 ), //i
-    .slaves_0_WE       (wishboneBusDataExpander_3_slaves_0_WE            ), //o
-    .slaves_0_ADR      (wishboneBusDataExpander_3_slaves_0_ADR[7:0]      ), //o
+    .slaves_0_WE       (wishboneBusDataExpander_1_slaves_0_WE            ), //o
+    .slaves_0_ADR      (wishboneBusDataExpander_1_slaves_0_ADR[7:0]      ), //o
     .slaves_0_DAT_MISO (lowInstructionEbram_wishbone_DAT_MISO[15:0]      ), //i
-    .slaves_0_DAT_MOSI (wishboneBusDataExpander_3_slaves_0_DAT_MOSI[15:0]), //o
-    .slaves_0_SEL      (wishboneBusDataExpander_3_slaves_0_SEL[15:0]     ), //o
-    .slaves_1_CYC      (wishboneBusDataExpander_3_slaves_1_CYC           ), //o
-    .slaves_1_STB      (wishboneBusDataExpander_3_slaves_1_STB           ), //o
+    .slaves_0_DAT_MOSI (wishboneBusDataExpander_1_slaves_0_DAT_MOSI[15:0]), //o
+    .slaves_0_SEL      (wishboneBusDataExpander_1_slaves_0_SEL[15:0]     ), //o
+    .slaves_1_CYC      (wishboneBusDataExpander_1_slaves_1_CYC           ), //o
+    .slaves_1_STB      (wishboneBusDataExpander_1_slaves_1_STB           ), //o
     .slaves_1_ACK      (highInstructionEbram_wishbone_ACK                ), //i
-    .slaves_1_WE       (wishboneBusDataExpander_3_slaves_1_WE            ), //o
-    .slaves_1_ADR      (wishboneBusDataExpander_3_slaves_1_ADR[7:0]      ), //o
+    .slaves_1_WE       (wishboneBusDataExpander_1_slaves_1_WE            ), //o
+    .slaves_1_ADR      (wishboneBusDataExpander_1_slaves_1_ADR[7:0]      ), //o
     .slaves_1_DAT_MISO (highInstructionEbram_wishbone_DAT_MISO[15:0]     ), //i
-    .slaves_1_DAT_MOSI (wishboneBusDataExpander_3_slaves_1_DAT_MOSI[15:0]), //o
-    .slaves_1_SEL      (wishboneBusDataExpander_3_slaves_1_SEL[15:0]     )  //o
+    .slaves_1_DAT_MOSI (wishboneBusDataExpander_1_slaves_1_DAT_MOSI[15:0]), //o
+    .slaves_1_SEL      (wishboneBusDataExpander_1_slaves_1_SEL[15:0]     )  //o
   );
-  WishboneBusSelMappingAdapter temporaryWideEbramBlock (
-    .master_CYC      (wishboneBusSlaveMultiplexer_2_slaves_0_CYC           ), //i
-    .master_STB      (wishboneBusSlaveMultiplexer_2_slaves_0_STB           ), //i
-    .master_ACK      (temporaryWideEbramBlock_master_ACK                   ), //o
-    .master_WE       (wishboneBusSlaveMultiplexer_2_slaves_0_WE            ), //i
-    .master_ADR      (wishboneBusSlaveMultiplexer_2_slaves_0_ADR[7:0]      ), //i
-    .master_DAT_MISO (temporaryWideEbramBlock_master_DAT_MISO[31:0]        ), //o
-    .master_DAT_MOSI (wishboneBusSlaveMultiplexer_2_slaves_0_DAT_MOSI[31:0]), //i
-    .master_SEL      (wishboneBusSlaveMultiplexer_2_slaves_0_SEL[3:0]      ), //i
-    .slave_CYC       (temporaryWideEbramBlock_slave_CYC                    ), //o
-    .slave_STB       (temporaryWideEbramBlock_slave_STB                    ), //o
-    .slave_ACK       (wishboneBusDataExpander_3_master_ACK                 ), //i
-    .slave_WE        (temporaryWideEbramBlock_slave_WE                     ), //o
-    .slave_ADR       (temporaryWideEbramBlock_slave_ADR[7:0]               ), //o
-    .slave_DAT_MISO  (wishboneBusDataExpander_3_master_DAT_MISO[31:0]      ), //i
-    .slave_DAT_MOSI  (temporaryWideEbramBlock_slave_DAT_MOSI[31:0]         ), //o
-    .slave_SEL       (temporaryWideEbramBlock_slave_SEL[31:0]              )  //o
+  WishboneBusSelMappingAdapter wideInstructionEbramBlock (
+    .master_CYC      (instructionEbramBlockWidthAdjusted_slave_CYC           ), //i
+    .master_STB      (instructionEbramBlockWidthAdjusted_slave_STB           ), //i
+    .master_ACK      (wideInstructionEbramBlock_master_ACK                   ), //o
+    .master_WE       (instructionEbramBlockWidthAdjusted_slave_WE            ), //i
+    .master_ADR      (instructionEbramBlockWidthAdjusted_slave_ADR[7:0]      ), //i
+    .master_DAT_MISO (wideInstructionEbramBlock_master_DAT_MISO[31:0]        ), //o
+    .master_DAT_MOSI (instructionEbramBlockWidthAdjusted_slave_DAT_MOSI[31:0]), //i
+    .master_SEL      (instructionEbramBlockWidthAdjusted_slave_SEL[3:0]      ), //i
+    .slave_CYC       (wideInstructionEbramBlock_slave_CYC                    ), //o
+    .slave_STB       (wideInstructionEbramBlock_slave_STB                    ), //o
+    .slave_ACK       (wishboneBusDataExpander_1_master_ACK                   ), //i
+    .slave_WE        (wideInstructionEbramBlock_slave_WE                     ), //o
+    .slave_ADR       (wideInstructionEbramBlock_slave_ADR[7:0]               ), //o
+    .slave_DAT_MISO  (wishboneBusDataExpander_1_master_DAT_MISO[31:0]        ), //i
+    .slave_DAT_MOSI  (wideInstructionEbramBlock_slave_DAT_MOSI[31:0]         ), //o
+    .slave_SEL       (wideInstructionEbramBlock_slave_SEL[31:0]              )  //o
   );
-  WishboneBusDataExpander wishboneBusDataExpander_4 (
-    .master_CYC        (temporaryWideEbramBlock2_slave_CYC               ), //i
-    .master_STB        (temporaryWideEbramBlock2_slave_STB               ), //i
-    .master_ACK        (wishboneBusDataExpander_4_master_ACK             ), //o
-    .master_WE         (temporaryWideEbramBlock2_slave_WE                ), //i
-    .master_ADR        (temporaryWideEbramBlock2_slave_ADR[7:0]          ), //i
-    .master_DAT_MISO   (wishboneBusDataExpander_4_master_DAT_MISO[31:0]  ), //o
-    .master_DAT_MOSI   (temporaryWideEbramBlock2_slave_DAT_MOSI[31:0]    ), //i
-    .master_SEL        (temporaryWideEbramBlock2_slave_SEL[31:0]         ), //i
-    .slaves_0_CYC      (wishboneBusDataExpander_4_slaves_0_CYC           ), //o
-    .slaves_0_STB      (wishboneBusDataExpander_4_slaves_0_STB           ), //o
-    .slaves_0_ACK      (lowInstructionEbram2_wishbone_ACK                ), //i
-    .slaves_0_WE       (wishboneBusDataExpander_4_slaves_0_WE            ), //o
-    .slaves_0_ADR      (wishboneBusDataExpander_4_slaves_0_ADR[7:0]      ), //o
-    .slaves_0_DAT_MISO (lowInstructionEbram2_wishbone_DAT_MISO[15:0]     ), //i
-    .slaves_0_DAT_MOSI (wishboneBusDataExpander_4_slaves_0_DAT_MOSI[15:0]), //o
-    .slaves_0_SEL      (wishboneBusDataExpander_4_slaves_0_SEL[15:0]     ), //o
-    .slaves_1_CYC      (wishboneBusDataExpander_4_slaves_1_CYC           ), //o
-    .slaves_1_STB      (wishboneBusDataExpander_4_slaves_1_STB           ), //o
-    .slaves_1_ACK      (highInstructionEbram2_wishbone_ACK               ), //i
-    .slaves_1_WE       (wishboneBusDataExpander_4_slaves_1_WE            ), //o
-    .slaves_1_ADR      (wishboneBusDataExpander_4_slaves_1_ADR[7:0]      ), //o
-    .slaves_1_DAT_MISO (highInstructionEbram2_wishbone_DAT_MISO[15:0]    ), //i
-    .slaves_1_DAT_MOSI (wishboneBusDataExpander_4_slaves_1_DAT_MOSI[15:0]), //o
-    .slaves_1_SEL      (wishboneBusDataExpander_4_slaves_1_SEL[15:0]     )  //o
+  WishboneBusAddressMappingAdapter ledDeviceWidthAdjusted (
+    .master_CYC      (ledDeviceWidthAdjusted_master_CYC           ), //i
+    .master_STB      (dbusAdapter_io_wbs_STB                      ), //i
+    .master_ACK      (ledDeviceWidthAdjusted_master_ACK           ), //o
+    .master_WE       (dbusAdapter_io_wbs_WE                       ), //i
+    .master_ADR      (dbusAdapter_io_wbs_ADR[29:0]                ), //i
+    .master_DAT_MISO (ledDeviceWidthAdjusted_master_DAT_MISO[31:0]), //o
+    .master_DAT_MOSI (dbusAdapter_io_wbs_DAT_MOSI[31:0]           ), //i
+    .master_SEL      (dbusAdapter_io_wbs_SEL[3:0]                 ), //i
+    .slave_CYC       (ledDeviceWidthAdjusted_slave_CYC            ), //o
+    .slave_STB       (ledDeviceWidthAdjusted_slave_STB            ), //o
+    .slave_ACK       (ledDevice_io_wishbone_ACK                   ), //i
+    .slave_WE        (ledDeviceWidthAdjusted_slave_WE             ), //o
+    .slave_ADR       (ledDeviceWidthAdjusted_slave_ADR            ), //o
+    .slave_DAT_MISO  (ledDevice_io_wishbone_DAT_MISO[31:0]        ), //i
+    .slave_DAT_MOSI  (ledDeviceWidthAdjusted_slave_DAT_MOSI[31:0] ), //o
+    .slave_SEL       (ledDeviceWidthAdjusted_slave_SEL[3:0]       )  //o
   );
-  WishboneBusSelMappingAdapter temporaryWideEbramBlock2 (
-    .master_CYC      (wishboneBusSlaveMultiplexer_2_slaves_1_CYC           ), //i
-    .master_STB      (wishboneBusSlaveMultiplexer_2_slaves_1_STB           ), //i
-    .master_ACK      (temporaryWideEbramBlock2_master_ACK                  ), //o
-    .master_WE       (wishboneBusSlaveMultiplexer_2_slaves_1_WE            ), //i
-    .master_ADR      (wishboneBusSlaveMultiplexer_2_slaves_1_ADR[7:0]      ), //i
-    .master_DAT_MISO (temporaryWideEbramBlock2_master_DAT_MISO[31:0]       ), //o
-    .master_DAT_MOSI (wishboneBusSlaveMultiplexer_2_slaves_1_DAT_MOSI[31:0]), //i
-    .master_SEL      (wishboneBusSlaveMultiplexer_2_slaves_1_SEL[3:0]      ), //i
-    .slave_CYC       (temporaryWideEbramBlock2_slave_CYC                   ), //o
-    .slave_STB       (temporaryWideEbramBlock2_slave_STB                   ), //o
-    .slave_ACK       (wishboneBusDataExpander_4_master_ACK                 ), //i
-    .slave_WE        (temporaryWideEbramBlock2_slave_WE                    ), //o
-    .slave_ADR       (temporaryWideEbramBlock2_slave_ADR[7:0]              ), //o
-    .slave_DAT_MISO  (wishboneBusDataExpander_4_master_DAT_MISO[31:0]      ), //i
-    .slave_DAT_MOSI  (temporaryWideEbramBlock2_slave_DAT_MOSI[31:0]        ), //o
-    .slave_SEL       (temporaryWideEbramBlock2_slave_SEL[31:0]             )  //o
+  WishboneBusAddressMappingAdapter_1 instructionEbramBlockWidthAdjusted (
+    .master_CYC      (masterMux_slave_CYC                                     ), //i
+    .master_STB      (masterMux_slave_STB                                     ), //i
+    .master_ACK      (instructionEbramBlockWidthAdjusted_master_ACK           ), //o
+    .master_WE       (masterMux_slave_WE                                      ), //i
+    .master_ADR      (masterMux_slave_ADR[29:0]                               ), //i
+    .master_DAT_MISO (instructionEbramBlockWidthAdjusted_master_DAT_MISO[31:0]), //o
+    .master_DAT_MOSI (masterMux_slave_DAT_MOSI[31:0]                          ), //i
+    .master_SEL      (masterMux_slave_SEL[3:0]                                ), //i
+    .slave_CYC       (instructionEbramBlockWidthAdjusted_slave_CYC            ), //o
+    .slave_STB       (instructionEbramBlockWidthAdjusted_slave_STB            ), //o
+    .slave_ACK       (wideInstructionEbramBlock_master_ACK                    ), //i
+    .slave_WE        (instructionEbramBlockWidthAdjusted_slave_WE             ), //o
+    .slave_ADR       (instructionEbramBlockWidthAdjusted_slave_ADR[7:0]       ), //o
+    .slave_DAT_MISO  (wideInstructionEbramBlock_master_DAT_MISO[31:0]         ), //i
+    .slave_DAT_MOSI  (instructionEbramBlockWidthAdjusted_slave_DAT_MOSI[31:0] ), //o
+    .slave_SEL       (instructionEbramBlockWidthAdjusted_slave_SEL[3:0]       )  //o
   );
-  WishboneBusDataExpander wishboneBusDataExpander_5 (
-    .master_CYC        (temporaryWideEbramBlock3_slave_CYC               ), //i
-    .master_STB        (temporaryWideEbramBlock3_slave_STB               ), //i
-    .master_ACK        (wishboneBusDataExpander_5_master_ACK             ), //o
-    .master_WE         (temporaryWideEbramBlock3_slave_WE                ), //i
-    .master_ADR        (temporaryWideEbramBlock3_slave_ADR[7:0]          ), //i
-    .master_DAT_MISO   (wishboneBusDataExpander_5_master_DAT_MISO[31:0]  ), //o
-    .master_DAT_MOSI   (temporaryWideEbramBlock3_slave_DAT_MOSI[31:0]    ), //i
-    .master_SEL        (temporaryWideEbramBlock3_slave_SEL[31:0]         ), //i
-    .slaves_0_CYC      (wishboneBusDataExpander_5_slaves_0_CYC           ), //o
-    .slaves_0_STB      (wishboneBusDataExpander_5_slaves_0_STB           ), //o
-    .slaves_0_ACK      (temporaryEbramBlocks_4_wishbone_ACK              ), //i
-    .slaves_0_WE       (wishboneBusDataExpander_5_slaves_0_WE            ), //o
-    .slaves_0_ADR      (wishboneBusDataExpander_5_slaves_0_ADR[7:0]      ), //o
-    .slaves_0_DAT_MISO (temporaryEbramBlocks_4_wishbone_DAT_MISO[15:0]   ), //i
-    .slaves_0_DAT_MOSI (wishboneBusDataExpander_5_slaves_0_DAT_MOSI[15:0]), //o
-    .slaves_0_SEL      (wishboneBusDataExpander_5_slaves_0_SEL[15:0]     ), //o
-    .slaves_1_CYC      (wishboneBusDataExpander_5_slaves_1_CYC           ), //o
-    .slaves_1_STB      (wishboneBusDataExpander_5_slaves_1_STB           ), //o
-    .slaves_1_ACK      (temporaryEbramBlocks_5_wishbone_ACK              ), //i
-    .slaves_1_WE       (wishboneBusDataExpander_5_slaves_1_WE            ), //o
-    .slaves_1_ADR      (wishboneBusDataExpander_5_slaves_1_ADR[7:0]      ), //o
-    .slaves_1_DAT_MISO (temporaryEbramBlocks_5_wishbone_DAT_MISO[15:0]   ), //i
-    .slaves_1_DAT_MOSI (wishboneBusDataExpander_5_slaves_1_DAT_MOSI[15:0]), //o
-    .slaves_1_SEL      (wishboneBusDataExpander_5_slaves_1_SEL[15:0]     )  //o
-  );
-  WishboneBusSelMappingAdapter temporaryWideEbramBlock3 (
-    .master_CYC      (wishboneBusSlaveMultiplexer_3_slaves_0_CYC           ), //i
-    .master_STB      (wishboneBusSlaveMultiplexer_3_slaves_0_STB           ), //i
-    .master_ACK      (temporaryWideEbramBlock3_master_ACK                  ), //o
-    .master_WE       (wishboneBusSlaveMultiplexer_3_slaves_0_WE            ), //i
-    .master_ADR      (wishboneBusSlaveMultiplexer_3_slaves_0_ADR[7:0]      ), //i
-    .master_DAT_MISO (temporaryWideEbramBlock3_master_DAT_MISO[31:0]       ), //o
-    .master_DAT_MOSI (wishboneBusSlaveMultiplexer_3_slaves_0_DAT_MOSI[31:0]), //i
-    .master_SEL      (wishboneBusSlaveMultiplexer_3_slaves_0_SEL[3:0]      ), //i
-    .slave_CYC       (temporaryWideEbramBlock3_slave_CYC                   ), //o
-    .slave_STB       (temporaryWideEbramBlock3_slave_STB                   ), //o
-    .slave_ACK       (wishboneBusDataExpander_5_master_ACK                 ), //i
-    .slave_WE        (temporaryWideEbramBlock3_slave_WE                    ), //o
-    .slave_ADR       (temporaryWideEbramBlock3_slave_ADR[7:0]              ), //o
-    .slave_DAT_MISO  (wishboneBusDataExpander_5_master_DAT_MISO[31:0]      ), //i
-    .slave_DAT_MOSI  (temporaryWideEbramBlock3_slave_DAT_MOSI[31:0]        ), //o
-    .slave_SEL       (temporaryWideEbramBlock3_slave_SEL[31:0]             )  //o
-  );
-  WishboneBusSlaveMultiplexer wishboneBusSlaveMultiplexer_2 (
-    .master_CYC        (ibusSlaves_slave_CYC                                 ), //i
-    .master_STB        (ibusSlaves_slave_STB                                 ), //i
-    .master_ACK        (wishboneBusSlaveMultiplexer_2_master_ACK             ), //o
-    .master_WE         (ibusSlaves_slave_WE                                  ), //i
-    .master_ADR        (ibusSlaves_slave_ADR[7:0]                            ), //i
-    .master_DAT_MISO   (wishboneBusSlaveMultiplexer_2_master_DAT_MISO[31:0]  ), //o
-    .master_DAT_MOSI   (ibusSlaves_slave_DAT_MOSI[31:0]                      ), //i
-    .master_SEL        (ibusSlaves_slave_SEL[3:0]                            ), //i
-    .slaves_0_CYC      (wishboneBusSlaveMultiplexer_2_slaves_0_CYC           ), //o
-    .slaves_0_STB      (wishboneBusSlaveMultiplexer_2_slaves_0_STB           ), //o
-    .slaves_0_ACK      (temporaryWideEbramBlock_master_ACK                   ), //i
-    .slaves_0_WE       (wishboneBusSlaveMultiplexer_2_slaves_0_WE            ), //o
-    .slaves_0_ADR      (wishboneBusSlaveMultiplexer_2_slaves_0_ADR[7:0]      ), //o
-    .slaves_0_DAT_MISO (temporaryWideEbramBlock_master_DAT_MISO[31:0]        ), //i
-    .slaves_0_DAT_MOSI (wishboneBusSlaveMultiplexer_2_slaves_0_DAT_MOSI[31:0]), //o
-    .slaves_0_SEL      (wishboneBusSlaveMultiplexer_2_slaves_0_SEL[3:0]      ), //o
-    .slaves_1_CYC      (wishboneBusSlaveMultiplexer_2_slaves_1_CYC           ), //o
-    .slaves_1_STB      (wishboneBusSlaveMultiplexer_2_slaves_1_STB           ), //o
-    .slaves_1_ACK      (temporaryWideEbramBlock2_master_ACK                  ), //i
-    .slaves_1_WE       (wishboneBusSlaveMultiplexer_2_slaves_1_WE            ), //o
-    .slaves_1_ADR      (wishboneBusSlaveMultiplexer_2_slaves_1_ADR[7:0]      ), //o
-    .slaves_1_DAT_MISO (temporaryWideEbramBlock2_master_DAT_MISO[31:0]       ), //i
-    .slaves_1_DAT_MOSI (wishboneBusSlaveMultiplexer_2_slaves_1_DAT_MOSI[31:0]), //o
-    .slaves_1_SEL      (wishboneBusSlaveMultiplexer_2_slaves_1_SEL[3:0]      ), //o
-    .selector          (ibusSlaveSelector                                    )  //i
-  );
-  WishboneBusAddressMappingAdapter ibusSlaves (
-    .master_CYC      (ibus_adapter_io_wbs_CYC                            ), //i
-    .master_STB      (ibus_adapter_io_wbs_STB                            ), //i
-    .master_ACK      (ibusSlaves_master_ACK                              ), //o
-    .master_WE       (ibus_adapter_io_wbs_WE                             ), //i
-    .master_ADR      (ibus_adapter_io_wbs_ADR[29:0]                      ), //i
-    .master_DAT_MISO (ibusSlaves_master_DAT_MISO[31:0]                   ), //o
-    .master_DAT_MOSI (ibus_adapter_io_wbs_DAT_MOSI[31:0]                 ), //i
-    .master_SEL      (ibus_adapter_io_wbs_SEL[3:0]                       ), //i
-    .slave_CYC       (ibusSlaves_slave_CYC                               ), //o
-    .slave_STB       (ibusSlaves_slave_STB                               ), //o
-    .slave_ACK       (wishboneBusSlaveMultiplexer_2_master_ACK           ), //i
-    .slave_WE        (ibusSlaves_slave_WE                                ), //o
-    .slave_ADR       (ibusSlaves_slave_ADR[7:0]                          ), //o
-    .slave_DAT_MISO  (wishboneBusSlaveMultiplexer_2_master_DAT_MISO[31:0]), //i
-    .slave_DAT_MOSI  (ibusSlaves_slave_DAT_MOSI[31:0]                    ), //o
-    .slave_SEL       (ibusSlaves_slave_SEL[3:0]                          )  //o
-  );
-  WishboneAdapter ibus_adapter (
+  WishboneAdapter ibusAdapter (
     .io_wbm_CYC      (cpu_1_ibus_CYC                    ), //i
     .io_wbm_STB      (cpu_1_ibus_STB                    ), //i
-    .io_wbm_ACK      (ibus_adapter_io_wbm_ACK           ), //o
+    .io_wbm_ACK      (ibusAdapter_io_wbm_ACK            ), //o
     .io_wbm_WE       (cpu_1_ibus_WE                     ), //i
     .io_wbm_ADR      (cpu_1_ibus_ADR[29:0]              ), //i
-    .io_wbm_DAT_MISO (ibus_adapter_io_wbm_DAT_MISO[31:0]), //o
+    .io_wbm_DAT_MISO (ibusAdapter_io_wbm_DAT_MISO[31:0] ), //o
     .io_wbm_DAT_MOSI (cpu_1_ibus_DAT_MOSI[31:0]         ), //i
     .io_wbm_SEL      (cpu_1_ibus_SEL[3:0]               ), //i
-    .io_wbm_ERR      (ibus_adapter_io_wbm_ERR           ), //o
+    .io_wbm_ERR      (ibusAdapter_io_wbm_ERR            ), //o
     .io_wbm_CTI      (cpu_1_ibus_CTI[2:0]               ), //i
     .io_wbm_BTE      (cpu_1_ibus_BTE[1:0]               ), //i
-    .io_wbs_CYC      (ibus_adapter_io_wbs_CYC           ), //o
-    .io_wbs_STB      (ibus_adapter_io_wbs_STB           ), //o
-    .io_wbs_ACK      (ibusSlaves_master_ACK             ), //i
-    .io_wbs_WE       (ibus_adapter_io_wbs_WE            ), //o
-    .io_wbs_ADR      (ibus_adapter_io_wbs_ADR[29:0]     ), //o
-    .io_wbs_DAT_MISO (ibusSlaves_master_DAT_MISO[31:0]  ), //i
-    .io_wbs_DAT_MOSI (ibus_adapter_io_wbs_DAT_MOSI[31:0]), //o
-    .io_wbs_SEL      (ibus_adapter_io_wbs_SEL[3:0]      )  //o
+    .io_wbs_CYC      (ibusAdapter_io_wbs_CYC            ), //o
+    .io_wbs_STB      (ibusAdapter_io_wbs_STB            ), //o
+    .io_wbs_ACK      (masterMux_masters_1_ACK           ), //i
+    .io_wbs_WE       (ibusAdapter_io_wbs_WE             ), //o
+    .io_wbs_ADR      (ibusAdapter_io_wbs_ADR[29:0]      ), //o
+    .io_wbs_DAT_MISO (masterMux_masters_1_DAT_MISO[31:0]), //i
+    .io_wbs_DAT_MOSI (ibusAdapter_io_wbs_DAT_MOSI[31:0] ), //o
+    .io_wbs_SEL      (ibusAdapter_io_wbs_SEL[3:0]       )  //o
   );
-  unamed ledDevice (
-    .io_wishbone_CYC      (wishboneBusAddressMappingAdapter_3_slave_CYC           ), //i
-    .io_wishbone_STB      (wishboneBusAddressMappingAdapter_3_slave_STB           ), //i
-    .io_wishbone_ACK      (ledDevice_io_wishbone_ACK                              ), //o
-    .io_wishbone_WE       (wishboneBusAddressMappingAdapter_3_slave_WE            ), //i
-    .io_wishbone_ADR      (wishboneBusAddressMappingAdapter_3_slave_ADR           ), //i
-    .io_wishbone_DAT_MISO (ledDevice_io_wishbone_DAT_MISO[31:0]                   ), //o
-    .io_wishbone_DAT_MOSI (wishboneBusAddressMappingAdapter_3_slave_DAT_MOSI[31:0]), //i
-    .io_wishbone_SEL      (wishboneBusAddressMappingAdapter_3_slave_SEL[3:0]      ), //i
-    .io_led               (ledDevice_io_led                                       ), //o
-    .clk                  (clk                                                    ), //i
-    .reset                (reset                                                  )  //i
-  );
-  WishboneBusAddressMappingAdapter_1 wishboneBusAddressMappingAdapter_3 (
-    .master_CYC      (wishboneBusSlaveMultiplexer_3_slaves_1_CYC              ), //i
-    .master_STB      (wishboneBusSlaveMultiplexer_3_slaves_1_STB              ), //i
-    .master_ACK      (wishboneBusAddressMappingAdapter_3_master_ACK           ), //o
-    .master_WE       (wishboneBusSlaveMultiplexer_3_slaves_1_WE               ), //i
-    .master_ADR      (wishboneBusSlaveMultiplexer_3_slaves_1_ADR[7:0]         ), //i
-    .master_DAT_MISO (wishboneBusAddressMappingAdapter_3_master_DAT_MISO[31:0]), //o
-    .master_DAT_MOSI (wishboneBusSlaveMultiplexer_3_slaves_1_DAT_MOSI[31:0]   ), //i
-    .master_SEL      (wishboneBusSlaveMultiplexer_3_slaves_1_SEL[3:0]         ), //i
-    .slave_CYC       (wishboneBusAddressMappingAdapter_3_slave_CYC            ), //o
-    .slave_STB       (wishboneBusAddressMappingAdapter_3_slave_STB            ), //o
-    .slave_ACK       (ledDevice_io_wishbone_ACK                               ), //i
-    .slave_WE        (wishboneBusAddressMappingAdapter_3_slave_WE             ), //o
-    .slave_ADR       (wishboneBusAddressMappingAdapter_3_slave_ADR            ), //o
-    .slave_DAT_MISO  (ledDevice_io_wishbone_DAT_MISO[31:0]                    ), //i
-    .slave_DAT_MOSI  (wishboneBusAddressMappingAdapter_3_slave_DAT_MOSI[31:0] ), //o
-    .slave_SEL       (wishboneBusAddressMappingAdapter_3_slave_SEL[3:0]       )  //o
-  );
-  WishboneBusSlaveMultiplexer wishboneBusSlaveMultiplexer_3 (
-    .master_CYC        (dbusSlaves_slave_CYC                                    ), //i
-    .master_STB        (dbusSlaves_slave_STB                                    ), //i
-    .master_ACK        (wishboneBusSlaveMultiplexer_3_master_ACK                ), //o
-    .master_WE         (dbusSlaves_slave_WE                                     ), //i
-    .master_ADR        (dbusSlaves_slave_ADR[7:0]                               ), //i
-    .master_DAT_MISO   (wishboneBusSlaveMultiplexer_3_master_DAT_MISO[31:0]     ), //o
-    .master_DAT_MOSI   (dbusSlaves_slave_DAT_MOSI[31:0]                         ), //i
-    .master_SEL        (dbusSlaves_slave_SEL[3:0]                               ), //i
-    .slaves_0_CYC      (wishboneBusSlaveMultiplexer_3_slaves_0_CYC              ), //o
-    .slaves_0_STB      (wishboneBusSlaveMultiplexer_3_slaves_0_STB              ), //o
-    .slaves_0_ACK      (temporaryWideEbramBlock3_master_ACK                     ), //i
-    .slaves_0_WE       (wishboneBusSlaveMultiplexer_3_slaves_0_WE               ), //o
-    .slaves_0_ADR      (wishboneBusSlaveMultiplexer_3_slaves_0_ADR[7:0]         ), //o
-    .slaves_0_DAT_MISO (temporaryWideEbramBlock3_master_DAT_MISO[31:0]          ), //i
-    .slaves_0_DAT_MOSI (wishboneBusSlaveMultiplexer_3_slaves_0_DAT_MOSI[31:0]   ), //o
-    .slaves_0_SEL      (wishboneBusSlaveMultiplexer_3_slaves_0_SEL[3:0]         ), //o
-    .slaves_1_CYC      (wishboneBusSlaveMultiplexer_3_slaves_1_CYC              ), //o
-    .slaves_1_STB      (wishboneBusSlaveMultiplexer_3_slaves_1_STB              ), //o
-    .slaves_1_ACK      (wishboneBusAddressMappingAdapter_3_master_ACK           ), //i
-    .slaves_1_WE       (wishboneBusSlaveMultiplexer_3_slaves_1_WE               ), //o
-    .slaves_1_ADR      (wishboneBusSlaveMultiplexer_3_slaves_1_ADR[7:0]         ), //o
-    .slaves_1_DAT_MISO (wishboneBusAddressMappingAdapter_3_master_DAT_MISO[31:0]), //i
-    .slaves_1_DAT_MOSI (wishboneBusSlaveMultiplexer_3_slaves_1_DAT_MOSI[31:0]   ), //o
-    .slaves_1_SEL      (wishboneBusSlaveMultiplexer_3_slaves_1_SEL[3:0]         ), //o
-    .selector          (dbusSlaveSelector                                       )  //i
-  );
-  WishboneBusAddressMappingAdapter dbusSlaves (
-    .master_CYC      (dbus_adapter_io_wbs_CYC                            ), //i
-    .master_STB      (dbus_adapter_io_wbs_STB                            ), //i
-    .master_ACK      (dbusSlaves_master_ACK                              ), //o
-    .master_WE       (dbus_adapter_io_wbs_WE                             ), //i
-    .master_ADR      (dbus_adapter_io_wbs_ADR[29:0]                      ), //i
-    .master_DAT_MISO (dbusSlaves_master_DAT_MISO[31:0]                   ), //o
-    .master_DAT_MOSI (dbus_adapter_io_wbs_DAT_MOSI[31:0]                 ), //i
-    .master_SEL      (dbus_adapter_io_wbs_SEL[3:0]                       ), //i
-    .slave_CYC       (dbusSlaves_slave_CYC                               ), //o
-    .slave_STB       (dbusSlaves_slave_STB                               ), //o
-    .slave_ACK       (wishboneBusSlaveMultiplexer_3_master_ACK           ), //i
-    .slave_WE        (dbusSlaves_slave_WE                                ), //o
-    .slave_ADR       (dbusSlaves_slave_ADR[7:0]                          ), //o
-    .slave_DAT_MISO  (wishboneBusSlaveMultiplexer_3_master_DAT_MISO[31:0]), //i
-    .slave_DAT_MOSI  (dbusSlaves_slave_DAT_MOSI[31:0]                    ), //o
-    .slave_SEL       (dbusSlaves_slave_SEL[3:0]                          )  //o
-  );
-  WishboneAdapter dbus_adapter (
+  WishboneAdapter dbusAdapter (
     .io_wbm_CYC      (cpu_1_dbus_CYC                    ), //i
     .io_wbm_STB      (cpu_1_dbus_STB                    ), //i
-    .io_wbm_ACK      (dbus_adapter_io_wbm_ACK           ), //o
+    .io_wbm_ACK      (dbusAdapter_io_wbm_ACK            ), //o
     .io_wbm_WE       (cpu_1_dbus_WE                     ), //i
     .io_wbm_ADR      (cpu_1_dbus_ADR[29:0]              ), //i
-    .io_wbm_DAT_MISO (dbus_adapter_io_wbm_DAT_MISO[31:0]), //o
+    .io_wbm_DAT_MISO (dbusAdapter_io_wbm_DAT_MISO[31:0] ), //o
     .io_wbm_DAT_MOSI (cpu_1_dbus_DAT_MOSI[31:0]         ), //i
     .io_wbm_SEL      (cpu_1_dbus_SEL[3:0]               ), //i
-    .io_wbm_ERR      (dbus_adapter_io_wbm_ERR           ), //o
+    .io_wbm_ERR      (dbusAdapter_io_wbm_ERR            ), //o
     .io_wbm_CTI      (cpu_1_dbus_CTI[2:0]               ), //i
     .io_wbm_BTE      (cpu_1_dbus_BTE[1:0]               ), //i
-    .io_wbs_CYC      (dbus_adapter_io_wbs_CYC           ), //o
-    .io_wbs_STB      (dbus_adapter_io_wbs_STB           ), //o
-    .io_wbs_ACK      (dbusSlaves_master_ACK             ), //i
-    .io_wbs_WE       (dbus_adapter_io_wbs_WE            ), //o
-    .io_wbs_ADR      (dbus_adapter_io_wbs_ADR[29:0]     ), //o
-    .io_wbs_DAT_MISO (dbusSlaves_master_DAT_MISO[31:0]  ), //i
-    .io_wbs_DAT_MOSI (dbus_adapter_io_wbs_DAT_MOSI[31:0]), //o
-    .io_wbs_SEL      (dbus_adapter_io_wbs_SEL[3:0]      )  //o
+    .io_wbs_CYC      (dbusAdapter_io_wbs_CYC            ), //o
+    .io_wbs_STB      (dbusAdapter_io_wbs_STB            ), //o
+    .io_wbs_ACK      (masterMux_masters_0_ACK           ), //i
+    .io_wbs_WE       (dbusAdapter_io_wbs_WE             ), //o
+    .io_wbs_ADR      (dbusAdapter_io_wbs_ADR[29:0]      ), //o
+    .io_wbs_DAT_MISO (masterMux_masters_0_DAT_MISO[31:0]), //i
+    .io_wbs_DAT_MOSI (dbusAdapter_io_wbs_DAT_MOSI[31:0] ), //o
+    .io_wbs_SEL      (dbusAdapter_io_wbs_SEL[3:0]       )  //o
   );
-  assign ibusAddress = cpu_1_ibus_ADR;
-  assign ibusSlaveSelector[0] = ibusAddress[14];
-  assign led = ledDevice_io_led;
-  assign dbusAddress = cpu_1_dbus_ADR;
-  assign dbusSlaveSelector[0] = dbusAddress[14];
+  WishboneBusMasterSlaveMap sharedSlaveMap (
+    .masters_0_index          (sharedSlaveMap_masters_0_index         ), //o
+    .masters_0_isValid        (sharedSlaveMap_masters_0_isValid       ), //o
+    .masters_0_slaveSelects_0 (sharedSlaveMap_masters_0_slaveSelects_0), //i
+    .masters_0_slaveSelects_1 (sharedSlaveMap_masters_0_slaveSelects_1), //i
+    .masters_1_index          (sharedSlaveMap_masters_1_index         ), //o
+    .masters_1_isValid        (sharedSlaveMap_masters_1_isValid       ), //o
+    .masters_1_slaveSelects_0 (sharedSlaveMap_masters_1_slaveSelects_0), //i
+    .masters_1_slaveSelects_1 (sharedSlaveMap_masters_1_slaveSelects_1)  //i
+  );
+  PriorityEncoder priorityEncoder_2 (
+    .inputs_0 (sharedSlaveArbiters_0_io_encoder_inputs_0), //i
+    .inputs_1 (sharedSlaveArbiters_0_io_encoder_inputs_1), //i
+    .output_1 (priorityEncoder_2_output_1               ), //o
+    .isValid  (priorityEncoder_2_isValid                )  //o
+  );
+  MultiMasterSingleSlaveArbiter sharedSlaveArbiters_0 (
+    .io_encoder_inputs_0    (sharedSlaveArbiters_0_io_encoder_inputs_0   ), //o
+    .io_encoder_inputs_1    (sharedSlaveArbiters_0_io_encoder_inputs_1   ), //o
+    .io_encoder_output      (priorityEncoder_2_output_1                  ), //i
+    .io_encoder_isValid     (priorityEncoder_2_isValid                   ), //i
+    .io_grantedMasterIndex  (sharedSlaveArbiters_0_io_grantedMasterIndex ), //o
+    .io_masters_0_request   (sharedSlaveArbiters_0_io_masters_0_request  ), //i
+    .io_masters_0_isError   (sharedSlaveArbiters_0_io_masters_0_isError  ), //o
+    .io_masters_0_isStalled (sharedSlaveArbiters_0_io_masters_0_isStalled), //o
+    .io_masters_0_isGranted (sharedSlaveArbiters_0_io_masters_0_isGranted), //o
+    .io_masters_1_request   (sharedSlaveArbiters_0_io_masters_1_request  ), //i
+    .io_masters_1_isError   (sharedSlaveArbiters_0_io_masters_1_isError  ), //o
+    .io_masters_1_isStalled (sharedSlaveArbiters_0_io_masters_1_isStalled), //o
+    .io_masters_1_isGranted (sharedSlaveArbiters_0_io_masters_1_isGranted), //o
+    .clk                    (clk                                         ), //i
+    .reset                  (reset                                       )  //i
+  );
+  PriorityEncoder priorityEncoder_3 (
+    .inputs_0 (sharedSlaveArbiters_1_io_encoder_inputs_0), //i
+    .inputs_1 (sharedSlaveArbiters_1_io_encoder_inputs_1), //i
+    .output_1 (priorityEncoder_3_output_1               ), //o
+    .isValid  (priorityEncoder_3_isValid                )  //o
+  );
+  MultiMasterSingleSlaveArbiter sharedSlaveArbiters_1 (
+    .io_encoder_inputs_0    (sharedSlaveArbiters_1_io_encoder_inputs_0   ), //o
+    .io_encoder_inputs_1    (sharedSlaveArbiters_1_io_encoder_inputs_1   ), //o
+    .io_encoder_output      (priorityEncoder_3_output_1                  ), //i
+    .io_encoder_isValid     (priorityEncoder_3_isValid                   ), //i
+    .io_grantedMasterIndex  (sharedSlaveArbiters_1_io_grantedMasterIndex ), //o
+    .io_masters_0_request   (sharedSlaveArbiters_1_io_masters_0_request  ), //i
+    .io_masters_0_isError   (sharedSlaveArbiters_1_io_masters_0_isError  ), //o
+    .io_masters_0_isStalled (sharedSlaveArbiters_1_io_masters_0_isStalled), //o
+    .io_masters_0_isGranted (sharedSlaveArbiters_1_io_masters_0_isGranted), //o
+    .io_masters_1_request   (sharedSlaveArbiters_1_io_masters_1_request  ), //i
+    .io_masters_1_isError   (sharedSlaveArbiters_1_io_masters_1_isError  ), //o
+    .io_masters_1_isStalled (sharedSlaveArbiters_1_io_masters_1_isStalled), //o
+    .io_masters_1_isGranted (sharedSlaveArbiters_1_io_masters_1_isGranted), //o
+    .clk                    (clk                                         ), //i
+    .reset                  (reset                                       )  //i
+  );
+  WishboneBusMasterMultiplexer masterMux (
+    .masters_0_CYC      (dbusAdapter_io_wbs_CYC                                  ), //i
+    .masters_0_STB      (dbusAdapter_io_wbs_STB                                  ), //i
+    .masters_0_ACK      (masterMux_masters_0_ACK                                 ), //o
+    .masters_0_WE       (dbusAdapter_io_wbs_WE                                   ), //i
+    .masters_0_ADR      (dbusAdapter_io_wbs_ADR[29:0]                            ), //i
+    .masters_0_DAT_MISO (masterMux_masters_0_DAT_MISO[31:0]                      ), //o
+    .masters_0_DAT_MOSI (dbusAdapter_io_wbs_DAT_MOSI[31:0]                       ), //i
+    .masters_0_SEL      (dbusAdapter_io_wbs_SEL[3:0]                             ), //i
+    .masters_1_CYC      (ibusAdapter_io_wbs_CYC                                  ), //i
+    .masters_1_STB      (ibusAdapter_io_wbs_STB                                  ), //i
+    .masters_1_ACK      (masterMux_masters_1_ACK                                 ), //o
+    .masters_1_WE       (ibusAdapter_io_wbs_WE                                   ), //i
+    .masters_1_ADR      (ibusAdapter_io_wbs_ADR[29:0]                            ), //i
+    .masters_1_DAT_MISO (masterMux_masters_1_DAT_MISO[31:0]                      ), //o
+    .masters_1_DAT_MOSI (ibusAdapter_io_wbs_DAT_MOSI[31:0]                       ), //i
+    .masters_1_SEL      (ibusAdapter_io_wbs_SEL[3:0]                             ), //i
+    .slave_CYC          (masterMux_slave_CYC                                     ), //o
+    .slave_STB          (masterMux_slave_STB                                     ), //o
+    .slave_ACK          (instructionEbramBlockWidthAdjusted_master_ACK           ), //i
+    .slave_WE           (masterMux_slave_WE                                      ), //o
+    .slave_ADR          (masterMux_slave_ADR[29:0]                               ), //o
+    .slave_DAT_MISO     (instructionEbramBlockWidthAdjusted_master_DAT_MISO[31:0]), //i
+    .slave_DAT_MOSI     (masterMux_slave_DAT_MOSI[31:0]                          ), //o
+    .slave_SEL          (masterMux_slave_SEL[3:0]                                ), //o
+    .selector           (sharedSlaveArbiters_0_io_grantedMasterIndex             )  //i
+  );
+  assign p23 = ledDevice_io_p23;
+  assign ledR = ledDevice_io_ledR;
+  assign ledG = ledDevice_io_ledG;
+  assign ledB = ledDevice_io_ledB;
+  assign sharedSlaveMap_masters_0_slaveSelects_0 = (! dbusAdapter_io_wbs_ADR[14]);
+  assign sharedSlaveMap_masters_1_slaveSelects_0 = (! ibusAdapter_io_wbs_ADR[14]);
+  assign sharedSlaveMap_masters_0_slaveSelects_1 = dbusAdapter_io_wbs_ADR[14];
+  assign sharedSlaveMap_masters_1_slaveSelects_1 = ibusAdapter_io_wbs_ADR[14];
+  assign sharedSlaveArbiters_0_io_masters_0_request = (dbusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b0));
+  assign sharedSlaveArbiters_0_io_masters_1_request = (ibusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b0));
+  assign sharedSlaveArbiters_1_io_masters_0_request = (dbusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b1));
+  assign sharedSlaveArbiters_1_io_masters_1_request = (ibusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b1));
+  assign ledDeviceWidthAdjusted_master_CYC = (dbusAdapter_io_wbs_CYC && dbusAdapter_io_wbs_ADR[14]);
 
 endmodule
 
-//WishboneAdapter replaced by WishboneAdapter
-
-//WishboneBusAddressMappingAdapter replaced by WishboneBusAddressMappingAdapter
-
-//WishboneBusSlaveMultiplexer replaced by WishboneBusSlaveMultiplexer
-
-module WishboneBusAddressMappingAdapter_1 (
-  input               master_CYC,
-  input               master_STB,
-  output              master_ACK,
-  input               master_WE,
-  input      [7:0]    master_ADR,
-  output     [31:0]   master_DAT_MISO,
-  input      [31:0]   master_DAT_MOSI,
-  input      [3:0]    master_SEL,
-  output              slave_CYC,
-  output              slave_STB,
+module WishboneBusMasterMultiplexer (
+  input               masters_0_CYC,
+  input               masters_0_STB,
+  output              masters_0_ACK,
+  input               masters_0_WE,
+  input      [29:0]   masters_0_ADR,
+  output     [31:0]   masters_0_DAT_MISO,
+  input      [31:0]   masters_0_DAT_MOSI,
+  input      [3:0]    masters_0_SEL,
+  input               masters_1_CYC,
+  input               masters_1_STB,
+  output              masters_1_ACK,
+  input               masters_1_WE,
+  input      [29:0]   masters_1_ADR,
+  output     [31:0]   masters_1_DAT_MISO,
+  input      [31:0]   masters_1_DAT_MOSI,
+  input      [3:0]    masters_1_SEL,
+  output reg          slave_CYC,
+  output reg          slave_STB,
   input               slave_ACK,
-  output              slave_WE,
-  output     [0:0]    slave_ADR,
+  output reg          slave_WE,
+  output reg [29:0]   slave_ADR,
   input      [31:0]   slave_DAT_MISO,
-  output     [31:0]   slave_DAT_MOSI,
-  output     [3:0]    slave_SEL
+  output reg [31:0]   slave_DAT_MOSI,
+  output reg [3:0]    slave_SEL,
+  input      [0:0]    selector
 );
 
 
-  assign slave_ADR = master_ADR[0:0];
-  assign master_DAT_MISO = slave_DAT_MISO;
-  assign master_ACK = slave_ACK;
-  assign slave_CYC = master_CYC;
-  assign slave_WE = master_WE;
-  assign slave_STB = master_STB;
-  assign slave_DAT_MOSI = master_DAT_MOSI;
-  assign slave_SEL = master_SEL;
+  assign masters_0_DAT_MISO = slave_DAT_MISO;
+  assign masters_0_ACK = (slave_ACK && (selector == 1'b0));
+  assign masters_1_DAT_MISO = slave_DAT_MISO;
+  assign masters_1_ACK = (slave_ACK && (selector == 1'b1));
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_DAT_MOSI = masters_0_DAT_MOSI;
+      end
+      default : begin
+        slave_DAT_MOSI = masters_1_DAT_MOSI;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_ADR = masters_0_ADR;
+      end
+      default : begin
+        slave_ADR = masters_1_ADR;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_WE = masters_0_WE;
+      end
+      default : begin
+        slave_WE = masters_1_WE;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_CYC = masters_0_CYC;
+      end
+      default : begin
+        slave_CYC = masters_1_CYC;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_STB = masters_0_STB;
+      end
+      default : begin
+        slave_STB = masters_1_STB;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_SEL = masters_0_SEL;
+      end
+      default : begin
+        slave_SEL = masters_1_SEL;
+      end
+    endcase
+  end
+
 
 endmodule
 
-module unamed (
-  input               io_wishbone_CYC,
-  input               io_wishbone_STB,
-  output reg          io_wishbone_ACK,
-  input               io_wishbone_WE,
-  input      [0:0]    io_wishbone_ADR,
-  output     [31:0]   io_wishbone_DAT_MISO,
-  input      [31:0]   io_wishbone_DAT_MOSI,
-  input      [3:0]    io_wishbone_SEL,
-  output              io_led,
+//MultiMasterSingleSlaveArbiter replaced by MultiMasterSingleSlaveArbiter
+
+//PriorityEncoder replaced by PriorityEncoder
+
+module MultiMasterSingleSlaveArbiter (
+  output              io_encoder_inputs_0,
+  output              io_encoder_inputs_1,
+  input      [0:0]    io_encoder_output,
+  input               io_encoder_isValid,
+  output     [0:0]    io_grantedMasterIndex,
+  input               io_masters_0_request,
+  output              io_masters_0_isError,
+  output              io_masters_0_isStalled,
+  output              io_masters_0_isGranted,
+  input               io_masters_1_request,
+  output              io_masters_1_isError,
+  output              io_masters_1_isStalled,
+  output              io_masters_1_isGranted,
   input               clk,
   input               reset
 );
 
-  reg                 reg_1;
-  wire                when_Core_l201;
+  reg        [0:0]    grantedMasterIndex;
+  wire                when_MultiMasterSingleSlaveArbiter_l18;
+  wire                when_MultiMasterSingleSlaveArbiter_l18_1;
 
-  assign io_led = reg_1;
-  assign io_wishbone_DAT_MISO = 32'h0;
-  assign when_Core_l201 = ((io_wishbone_CYC && io_wishbone_WE) && io_wishbone_STB);
-  always @(*) begin
-    if(when_Core_l201) begin
-      io_wishbone_ACK = 1'b1;
-    end else begin
-      io_wishbone_ACK = 1'b0;
-    end
-  end
-
+  assign io_grantedMasterIndex = grantedMasterIndex;
+  assign when_MultiMasterSingleSlaveArbiter_l18 = (io_encoder_isValid && (! io_masters_0_request));
+  assign when_MultiMasterSingleSlaveArbiter_l18_1 = (io_encoder_isValid && (! io_masters_1_request));
+  assign io_encoder_inputs_0 = io_masters_0_request;
+  assign io_masters_0_isError = (io_masters_0_request && (! io_encoder_isValid));
+  assign io_masters_0_isStalled = (io_masters_0_request && (grantedMasterIndex != 1'b0));
+  assign io_masters_0_isGranted = (io_masters_0_request && (grantedMasterIndex == 1'b0));
+  assign io_encoder_inputs_1 = io_masters_1_request;
+  assign io_masters_1_isError = (io_masters_1_request && (! io_encoder_isValid));
+  assign io_masters_1_isStalled = (io_masters_1_request && (grantedMasterIndex != 1'b1));
+  assign io_masters_1_isGranted = (io_masters_1_request && (grantedMasterIndex == 1'b1));
   always @(posedge clk) begin
     if(reset) begin
-      reg_1 <= 1'b0;
+      grantedMasterIndex <= 1'b0;
     end else begin
-      if(when_Core_l201) begin
-        reg_1 <= io_wishbone_DAT_MOSI[0];
-      end
+      case(grantedMasterIndex)
+        1'b0 : begin
+          if(when_MultiMasterSingleSlaveArbiter_l18) begin
+            grantedMasterIndex <= io_encoder_output;
+          end
+        end
+        default : begin
+          if(when_MultiMasterSingleSlaveArbiter_l18_1) begin
+            grantedMasterIndex <= io_encoder_output;
+          end
+        end
+      endcase
     end
   end
 
 
 endmodule
+
+module PriorityEncoder (
+  input               inputs_0,
+  input               inputs_1,
+  output reg [0:0]    output_1,
+  output reg          isValid
+);
+
+  wire       [1:0]    _zz_switch_PriorityEncoder_l14;
+  wire       [1:0]    switch_PriorityEncoder_l14;
+
+  assign _zz_switch_PriorityEncoder_l14 = {inputs_1,inputs_0};
+  assign switch_PriorityEncoder_l14 = _zz_switch_PriorityEncoder_l14[1 : 0];
+  always @(*) begin
+    casez(switch_PriorityEncoder_l14)
+      2'b?1 : begin
+        output_1 = 1'b0;
+      end
+      2'b10 : begin
+        output_1 = 1'b1;
+      end
+      default : begin
+        output_1 = 1'b0;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    casez(switch_PriorityEncoder_l14)
+      2'b?1 : begin
+        isValid = 1'b1;
+      end
+      2'b10 : begin
+        isValid = 1'b1;
+      end
+      default : begin
+        isValid = 1'b0;
+      end
+    endcase
+  end
+
+
+endmodule
+
+module WishboneBusMasterSlaveMap (
+  output     [0:0]    masters_0_index,
+  output              masters_0_isValid,
+  input               masters_0_slaveSelects_0,
+  input               masters_0_slaveSelects_1,
+  output     [0:0]    masters_1_index,
+  output              masters_1_isValid,
+  input               masters_1_slaveSelects_0,
+  input               masters_1_slaveSelects_1
+);
+
+  wire       [0:0]    simpleEncoder_2_output_1;
+  wire                simpleEncoder_2_isValid;
+  wire       [0:0]    simpleEncoder_3_output_1;
+  wire                simpleEncoder_3_isValid;
+
+  SimpleEncoder simpleEncoder_2 (
+    .inputs_0 (masters_0_slaveSelects_0), //i
+    .inputs_1 (masters_0_slaveSelects_1), //i
+    .output_1 (simpleEncoder_2_output_1), //o
+    .isValid  (simpleEncoder_2_isValid )  //o
+  );
+  SimpleEncoder simpleEncoder_3 (
+    .inputs_0 (masters_1_slaveSelects_0), //i
+    .inputs_1 (masters_1_slaveSelects_1), //i
+    .output_1 (simpleEncoder_3_output_1), //o
+    .isValid  (simpleEncoder_3_isValid )  //o
+  );
+  assign masters_0_index = simpleEncoder_2_output_1;
+  assign masters_0_isValid = simpleEncoder_2_isValid;
+  assign masters_1_index = simpleEncoder_3_output_1;
+  assign masters_1_isValid = simpleEncoder_3_isValid;
+
+endmodule
+
+//WishboneAdapter replaced by WishboneAdapter
 
 module WishboneAdapter (
   input               io_wbm_CYC,
@@ -885,7 +769,7 @@ module WishboneAdapter (
 
 endmodule
 
-module WishboneBusAddressMappingAdapter (
+module WishboneBusAddressMappingAdapter_1 (
   input               master_CYC,
   input               master_STB,
   output              master_ACK,
@@ -916,79 +800,36 @@ module WishboneBusAddressMappingAdapter (
 
 endmodule
 
-module WishboneBusSlaveMultiplexer (
+module WishboneBusAddressMappingAdapter (
   input               master_CYC,
   input               master_STB,
-  output reg          master_ACK,
+  output              master_ACK,
   input               master_WE,
-  input      [7:0]    master_ADR,
-  output reg [31:0]   master_DAT_MISO,
+  input      [29:0]   master_ADR,
+  output     [31:0]   master_DAT_MISO,
   input      [31:0]   master_DAT_MOSI,
   input      [3:0]    master_SEL,
-  output              slaves_0_CYC,
-  output              slaves_0_STB,
-  input               slaves_0_ACK,
-  output              slaves_0_WE,
-  output     [7:0]    slaves_0_ADR,
-  input      [31:0]   slaves_0_DAT_MISO,
-  output     [31:0]   slaves_0_DAT_MOSI,
-  output     [3:0]    slaves_0_SEL,
-  output              slaves_1_CYC,
-  output              slaves_1_STB,
-  input               slaves_1_ACK,
-  output              slaves_1_WE,
-  output     [7:0]    slaves_1_ADR,
-  input      [31:0]   slaves_1_DAT_MISO,
-  output     [31:0]   slaves_1_DAT_MOSI,
-  output     [3:0]    slaves_1_SEL,
-  input      [0:0]    selector
+  output              slave_CYC,
+  output              slave_STB,
+  input               slave_ACK,
+  output              slave_WE,
+  output     [0:0]    slave_ADR,
+  input      [31:0]   slave_DAT_MISO,
+  output     [31:0]   slave_DAT_MOSI,
+  output     [3:0]    slave_SEL
 );
 
 
-  assign slaves_0_DAT_MOSI = master_DAT_MOSI;
-  assign slaves_0_ADR = master_ADR;
-  assign slaves_0_WE = master_WE;
-  assign slaves_0_CYC = (master_CYC && (selector == 1'b0));
-  assign slaves_0_STB = (master_STB && (selector == 1'b0));
-  assign slaves_0_SEL = master_SEL;
-  assign slaves_1_DAT_MOSI = master_DAT_MOSI;
-  assign slaves_1_ADR = master_ADR;
-  assign slaves_1_WE = master_WE;
-  assign slaves_1_CYC = (master_CYC && (selector == 1'b1));
-  assign slaves_1_STB = (master_STB && (selector == 1'b1));
-  assign slaves_1_SEL = master_SEL;
-  always @(*) begin
-    case(selector)
-      1'b0 : begin
-        master_DAT_MISO = slaves_0_DAT_MISO;
-      end
-      default : begin
-        master_DAT_MISO = slaves_1_DAT_MISO;
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(selector)
-      1'b0 : begin
-        master_ACK = slaves_0_ACK;
-      end
-      default : begin
-        master_ACK = slaves_1_ACK;
-      end
-    endcase
-  end
-
+  assign slave_ADR = master_ADR[0:0];
+  assign master_DAT_MISO = slave_DAT_MISO;
+  assign master_ACK = slave_ACK;
+  assign slave_CYC = master_CYC;
+  assign slave_WE = master_WE;
+  assign slave_STB = master_STB;
+  assign slave_DAT_MOSI = master_DAT_MOSI;
+  assign slave_SEL = master_SEL;
 
 endmodule
-
-//WishboneBusSelMappingAdapter replaced by WishboneBusSelMappingAdapter
-
-//WishboneBusDataExpander replaced by WishboneBusDataExpander
-
-//WishboneBusSelMappingAdapter replaced by WishboneBusSelMappingAdapter
-
-//WishboneBusDataExpander replaced by WishboneBusDataExpander
 
 module WishboneBusSelMappingAdapter (
   input               master_CYC,
@@ -1116,60 +957,6 @@ endmodule
 
 //Ice40Ebram4k16WishboneBusAdapter replaced by Ice40Ebram4k16WishboneBusAdapter
 
-//Ice40Ebram4k_4 replaced by Ice40Ebram4k_4
-
-//Ice40Ebram4k16WishboneBusAdapter replaced by Ice40Ebram4k16WishboneBusAdapter
-
-module Ice40Ebram4k_4 (
-  input      [15:0]   DI,
-  input      [7:0]    ADW,
-  input      [7:0]    ADR,
-  input               CKW,
-  input               CKR,
-  input               CEW,
-  input               CER,
-  input               RE,
-  input               WE,
-  input      [15:0]   MASK_N,
-  output     [15:0]   DO_1
-);
-
-  wire       [10:0]   native_ADW;
-  wire       [10:0]   native_ADR;
-  wire       [15:0]   native_DO;
-
-  PDP4K #(
-    .DATA_WIDTH_R("16"),
-    .DATA_WIDTH_W("16")
-  ) native (
-    .DI     (DI[15:0]        ), //i
-    .ADW    (native_ADW[10:0]), //i
-    .ADR    (native_ADR[10:0]), //i
-    .CKW    (CKW             ), //i
-    .CKR    (CKR             ), //i
-    .CEW    (CEW             ), //i
-    .CER    (CER             ), //i
-    .RE     (RE              ), //i
-    .WE     (WE              ), //i
-    .MASK_N (MASK_N[15:0]    ), //i
-    .DO     (native_DO[15:0] )  //o
-  );
-  assign native_ADW = {3'd0, ADW};
-  assign native_ADR = {3'd0, ADR};
-  assign DO_1 = native_DO;
-
-endmodule
-
-//Ice40Ebram4k16WishboneBusAdapter replaced by Ice40Ebram4k16WishboneBusAdapter
-
-//Ice40Ebram4k_1 replaced by Ice40Ebram4k_1
-
-//Ice40Ebram4k16WishboneBusAdapter replaced by Ice40Ebram4k16WishboneBusAdapter
-
-//Ice40Ebram4k replaced by Ice40Ebram4k
-
-//Ice40Ebram4k16WishboneBusAdapter replaced by Ice40Ebram4k16WishboneBusAdapter
-
 module Ice40Ebram4k_1 (
   input      [15:0]   DI,
   input      [7:0]    ADW,
@@ -1191,7 +978,7 @@ module Ice40Ebram4k_1 (
   PDP4K #(
     .DATA_WIDTH_R("16"),
     .DATA_WIDTH_W("16"),
-    .INITVAL_0("0x00000000000000000000000000000000000000000000FF9F0014009900010010"),
+    .INITVAL_0("0x000000000000FE5FFE0AFFFA000A0099001001240014D40A0003000100140040"),
     .INITVAL_1("0x0000000000000000000000000000000000000000000000000000000000000000"),
     .INITVAL_2("0x0000000000000000000000000000000000000000000000000000000000000000"),
     .INITVAL_3("0x0000000000000000000000000000000000000000000000000000000000000000"),
@@ -1257,7 +1044,7 @@ module Ice40Ebram4k16WishboneBusAdapter (
   assign ebram_DI = wishbone_DAT_MOSI;
   assign ebram_MASK_N = (~ wishbone_SEL);
   assign ebram_RE = wishbone_STB;
-  assign ebram_WE = 1'b0;
+  assign ebram_WE = (wishbone_STB && wishbone_WE);
   assign ebram_CER = (wishbone_CYC && (! wishbone_WE));
   assign ebram_CEW = (wishbone_CYC && wishbone_WE);
   always @(posedge clk) begin
@@ -1292,7 +1079,7 @@ module Ice40Ebram4k (
   PDP4K #(
     .DATA_WIDTH_R("16"),
     .DATA_WIDTH_W("16"),
-    .INITVAL_0("0x00000000000000000000000000000000000000000000F06FC493202309370493"),
+    .INITVAL_0("0x000000000000F06F9EE38A930AB3A0230493946394930A1B1A3709B799130493"),
     .INITVAL_1("0x0000000000000000000000000000000000000000000000000000000000000000"),
     .INITVAL_2("0x0000000000000000000000000000000000000000000000000000000000000000"),
     .INITVAL_3("0x0000000000000000000000000000000000000000000000000000000000000000"),
@@ -1324,6 +1111,62 @@ module Ice40Ebram4k (
   assign native_ADW = {3'd0, ADW};
   assign native_ADR = {3'd0, ADR};
   assign DO_1 = native_DO;
+
+endmodule
+
+module unamed (
+  input               io_wishbone_CYC,
+  input               io_wishbone_STB,
+  output reg          io_wishbone_ACK,
+  input               io_wishbone_WE,
+  input      [0:0]    io_wishbone_ADR,
+  output     [31:0]   io_wishbone_DAT_MISO,
+  input      [31:0]   io_wishbone_DAT_MOSI,
+  input      [3:0]    io_wishbone_SEL,
+  output              io_p23,
+  output              io_ledR,
+  output              io_ledG,
+  output              io_ledB,
+  input               clk,
+  input               reset
+);
+
+  reg                 regP23;
+  reg                 regLedR;
+  reg                 regLedG;
+  reg                 regLedB;
+  wire                when_Core_l132;
+
+  assign io_p23 = regP23;
+  assign io_ledR = regLedR;
+  assign io_ledG = regLedG;
+  assign io_ledB = regLedB;
+  assign io_wishbone_DAT_MISO = 32'h0;
+  assign when_Core_l132 = ((io_wishbone_CYC && io_wishbone_WE) && io_wishbone_STB);
+  always @(*) begin
+    if(when_Core_l132) begin
+      io_wishbone_ACK = 1'b1;
+    end else begin
+      io_wishbone_ACK = 1'b0;
+    end
+  end
+
+  always @(posedge clk) begin
+    if(reset) begin
+      regP23 <= 1'b0;
+      regLedR <= 1'b0;
+      regLedG <= 1'b0;
+      regLedB <= 1'b0;
+    end else begin
+      if(when_Core_l132) begin
+        regP23 <= (! regP23);
+        regLedR <= (! io_wishbone_DAT_MOSI[0]);
+        regLedG <= (! io_wishbone_DAT_MOSI[1]);
+        regLedB <= (! io_wishbone_DAT_MOSI[2]);
+      end
+    end
+  end
+
 
 endmodule
 
@@ -1505,6 +1348,51 @@ module Cpu (
       cpu_1_dBus_cmd_rData_data <= cpu_1_dBus_cmd_payload_data;
       cpu_1_dBus_cmd_rData_size <= cpu_1_dBus_cmd_payload_size;
     end
+  end
+
+
+endmodule
+
+//SimpleEncoder replaced by SimpleEncoder
+
+module SimpleEncoder (
+  input               inputs_0,
+  input               inputs_1,
+  output reg [0:0]    output_1,
+  output reg          isValid
+);
+
+  wire       [1:0]    _zz_switch_SimpleEncoder_l13;
+  wire       [1:0]    switch_SimpleEncoder_l13;
+
+  assign _zz_switch_SimpleEncoder_l13 = {inputs_1,inputs_0};
+  assign switch_SimpleEncoder_l13 = _zz_switch_SimpleEncoder_l13[1 : 0];
+  always @(*) begin
+    casez(switch_SimpleEncoder_l13)
+      2'b01 : begin
+        output_1 = 1'b0;
+      end
+      2'b10 : begin
+        output_1 = 1'b1;
+      end
+      default : begin
+        output_1 = 1'b0;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    casez(switch_SimpleEncoder_l13)
+      2'b01 : begin
+        isValid = 1'b1;
+      end
+      2'b10 : begin
+        isValid = 1'b1;
+      end
+      default : begin
+        isValid = 1'b0;
+      end
+    endcase
   end
 
 
