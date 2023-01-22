@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.7.3    git head : aeaeece704fe43c766e0d36a93f2ecbb8a9f2003
 // Component : Core
-// Git hash  : 986a8cd00c6567a47307fe1dd700eb429d7deca6
+// Git hash  : 05acbdee741be4b07859dd0d6ee13649996409f2
 
 `timescale 1ns/1ps
 
@@ -15,15 +15,12 @@ module Core (
 
   wire                cpu_1_interrupts_external;
   wire                cpu_1_interrupts_timer;
-  wire                ledDeviceWidthAdjusted_master_CYC;
+  wire                dbusOnlySlaveMap_masters_0_slaveSelects_0;
+  wire                dbusOnlySlaveMap_masters_0_slaveSelects_1;
   wire                sharedSlaveMap_masters_0_slaveSelects_0;
-  wire                sharedSlaveMap_masters_0_slaveSelects_1;
   wire                sharedSlaveMap_masters_1_slaveSelects_0;
-  wire                sharedSlaveMap_masters_1_slaveSelects_1;
   wire                sharedSlaveArbiters_0_io_masters_0_request;
   wire                sharedSlaveArbiters_0_io_masters_1_request;
-  wire                sharedSlaveArbiters_1_io_masters_0_request;
-  wire                sharedSlaveArbiters_1_io_masters_1_request;
   wire       [31:0]   cpu_1_ibus_DAT_MOSI;
   wire       [29:0]   cpu_1_ibus_ADR;
   wire                cpu_1_ibus_CYC;
@@ -124,12 +121,28 @@ module Core (
   wire       [3:0]    dbusAdapter_io_wbs_SEL;
   wire                dbusAdapter_io_wbs_STB;
   wire                dbusAdapter_io_wbs_WE;
+  wire       [0:0]    dbusOnlySlaveMap_masters_0_index;
+  wire                dbusOnlySlaveMap_masters_0_isValid;
+  wire       [31:0]   dbusOnlySlaveMux_master_DAT_MISO;
+  wire                dbusOnlySlaveMux_master_ACK;
+  wire       [31:0]   dbusOnlySlaveMux_slaves_0_DAT_MOSI;
+  wire       [29:0]   dbusOnlySlaveMux_slaves_0_ADR;
+  wire                dbusOnlySlaveMux_slaves_0_CYC;
+  wire       [3:0]    dbusOnlySlaveMux_slaves_0_SEL;
+  wire                dbusOnlySlaveMux_slaves_0_STB;
+  wire                dbusOnlySlaveMux_slaves_0_WE;
+  wire       [31:0]   dbusOnlySlaveMux_slaves_1_DAT_MOSI;
+  wire       [29:0]   dbusOnlySlaveMux_slaves_1_ADR;
+  wire                dbusOnlySlaveMux_slaves_1_CYC;
+  wire       [3:0]    dbusOnlySlaveMux_slaves_1_SEL;
+  wire                dbusOnlySlaveMux_slaves_1_STB;
+  wire                dbusOnlySlaveMux_slaves_1_WE;
   wire       [0:0]    sharedSlaveMap_masters_0_index;
   wire                sharedSlaveMap_masters_0_isValid;
   wire       [0:0]    sharedSlaveMap_masters_1_index;
   wire                sharedSlaveMap_masters_1_isValid;
-  wire       [0:0]    priorityEncoder_2_output_1;
-  wire                priorityEncoder_2_isValid;
+  wire       [0:0]    priorityEncoder_1_output_1;
+  wire                priorityEncoder_1_isValid;
   wire                sharedSlaveArbiters_0_io_encoder_inputs_0;
   wire                sharedSlaveArbiters_0_io_encoder_inputs_1;
   wire       [0:0]    sharedSlaveArbiters_0_io_grantedMasterIndex;
@@ -139,17 +152,6 @@ module Core (
   wire                sharedSlaveArbiters_0_io_masters_1_isError;
   wire                sharedSlaveArbiters_0_io_masters_1_isStalled;
   wire                sharedSlaveArbiters_0_io_masters_1_isGranted;
-  wire       [0:0]    priorityEncoder_3_output_1;
-  wire                priorityEncoder_3_isValid;
-  wire                sharedSlaveArbiters_1_io_encoder_inputs_0;
-  wire                sharedSlaveArbiters_1_io_encoder_inputs_1;
-  wire       [0:0]    sharedSlaveArbiters_1_io_grantedMasterIndex;
-  wire                sharedSlaveArbiters_1_io_masters_0_isError;
-  wire                sharedSlaveArbiters_1_io_masters_0_isStalled;
-  wire                sharedSlaveArbiters_1_io_masters_0_isGranted;
-  wire                sharedSlaveArbiters_1_io_masters_1_isError;
-  wire                sharedSlaveArbiters_1_io_masters_1_isStalled;
-  wire                sharedSlaveArbiters_1_io_masters_1_isGranted;
   wire       [31:0]   masterMux_masters_0_DAT_MISO;
   wire                masterMux_masters_0_ACK;
   wire       [31:0]   masterMux_masters_1_DAT_MISO;
@@ -160,6 +162,22 @@ module Core (
   wire       [3:0]    masterMux_slave_SEL;
   wire                masterMux_slave_STB;
   wire                masterMux_slave_WE;
+  wire                dbusToSharedSlavesBridge_CYC;
+  wire                dbusToSharedSlavesBridge_STB;
+  wire                dbusToSharedSlavesBridge_ACK;
+  wire                dbusToSharedSlavesBridge_WE;
+  wire       [29:0]   dbusToSharedSlavesBridge_ADR;
+  wire       [31:0]   dbusToSharedSlavesBridge_DAT_MISO;
+  wire       [31:0]   dbusToSharedSlavesBridge_DAT_MOSI;
+  wire       [3:0]    dbusToSharedSlavesBridge_SEL;
+  wire                dbus_CYC;
+  wire                dbus_STB;
+  wire                dbus_ACK;
+  wire                dbus_WE;
+  wire       [29:0]   dbus_ADR;
+  wire       [31:0]   dbus_DAT_MISO;
+  wire       [31:0]   dbus_DAT_MOSI;
+  wire       [3:0]    dbus_SEL;
 
   Cpu cpu_1 (
     .ibus_CYC            (cpu_1_ibus_CYC                   ), //o
@@ -318,14 +336,14 @@ module Core (
     .slave_SEL       (wideInstructionEbramBlock_slave_SEL[31:0]              )  //o
   );
   WishboneBusAddressMappingAdapter ledDeviceWidthAdjusted (
-    .master_CYC      (ledDeviceWidthAdjusted_master_CYC           ), //i
-    .master_STB      (dbusAdapter_io_wbs_STB                      ), //i
+    .master_CYC      (dbusOnlySlaveMux_slaves_0_CYC               ), //i
+    .master_STB      (dbusOnlySlaveMux_slaves_0_STB               ), //i
     .master_ACK      (ledDeviceWidthAdjusted_master_ACK           ), //o
-    .master_WE       (dbusAdapter_io_wbs_WE                       ), //i
-    .master_ADR      (dbusAdapter_io_wbs_ADR[29:0]                ), //i
+    .master_WE       (dbusOnlySlaveMux_slaves_0_WE                ), //i
+    .master_ADR      (dbusOnlySlaveMux_slaves_0_ADR[29:0]         ), //i
     .master_DAT_MISO (ledDeviceWidthAdjusted_master_DAT_MISO[31:0]), //o
-    .master_DAT_MOSI (dbusAdapter_io_wbs_DAT_MOSI[31:0]           ), //i
-    .master_SEL      (dbusAdapter_io_wbs_SEL[3:0]                 ), //i
+    .master_DAT_MOSI (dbusOnlySlaveMux_slaves_0_DAT_MOSI[31:0]    ), //i
+    .master_SEL      (dbusOnlySlaveMux_slaves_0_SEL[3:0]          ), //i
     .slave_CYC       (ledDeviceWidthAdjusted_slave_CYC            ), //o
     .slave_STB       (ledDeviceWidthAdjusted_slave_STB            ), //o
     .slave_ACK       (ledDevice_io_wishbone_ACK                   ), //i
@@ -375,47 +393,78 @@ module Core (
     .io_wbs_SEL      (ibusAdapter_io_wbs_SEL[3:0]       )  //o
   );
   WishboneAdapter dbusAdapter (
-    .io_wbm_CYC      (cpu_1_dbus_CYC                    ), //i
-    .io_wbm_STB      (cpu_1_dbus_STB                    ), //i
-    .io_wbm_ACK      (dbusAdapter_io_wbm_ACK            ), //o
-    .io_wbm_WE       (cpu_1_dbus_WE                     ), //i
-    .io_wbm_ADR      (cpu_1_dbus_ADR[29:0]              ), //i
-    .io_wbm_DAT_MISO (dbusAdapter_io_wbm_DAT_MISO[31:0] ), //o
-    .io_wbm_DAT_MOSI (cpu_1_dbus_DAT_MOSI[31:0]         ), //i
-    .io_wbm_SEL      (cpu_1_dbus_SEL[3:0]               ), //i
-    .io_wbm_ERR      (dbusAdapter_io_wbm_ERR            ), //o
-    .io_wbm_CTI      (cpu_1_dbus_CTI[2:0]               ), //i
-    .io_wbm_BTE      (cpu_1_dbus_BTE[1:0]               ), //i
-    .io_wbs_CYC      (dbusAdapter_io_wbs_CYC            ), //o
-    .io_wbs_STB      (dbusAdapter_io_wbs_STB            ), //o
-    .io_wbs_ACK      (masterMux_masters_0_ACK           ), //i
-    .io_wbs_WE       (dbusAdapter_io_wbs_WE             ), //o
-    .io_wbs_ADR      (dbusAdapter_io_wbs_ADR[29:0]      ), //o
-    .io_wbs_DAT_MISO (masterMux_masters_0_DAT_MISO[31:0]), //i
-    .io_wbs_DAT_MOSI (dbusAdapter_io_wbs_DAT_MOSI[31:0] ), //o
-    .io_wbs_SEL      (dbusAdapter_io_wbs_SEL[3:0]       )  //o
+    .io_wbm_CYC      (cpu_1_dbus_CYC                        ), //i
+    .io_wbm_STB      (cpu_1_dbus_STB                        ), //i
+    .io_wbm_ACK      (dbusAdapter_io_wbm_ACK                ), //o
+    .io_wbm_WE       (cpu_1_dbus_WE                         ), //i
+    .io_wbm_ADR      (cpu_1_dbus_ADR[29:0]                  ), //i
+    .io_wbm_DAT_MISO (dbusAdapter_io_wbm_DAT_MISO[31:0]     ), //o
+    .io_wbm_DAT_MOSI (cpu_1_dbus_DAT_MOSI[31:0]             ), //i
+    .io_wbm_SEL      (cpu_1_dbus_SEL[3:0]                   ), //i
+    .io_wbm_ERR      (dbusAdapter_io_wbm_ERR                ), //o
+    .io_wbm_CTI      (cpu_1_dbus_CTI[2:0]                   ), //i
+    .io_wbm_BTE      (cpu_1_dbus_BTE[1:0]                   ), //i
+    .io_wbs_CYC      (dbusAdapter_io_wbs_CYC                ), //o
+    .io_wbs_STB      (dbusAdapter_io_wbs_STB                ), //o
+    .io_wbs_ACK      (dbusOnlySlaveMux_master_ACK           ), //i
+    .io_wbs_WE       (dbusAdapter_io_wbs_WE                 ), //o
+    .io_wbs_ADR      (dbusAdapter_io_wbs_ADR[29:0]          ), //o
+    .io_wbs_DAT_MISO (dbusOnlySlaveMux_master_DAT_MISO[31:0]), //i
+    .io_wbs_DAT_MOSI (dbusAdapter_io_wbs_DAT_MOSI[31:0]     ), //o
+    .io_wbs_SEL      (dbusAdapter_io_wbs_SEL[3:0]           )  //o
   );
-  WishboneBusMasterSlaveMap sharedSlaveMap (
+  WishboneBusMasterSlaveMap dbusOnlySlaveMap (
+    .masters_0_index          (dbusOnlySlaveMap_masters_0_index         ), //o
+    .masters_0_isValid        (dbusOnlySlaveMap_masters_0_isValid       ), //o
+    .masters_0_slaveSelects_0 (dbusOnlySlaveMap_masters_0_slaveSelects_0), //i
+    .masters_0_slaveSelects_1 (dbusOnlySlaveMap_masters_0_slaveSelects_1)  //i
+  );
+  WishboneBusSlaveMultiplexer dbusOnlySlaveMux (
+    .master_CYC        (dbusAdapter_io_wbs_CYC                      ), //i
+    .master_STB        (dbusAdapter_io_wbs_STB                      ), //i
+    .master_ACK        (dbusOnlySlaveMux_master_ACK                 ), //o
+    .master_WE         (dbusAdapter_io_wbs_WE                       ), //i
+    .master_ADR        (dbusAdapter_io_wbs_ADR[29:0]                ), //i
+    .master_DAT_MISO   (dbusOnlySlaveMux_master_DAT_MISO[31:0]      ), //o
+    .master_DAT_MOSI   (dbusAdapter_io_wbs_DAT_MOSI[31:0]           ), //i
+    .master_SEL        (dbusAdapter_io_wbs_SEL[3:0]                 ), //i
+    .slaves_0_CYC      (dbusOnlySlaveMux_slaves_0_CYC               ), //o
+    .slaves_0_STB      (dbusOnlySlaveMux_slaves_0_STB               ), //o
+    .slaves_0_ACK      (ledDeviceWidthAdjusted_master_ACK           ), //i
+    .slaves_0_WE       (dbusOnlySlaveMux_slaves_0_WE                ), //o
+    .slaves_0_ADR      (dbusOnlySlaveMux_slaves_0_ADR[29:0]         ), //o
+    .slaves_0_DAT_MISO (ledDeviceWidthAdjusted_master_DAT_MISO[31:0]), //i
+    .slaves_0_DAT_MOSI (dbusOnlySlaveMux_slaves_0_DAT_MOSI[31:0]    ), //o
+    .slaves_0_SEL      (dbusOnlySlaveMux_slaves_0_SEL[3:0]          ), //o
+    .slaves_1_CYC      (dbusOnlySlaveMux_slaves_1_CYC               ), //o
+    .slaves_1_STB      (dbusOnlySlaveMux_slaves_1_STB               ), //o
+    .slaves_1_ACK      (dbusToSharedSlavesBridge_ACK                ), //i
+    .slaves_1_WE       (dbusOnlySlaveMux_slaves_1_WE                ), //o
+    .slaves_1_ADR      (dbusOnlySlaveMux_slaves_1_ADR[29:0]         ), //o
+    .slaves_1_DAT_MISO (dbusToSharedSlavesBridge_DAT_MISO[31:0]     ), //i
+    .slaves_1_DAT_MOSI (dbusOnlySlaveMux_slaves_1_DAT_MOSI[31:0]    ), //o
+    .slaves_1_SEL      (dbusOnlySlaveMux_slaves_1_SEL[3:0]          ), //o
+    .selector          (dbusOnlySlaveMap_masters_0_index            )  //i
+  );
+  WishboneBusMasterSlaveMap_1 sharedSlaveMap (
     .masters_0_index          (sharedSlaveMap_masters_0_index         ), //o
     .masters_0_isValid        (sharedSlaveMap_masters_0_isValid       ), //o
     .masters_0_slaveSelects_0 (sharedSlaveMap_masters_0_slaveSelects_0), //i
-    .masters_0_slaveSelects_1 (sharedSlaveMap_masters_0_slaveSelects_1), //i
     .masters_1_index          (sharedSlaveMap_masters_1_index         ), //o
     .masters_1_isValid        (sharedSlaveMap_masters_1_isValid       ), //o
-    .masters_1_slaveSelects_0 (sharedSlaveMap_masters_1_slaveSelects_0), //i
-    .masters_1_slaveSelects_1 (sharedSlaveMap_masters_1_slaveSelects_1)  //i
+    .masters_1_slaveSelects_0 (sharedSlaveMap_masters_1_slaveSelects_0)  //i
   );
-  PriorityEncoder priorityEncoder_2 (
+  PriorityEncoder priorityEncoder_1 (
     .inputs_0 (sharedSlaveArbiters_0_io_encoder_inputs_0), //i
     .inputs_1 (sharedSlaveArbiters_0_io_encoder_inputs_1), //i
-    .output_1 (priorityEncoder_2_output_1               ), //o
-    .isValid  (priorityEncoder_2_isValid                )  //o
+    .output_1 (priorityEncoder_1_output_1               ), //o
+    .isValid  (priorityEncoder_1_isValid                )  //o
   );
   MultiMasterSingleSlaveArbiter sharedSlaveArbiters_0 (
     .io_encoder_inputs_0    (sharedSlaveArbiters_0_io_encoder_inputs_0   ), //o
     .io_encoder_inputs_1    (sharedSlaveArbiters_0_io_encoder_inputs_1   ), //o
-    .io_encoder_output      (priorityEncoder_2_output_1                  ), //i
-    .io_encoder_isValid     (priorityEncoder_2_isValid                   ), //i
+    .io_encoder_output      (priorityEncoder_1_output_1                  ), //i
+    .io_encoder_isValid     (priorityEncoder_1_isValid                   ), //i
     .io_grantedMasterIndex  (sharedSlaveArbiters_0_io_grantedMasterIndex ), //o
     .io_masters_0_request   (sharedSlaveArbiters_0_io_masters_0_request  ), //i
     .io_masters_0_isError   (sharedSlaveArbiters_0_io_masters_0_isError  ), //o
@@ -428,38 +477,15 @@ module Core (
     .clk                    (clk                                         ), //i
     .reset                  (reset                                       )  //i
   );
-  PriorityEncoder priorityEncoder_3 (
-    .inputs_0 (sharedSlaveArbiters_1_io_encoder_inputs_0), //i
-    .inputs_1 (sharedSlaveArbiters_1_io_encoder_inputs_1), //i
-    .output_1 (priorityEncoder_3_output_1               ), //o
-    .isValid  (priorityEncoder_3_isValid                )  //o
-  );
-  MultiMasterSingleSlaveArbiter sharedSlaveArbiters_1 (
-    .io_encoder_inputs_0    (sharedSlaveArbiters_1_io_encoder_inputs_0   ), //o
-    .io_encoder_inputs_1    (sharedSlaveArbiters_1_io_encoder_inputs_1   ), //o
-    .io_encoder_output      (priorityEncoder_3_output_1                  ), //i
-    .io_encoder_isValid     (priorityEncoder_3_isValid                   ), //i
-    .io_grantedMasterIndex  (sharedSlaveArbiters_1_io_grantedMasterIndex ), //o
-    .io_masters_0_request   (sharedSlaveArbiters_1_io_masters_0_request  ), //i
-    .io_masters_0_isError   (sharedSlaveArbiters_1_io_masters_0_isError  ), //o
-    .io_masters_0_isStalled (sharedSlaveArbiters_1_io_masters_0_isStalled), //o
-    .io_masters_0_isGranted (sharedSlaveArbiters_1_io_masters_0_isGranted), //o
-    .io_masters_1_request   (sharedSlaveArbiters_1_io_masters_1_request  ), //i
-    .io_masters_1_isError   (sharedSlaveArbiters_1_io_masters_1_isError  ), //o
-    .io_masters_1_isStalled (sharedSlaveArbiters_1_io_masters_1_isStalled), //o
-    .io_masters_1_isGranted (sharedSlaveArbiters_1_io_masters_1_isGranted), //o
-    .clk                    (clk                                         ), //i
-    .reset                  (reset                                       )  //i
-  );
   WishboneBusMasterMultiplexer masterMux (
-    .masters_0_CYC      (dbusAdapter_io_wbs_CYC                                  ), //i
-    .masters_0_STB      (dbusAdapter_io_wbs_STB                                  ), //i
+    .masters_0_CYC      (dbus_CYC                                                ), //i
+    .masters_0_STB      (dbus_STB                                                ), //i
     .masters_0_ACK      (masterMux_masters_0_ACK                                 ), //o
-    .masters_0_WE       (dbusAdapter_io_wbs_WE                                   ), //i
-    .masters_0_ADR      (dbusAdapter_io_wbs_ADR[29:0]                            ), //i
+    .masters_0_WE       (dbus_WE                                                 ), //i
+    .masters_0_ADR      (dbus_ADR[29:0]                                          ), //i
     .masters_0_DAT_MISO (masterMux_masters_0_DAT_MISO[31:0]                      ), //o
-    .masters_0_DAT_MOSI (dbusAdapter_io_wbs_DAT_MOSI[31:0]                       ), //i
-    .masters_0_SEL      (dbusAdapter_io_wbs_SEL[3:0]                             ), //i
+    .masters_0_DAT_MOSI (dbus_DAT_MOSI[31:0]                                     ), //i
+    .masters_0_SEL      (dbus_SEL[3:0]                                           ), //i
     .masters_1_CYC      (ibusAdapter_io_wbs_CYC                                  ), //i
     .masters_1_STB      (ibusAdapter_io_wbs_STB                                  ), //i
     .masters_1_ACK      (masterMux_masters_1_ACK                                 ), //o
@@ -482,15 +508,28 @@ module Core (
   assign ledR = ledDevice_io_ledR;
   assign ledG = ledDevice_io_ledG;
   assign ledB = ledDevice_io_ledB;
-  assign sharedSlaveMap_masters_0_slaveSelects_0 = (! dbusAdapter_io_wbs_ADR[14]);
+  assign dbusOnlySlaveMap_masters_0_slaveSelects_0 = dbusAdapter_io_wbs_ADR[14];
+  assign dbusOnlySlaveMap_masters_0_slaveSelects_1 = (! dbusAdapter_io_wbs_ADR[14]);
+  assign dbusToSharedSlavesBridge_CYC = dbusOnlySlaveMux_slaves_1_CYC;
+  assign dbusToSharedSlavesBridge_STB = dbusOnlySlaveMux_slaves_1_STB;
+  assign dbusToSharedSlavesBridge_WE = dbusOnlySlaveMux_slaves_1_WE;
+  assign dbusToSharedSlavesBridge_ADR = dbusOnlySlaveMux_slaves_1_ADR;
+  assign dbusToSharedSlavesBridge_DAT_MOSI = dbusOnlySlaveMux_slaves_1_DAT_MOSI;
+  assign dbusToSharedSlavesBridge_SEL = dbusOnlySlaveMux_slaves_1_SEL;
+  assign sharedSlaveMap_masters_0_slaveSelects_0 = (! dbus_ADR[14]);
   assign sharedSlaveMap_masters_1_slaveSelects_0 = (! ibusAdapter_io_wbs_ADR[14]);
-  assign sharedSlaveMap_masters_0_slaveSelects_1 = dbusAdapter_io_wbs_ADR[14];
-  assign sharedSlaveMap_masters_1_slaveSelects_1 = ibusAdapter_io_wbs_ADR[14];
-  assign sharedSlaveArbiters_0_io_masters_0_request = (dbusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b0));
+  assign sharedSlaveArbiters_0_io_masters_0_request = (dbus_CYC && (sharedSlaveMap_masters_1_index == 1'b0));
   assign sharedSlaveArbiters_0_io_masters_1_request = (ibusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b0));
-  assign sharedSlaveArbiters_1_io_masters_0_request = (dbusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b1));
-  assign sharedSlaveArbiters_1_io_masters_1_request = (ibusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b1));
-  assign ledDeviceWidthAdjusted_master_CYC = (dbusAdapter_io_wbs_CYC && dbusAdapter_io_wbs_ADR[14]);
+  assign dbus_ACK = masterMux_masters_0_ACK;
+  assign dbus_DAT_MISO = masterMux_masters_0_DAT_MISO;
+  assign dbusToSharedSlavesBridge_ACK = dbus_ACK;
+  assign dbusToSharedSlavesBridge_DAT_MISO = dbus_DAT_MISO;
+  assign dbus_DAT_MOSI = dbusToSharedSlavesBridge_DAT_MOSI;
+  assign dbus_ADR = dbusToSharedSlavesBridge_ADR;
+  assign dbus_SEL = dbusToSharedSlavesBridge_SEL;
+  assign dbus_WE = dbusToSharedSlavesBridge_WE;
+  assign dbus_CYC = dbusToSharedSlavesBridge_CYC;
+  assign dbus_STB = dbusToSharedSlavesBridge_STB;
 
 endmodule
 
@@ -596,10 +635,6 @@ module WishboneBusMasterMultiplexer (
 
 endmodule
 
-//MultiMasterSingleSlaveArbiter replaced by MultiMasterSingleSlaveArbiter
-
-//PriorityEncoder replaced by PriorityEncoder
-
 module MultiMasterSingleSlaveArbiter (
   output              io_encoder_inputs_0,
   output              io_encoder_inputs_1,
@@ -698,38 +733,121 @@ module PriorityEncoder (
 
 endmodule
 
+module WishboneBusMasterSlaveMap_1 (
+  output     [0:0]    masters_0_index,
+  output              masters_0_isValid,
+  input               masters_0_slaveSelects_0,
+  output     [0:0]    masters_1_index,
+  output              masters_1_isValid,
+  input               masters_1_slaveSelects_0
+);
+
+  wire       [0:0]    simpleEncoder_3_output_1;
+  wire                simpleEncoder_3_isValid;
+  wire       [0:0]    simpleEncoder_4_output_1;
+  wire                simpleEncoder_4_isValid;
+
+  SimpleEncoder_1 simpleEncoder_3 (
+    .inputs_0 (masters_0_slaveSelects_0), //i
+    .output_1 (simpleEncoder_3_output_1), //o
+    .isValid  (simpleEncoder_3_isValid )  //o
+  );
+  SimpleEncoder_1 simpleEncoder_4 (
+    .inputs_0 (masters_1_slaveSelects_0), //i
+    .output_1 (simpleEncoder_4_output_1), //o
+    .isValid  (simpleEncoder_4_isValid )  //o
+  );
+  assign masters_0_index = simpleEncoder_3_output_1;
+  assign masters_0_isValid = simpleEncoder_3_isValid;
+  assign masters_1_index = simpleEncoder_4_output_1;
+  assign masters_1_isValid = simpleEncoder_4_isValid;
+
+endmodule
+
+module WishboneBusSlaveMultiplexer (
+  input               master_CYC,
+  input               master_STB,
+  output reg          master_ACK,
+  input               master_WE,
+  input      [29:0]   master_ADR,
+  output reg [31:0]   master_DAT_MISO,
+  input      [31:0]   master_DAT_MOSI,
+  input      [3:0]    master_SEL,
+  output              slaves_0_CYC,
+  output              slaves_0_STB,
+  input               slaves_0_ACK,
+  output              slaves_0_WE,
+  output     [29:0]   slaves_0_ADR,
+  input      [31:0]   slaves_0_DAT_MISO,
+  output     [31:0]   slaves_0_DAT_MOSI,
+  output     [3:0]    slaves_0_SEL,
+  output              slaves_1_CYC,
+  output              slaves_1_STB,
+  input               slaves_1_ACK,
+  output              slaves_1_WE,
+  output     [29:0]   slaves_1_ADR,
+  input      [31:0]   slaves_1_DAT_MISO,
+  output     [31:0]   slaves_1_DAT_MOSI,
+  output     [3:0]    slaves_1_SEL,
+  input      [0:0]    selector
+);
+
+
+  assign slaves_0_DAT_MOSI = master_DAT_MOSI;
+  assign slaves_0_ADR = master_ADR;
+  assign slaves_0_WE = master_WE;
+  assign slaves_0_CYC = (master_CYC && (selector == 1'b0));
+  assign slaves_0_STB = (master_STB && (selector == 1'b0));
+  assign slaves_0_SEL = master_SEL;
+  assign slaves_1_DAT_MOSI = master_DAT_MOSI;
+  assign slaves_1_ADR = master_ADR;
+  assign slaves_1_WE = master_WE;
+  assign slaves_1_CYC = (master_CYC && (selector == 1'b1));
+  assign slaves_1_STB = (master_STB && (selector == 1'b1));
+  assign slaves_1_SEL = master_SEL;
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        master_DAT_MISO = slaves_0_DAT_MISO;
+      end
+      default : begin
+        master_DAT_MISO = slaves_1_DAT_MISO;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        master_ACK = slaves_0_ACK;
+      end
+      default : begin
+        master_ACK = slaves_1_ACK;
+      end
+    endcase
+  end
+
+
+endmodule
+
 module WishboneBusMasterSlaveMap (
   output     [0:0]    masters_0_index,
   output              masters_0_isValid,
   input               masters_0_slaveSelects_0,
-  input               masters_0_slaveSelects_1,
-  output     [0:0]    masters_1_index,
-  output              masters_1_isValid,
-  input               masters_1_slaveSelects_0,
-  input               masters_1_slaveSelects_1
+  input               masters_0_slaveSelects_1
 );
 
-  wire       [0:0]    simpleEncoder_2_output_1;
-  wire                simpleEncoder_2_isValid;
   wire       [0:0]    simpleEncoder_3_output_1;
   wire                simpleEncoder_3_isValid;
 
-  SimpleEncoder simpleEncoder_2 (
+  SimpleEncoder simpleEncoder_3 (
     .inputs_0 (masters_0_slaveSelects_0), //i
     .inputs_1 (masters_0_slaveSelects_1), //i
-    .output_1 (simpleEncoder_2_output_1), //o
-    .isValid  (simpleEncoder_2_isValid )  //o
-  );
-  SimpleEncoder simpleEncoder_3 (
-    .inputs_0 (masters_1_slaveSelects_0), //i
-    .inputs_1 (masters_1_slaveSelects_1), //i
     .output_1 (simpleEncoder_3_output_1), //o
     .isValid  (simpleEncoder_3_isValid )  //o
   );
-  assign masters_0_index = simpleEncoder_2_output_1;
-  assign masters_0_isValid = simpleEncoder_2_isValid;
-  assign masters_1_index = simpleEncoder_3_output_1;
-  assign masters_1_isValid = simpleEncoder_3_isValid;
+  assign masters_0_index = simpleEncoder_3_output_1;
+  assign masters_0_isValid = simpleEncoder_3_isValid;
 
 endmodule
 
@@ -1135,16 +1253,16 @@ module unamed (
   reg                 regLedR;
   reg                 regLedG;
   reg                 regLedB;
-  wire                when_Core_l132;
+  wire                when_Core_l130;
 
   assign io_p23 = regP23;
   assign io_ledR = regLedR;
   assign io_ledG = regLedG;
   assign io_ledB = regLedB;
   assign io_wishbone_DAT_MISO = 32'h0;
-  assign when_Core_l132 = ((io_wishbone_CYC && io_wishbone_WE) && io_wishbone_STB);
+  assign when_Core_l130 = ((io_wishbone_CYC && io_wishbone_WE) && io_wishbone_STB);
   always @(*) begin
-    if(when_Core_l132) begin
+    if(when_Core_l130) begin
       io_wishbone_ACK = 1'b1;
     end else begin
       io_wishbone_ACK = 1'b0;
@@ -1158,7 +1276,7 @@ module unamed (
       regLedG <= 1'b0;
       regLedB <= 1'b0;
     end else begin
-      if(when_Core_l132) begin
+      if(when_Core_l130) begin
         regP23 <= (! regP23);
         regLedR <= (! io_wishbone_DAT_MOSI[0]);
         regLedG <= (! io_wishbone_DAT_MOSI[1]);
@@ -1353,7 +1471,43 @@ module Cpu (
 
 endmodule
 
-//SimpleEncoder replaced by SimpleEncoder
+//SimpleEncoder_1 replaced by SimpleEncoder_1
+
+module SimpleEncoder_1 (
+  input               inputs_0,
+  output reg [0:0]    output_1,
+  output reg          isValid
+);
+
+  wire       [0:0]    _zz_switch_SimpleEncoder_l13;
+  wire       [0:0]    switch_SimpleEncoder_l13;
+
+  assign _zz_switch_SimpleEncoder_l13 = inputs_0;
+  assign switch_SimpleEncoder_l13 = _zz_switch_SimpleEncoder_l13[0 : 0];
+  always @(*) begin
+    casez(switch_SimpleEncoder_l13)
+      1'b1 : begin
+        output_1 = 1'b0;
+      end
+      default : begin
+        output_1 = 1'b0;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    casez(switch_SimpleEncoder_l13)
+      1'b1 : begin
+        isValid = 1'b1;
+      end
+      default : begin
+        isValid = 1'b0;
+      end
+    endcase
+  end
+
+
+endmodule
 
 module SimpleEncoder (
   input               inputs_0,

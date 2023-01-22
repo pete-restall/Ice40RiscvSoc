@@ -194,29 +194,38 @@ class Core extends Component {
 	private val ledDeviceWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, ledDevice.io.wishbone, adr => adr.resize(1 bit))
 	private val instructionEbramBlockWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, wideInstructionEbramBlock.io.master, adr => adr.resize(8 bits))
 
-	val ibusAdapter = new WishboneAdapter(cpu.io.ibus.config, cpu.io.ibus.config.copy(useERR=false, useCTI=false, useBTE=false))
+	// Two arbiters driven by two maps drive the two muxes:
+	// cpu.ibus -> adapter -> 2:1 mux(ibus, dbusToSharedSlavesBridge : ebram)
+	// cpu.dbus -> adapter -> 1:2 mux(dbus : dbusToSharedSlavesBridge, ledDevice)
+
+	private val ibusAdapter = new WishboneAdapter(cpu.io.ibus.config, cpu.io.ibus.config.copy(useERR=false, useCTI=false, useBTE=false))
 	ibusAdapter.io.wbm <> cpu.io.ibus
-	val ibus = ibusAdapter.io.wbs
+	private val ibus = ibusAdapter.io.wbs
 
-	val dbusAdapter = new WishboneAdapter(cpu.io.dbus.config, cpu.io.dbus.config.copy(useERR=false, useCTI=false, useBTE=false))
+	private val dbusAdapter = new WishboneAdapter(cpu.io.dbus.config, cpu.io.dbus.config.copy(useERR=false, useCTI=false, useBTE=false))
+	private val dbusToSharedSlavesBridge = new Wishbone(dbusAdapter.io.wbs.config)
+	private val dbusOnlySlaveMap = WishboneBusMasterSlaveMap(
+		(dbusAdapter.io.wbs, m => m.ADR(14), ledDeviceWidthAdjusted.io.master),
+		(dbusAdapter.io.wbs, m => !m.ADR(14), dbusToSharedSlavesBridge))
+
+	private val dbusOnlySlaveMux = WishboneBusSlaveMultiplexer(dbusOnlySlaveMap.io.masters.head.index, dbusOnlySlaveMap.slaves.head, dbusOnlySlaveMap.slaves.tail:_*)
 	dbusAdapter.io.wbm <> cpu.io.dbus
-	val dbus = dbusAdapter.io.wbs
+	dbusAdapter.io.wbs <> dbusOnlySlaveMux.io.master
 
+	private val dbus = new Wishbone(dbusToSharedSlavesBridge.config)
 	private val sharedSlaveMap = WishboneBusMasterSlaveMap(
 		(dbus, m => !m.ADR(14), instructionEbramBlockWidthAdjusted.io.master),
-		(ibus, m => !m.ADR(14), instructionEbramBlockWidthAdjusted.io.master),
-		(dbus, m => m.ADR(14), ledDeviceWidthAdjusted.io.master),
-		(ibus, m => m.ADR(14), ledDeviceWidthAdjusted.io.master), // should not be present for the ibus...
-		/*(cpu.io.dbus, m => m.ADR(14), wideInstructionEbramBlock2WidthAdjusted.io.master),
+		(ibus, m => !m.ADR(14), instructionEbramBlockWidthAdjusted.io.master)/*,
+		(cpu.io.dbus, m => m.ADR(14), wideInstructionEbramBlock2WidthAdjusted.io.master),
 		(cpu.io.ibus, m => m.ADR(14), wideInstructionEbramBlock2WidthAdjusted.io.master)*/)
 
 	private val ibusMasterIndex = sharedSlaveMap.masters.indexOf(ibus) // TODO: THIS LOOKUP WANTS PUTTING ON THE WishboneBusMasterSlaveMap CLASS; def masterIoFor(wb): MasterIoBundle
 	private val dbusMasterIndex = sharedSlaveMap.masters.indexOf(dbus) // TODO: WishboneBusMasterSlaveMap CLASS ALSO WANTS; def indexOfMaster(wb): Int && def indexOfSlave(wb): Int
 
-	private val ibusSlaveSelectorX = sharedSlaveMap.io.masters(ibusMasterIndex)
-	private val dbusSlaveSelectorX = sharedSlaveMap.io.masters(dbusMasterIndex)
+	private val ibusSlaveSelector = sharedSlaveMap.io.masters(ibusMasterIndex)
+	private val dbusSlaveSelector = sharedSlaveMap.io.masters(dbusMasterIndex)
 
-	val sharedSlaveArbiters = for (slaveIndex <- 0 until sharedSlaveMap.slaves.length) yield {
+	private val sharedSlaveArbiters = for (slaveIndex <- 0 until sharedSlaveMap.slaves.length) yield {
 		val encoder = new PriorityEncoder(numberOfInputs=sharedSlaveMap.masters.length)
 		val sharedSlaveArbiter = new MultiMasterSingleSlaveArbiter(numberOfMasters=sharedSlaveMap.masters.length)
 		encoder.io.inputs := sharedSlaveArbiter.io.encoder.inputs
@@ -224,22 +233,24 @@ class Core extends Component {
 		sharedSlaveArbiter.io.encoder.output := encoder.io.output
 
 		sharedSlaveMap.masters.zipWithIndex.foreach { case (master, masterIndex) =>
-			sharedSlaveArbiter.io.masters(masterIndex).request := master.CYC && ibusSlaveSelectorX.index === slaveIndex
+			sharedSlaveArbiter.io.masters(masterIndex).request := master.CYC && ibusSlaveSelector.index === slaveIndex
 		}
 
 		sharedSlaveArbiter
 	}
 
-//	private val ibusSharedSlaves = WishboneBusSlaveMultiplexer(ibusSlaveSelectorX.index, instructionEbramBlockWidthAdjusted.io.master, wideInstructionEbramBlock2WidthAdjusted.io.master)
+
 	private val masterMux = WishboneBusMasterMultiplexer(sharedSlaveArbiters(0).io.grantedMasterIndex, sharedSlaveMap.masters.head, sharedSlaveMap.masters.tail:_*)
-	masterMux.io.slave <> instructionEbramBlockWidthAdjusted.io.master
-	// TODO: OH DEAR...NO LED ASSIGNMENT, BECAUSE WE'RE OPERATING ON A SINGLE SLAVE...
-	ledDeviceWidthAdjusted.io.master.ADR := dbus.ADR
-	ledDeviceWidthAdjusted.io.master.SEL := dbus.SEL
-	ledDeviceWidthAdjusted.io.master.DAT_MOSI := dbus.DAT_MOSI
-	ledDeviceWidthAdjusted.io.master.CYC := dbus.CYC && dbus.ADR(14)
-	ledDeviceWidthAdjusted.io.master.STB := dbus.STB
-	ledDeviceWidthAdjusted.io.master.WE := dbus.WE
+	masterMux.io.slave <> instructionEbramBlockWidthAdjusted.io.master // works because there is (currently) only one shared slave
+
+	dbusToSharedSlavesBridge.ACK := dbus.ACK
+	dbusToSharedSlavesBridge.DAT_MISO := dbus.DAT_MISO
+	dbus.DAT_MOSI := dbusToSharedSlavesBridge.DAT_MOSI
+	dbus.ADR := dbusToSharedSlavesBridge.ADR
+	dbus.SEL := dbusToSharedSlavesBridge.SEL
+	dbus.WE := dbusToSharedSlavesBridge.WE
+	dbus.CYC := dbusToSharedSlavesBridge.CYC
+	dbus.STB := dbusToSharedSlavesBridge.STB
 }
 
 object Core {
