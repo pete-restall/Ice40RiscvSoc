@@ -27,7 +27,12 @@ class Cpu(resetVector: Long, mtvecInit: Long, yamlOutFilename: Option[String]) e
 
 	private val dataBus = new DBusSimplePlugin(
 		catchAddressMisaligned=false,
-		catchAccessFault=false)
+		catchAccessFault=false,
+		earlyInjection=false,
+		emitCmdInMemoryStage=false,
+		onlyLoadWords=false,
+		withLrSc=false,
+		bigEndian=false)
 
 	private val csr = new CsrPlugin(new CsrPluginConfig(
 		catchIllegalAccess=false,
@@ -62,11 +67,18 @@ class Cpu(resetVector: Long, mtvecInit: Long, yamlOutFilename: Option[String]) e
 					catchIllegalInstruction=false),
 				new RegFilePlugin(
 					regFileReadyKind=plugin.SYNC,
-					zeroBoot=false),
+					zeroBoot=false,
+					x0Init=true,
+					writeRfInMemoryStage=false,
+					readInExecute=false,
+					syncUpdateOnStall=true,
+					rv32e=false,
+					withShadow=false),
 				new IntAluPlugin,
 				new SrcPlugin(
 					separatedAddSub=false,
-					executeInsertion=false),
+					executeInsertion=false,
+					decodeAddSub=false),
 				new LightShifterPlugin,
 				new HazardSimplePlugin(
 					bypassExecute=false,
@@ -78,7 +90,10 @@ class Cpu(resetVector: Long, mtvecInit: Long, yamlOutFilename: Option[String]) e
 					pessimisticAddressMatch=false),
 				new BranchPlugin(
 					earlyBranch=false,
-					catchAddressMisaligned=false)) ++
+					catchAddressMisaligned=false,
+					fenceiGenAsAJump=false,
+					fenceiGenAsANop=false,
+					decodeBranchSrc2=false)) ++
 				yamlOutFilename.map(new YamlPlugin(_))))
 
 	csr.externalInterrupt := False // TODO: io.interrupts.external
