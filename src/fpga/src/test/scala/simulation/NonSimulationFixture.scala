@@ -4,9 +4,13 @@ import org.scalatest.TestSuite
 import spinal.core._
 import spinal.core.sim._
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+
 trait NonSimulationFixture {
-	protected def spinalContext(test: () => Any) = {// TODO: NULL CHECKS FOR test
+	protected def spinalContext(test: () => Any) = {
+		test.mustNotBeNull("test")
 		NonSimulationFixture.dummySim.doSim { dut =>
+			dut.mustNotBeNull("dut")
 			new Component { test() }
 			simSuccess()
 		}

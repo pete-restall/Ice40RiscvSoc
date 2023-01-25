@@ -3,12 +3,11 @@ package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.wishbone
 import spinal.core._
 import spinal.core.sim._
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class EbramAccessMethodState( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
-	private val isEbramDirectSelector: Bool,
-	private val isEbramDirect: Boolean,
-	private val nextState: Sampling) extends WithNextSampling {
+class EbramAccessMethodState(isEbramDirectSelector: Bool, isEbramDirect: Boolean, nextState: Sampling) extends WithNextSampling {
+	nextState.mustNotBeNull("nextState")
 
 	override def onSampling(): Sampling = {
 		isEbramDirectSelector #= isEbramDirect

@@ -1,13 +1,15 @@
 package uk.co.lophtware.msfreference.tests.simulation
 
-class SimulationBranchState(
-	private val condition: () => Boolean,
-	private val whenTrue: WithNextSampling,
-	private val whenFalse: WithNextSampling) extends WithNextSampling {
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+
+class SimulationBranchState(condition: () => Boolean, whenTrue: WithNextSampling, whenFalse: WithNextSampling) extends WithNextSampling {
+	condition.mustNotBeNull("condition")
+	whenTrue.mustNotBeNull("whenTrue")
+	whenFalse.mustNotBeNull("whenFalse")
 
 	override def onSampling(): Sampling = if (condition()) whenTrue.onSampling() else whenFalse.onSampling()
 
-	override def withNext(nextState: Sampling): WithNextSampling = new SimulationBranchState(// TODO: NULL CHECKS FOR nextState
+	override def withNext(nextState: Sampling): WithNextSampling = new SimulationBranchState(
 		condition,
 		whenTrue.withNext(nextState),
 		whenFalse.withNext(nextState))

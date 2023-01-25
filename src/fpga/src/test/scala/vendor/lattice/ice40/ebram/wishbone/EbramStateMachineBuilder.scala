@@ -6,21 +6,27 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.Wishbone
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.direct.{EbramAssertingReadState, EbramPrimeReadState, EbramWriteSeqState}
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
-class EbramStateMachineBuilder( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
-	private val clockDomain: ClockDomain,
-	private val wishbone: Wishbone,
-	private val ebram: Ice40Ebram4k.IoBundle,
-	private val isEbramDirect: Bool,
-	private val factoryStack: List[Sampling => WithNextSampling]) {
+class EbramStateMachineBuilder(
+	clockDomain: ClockDomain,
+	wishbone: Wishbone,
+	ebram: Ice40Ebram4k.IoBundle,
+	isEbramDirect: Bool,
+	factoryStack: List[Sampling => WithNextSampling]) {
+
+	clockDomain.mustNotBeNull("clockDomain")
+	wishbone.mustNotBeNull("wishbone")
+	ebram.mustNotBeNull("ebram")
+	factoryStack.mustNotContainNull("factoryStack")
 
 	def powerOn() = usingDirectEbramAccess()
 		.withFactory(nextState => new WishboneBitSelectState(wishbone, 0xffff, nextState))
 
-	private def withFactory(factory: (Sampling) => WithNextSampling) = new EbramStateMachineBuilder( // TODO: NULL CHECKS FOR factory
+	private def withFactory(factory: (Sampling) => WithNextSampling) = new EbramStateMachineBuilder(
 		clockDomain,
 		wishbone,
 		ebram,

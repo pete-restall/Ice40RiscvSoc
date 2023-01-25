@@ -2,6 +2,10 @@ package uk.co.lophtware.msfreference.tests.simulation
 
 import spinal.core.sim._
 
-class SimulationFailureState(errorMessage: String) extends Sampling {// TODO: NULL CHECKS FOR errorMessage
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+
+class SimulationFailureState(errorMessage: String) extends Sampling {
+	errorMessage.mustBeSpecified("errorMessage")
+
 	override def onSampling(): Sampling = simFailure(errorMessage)
 }

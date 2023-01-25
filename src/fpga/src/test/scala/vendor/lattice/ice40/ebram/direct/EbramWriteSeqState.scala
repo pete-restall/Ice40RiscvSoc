@@ -2,14 +2,19 @@ package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.direct
 
 import spinal.core.sim._
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
 class EbramWriteSeqState(
-	private val ebram: Ice40Ebram4k.IoBundle,
-	private val mask: Int,
-	private val addressesAndWords: Seq[(Int, Int)],
-	private val nextState: Sampling) extends WithNextSampling {
+	ebram: Ice40Ebram4k.IoBundle,
+	mask: Int,
+	addressesAndWords: Seq[(Int, Int)],
+	nextState: Sampling) extends WithNextSampling {
+
+	ebram.mustNotBeNull("ebram")
+	addressesAndWords.mustNotBeNull("addressesAndWords")
+	nextState.mustNotBeNull("nextState")
 
 	private val addressAndWord = addressesAndWords.iterator
 

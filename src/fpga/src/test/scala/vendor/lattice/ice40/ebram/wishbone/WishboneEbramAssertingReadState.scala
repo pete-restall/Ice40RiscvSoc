@@ -7,14 +7,20 @@ import spinal.core.sim._
 import spinal.lib.bus.wishbone._
 import spinal.lib.wishbone.sim.{WishboneDriver, WishboneTransaction}
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class WishboneEbramAssertingReadState( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
-	private val clockDomain: ClockDomain,
-	private val ebram: Wishbone,
+class WishboneEbramAssertingReadState(
+	clockDomain: ClockDomain,
+	ebram: Wishbone,
 	private var address: Int,
-	private val expectedWords: Seq[Int],
+	expectedWords: Seq[Int],
 	nextState: Sampling) extends SimulationForkedState(nextState) with WithNextSampling {
+
+	clockDomain.mustNotBeNull("clockDomain")
+	ebram.mustNotBeNull("ebram")
+	expectedWords.mustNotBeNull("expectedWords")
+	nextState.mustNotBeNull("nextState")
 
 	protected override def onForked(): Unit = {
 		clockDomain.waitSampling()

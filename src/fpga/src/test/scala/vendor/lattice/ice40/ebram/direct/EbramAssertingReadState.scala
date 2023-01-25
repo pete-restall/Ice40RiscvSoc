@@ -4,13 +4,18 @@ import org.scalatest.AppendedClues._
 import org.scalatest.matchers.must.Matchers._
 import spinal.core.sim._
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
 
-class EbramAssertingReadState(// TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
-	private val ebram: Ice40Ebram4k.IoBundle,
-	private val expectedAddressesAndWords: Seq[(Int, Int)],
-	private val nextState: Sampling) extends WithNextSampling {
+class EbramAssertingReadState(
+	ebram: Ice40Ebram4k.IoBundle,
+	expectedAddressesAndWords: Seq[(Int, Int)],
+	nextState: Sampling) extends WithNextSampling {
+
+	ebram.mustNotBeNull("ebram")
+	expectedAddressesAndWords.mustNotBeNull("expectedAddressesAndWords")
+	nextState.mustNotBeNull("nextState")
 
 	private val addressAndWord = expectedAddressesAndWords.iterator
 	private var currentAddressAndWord = addressAndWord.nextOption()
@@ -34,5 +39,5 @@ class EbramAssertingReadState(// TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARG
 
 	private def wrappedAddress(address: Int) = address % (ebram.ADR.maxValue + 1)
 
-	override def withNext(nextState: Sampling) = new EbramAssertingReadState(ebram, expectedAddressesAndWords, nextState) // TODO: NULL CHECKS FOR nextState
+	override def withNext(nextState: Sampling) = new EbramAssertingReadState(ebram, expectedAddressesAndWords, nextState)
 }

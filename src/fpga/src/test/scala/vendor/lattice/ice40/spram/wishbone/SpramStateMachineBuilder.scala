@@ -6,22 +6,28 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.Wishbone
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.direct.{SpramAssertingReadState, SpramPowerOnState, SpramPrimeReadState, SpramWriteSeqState}
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
-class SpramStateMachineBuilder( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
-	private val clockDomain: ClockDomain,
-	private val wishbone: Wishbone,
-	private val spram: Ice40Spram16k16.IoBundle,
-	private val isSpramDirect: Bool,
-	private val factoryStack: List[Sampling => WithNextSampling]) {
+class SpramStateMachineBuilder(
+	clockDomain: ClockDomain,
+	wishbone: Wishbone,
+	spram: Ice40Spram16k16.IoBundle,
+	isSpramDirect: Bool,
+	factoryStack: List[Sampling => WithNextSampling]) {
+
+	clockDomain.mustNotBeNull("clockDomain")
+	wishbone.mustNotBeNull("wishbone")
+	spram.mustNotBeNull("spram")
+	factoryStack.mustNotContainNull("factoryStack")
 
 	def powerOn() = usingDirectSpramAccess()
 		.withFactory(nextState => new SpramPowerOnState(spram, nextState))
 		.withFactory(nextState => new WishboneNybbleSelectState(wishbone, 0x0f, nextState))
 
-	private def withFactory(factory: (Sampling) => WithNextSampling) = new SpramStateMachineBuilder( // TODO: NULL CHECKS FOR factory
+	private def withFactory(factory: (Sampling) => WithNextSampling) = new SpramStateMachineBuilder(
 		clockDomain,
 		wishbone,
 		spram,
@@ -57,7 +63,8 @@ class SpramStateMachineBuilder( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR A
 
 	def build(): Sampling = collapsed(SimulationMissingTerminalState)
 
-	private def collapsed(state: Sampling, factories: LinearSeq[Sampling => WithNextSampling] = factoryStack): Sampling =
+	private def collapsed(state: Sampling, factories: LinearSeq[Sampling => WithNextSampling] = factoryStack): Sampling = {
 		if (factories.isEmpty) state
 		else collapsed(factories.head(state), factories.tail)
+	}
 }

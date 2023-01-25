@@ -4,6 +4,8 @@ import org.scalatest._
 import spinal.core._
 import spinal.core.sim._
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+
 abstract trait SimulationFixtureBase[TDut <: Component] extends TestSuiteMixin { this: TestSuite =>
 	private var sim: SimCompiled[TDut] = _
 
@@ -14,8 +16,10 @@ abstract trait SimulationFixtureBase[TDut <: Component] extends TestSuiteMixin {
 
 	protected def createSimulation(): SpinalSimConfig = ???
 
-	protected def simulator(test: TDut => Any) = {// TODO: NULL CHECKS FOR test
+	protected def simulator(test: TDut => Any) = {
+		test.mustNotBeNull("test")
 		sim.doSim { dut =>
+			dut.mustNotBeNull("dut")
 			SimTimeout(1_000_000)
 			if (test(dut) == SimulationFixtureBase.waitForExplicitSimulationTermination) {
 				while (true) {

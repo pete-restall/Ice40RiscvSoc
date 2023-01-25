@@ -4,14 +4,19 @@ import org.scalatest.AppendedClues._
 import org.scalatest.matchers.must.Matchers._
 import spinal.core.sim._
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
-class SpramAssertingReadState( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
-	private val spram: Ice40Spram16k16.IoBundle,
+class SpramAssertingReadState(
+	spram: Ice40Spram16k16.IoBundle,
 	private var address: Int,
-	private val expectedWords: Seq[Int],
-	private val nextState: Sampling) extends WithNextSampling {
+	expectedWords: Seq[Int],
+	nextState: Sampling) extends WithNextSampling {
+
+	spram.mustNotBeNull("spram")
+	expectedWords.mustNotBeNull("expectedWords")
+	nextState.mustNotBeNull("nextState")
 
 	private val word = expectedWords.iterator
 

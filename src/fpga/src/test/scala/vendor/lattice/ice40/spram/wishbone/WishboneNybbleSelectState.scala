@@ -3,12 +3,12 @@ package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.wishbone
 import spinal.core.sim._
 import spinal.lib.bus.wishbone._
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class WishboneNybbleSelectState( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
-	private val spram: Wishbone,
-	private val nybbleSelector: Int,
-	private val nextState: Sampling) extends WithNextSampling {
+class WishboneNybbleSelectState(spram: Wishbone, nybbleSelector: Int, nextState: Sampling) extends WithNextSampling {
+	spram.mustNotBeNull("spram")
+	nextState.mustNotBeNull("nextState")
 
 	override def onSampling(): Sampling = {
 		spram.SEL #= nybbleSelector

@@ -3,12 +3,11 @@ package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.wishbone
 import spinal.core._
 import spinal.core.sim._
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class SpramAccessMethodState( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
-	private val isSpramDirectSelector: Bool,
-	private val isSpramDirect: Boolean,
-	private val nextState: Sampling) extends WithNextSampling {
+class SpramAccessMethodState(isSpramDirectSelector: Bool, isSpramDirect: Boolean, nextState: Sampling) extends WithNextSampling {
+	nextState.mustNotBeNull("nextState")
 
 	override def onSampling(): Sampling = {
 		isSpramDirectSelector #= isSpramDirect

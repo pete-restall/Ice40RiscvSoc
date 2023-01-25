@@ -2,14 +2,19 @@ package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.direct
 
 import spinal.core.sim._
 
+import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
 
-class SpramWriteSeqState( // TODO: NULL CHECKS FOR ALL THESE CONSTRUCTOR ARGS
-	private val spram: Ice40Spram16k16.IoBundle,
+class SpramWriteSeqState(
+	spram: Ice40Spram16k16.IoBundle,
 	private var address: Int,
-	private val words: Seq[Int],
-	private val nextState: Sampling) extends WithNextSampling {
+	words: Seq[Int],
+	nextState: Sampling) extends WithNextSampling {
+
+	spram.mustNotBeNull("spram")
+	words.mustNotBeNull("words")
+	nextState.mustNotBeNull("nextState")
 
 	private val word = words.iterator
 
