@@ -1,6 +1,6 @@
-// Generator : SpinalHDL v1.7.3    git head : aeaeece704fe43c766e0d36a93f2ecbb8a9f2003
+// Generator : SpinalHDL v1.8.0    git head : 4e3563a282582b41f4eaafc503787757251d23ea
 // Component : MsfReference
-// Git hash  : 05acbdee741be4b07859dd0d6ee13649996409f2
+// Git hash  : be3e065800df5021e4df96b2dc86a5ad427277b4
 
 `timescale 1ns/1ps
 
@@ -43,30 +43,30 @@ module MsfReference (
     .clk   (clk                         ), //i
     .reset (_zz_reset_4                 )  //i
   );
-  assign reset = bufferCC_1_io_dataOut;
+  assign reset = bufferCC_1_io_dataOut; // @[CrossClock.scala 13:9]
   always @(*) begin
-    _zz_reset = 1'b0;
-    _zz_reset = ((! reset) && (! _zz_reset_3));
+    _zz_reset = 1'b0; // @[Utils.scala 536:23]
+    _zz_reset = ((! reset) && (! _zz_reset_3)); // @[MsfReference.scala 22:44]
   end
 
-  assign _zz_reset_3 = (_zz_reset_2 == 16'hffff);
+  assign _zz_reset_3 = (_zz_reset_2 == 16'hffff); // @[BaseType.scala 305:24]
   always @(*) begin
-    _zz_reset_1 = (_zz_reset_2 + _zz__zz_reset_1);
+    _zz_reset_1 = (_zz_reset_2 + _zz__zz_reset_1); // @[Utils.scala 548:15]
     if(1'b0) begin
-      _zz_reset_1 = 16'h0;
+      _zz_reset_1 = 16'h0; // @[Utils.scala 558:15]
     end
   end
 
-  assign _zz_reset_4 = (reset || _zz_reset);
-  assign io_p23 = sanitisedClockArea_core_p23;
-  assign io_ledR = sanitisedClockArea_core_ledR;
-  assign io_ledG = sanitisedClockArea_core_ledG;
-  assign io_ledB = sanitisedClockArea_core_ledB;
+  assign _zz_reset_4 = (reset || _zz_reset); // @[BaseType.scala 305:24]
+  assign io_p23 = sanitisedClockArea_core_p23; // @[MsfReference.scala 36:24]
+  assign io_ledR = sanitisedClockArea_core_ledR; // @[MsfReference.scala 37:25]
+  assign io_ledG = sanitisedClockArea_core_ledG; // @[MsfReference.scala 38:25]
+  assign io_ledB = sanitisedClockArea_core_ledB; // @[MsfReference.scala 39:25]
   always @(posedge clk) begin
     if(reset) begin
-      _zz_reset_2 <= 16'h0;
+      _zz_reset_2 <= 16'h0; // @[Data.scala 400:33]
     end else begin
-      _zz_reset_2 <= _zz_reset_1;
+      _zz_reset_2 <= _zz_reset_1; // @[Reg.scala 39:30]
     end
   end
 
@@ -83,14 +83,14 @@ module BufferCC (
   (* async_reg = "true" *) reg                 buffers_0;
   (* async_reg = "true" *) reg                 buffers_1;
 
-  assign io_dataOut = buffers_1;
+  assign io_dataOut = buffers_1; // @[CrossClock.scala 38:14]
   always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
-      buffers_0 <= 1'b1;
-      buffers_1 <= 1'b1;
+      buffers_0 <= 1'b1; // @[Data.scala 400:33]
+      buffers_1 <= 1'b1; // @[Data.scala 400:33]
     end else begin
-      buffers_0 <= io_dataIn;
-      buffers_1 <= buffers_0;
+      buffers_0 <= io_dataIn; // @[CrossClock.scala 31:14]
+      buffers_1 <= buffers_0; // @[CrossClock.scala 34:16]
     end
   end
 

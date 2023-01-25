@@ -167,6 +167,7 @@ class Core extends Component {
 		0xff5ff06f)
 */
 
+/*
 	// RGB chaser:
 	private val instructions = Seq(
 		0x00400493,
@@ -182,17 +183,74 @@ class Core extends Component {
 		0xfffa8a93,
 		0xfe0a9ee3,
 		0xfe5ff06f)
+*/
+
+	// RGB chaser in another bank:
+	private val instructions = Seq(
+		0x10000913,
+		0x004004b7,
+		0x49348493,
+		0x00992023,
+		0x0014a4b7,
+		0x91348493,
+		0x00992223,
+		0x000114b7,
+		0x9b748493,
+		0x00992423,
+		0x000324b7,
+		0xa3748493,
+		0x00992623,
+		0x000d44b7,
+		0x0a148493,
+		0x00c49493,
+		0xa1b48493,
+		0x00992823,
+		0x001494b7,
+		0x49348493,
+		0x00992a23,
+		0x012494b7,
+		0x46348493,
+		0x00992c23,
+		0x001004b7,
+		0x49348493,
+		0x00992e23,
+		0x0099a4b7,
+		0x02348493,
+		0x02992023,
+		0x000a14b7,
+		0xab348493,
+		0x02992223,
+		0x001004b7,
+		0xfa948493,
+		0x00c49493,
+		0xa9348493,
+		0x02992423,
+		0x0007f4b7,
+		0x05548493,
+		0x00d49493,
+		0xee348493,
+		0x02992623,
+		0x000fe4b7,
+		0x5ff48493,
+		0x00c49493,
+		0x06f48493,
+		0x02992823,
+		0x100000e7)
 
 	private def riscvToEbramSelMapper(sel: Bits) = B((31 downto 24) -> sel(3), (23 downto 16) -> sel(2), (15 downto 8) -> sel(1), (7 downto 0) -> sel(0))
 
-	private val lowInstructionEbram = Ice40Ebram4k16WishboneBusAdapter(Ice40Ebram4k(readWidth=16 bits, writeWidth=16 bits, Some(instructions.map(x => (x >> 0) & 0x0000ffff))))
-	private val highInstructionEbram = Ice40Ebram4k16WishboneBusAdapter(Ice40Ebram4k(readWidth=16 bits, writeWidth=16 bits, Some(instructions.map(x => (x >> 16) & 0x0000ffff))))
+	private val lowInstructionEbram = Ice40Ebram4k16WishboneBusAdapter(Ice40Ebram4k(readWidth=16 bits, writeWidth=16 bits, Some(instructions.map(x => ((x >> 0) & 0x0000ffff).toInt))))
+	private val highInstructionEbram = Ice40Ebram4k16WishboneBusAdapter(Ice40Ebram4k(readWidth=16 bits, writeWidth=16 bits, Some(instructions.map(x => ((x >> 16) & 0x0000ffff).toInt))))
 
 	private val instructionEbramBlocks = Seq(lowInstructionEbram, highInstructionEbram)
 	private val wideInstructionEbramBlock = WishboneBusSelMappingAdapter(4 bits, WishboneBusDataExpander(instructionEbramBlocks(0).io.wishbone, instructionEbramBlocks(1).io.wishbone).io.master, riscvToEbramSelMapper)
+	private val instructionEbramBlockWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, wideInstructionEbramBlock.io.master, adr => adr.resize(8 bits))
+
+	private val dataEbramBlocks = Seq.fill(2) { Ice40Ebram4k16WishboneBusAdapter(Ice40Ebram4k(readWidth=16 bits, writeWidth=16 bits)) }
+	private val wideDataEbramBlock = WishboneBusSelMappingAdapter(4 bits, WishboneBusDataExpander(dataEbramBlocks(0).io.wishbone, dataEbramBlocks(1).io.wishbone).io.master, riscvToEbramSelMapper)
+	private val dataEbramBlockWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, wideDataEbramBlock.io.master, adr => adr.resize(8 bits))
 
 	private val ledDeviceWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, ledDevice.io.wishbone, adr => adr.resize(1 bit))
-	private val instructionEbramBlockWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, wideInstructionEbramBlock.io.master, adr => adr.resize(8 bits))
 
 	// Two arbiters driven by two maps drive the two muxes:
 	// cpu.ibus -> adapter -> 2:1 mux(ibus, dbusToSharedSlavesBridge : ebram)
@@ -214,10 +272,10 @@ class Core extends Component {
 
 	private val dbus = new Wishbone(dbusToSharedSlavesBridge.config)
 	private val sharedSlaveMap = WishboneBusMasterSlaveMap(
-		(dbus, m => !m.ADR(14), instructionEbramBlockWidthAdjusted.io.master),
-		(ibus, m => !m.ADR(14), instructionEbramBlockWidthAdjusted.io.master)/*,
-		(cpu.io.dbus, m => m.ADR(14), wideInstructionEbramBlock2WidthAdjusted.io.master),
-		(cpu.io.ibus, m => m.ADR(14), wideInstructionEbramBlock2WidthAdjusted.io.master)*/)
+		(dbus, m => !m.ADR(14) && !m.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
+		(ibus, m => !m.ADR(14) && !m.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
+		(dbus, m => !m.ADR(14) && m.ADR(6), dataEbramBlockWidthAdjusted.io.master),
+		(ibus, m => !m.ADR(14) && m.ADR(6), dataEbramBlockWidthAdjusted.io.master))
 
 	private val ibusMasterIndex = sharedSlaveMap.masters.indexOf(ibus) // TODO: THIS LOOKUP WANTS PUTTING ON THE WishboneBusMasterSlaveMap CLASS; def masterIoFor(wb): MasterIoBundle
 	private val dbusMasterIndex = sharedSlaveMap.masters.indexOf(dbus) // TODO: WishboneBusMasterSlaveMap CLASS ALSO WANTS; def indexOfMaster(wb): Int && def indexOfSlave(wb): Int
@@ -236,12 +294,24 @@ class Core extends Component {
 			sharedSlaveArbiter.io.masters(masterIndex).request := master.CYC && ibusSlaveSelector.index === slaveIndex
 		}
 
-		sharedSlaveArbiter
+		(sharedSlaveArbiter, sharedSlaveMap.slaves(slaveIndex))
 	}
 
 
-	private val masterMux = WishboneBusMasterMultiplexer(sharedSlaveArbiters(0).io.grantedMasterIndex, sharedSlaveMap.masters.head, sharedSlaveMap.masters.tail:_*)
-	masterMux.io.slave <> instructionEbramBlockWidthAdjusted.io.master // works because there is (currently) only one shared slave
+	private val masterMuxes = sharedSlaveArbiters.map { case (arbiter, slave) =>
+		val masters = sharedSlaveMap.masters.map(master => new Wishbone(master.config))
+		val selector: UInt = arbiter.io.grantedMasterIndex
+		val mux = WishboneBusMasterMultiplexer(selector, masters.head, masters.tail:_*)
+		mux.io.slave <> slave
+		(mux, masters)
+	}
+
+	sharedSlaveMap.masters.zipWithIndex.foreach { case (master, masterIndex) =>
+		val masters = masterMuxes.map(_._2(masterIndex))
+		val selector: UInt = sharedSlaveMap.io.masters(masterIndex).index
+		val mux = WishboneBusSlaveMultiplexer(selector, masters.head, masters.tail:_*)
+		mux.io.master <> master
+	}
 
 	dbusToSharedSlavesBridge.ACK := dbus.ACK
 	dbusToSharedSlavesBridge.DAT_MISO := dbus.DAT_MISO
@@ -375,4 +445,95 @@ delay:
 0xfffa8a93
 0xfe0a9ee3
 0xfe5ff06f
+*/
+
+/*
+// RGB chaser in another bank
+.global _boot
+.text
+
+.equ OTHER_BANK_ADDR, 256
+
+_boot:
+	li s2, OTHER_BANK_ADDR
+	li s1, 0x00400493
+	sw s1, 0(s2)
+	li s1, 0x00149913
+	sw s1, 4(s2)
+	li s1, 0x000109b7
+	sw s1, 8(s2)
+	li s1, 0x00031a37
+	sw s1, 12(s2)
+	li s1, 0xd40a0a1b
+	sw s1, 16(s2)
+	li s1, 0x00149493
+	sw s1, 20(s2)
+	li s1, 0x01249463
+	sw s1, 24(s2)
+	li s1, 0x00100493
+	sw s1, 28(s2)
+	li s1, 0x0099a023
+	sw s1, 32(s2)
+	li s1, 0x000a0ab3
+	sw s1, 36(s2)
+	li s1, 0xfffa8a93
+	sw s1, 40(s2)
+	li s1, 0xfe0a9ee3
+	sw s1, 44(s2)
+	li s1, 0xfe5ff06f
+	sw s1, 48(s2)
+
+	jalr OTHER_BANK_ADDR(x0)
+
+-->
+
+0x10000913
+0x004004b7
+0x49348493
+0x00992023
+0x0014a4b7
+0x91348493
+0x00992223
+0x000114b7
+0x9b748493
+0x00992423
+0x000324b7
+0xa3748493
+0x00992623
+0x000d44b7
+0x0a148493
+0x00c49493
+0xa1b48493
+0x00992823
+0x001494b7
+0x49348493
+0x00992a23
+0x012494b7
+0x46348493
+0x00992c23
+0x001004b7
+0x49348493
+0x00992e23
+0x0099a4b7
+0x02348493
+0x02992023
+0x000a14b7
+0xab348493
+0x02992223
+0x001004b7
+0xfa948493
+0x00c49493
+0xa9348493
+0x02992423
+0x0007f4b7
+0x05548493
+0x00d49493
+0xee348493
+0x02992623
+0x000fe4b7
+0x5ff48493
+0x00c49493
+0x06f48493
+0x02992823
+0x100000e7
 */
