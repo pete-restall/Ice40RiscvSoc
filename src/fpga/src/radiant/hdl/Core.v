@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.0    git head : 4e3563a282582b41f4eaafc503787757251d23ea
 // Component : Core
-// Git hash  : be3e065800df5021e4df96b2dc86a5ad427277b4
+// Git hash  : e8b5771b0567a86063c25ebb984345b501084fa7
 
 `timescale 1ns/1ps
 
@@ -47,7 +47,7 @@ module Core (
   wire                ledDevice_io_ledR;
   wire                ledDevice_io_ledG;
   wire                ledDevice_io_ledB;
-  wire       [15:0]   ice40Ebram4k_4_DO_1;
+  wire       [15:0]   ice40Ebram4k_2_DO_1;
   wire       [15:0]   lowInstructionEbram_wishbone_DAT_MISO;
   wire                lowInstructionEbram_wishbone_ACK;
   wire       [15:0]   lowInstructionEbram_ebram_DI;
@@ -58,7 +58,7 @@ module Core (
   wire                lowInstructionEbram_ebram_RE;
   wire                lowInstructionEbram_ebram_WE;
   wire       [15:0]   lowInstructionEbram_ebram_MASK_N;
-  wire       [15:0]   ice40Ebram4k_5_DO_1;
+  wire       [15:0]   ice40Ebram4k_3_DO_1;
   wire       [15:0]   highInstructionEbram_wishbone_DAT_MISO;
   wire                highInstructionEbram_wishbone_ACK;
   wire       [15:0]   highInstructionEbram_ebram_DI;
@@ -99,58 +99,52 @@ module Core (
   wire       [3:0]    instructionEbramBlockWidthAdjusted_slave_SEL;
   wire                instructionEbramBlockWidthAdjusted_slave_STB;
   wire                instructionEbramBlockWidthAdjusted_slave_WE;
-  wire       [15:0]   ice40Ebram4k_6_DO_1;
-  wire       [15:0]   dataEbramBlocks_0_wishbone_DAT_MISO;
-  wire                dataEbramBlocks_0_wishbone_ACK;
-  wire       [15:0]   dataEbramBlocks_0_ebram_DI;
-  wire       [7:0]    dataEbramBlocks_0_ebram_ADW;
-  wire       [7:0]    dataEbramBlocks_0_ebram_ADR;
-  wire                dataEbramBlocks_0_ebram_CEW;
-  wire                dataEbramBlocks_0_ebram_CER;
-  wire                dataEbramBlocks_0_ebram_RE;
-  wire                dataEbramBlocks_0_ebram_WE;
-  wire       [15:0]   dataEbramBlocks_0_ebram_MASK_N;
-  wire       [15:0]   ice40Ebram4k_7_DO_1;
-  wire       [15:0]   dataEbramBlocks_1_wishbone_DAT_MISO;
-  wire                dataEbramBlocks_1_wishbone_ACK;
-  wire       [15:0]   dataEbramBlocks_1_ebram_DI;
-  wire       [7:0]    dataEbramBlocks_1_ebram_ADW;
-  wire       [7:0]    dataEbramBlocks_1_ebram_ADR;
-  wire                dataEbramBlocks_1_ebram_CEW;
-  wire                dataEbramBlocks_1_ebram_CER;
-  wire                dataEbramBlocks_1_ebram_RE;
-  wire                dataEbramBlocks_1_ebram_WE;
-  wire       [15:0]   dataEbramBlocks_1_ebram_MASK_N;
+  wire       [15:0]   dataSprams_0_DO;
+  wire       [15:0]   dataSprams_1_DO;
+  wire       [15:0]   dataSpramBlocks_0_wishbone_DAT_MISO;
+  wire                dataSpramBlocks_0_wishbone_ACK;
+  wire       [13:0]   dataSpramBlocks_0_spram_AD;
+  wire       [15:0]   dataSpramBlocks_0_spram_DI;
+  wire       [3:0]    dataSpramBlocks_0_spram_MASKWE;
+  wire                dataSpramBlocks_0_spram_WE;
+  wire                dataSpramBlocks_0_spram_CS;
+  wire       [15:0]   dataSpramBlocks_1_wishbone_DAT_MISO;
+  wire                dataSpramBlocks_1_wishbone_ACK;
+  wire       [13:0]   dataSpramBlocks_1_spram_AD;
+  wire       [15:0]   dataSpramBlocks_1_spram_DI;
+  wire       [3:0]    dataSpramBlocks_1_spram_MASKWE;
+  wire                dataSpramBlocks_1_spram_WE;
+  wire                dataSpramBlocks_1_spram_CS;
   wire       [31:0]   wishboneBusDataExpander_3_master_DAT_MISO;
   wire                wishboneBusDataExpander_3_master_ACK;
   wire       [15:0]   wishboneBusDataExpander_3_slaves_0_DAT_MOSI;
-  wire       [7:0]    wishboneBusDataExpander_3_slaves_0_ADR;
+  wire       [13:0]   wishboneBusDataExpander_3_slaves_0_ADR;
   wire                wishboneBusDataExpander_3_slaves_0_CYC;
-  wire       [15:0]   wishboneBusDataExpander_3_slaves_0_SEL;
+  wire       [3:0]    wishboneBusDataExpander_3_slaves_0_SEL;
   wire                wishboneBusDataExpander_3_slaves_0_STB;
   wire                wishboneBusDataExpander_3_slaves_0_WE;
   wire       [15:0]   wishboneBusDataExpander_3_slaves_1_DAT_MOSI;
-  wire       [7:0]    wishboneBusDataExpander_3_slaves_1_ADR;
+  wire       [13:0]   wishboneBusDataExpander_3_slaves_1_ADR;
   wire                wishboneBusDataExpander_3_slaves_1_CYC;
-  wire       [15:0]   wishboneBusDataExpander_3_slaves_1_SEL;
+  wire       [3:0]    wishboneBusDataExpander_3_slaves_1_SEL;
   wire                wishboneBusDataExpander_3_slaves_1_STB;
   wire                wishboneBusDataExpander_3_slaves_1_WE;
-  wire       [31:0]   wideDataEbramBlock_master_DAT_MISO;
-  wire                wideDataEbramBlock_master_ACK;
-  wire       [31:0]   wideDataEbramBlock_slave_DAT_MOSI;
-  wire       [7:0]    wideDataEbramBlock_slave_ADR;
-  wire                wideDataEbramBlock_slave_CYC;
-  wire       [31:0]   wideDataEbramBlock_slave_SEL;
-  wire                wideDataEbramBlock_slave_STB;
-  wire                wideDataEbramBlock_slave_WE;
-  wire       [31:0]   dataEbramBlockWidthAdjusted_master_DAT_MISO;
-  wire                dataEbramBlockWidthAdjusted_master_ACK;
-  wire       [31:0]   dataEbramBlockWidthAdjusted_slave_DAT_MOSI;
-  wire       [7:0]    dataEbramBlockWidthAdjusted_slave_ADR;
-  wire                dataEbramBlockWidthAdjusted_slave_CYC;
-  wire       [3:0]    dataEbramBlockWidthAdjusted_slave_SEL;
-  wire                dataEbramBlockWidthAdjusted_slave_STB;
-  wire                dataEbramBlockWidthAdjusted_slave_WE;
+  wire       [31:0]   wideDataSpramBlock_master_DAT_MISO;
+  wire                wideDataSpramBlock_master_ACK;
+  wire       [31:0]   wideDataSpramBlock_slave_DAT_MOSI;
+  wire       [13:0]   wideDataSpramBlock_slave_ADR;
+  wire                wideDataSpramBlock_slave_CYC;
+  wire       [7:0]    wideDataSpramBlock_slave_SEL;
+  wire                wideDataSpramBlock_slave_STB;
+  wire                wideDataSpramBlock_slave_WE;
+  wire       [31:0]   dataSpramBlockWidthAdjusted_master_DAT_MISO;
+  wire                dataSpramBlockWidthAdjusted_master_ACK;
+  wire       [31:0]   dataSpramBlockWidthAdjusted_slave_DAT_MOSI;
+  wire       [13:0]   dataSpramBlockWidthAdjusted_slave_ADR;
+  wire                dataSpramBlockWidthAdjusted_slave_CYC;
+  wire       [3:0]    dataSpramBlockWidthAdjusted_slave_SEL;
+  wire                dataSpramBlockWidthAdjusted_slave_STB;
+  wire                dataSpramBlockWidthAdjusted_slave_WE;
   wire       [31:0]   ledDeviceWidthAdjusted_master_DAT_MISO;
   wire                ledDeviceWidthAdjusted_master_ACK;
   wire       [31:0]   ledDeviceWidthAdjusted_slave_DAT_MOSI;
@@ -360,7 +354,7 @@ module Core (
     .clk                  (clk                                        ), //i
     .reset                (reset                                      )  //i
   );
-  Ice40Ebram4k_3 ice40Ebram4k_4 (
+  Ice40Ebram4k_1 ice40Ebram4k_2 (
     .DI     (lowInstructionEbram_ebram_DI[15:0]    ), //i
     .ADW    (lowInstructionEbram_ebram_ADW[7:0]    ), //i
     .ADR    (lowInstructionEbram_ebram_ADR[7:0]    ), //i
@@ -371,9 +365,9 @@ module Core (
     .RE     (lowInstructionEbram_ebram_RE          ), //i
     .WE     (lowInstructionEbram_ebram_WE          ), //i
     .MASK_N (lowInstructionEbram_ebram_MASK_N[15:0]), //i
-    .DO_1   (ice40Ebram4k_4_DO_1[15:0]             )  //o
+    .DO_1   (ice40Ebram4k_2_DO_1[15:0]             )  //o
   );
-  Ice40Ebram4k16WishboneBusAdapter_3 lowInstructionEbram (
+  Ice40Ebram4k16WishboneBusAdapter_1 lowInstructionEbram (
     .wishbone_CYC      (wishboneBusDataExpander_2_slaves_0_CYC           ), //i
     .wishbone_STB      (wishboneBusDataExpander_2_slaves_0_STB           ), //i
     .wishbone_ACK      (lowInstructionEbram_wishbone_ACK                 ), //o
@@ -390,11 +384,11 @@ module Core (
     .ebram_RE          (lowInstructionEbram_ebram_RE                     ), //o
     .ebram_WE          (lowInstructionEbram_ebram_WE                     ), //o
     .ebram_MASK_N      (lowInstructionEbram_ebram_MASK_N[15:0]           ), //o
-    .ebram_DO          (ice40Ebram4k_4_DO_1[15:0]                        ), //i
+    .ebram_DO          (ice40Ebram4k_2_DO_1[15:0]                        ), //i
     .clk               (clk                                              ), //i
     .reset             (reset                                            )  //i
   );
-  Ice40Ebram4k_2 ice40Ebram4k_5 (
+  Ice40Ebram4k ice40Ebram4k_3 (
     .DI     (highInstructionEbram_ebram_DI[15:0]    ), //i
     .ADW    (highInstructionEbram_ebram_ADW[7:0]    ), //i
     .ADR    (highInstructionEbram_ebram_ADR[7:0]    ), //i
@@ -405,9 +399,9 @@ module Core (
     .RE     (highInstructionEbram_ebram_RE          ), //i
     .WE     (highInstructionEbram_ebram_WE          ), //i
     .MASK_N (highInstructionEbram_ebram_MASK_N[15:0]), //i
-    .DO_1   (ice40Ebram4k_5_DO_1[15:0]              )  //o
+    .DO_1   (ice40Ebram4k_3_DO_1[15:0]              )  //o
   );
-  Ice40Ebram4k16WishboneBusAdapter_3 highInstructionEbram (
+  Ice40Ebram4k16WishboneBusAdapter_1 highInstructionEbram (
     .wishbone_CYC      (wishboneBusDataExpander_2_slaves_1_CYC           ), //i
     .wishbone_STB      (wishboneBusDataExpander_2_slaves_1_STB           ), //i
     .wishbone_ACK      (highInstructionEbram_wishbone_ACK                ), //o
@@ -424,7 +418,7 @@ module Core (
     .ebram_RE          (highInstructionEbram_ebram_RE                    ), //o
     .ebram_WE          (highInstructionEbram_ebram_WE                    ), //o
     .ebram_MASK_N      (highInstructionEbram_ebram_MASK_N[15:0]          ), //o
-    .ebram_DO          (ice40Ebram4k_5_DO_1[15:0]                        ), //i
+    .ebram_DO          (ice40Ebram4k_3_DO_1[15:0]                        ), //i
     .clk               (clk                                              ), //i
     .reset             (reset                                            )  //i
   );
@@ -490,135 +484,127 @@ module Core (
     .slave_DAT_MOSI  (instructionEbramBlockWidthAdjusted_slave_DAT_MOSI[31:0] ), //o
     .slave_SEL       (instructionEbramBlockWidthAdjusted_slave_SEL[3:0]       )  //o
   );
-  Ice40Ebram4k_1 ice40Ebram4k_6 (
-    .DI     (dataEbramBlocks_0_ebram_DI[15:0]    ), //i
-    .ADW    (dataEbramBlocks_0_ebram_ADW[7:0]    ), //i
-    .ADR    (dataEbramBlocks_0_ebram_ADR[7:0]    ), //i
-    .CKW    (clk                                 ), //i
-    .CKR    (clk                                 ), //i
-    .CEW    (dataEbramBlocks_0_ebram_CEW         ), //i
-    .CER    (dataEbramBlocks_0_ebram_CER         ), //i
-    .RE     (dataEbramBlocks_0_ebram_RE          ), //i
-    .WE     (dataEbramBlocks_0_ebram_WE          ), //i
-    .MASK_N (dataEbramBlocks_0_ebram_MASK_N[15:0]), //i
-    .DO_1   (ice40Ebram4k_6_DO_1[15:0]           )  //o
+  SP256K dataSprams_0 (
+    .AD       (dataSpramBlocks_0_spram_AD[13:0]   ), //i
+    .DI       (dataSpramBlocks_0_spram_DI[15:0]   ), //i
+    .MASKWE   (dataSpramBlocks_0_spram_MASKWE[3:0]), //i
+    .WE       (dataSpramBlocks_0_spram_WE         ), //i
+    .CS       (dataSpramBlocks_0_spram_CS         ), //i
+    .CK       (clk                                ), //i
+    .STDBY    (1'b0                               ), //i
+    .SLEEP    (1'b0                               ), //i
+    .PWROFF_N (1'b1                               ), //i
+    .DO       (dataSprams_0_DO[15:0]              )  //o
   );
-  Ice40Ebram4k16WishboneBusAdapter_3 dataEbramBlocks_0 (
+  SP256K dataSprams_1 (
+    .AD       (dataSpramBlocks_1_spram_AD[13:0]   ), //i
+    .DI       (dataSpramBlocks_1_spram_DI[15:0]   ), //i
+    .MASKWE   (dataSpramBlocks_1_spram_MASKWE[3:0]), //i
+    .WE       (dataSpramBlocks_1_spram_WE         ), //i
+    .CS       (dataSpramBlocks_1_spram_CS         ), //i
+    .CK       (clk                                ), //i
+    .STDBY    (1'b0                               ), //i
+    .SLEEP    (1'b0                               ), //i
+    .PWROFF_N (1'b1                               ), //i
+    .DO       (dataSprams_1_DO[15:0]              )  //o
+  );
+  Ice40Spram16k16WishboneBusAdapter_1 dataSpramBlocks_0 (
     .wishbone_CYC      (wishboneBusDataExpander_3_slaves_0_CYC           ), //i
     .wishbone_STB      (wishboneBusDataExpander_3_slaves_0_STB           ), //i
-    .wishbone_ACK      (dataEbramBlocks_0_wishbone_ACK                   ), //o
+    .wishbone_ACK      (dataSpramBlocks_0_wishbone_ACK                   ), //o
     .wishbone_WE       (wishboneBusDataExpander_3_slaves_0_WE            ), //i
-    .wishbone_ADR      (wishboneBusDataExpander_3_slaves_0_ADR[7:0]      ), //i
-    .wishbone_DAT_MISO (dataEbramBlocks_0_wishbone_DAT_MISO[15:0]        ), //o
+    .wishbone_ADR      (wishboneBusDataExpander_3_slaves_0_ADR[13:0]     ), //i
+    .wishbone_DAT_MISO (dataSpramBlocks_0_wishbone_DAT_MISO[15:0]        ), //o
     .wishbone_DAT_MOSI (wishboneBusDataExpander_3_slaves_0_DAT_MOSI[15:0]), //i
-    .wishbone_SEL      (wishboneBusDataExpander_3_slaves_0_SEL[15:0]     ), //i
-    .ebram_DI          (dataEbramBlocks_0_ebram_DI[15:0]                 ), //o
-    .ebram_ADW         (dataEbramBlocks_0_ebram_ADW[7:0]                 ), //o
-    .ebram_ADR         (dataEbramBlocks_0_ebram_ADR[7:0]                 ), //o
-    .ebram_CEW         (dataEbramBlocks_0_ebram_CEW                      ), //o
-    .ebram_CER         (dataEbramBlocks_0_ebram_CER                      ), //o
-    .ebram_RE          (dataEbramBlocks_0_ebram_RE                       ), //o
-    .ebram_WE          (dataEbramBlocks_0_ebram_WE                       ), //o
-    .ebram_MASK_N      (dataEbramBlocks_0_ebram_MASK_N[15:0]             ), //o
-    .ebram_DO          (ice40Ebram4k_6_DO_1[15:0]                        ), //i
+    .wishbone_SEL      (wishboneBusDataExpander_3_slaves_0_SEL[3:0]      ), //i
+    .spram_AD          (dataSpramBlocks_0_spram_AD[13:0]                 ), //o
+    .spram_DI          (dataSpramBlocks_0_spram_DI[15:0]                 ), //o
+    .spram_MASKWE      (dataSpramBlocks_0_spram_MASKWE[3:0]              ), //o
+    .spram_WE          (dataSpramBlocks_0_spram_WE                       ), //o
+    .spram_CS          (dataSpramBlocks_0_spram_CS                       ), //o
+    .spram_DO          (dataSprams_0_DO[15:0]                            ), //i
     .clk               (clk                                              ), //i
     .reset             (reset                                            )  //i
   );
-  Ice40Ebram4k_1 ice40Ebram4k_7 (
-    .DI     (dataEbramBlocks_1_ebram_DI[15:0]    ), //i
-    .ADW    (dataEbramBlocks_1_ebram_ADW[7:0]    ), //i
-    .ADR    (dataEbramBlocks_1_ebram_ADR[7:0]    ), //i
-    .CKW    (clk                                 ), //i
-    .CKR    (clk                                 ), //i
-    .CEW    (dataEbramBlocks_1_ebram_CEW         ), //i
-    .CER    (dataEbramBlocks_1_ebram_CER         ), //i
-    .RE     (dataEbramBlocks_1_ebram_RE          ), //i
-    .WE     (dataEbramBlocks_1_ebram_WE          ), //i
-    .MASK_N (dataEbramBlocks_1_ebram_MASK_N[15:0]), //i
-    .DO_1   (ice40Ebram4k_7_DO_1[15:0]           )  //o
-  );
-  Ice40Ebram4k16WishboneBusAdapter_3 dataEbramBlocks_1 (
+  Ice40Spram16k16WishboneBusAdapter_1 dataSpramBlocks_1 (
     .wishbone_CYC      (wishboneBusDataExpander_3_slaves_1_CYC           ), //i
     .wishbone_STB      (wishboneBusDataExpander_3_slaves_1_STB           ), //i
-    .wishbone_ACK      (dataEbramBlocks_1_wishbone_ACK                   ), //o
+    .wishbone_ACK      (dataSpramBlocks_1_wishbone_ACK                   ), //o
     .wishbone_WE       (wishboneBusDataExpander_3_slaves_1_WE            ), //i
-    .wishbone_ADR      (wishboneBusDataExpander_3_slaves_1_ADR[7:0]      ), //i
-    .wishbone_DAT_MISO (dataEbramBlocks_1_wishbone_DAT_MISO[15:0]        ), //o
+    .wishbone_ADR      (wishboneBusDataExpander_3_slaves_1_ADR[13:0]     ), //i
+    .wishbone_DAT_MISO (dataSpramBlocks_1_wishbone_DAT_MISO[15:0]        ), //o
     .wishbone_DAT_MOSI (wishboneBusDataExpander_3_slaves_1_DAT_MOSI[15:0]), //i
-    .wishbone_SEL      (wishboneBusDataExpander_3_slaves_1_SEL[15:0]     ), //i
-    .ebram_DI          (dataEbramBlocks_1_ebram_DI[15:0]                 ), //o
-    .ebram_ADW         (dataEbramBlocks_1_ebram_ADW[7:0]                 ), //o
-    .ebram_ADR         (dataEbramBlocks_1_ebram_ADR[7:0]                 ), //o
-    .ebram_CEW         (dataEbramBlocks_1_ebram_CEW                      ), //o
-    .ebram_CER         (dataEbramBlocks_1_ebram_CER                      ), //o
-    .ebram_RE          (dataEbramBlocks_1_ebram_RE                       ), //o
-    .ebram_WE          (dataEbramBlocks_1_ebram_WE                       ), //o
-    .ebram_MASK_N      (dataEbramBlocks_1_ebram_MASK_N[15:0]             ), //o
-    .ebram_DO          (ice40Ebram4k_7_DO_1[15:0]                        ), //i
+    .wishbone_SEL      (wishboneBusDataExpander_3_slaves_1_SEL[3:0]      ), //i
+    .spram_AD          (dataSpramBlocks_1_spram_AD[13:0]                 ), //o
+    .spram_DI          (dataSpramBlocks_1_spram_DI[15:0]                 ), //o
+    .spram_MASKWE      (dataSpramBlocks_1_spram_MASKWE[3:0]              ), //o
+    .spram_WE          (dataSpramBlocks_1_spram_WE                       ), //o
+    .spram_CS          (dataSpramBlocks_1_spram_CS                       ), //o
+    .spram_DO          (dataSprams_1_DO[15:0]                            ), //i
     .clk               (clk                                              ), //i
     .reset             (reset                                            )  //i
   );
-  WishboneBusDataExpander_1 wishboneBusDataExpander_3 (
-    .master_CYC        (wideDataEbramBlock_slave_CYC                     ), //i
-    .master_STB        (wideDataEbramBlock_slave_STB                     ), //i
+  WishboneBusDataExpander wishboneBusDataExpander_3 (
+    .master_CYC        (wideDataSpramBlock_slave_CYC                     ), //i
+    .master_STB        (wideDataSpramBlock_slave_STB                     ), //i
     .master_ACK        (wishboneBusDataExpander_3_master_ACK             ), //o
-    .master_WE         (wideDataEbramBlock_slave_WE                      ), //i
-    .master_ADR        (wideDataEbramBlock_slave_ADR[7:0]                ), //i
+    .master_WE         (wideDataSpramBlock_slave_WE                      ), //i
+    .master_ADR        (wideDataSpramBlock_slave_ADR[13:0]               ), //i
     .master_DAT_MISO   (wishboneBusDataExpander_3_master_DAT_MISO[31:0]  ), //o
-    .master_DAT_MOSI   (wideDataEbramBlock_slave_DAT_MOSI[31:0]          ), //i
-    .master_SEL        (wideDataEbramBlock_slave_SEL[31:0]               ), //i
+    .master_DAT_MOSI   (wideDataSpramBlock_slave_DAT_MOSI[31:0]          ), //i
+    .master_SEL        (wideDataSpramBlock_slave_SEL[7:0]                ), //i
     .slaves_0_CYC      (wishboneBusDataExpander_3_slaves_0_CYC           ), //o
     .slaves_0_STB      (wishboneBusDataExpander_3_slaves_0_STB           ), //o
-    .slaves_0_ACK      (dataEbramBlocks_0_wishbone_ACK                   ), //i
+    .slaves_0_ACK      (dataSpramBlocks_0_wishbone_ACK                   ), //i
     .slaves_0_WE       (wishboneBusDataExpander_3_slaves_0_WE            ), //o
-    .slaves_0_ADR      (wishboneBusDataExpander_3_slaves_0_ADR[7:0]      ), //o
-    .slaves_0_DAT_MISO (dataEbramBlocks_0_wishbone_DAT_MISO[15:0]        ), //i
+    .slaves_0_ADR      (wishboneBusDataExpander_3_slaves_0_ADR[13:0]     ), //o
+    .slaves_0_DAT_MISO (dataSpramBlocks_0_wishbone_DAT_MISO[15:0]        ), //i
     .slaves_0_DAT_MOSI (wishboneBusDataExpander_3_slaves_0_DAT_MOSI[15:0]), //o
-    .slaves_0_SEL      (wishboneBusDataExpander_3_slaves_0_SEL[15:0]     ), //o
+    .slaves_0_SEL      (wishboneBusDataExpander_3_slaves_0_SEL[3:0]      ), //o
     .slaves_1_CYC      (wishboneBusDataExpander_3_slaves_1_CYC           ), //o
     .slaves_1_STB      (wishboneBusDataExpander_3_slaves_1_STB           ), //o
-    .slaves_1_ACK      (dataEbramBlocks_1_wishbone_ACK                   ), //i
+    .slaves_1_ACK      (dataSpramBlocks_1_wishbone_ACK                   ), //i
     .slaves_1_WE       (wishboneBusDataExpander_3_slaves_1_WE            ), //o
-    .slaves_1_ADR      (wishboneBusDataExpander_3_slaves_1_ADR[7:0]      ), //o
-    .slaves_1_DAT_MISO (dataEbramBlocks_1_wishbone_DAT_MISO[15:0]        ), //i
+    .slaves_1_ADR      (wishboneBusDataExpander_3_slaves_1_ADR[13:0]     ), //o
+    .slaves_1_DAT_MISO (dataSpramBlocks_1_wishbone_DAT_MISO[15:0]        ), //i
     .slaves_1_DAT_MOSI (wishboneBusDataExpander_3_slaves_1_DAT_MOSI[15:0]), //o
-    .slaves_1_SEL      (wishboneBusDataExpander_3_slaves_1_SEL[15:0]     )  //o
+    .slaves_1_SEL      (wishboneBusDataExpander_3_slaves_1_SEL[3:0]      )  //o
   );
-  WishboneBusSelMappingAdapter_1 wideDataEbramBlock (
-    .master_CYC      (dataEbramBlockWidthAdjusted_slave_CYC           ), //i
-    .master_STB      (dataEbramBlockWidthAdjusted_slave_STB           ), //i
-    .master_ACK      (wideDataEbramBlock_master_ACK                   ), //o
-    .master_WE       (dataEbramBlockWidthAdjusted_slave_WE            ), //i
-    .master_ADR      (dataEbramBlockWidthAdjusted_slave_ADR[7:0]      ), //i
-    .master_DAT_MISO (wideDataEbramBlock_master_DAT_MISO[31:0]        ), //o
-    .master_DAT_MOSI (dataEbramBlockWidthAdjusted_slave_DAT_MOSI[31:0]), //i
-    .master_SEL      (dataEbramBlockWidthAdjusted_slave_SEL[3:0]      ), //i
-    .slave_CYC       (wideDataEbramBlock_slave_CYC                    ), //o
-    .slave_STB       (wideDataEbramBlock_slave_STB                    ), //o
+  WishboneBusSelMappingAdapter wideDataSpramBlock (
+    .master_CYC      (dataSpramBlockWidthAdjusted_slave_CYC           ), //i
+    .master_STB      (dataSpramBlockWidthAdjusted_slave_STB           ), //i
+    .master_ACK      (wideDataSpramBlock_master_ACK                   ), //o
+    .master_WE       (dataSpramBlockWidthAdjusted_slave_WE            ), //i
+    .master_ADR      (dataSpramBlockWidthAdjusted_slave_ADR[13:0]     ), //i
+    .master_DAT_MISO (wideDataSpramBlock_master_DAT_MISO[31:0]        ), //o
+    .master_DAT_MOSI (dataSpramBlockWidthAdjusted_slave_DAT_MOSI[31:0]), //i
+    .master_SEL      (dataSpramBlockWidthAdjusted_slave_SEL[3:0]      ), //i
+    .slave_CYC       (wideDataSpramBlock_slave_CYC                    ), //o
+    .slave_STB       (wideDataSpramBlock_slave_STB                    ), //o
     .slave_ACK       (wishboneBusDataExpander_3_master_ACK            ), //i
-    .slave_WE        (wideDataEbramBlock_slave_WE                     ), //o
-    .slave_ADR       (wideDataEbramBlock_slave_ADR[7:0]               ), //o
+    .slave_WE        (wideDataSpramBlock_slave_WE                     ), //o
+    .slave_ADR       (wideDataSpramBlock_slave_ADR[13:0]              ), //o
     .slave_DAT_MISO  (wishboneBusDataExpander_3_master_DAT_MISO[31:0] ), //i
-    .slave_DAT_MOSI  (wideDataEbramBlock_slave_DAT_MOSI[31:0]         ), //o
-    .slave_SEL       (wideDataEbramBlock_slave_SEL[31:0]              )  //o
+    .slave_DAT_MOSI  (wideDataSpramBlock_slave_DAT_MOSI[31:0]         ), //o
+    .slave_SEL       (wideDataSpramBlock_slave_SEL[7:0]               )  //o
   );
-  WishboneBusAddressMappingAdapter_2 dataEbramBlockWidthAdjusted (
+  WishboneBusAddressMappingAdapter_1 dataSpramBlockWidthAdjusted (
     .master_CYC      (masterMuxes_1_0_slave_CYC                        ), //i
     .master_STB      (masterMuxes_1_0_slave_STB                        ), //i
-    .master_ACK      (dataEbramBlockWidthAdjusted_master_ACK           ), //o
+    .master_ACK      (dataSpramBlockWidthAdjusted_master_ACK           ), //o
     .master_WE       (masterMuxes_1_0_slave_WE                         ), //i
     .master_ADR      (masterMuxes_1_0_slave_ADR[29:0]                  ), //i
-    .master_DAT_MISO (dataEbramBlockWidthAdjusted_master_DAT_MISO[31:0]), //o
+    .master_DAT_MISO (dataSpramBlockWidthAdjusted_master_DAT_MISO[31:0]), //o
     .master_DAT_MOSI (masterMuxes_1_0_slave_DAT_MOSI[31:0]             ), //i
     .master_SEL      (masterMuxes_1_0_slave_SEL[3:0]                   ), //i
-    .slave_CYC       (dataEbramBlockWidthAdjusted_slave_CYC            ), //o
-    .slave_STB       (dataEbramBlockWidthAdjusted_slave_STB            ), //o
-    .slave_ACK       (wideDataEbramBlock_master_ACK                    ), //i
-    .slave_WE        (dataEbramBlockWidthAdjusted_slave_WE             ), //o
-    .slave_ADR       (dataEbramBlockWidthAdjusted_slave_ADR[7:0]       ), //o
-    .slave_DAT_MISO  (wideDataEbramBlock_master_DAT_MISO[31:0]         ), //i
-    .slave_DAT_MOSI  (dataEbramBlockWidthAdjusted_slave_DAT_MOSI[31:0] ), //o
-    .slave_SEL       (dataEbramBlockWidthAdjusted_slave_SEL[3:0]       )  //o
+    .slave_CYC       (dataSpramBlockWidthAdjusted_slave_CYC            ), //o
+    .slave_STB       (dataSpramBlockWidthAdjusted_slave_STB            ), //o
+    .slave_ACK       (wideDataSpramBlock_master_ACK                    ), //i
+    .slave_WE        (dataSpramBlockWidthAdjusted_slave_WE             ), //o
+    .slave_ADR       (dataSpramBlockWidthAdjusted_slave_ADR[13:0]      ), //o
+    .slave_DAT_MISO  (wideDataSpramBlock_master_DAT_MISO[31:0]         ), //i
+    .slave_DAT_MOSI  (dataSpramBlockWidthAdjusted_slave_DAT_MOSI[31:0] ), //o
+    .slave_SEL       (dataSpramBlockWidthAdjusted_slave_SEL[3:0]       )  //o
   );
   WishboneBusAddressMappingAdapter ledDeviceWidthAdjusted (
     .master_CYC      (dbusOnlySlaveMux_slaves_0_CYC               ), //i
@@ -815,10 +801,10 @@ module Core (
     .masters_1_SEL      (masterMuxes_1_1_1_SEL[3:0]                       ), //i
     .slave_CYC          (masterMuxes_1_0_slave_CYC                        ), //o
     .slave_STB          (masterMuxes_1_0_slave_STB                        ), //o
-    .slave_ACK          (dataEbramBlockWidthAdjusted_master_ACK           ), //i
+    .slave_ACK          (dataSpramBlockWidthAdjusted_master_ACK           ), //i
     .slave_WE           (masterMuxes_1_0_slave_WE                         ), //o
     .slave_ADR          (masterMuxes_1_0_slave_ADR[29:0]                  ), //o
-    .slave_DAT_MISO     (dataEbramBlockWidthAdjusted_master_DAT_MISO[31:0]), //i
+    .slave_DAT_MISO     (dataSpramBlockWidthAdjusted_master_DAT_MISO[31:0]), //i
     .slave_DAT_MOSI     (masterMuxes_1_0_slave_DAT_MOSI[31:0]             ), //o
     .slave_SEL          (masterMuxes_1_0_slave_SEL[3:0]                   ), //o
     .selector           (sharedSlaveArbiters_1_0_io_grantedMasterIndex    )  //i
@@ -893,10 +879,10 @@ module Core (
   assign sharedSlaveMap_masters_1_slaveSelects_0 = ((! ibusAdapter_io_wbs_ADR[14]) && (! ibusAdapter_io_wbs_ADR[6])); // @[WishboneBusMasterSlaveMap.scala 98:90]
   assign sharedSlaveMap_masters_0_slaveSelects_1 = ((! dbus_ADR[14]) && dbus_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 98:90]
   assign sharedSlaveMap_masters_1_slaveSelects_1 = ((! ibusAdapter_io_wbs_ADR[14]) && ibusAdapter_io_wbs_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign sharedSlaveArbiters_0_0_io_masters_0_request = (dbus_CYC && (sharedSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 294:76]
-  assign sharedSlaveArbiters_0_0_io_masters_1_request = (ibusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 294:76]
-  assign sharedSlaveArbiters_1_0_io_masters_0_request = (dbus_CYC && (sharedSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 294:76]
-  assign sharedSlaveArbiters_1_0_io_masters_1_request = (ibusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 294:76]
+  assign sharedSlaveArbiters_0_0_io_masters_0_request = (dbus_CYC && (sharedSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 301:76]
+  assign sharedSlaveArbiters_0_0_io_masters_1_request = (ibusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 301:76]
+  assign sharedSlaveArbiters_1_0_io_masters_0_request = (dbus_CYC && (sharedSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 301:76]
+  assign sharedSlaveArbiters_1_0_io_masters_1_request = (ibusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 301:76]
   assign masterMuxes_0_1_0_ACK = masterMuxes_0_0_masters_0_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
   assign masterMuxes_0_1_0_DAT_MISO = masterMuxes_0_0_masters_0_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 80:112]
   assign masterMuxes_0_1_1_ACK = masterMuxes_0_0_masters_1_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
@@ -917,8 +903,8 @@ module Core (
   assign masterMuxes_1_1_0_ADR = wishboneBusSlaveMultiplexer_3_slaves_1_ADR; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_1_1_0_DAT_MOSI = wishboneBusSlaveMultiplexer_3_slaves_1_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_1_1_0_SEL = wishboneBusSlaveMultiplexer_3_slaves_1_SEL; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign dbus_ACK = wishboneBusSlaveMultiplexer_3_master_ACK; // @[Core.scala 313:31]
-  assign dbus_DAT_MISO = wishboneBusSlaveMultiplexer_3_master_DAT_MISO; // @[Core.scala 313:31]
+  assign dbus_ACK = wishboneBusSlaveMultiplexer_3_master_ACK; // @[Core.scala 320:31]
+  assign dbus_DAT_MISO = wishboneBusSlaveMultiplexer_3_master_DAT_MISO; // @[Core.scala 320:31]
   assign masterMuxes_0_1_1_CYC = wishboneBusSlaveMultiplexer_4_slaves_0_CYC; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_0_1_1_STB = wishboneBusSlaveMultiplexer_4_slaves_0_STB; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_0_1_1_WE = wishboneBusSlaveMultiplexer_4_slaves_0_WE; // @[WishboneBusSlaveMultiplexer.scala 84:106]
@@ -931,14 +917,14 @@ module Core (
   assign masterMuxes_1_1_1_ADR = wishboneBusSlaveMultiplexer_4_slaves_1_ADR; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_1_1_1_DAT_MOSI = wishboneBusSlaveMultiplexer_4_slaves_1_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_1_1_1_SEL = wishboneBusSlaveMultiplexer_4_slaves_1_SEL; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign dbusToSharedSlavesBridge_ACK = dbus_ACK; // @[Core.scala 316:38]
-  assign dbusToSharedSlavesBridge_DAT_MISO = dbus_DAT_MISO; // @[Core.scala 317:43]
-  assign dbus_DAT_MOSI = dbusToSharedSlavesBridge_DAT_MOSI; // @[Core.scala 318:23]
-  assign dbus_ADR = dbusToSharedSlavesBridge_ADR; // @[Core.scala 319:18]
-  assign dbus_SEL = dbusToSharedSlavesBridge_SEL; // @[Core.scala 320:18]
-  assign dbus_WE = dbusToSharedSlavesBridge_WE; // @[Core.scala 321:17]
-  assign dbus_CYC = dbusToSharedSlavesBridge_CYC; // @[Core.scala 322:18]
-  assign dbus_STB = dbusToSharedSlavesBridge_STB; // @[Core.scala 323:18]
+  assign dbusToSharedSlavesBridge_ACK = dbus_ACK; // @[Core.scala 323:38]
+  assign dbusToSharedSlavesBridge_DAT_MISO = dbus_DAT_MISO; // @[Core.scala 324:43]
+  assign dbus_DAT_MOSI = dbusToSharedSlavesBridge_DAT_MOSI; // @[Core.scala 325:23]
+  assign dbus_ADR = dbusToSharedSlavesBridge_ADR; // @[Core.scala 326:18]
+  assign dbus_SEL = dbusToSharedSlavesBridge_SEL; // @[Core.scala 327:18]
+  assign dbus_WE = dbusToSharedSlavesBridge_WE; // @[Core.scala 328:17]
+  assign dbus_CYC = dbusToSharedSlavesBridge_CYC; // @[Core.scala 329:18]
+  assign dbus_STB = dbusToSharedSlavesBridge_STB; // @[Core.scala 330:18]
 
 endmodule
 
@@ -1341,55 +1327,175 @@ module WishboneBusAddressMappingAdapter (
 
 endmodule
 
-//WishboneBusAddressMappingAdapter_2 replaced by WishboneBusAddressMappingAdapter_2
-
-//WishboneBusSelMappingAdapter_1 replaced by WishboneBusSelMappingAdapter_1
-
-//WishboneBusDataExpander_1 replaced by WishboneBusDataExpander_1
-
-//Ice40Ebram4k16WishboneBusAdapter_3 replaced by Ice40Ebram4k16WishboneBusAdapter_3
-
-//Ice40Ebram4k_1 replaced by Ice40Ebram4k_1
-
-//Ice40Ebram4k16WishboneBusAdapter_3 replaced by Ice40Ebram4k16WishboneBusAdapter_3
-
-module Ice40Ebram4k_1 (
-  input      [15:0]   DI,
-  input      [7:0]    ADW,
-  input      [7:0]    ADR,
-  input               CKW,
-  input               CKR,
-  input               CEW,
-  input               CER,
-  input               RE,
-  input               WE,
-  input      [15:0]   MASK_N,
-  output     [15:0]   DO_1
+module WishboneBusAddressMappingAdapter_1 (
+  input               master_CYC,
+  input               master_STB,
+  output              master_ACK,
+  input               master_WE,
+  input      [29:0]   master_ADR,
+  output     [31:0]   master_DAT_MISO,
+  input      [31:0]   master_DAT_MOSI,
+  input      [3:0]    master_SEL,
+  output              slave_CYC,
+  output              slave_STB,
+  input               slave_ACK,
+  output              slave_WE,
+  output     [13:0]   slave_ADR,
+  input      [31:0]   slave_DAT_MISO,
+  output     [31:0]   slave_DAT_MOSI,
+  output     [3:0]    slave_SEL
 );
 
-  wire       [10:0]   native_ADW;
-  wire       [10:0]   native_ADR;
-  wire       [15:0]   native_DO;
 
-  PDP4K #(
-    .DATA_WIDTH_R("16"),
-    .DATA_WIDTH_W("16")
-  ) native (
-    .DI     (DI[15:0]        ), //i
-    .ADW    (native_ADW[10:0]), //i
-    .ADR    (native_ADR[10:0]), //i
-    .CKW    (CKW             ), //i
-    .CKR    (CKR             ), //i
-    .CEW    (CEW             ), //i
-    .CER    (CER             ), //i
-    .RE     (RE              ), //i
-    .WE     (WE              ), //i
-    .MASK_N (MASK_N[15:0]    ), //i
-    .DO     (native_DO[15:0] )  //o
-  );
-  assign native_ADW = {3'd0, ADW}; // @[Ice40Ebram4k.scala 17:23]
-  assign native_ADR = {3'd0, ADR}; // @[Ice40Ebram4k.scala 18:23]
-  assign DO_1 = native_DO; // @[Ice40Ebram4k.scala 69:23]
+  assign slave_ADR = master_ADR[13:0]; // @[WishboneBusAddressMappingAdapter.scala 20:30]
+  assign master_DAT_MISO = slave_DAT_MISO; // @[WishboneBusAddressMappingAdapter.scala 25:28]
+  assign master_ACK = slave_ACK; // @[WishboneBusAddressMappingAdapter.scala 26:23]
+  assign slave_CYC = master_CYC; // @[WishboneBusAddressMappingAdapter.scala 31:22]
+  assign slave_WE = master_WE; // @[WishboneBusAddressMappingAdapter.scala 32:21]
+  assign slave_STB = master_STB; // @[WishboneBusAddressMappingAdapter.scala 33:22]
+  assign slave_DAT_MOSI = master_DAT_MOSI; // @[WishboneBusAddressMappingAdapter.scala 34:27]
+  assign slave_SEL = master_SEL; // @[WishboneBusAddressMappingAdapter.scala 35:36]
+
+endmodule
+
+module WishboneBusSelMappingAdapter (
+  input               master_CYC,
+  input               master_STB,
+  output              master_ACK,
+  input               master_WE,
+  input      [13:0]   master_ADR,
+  output     [31:0]   master_DAT_MISO,
+  input      [31:0]   master_DAT_MOSI,
+  input      [3:0]    master_SEL,
+  output              slave_CYC,
+  output              slave_STB,
+  input               slave_ACK,
+  output              slave_WE,
+  output     [13:0]   slave_ADR,
+  input      [31:0]   slave_DAT_MISO,
+  output     [31:0]   slave_DAT_MOSI,
+  output     [7:0]    slave_SEL
+);
+
+  wire                _zz_slave_SEL;
+  wire                _zz_slave_SEL_1;
+  wire                _zz_slave_SEL_2;
+  wire                _zz_slave_SEL_3;
+  reg        [7:0]    _zz_slave_SEL_4;
+
+  assign _zz_slave_SEL = master_SEL[3]; // @[BaseType.scala 305:24]
+  assign _zz_slave_SEL_1 = master_SEL[2]; // @[BaseType.scala 305:24]
+  assign _zz_slave_SEL_2 = master_SEL[1]; // @[BaseType.scala 305:24]
+  assign _zz_slave_SEL_3 = master_SEL[0]; // @[BaseType.scala 305:24]
+  always @(*) begin
+    _zz_slave_SEL_4[7] = _zz_slave_SEL; // @[Literal.scala 87:17]
+    _zz_slave_SEL_4[6] = _zz_slave_SEL; // @[Literal.scala 87:17]
+    _zz_slave_SEL_4[5] = _zz_slave_SEL_1; // @[Literal.scala 87:17]
+    _zz_slave_SEL_4[4] = _zz_slave_SEL_1; // @[Literal.scala 87:17]
+    _zz_slave_SEL_4[3] = _zz_slave_SEL_2; // @[Literal.scala 87:17]
+    _zz_slave_SEL_4[2] = _zz_slave_SEL_2; // @[Literal.scala 87:17]
+    _zz_slave_SEL_4[1] = _zz_slave_SEL_3; // @[Literal.scala 87:17]
+    _zz_slave_SEL_4[0] = _zz_slave_SEL_3; // @[Literal.scala 87:17]
+  end
+
+  assign slave_SEL = _zz_slave_SEL_4; // @[WishboneBusSelMappingAdapter.scala 20:30]
+  assign master_DAT_MISO = slave_DAT_MISO; // @[WishboneBusSelMappingAdapter.scala 23:28]
+  assign master_ACK = slave_ACK; // @[WishboneBusSelMappingAdapter.scala 24:23]
+  assign slave_CYC = master_CYC; // @[WishboneBusSelMappingAdapter.scala 29:22]
+  assign slave_WE = master_WE; // @[WishboneBusSelMappingAdapter.scala 30:21]
+  assign slave_ADR = master_ADR; // @[WishboneBusSelMappingAdapter.scala 31:22]
+  assign slave_STB = master_STB; // @[WishboneBusSelMappingAdapter.scala 32:22]
+  assign slave_DAT_MOSI = master_DAT_MOSI; // @[WishboneBusSelMappingAdapter.scala 33:27]
+
+endmodule
+
+module WishboneBusDataExpander (
+  input               master_CYC,
+  input               master_STB,
+  output              master_ACK,
+  input               master_WE,
+  input      [13:0]   master_ADR,
+  output reg [31:0]   master_DAT_MISO,
+  input      [31:0]   master_DAT_MOSI,
+  input      [7:0]    master_SEL,
+  output              slaves_0_CYC,
+  output              slaves_0_STB,
+  input               slaves_0_ACK,
+  output              slaves_0_WE,
+  output     [13:0]   slaves_0_ADR,
+  input      [15:0]   slaves_0_DAT_MISO,
+  output     [15:0]   slaves_0_DAT_MOSI,
+  output     [3:0]    slaves_0_SEL,
+  output              slaves_1_CYC,
+  output              slaves_1_STB,
+  input               slaves_1_ACK,
+  output              slaves_1_WE,
+  output     [13:0]   slaves_1_ADR,
+  input      [15:0]   slaves_1_DAT_MISO,
+  output     [15:0]   slaves_1_DAT_MOSI,
+  output     [3:0]    slaves_1_SEL
+);
+
+
+  assign master_ACK = ((1'b1 && slaves_0_ACK) && slaves_1_ACK); // @[WishboneBusDataExpander.scala 12:23]
+  assign slaves_0_ADR = master_ADR; // @[WishboneBusDataExpander.scala 20:27]
+  assign slaves_0_CYC = master_CYC; // @[WishboneBusDataExpander.scala 21:27]
+  assign slaves_0_STB = master_STB; // @[WishboneBusDataExpander.scala 22:27]
+  assign slaves_0_SEL = master_SEL[3 : 0]; // @[WishboneBusDataExpander.scala 23:41]
+  assign slaves_0_WE = master_WE; // @[WishboneBusDataExpander.scala 24:26]
+  assign slaves_0_DAT_MOSI = master_DAT_MOSI[15 : 0]; // @[WishboneBusDataExpander.scala 25:32]
+  always @(*) begin
+    master_DAT_MISO[15 : 0] = slaves_0_DAT_MISO; // @[WishboneBusDataExpander.scala 26:48]
+    master_DAT_MISO[31 : 16] = slaves_1_DAT_MISO; // @[WishboneBusDataExpander.scala 26:48]
+  end
+
+  assign slaves_1_ADR = master_ADR; // @[WishboneBusDataExpander.scala 20:27]
+  assign slaves_1_CYC = master_CYC; // @[WishboneBusDataExpander.scala 21:27]
+  assign slaves_1_STB = master_STB; // @[WishboneBusDataExpander.scala 22:27]
+  assign slaves_1_SEL = master_SEL[7 : 4]; // @[WishboneBusDataExpander.scala 23:41]
+  assign slaves_1_WE = master_WE; // @[WishboneBusDataExpander.scala 24:26]
+  assign slaves_1_DAT_MOSI = master_DAT_MOSI[31 : 16]; // @[WishboneBusDataExpander.scala 25:32]
+
+endmodule
+
+//Ice40Spram16k16WishboneBusAdapter_1 replaced by Ice40Spram16k16WishboneBusAdapter_1
+
+module Ice40Spram16k16WishboneBusAdapter_1 (
+  input               wishbone_CYC,
+  input               wishbone_STB,
+  output              wishbone_ACK,
+  input               wishbone_WE,
+  input      [13:0]   wishbone_ADR,
+  output     [15:0]   wishbone_DAT_MISO,
+  input      [15:0]   wishbone_DAT_MOSI,
+  input      [3:0]    wishbone_SEL,
+  output     [13:0]   spram_AD,
+  output     [15:0]   spram_DI,
+  output     [3:0]    spram_MASKWE,
+  output              spram_WE,
+  output              spram_CS,
+  input      [15:0]   spram_DO,
+  input               clk,
+  input               reset
+);
+
+  reg                 wishbone_STB_regNext;
+
+  assign wishbone_ACK = (wishbone_STB_regNext && wishbone_CYC); // @[Ice40Spram16k16WishboneBusAdapter.scala 11:25]
+  assign wishbone_DAT_MISO = spram_DO; // @[Ice40Spram16k16WishboneBusAdapter.scala 12:30]
+  assign spram_AD = wishbone_ADR; // @[Ice40Spram16k16WishboneBusAdapter.scala 14:21]
+  assign spram_DI = wishbone_DAT_MOSI; // @[Ice40Spram16k16WishboneBusAdapter.scala 15:21]
+  assign spram_MASKWE = wishbone_SEL; // @[Ice40Spram16k16WishboneBusAdapter.scala 16:25]
+  assign spram_WE = wishbone_WE; // @[Ice40Spram16k16WishboneBusAdapter.scala 17:21]
+  assign spram_CS = wishbone_CYC; // @[Ice40Spram16k16WishboneBusAdapter.scala 18:21]
+  always @(posedge clk) begin
+    if(reset) begin
+      wishbone_STB_regNext <= 1'b0; // @[Data.scala 400:33]
+    end else begin
+      wishbone_STB_regNext <= wishbone_STB; // @[Reg.scala 39:30]
+    end
+  end
+
 
 endmodule
 
@@ -1548,9 +1654,9 @@ module WishboneBusDataExpander_1 (
 
 endmodule
 
-//Ice40Ebram4k16WishboneBusAdapter_3 replaced by Ice40Ebram4k16WishboneBusAdapter_3
+//Ice40Ebram4k16WishboneBusAdapter_1 replaced by Ice40Ebram4k16WishboneBusAdapter_1
 
-module Ice40Ebram4k_2 (
+module Ice40Ebram4k (
   input      [15:0]   DI,
   input      [7:0]    ADW,
   input      [7:0]    ADR,
@@ -1606,7 +1712,7 @@ module Ice40Ebram4k_2 (
 
 endmodule
 
-module Ice40Ebram4k16WishboneBusAdapter_3 (
+module Ice40Ebram4k16WishboneBusAdapter_1 (
   input               wishbone_CYC,
   input               wishbone_STB,
   output              wishbone_ACK,
@@ -1651,7 +1757,7 @@ module Ice40Ebram4k16WishboneBusAdapter_3 (
 
 endmodule
 
-module Ice40Ebram4k_3 (
+module Ice40Ebram4k_1 (
   input      [15:0]   DI,
   input      [7:0]    ADW,
   input      [7:0]    ADR,

@@ -238,6 +238,7 @@ class Core extends Component {
 		0x100000e7)
 
 	private def riscvToEbramSelMapper(sel: Bits) = B((31 downto 24) -> sel(3), (23 downto 16) -> sel(2), (15 downto 8) -> sel(1), (7 downto 0) -> sel(0))
+	private def riscvToSpramSelMapper(sel: Bits) = B((7 downto 6) -> sel(3), (5 downto 4) -> sel(2), (3 downto 2) -> sel(1), (1 downto 0) -> sel(0))
 
 	private val lowInstructionEbram = Ice40Ebram4k16WishboneBusAdapter(Ice40Ebram4k(readWidth=16 bits, writeWidth=16 bits, Some(instructions.map(x => ((x >> 0) & 0x0000ffff).toInt))))
 	private val highInstructionEbram = Ice40Ebram4k16WishboneBusAdapter(Ice40Ebram4k(readWidth=16 bits, writeWidth=16 bits, Some(instructions.map(x => ((x >> 16) & 0x0000ffff).toInt))))
@@ -246,15 +247,21 @@ class Core extends Component {
 	private val wideInstructionEbramBlock = WishboneBusSelMappingAdapter(4 bits, WishboneBusDataExpander(instructionEbramBlocks(0).io.wishbone, instructionEbramBlocks(1).io.wishbone).io.master, riscvToEbramSelMapper)
 	private val instructionEbramBlockWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, wideInstructionEbramBlock.io.master, adr => adr.resize(8 bits))
 
-	private val dataEbramBlocks = Seq.fill(2) { Ice40Ebram4k16WishboneBusAdapter(Ice40Ebram4k(readWidth=16 bits, writeWidth=16 bits)) }
-	private val wideDataEbramBlock = WishboneBusSelMappingAdapter(4 bits, WishboneBusDataExpander(dataEbramBlocks(0).io.wishbone, dataEbramBlocks(1).io.wishbone).io.master, riscvToEbramSelMapper)
-	private val dataEbramBlockWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, wideDataEbramBlock.io.master, adr => adr.resize(8 bits))
+	private val dataSprams = Seq.fill(2) { new Ice40Spram16k16() }
+	private val dataSpramBlocks = dataSprams.map(Ice40Spram16k16WishboneBusAdapter(_))
+	private val wideDataSpramBlock = WishboneBusSelMappingAdapter(4 bits, WishboneBusDataExpander(dataSpramBlocks(0).io.wishbone, dataSpramBlocks(1).io.wishbone).io.master, riscvToSpramSelMapper)
+	private val dataSpramBlockWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, wideDataSpramBlock.io.master, adr => adr.resize(14 bits))
+	dataSprams.foreach { spram =>
+		spram.io.PWROFF_N := True
+		spram.io.SLEEP := False
+		spram.io.STDBY := False
+	}
 
 	private val ledDeviceWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, ledDevice.io.wishbone, adr => adr.resize(1 bit))
 
 	// Two arbiters driven by two maps drive the two muxes:
-	// cpu.ibus -> adapter -> 2:1 mux(ibus, dbusToSharedSlavesBridge : ebram)
-	// cpu.dbus -> adapter -> 1:2 mux(dbus : dbusToSharedSlavesBridge, ledDevice)
+	// cpu.ibus -> adapter -> 2:2 mux(ibus, dbusToSharedSlavesBridge : ebram, spram)
+	// cpu.dbus -> adapter -> 1:3 mux(dbus : dbusToSharedSlavesBridge, ledDevice)
 
 	private val ibusAdapter = new WishboneAdapter(cpu.io.ibus.config, cpu.io.ibus.config.copy(useERR=false, useCTI=false, useBTE=false))
 	ibusAdapter.io.wbm <> cpu.io.ibus
@@ -274,8 +281,8 @@ class Core extends Component {
 	private val sharedSlaveMap = WishboneBusMasterSlaveMap(
 		(dbus, m => !m.ADR(14) && !m.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
 		(ibus, m => !m.ADR(14) && !m.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
-		(dbus, m => !m.ADR(14) && m.ADR(6), dataEbramBlockWidthAdjusted.io.master),
-		(ibus, m => !m.ADR(14) && m.ADR(6), dataEbramBlockWidthAdjusted.io.master))
+		(dbus, m => !m.ADR(14) && m.ADR(6), dataSpramBlockWidthAdjusted.io.master),
+		(ibus, m => !m.ADR(14) && m.ADR(6), dataSpramBlockWidthAdjusted.io.master))
 
 	private val ibusMasterIndex = sharedSlaveMap.masters.indexOf(ibus) // TODO: THIS LOOKUP WANTS PUTTING ON THE WishboneBusMasterSlaveMap CLASS; def masterIoFor(wb): MasterIoBundle
 	private val dbusMasterIndex = sharedSlaveMap.masters.indexOf(dbus) // TODO: WishboneBusMasterSlaveMap CLASS ALSO WANTS; def indexOfMaster(wb): Int && def indexOfSlave(wb): Int
