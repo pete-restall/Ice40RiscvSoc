@@ -46,6 +46,7 @@ class Ice40Spram16k16WishboneBusAdapterFactoryTest extends AnyFlatSpec
 	private val booleans = Seq(true, false).asTable("value")
 
 	it must "wire the SPRAM's WE line" in simulator { fixture =>
+		fixture.io.adapter.STB #= true
 		forAll(booleans) { (value: Boolean) => {
 			fixture.io.adapter.WE #= value
 			sleep(1)
