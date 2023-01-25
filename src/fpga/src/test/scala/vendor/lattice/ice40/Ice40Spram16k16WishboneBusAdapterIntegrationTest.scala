@@ -7,7 +7,6 @@ import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
 import spinal.core._
 import spinal.core.sim._
-import spinal.lib.wishbone.sim.{WishboneDriver, WishboneTransaction}
 
 import uk.co.lophtware.msfreference.tests.simulation._
 import uk.co.lophtware.msfreference.vendor.lattice.ice40.{Ice40Spram16k16, Ice40Spram16k16WishboneBusAdapter}
