@@ -3,6 +3,7 @@ package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
 import scala.util.Random
 
 import spinal.core._
+import spinal.core.sim._
 import spinal.lib.bus.wishbone._
 import spinal.lib.slave
 
@@ -39,4 +40,11 @@ class Ice40Spram16k16WishboneBusAdapterFactoryFixture extends Component {
 	def anyData(): Int = Random.nextInt(1 << io.adapter.DAT_MOSI.getWidth)
 
 	def anyWriteMask(): Int = Random.nextInt(1 << io.adapter.SEL.getWidth)
+
+	def wireStimuli(): Unit = {
+		clockDomain.forkStimulus(period=10)
+		clockDomain.assertReset()
+		clockDomain.waitEdge(3)
+		clockDomain.deassertReset()
+	}
 }

@@ -5,6 +5,7 @@ import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 import spinal.core.sim._
+import spinal.lib.wishbone.sim.{WishboneDriver, WishboneTransaction}
 
 import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
@@ -58,5 +59,22 @@ class Ice40Spram16k16WishboneBusAdapterFactoryTest extends AnyFlatSpec
 			sleep(1)
 			fixture.io.spram.CS.toBoolean must be(value)
 		}}
+	}
+
+	it must "wire the SPRAM's DO lines" in simulator { fixture =>
+		val address = fixture.anyAddress()
+		val word = fixture.anyData()
+
+		fixture.io.adapter.SEL #= (1 << fixture.io.adapter.SEL.getWidth) - 1
+		fixture.wireStimuli()
+		val driver = new WishboneDriver(fixture.io.adapter, fixture.clockDomain)
+		fork {
+			fixture.clockDomain.waitSampling()
+			driver.sendBlockAsMaster(new WishboneTransaction(address, word), we=true)
+			fixture.clockDomain.waitSampling()
+			driver.sendBlockAsMaster(new WishboneTransaction(address), we=false)
+			val readback = WishboneTransaction.sampleAsMaster(fixture.io.adapter)
+			readback.data must be(word)
+		}.join()
 	}
 }
