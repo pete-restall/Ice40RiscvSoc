@@ -94,5 +94,25 @@ class CpuSimulationTest extends AnyFlatSpec with LightweightSimulationFixture[Cp
 	}
 	*/
 
+	it must "be able to execute and store the results of 32-bit li instructions" in simulator { fixture =>
+		val address = 50
+		val offset = 1
+		val offsetAddress = (address + offset).toLong
+		val opcodes = fixture.opcodes
+		val test = fixture
+			.given.data((offsetAddress -> 0l))
+			.and.instructions(fixture.adjustedAddressesFor(
+				0l -> opcodes.addi(opcodes.s2, opcodes.zero, address * 4),
+				1l -> opcodes.lui(opcodes.s1, 0x14a),
+				2l -> opcodes.addi(opcodes.s1, opcodes.s1, -1773),
+				3l -> opcodes.sw(opcodes.s2, opcodes.s1, offset * 4),
+				4l -> opcodes.canBeReadButMustNotBeExecuted(),
+				5l -> opcodes.canBeReadButMustNotBeExecuted()))
+			.when.dataWrittenTo(offsetAddress)
+			.then.dataMustEqual(offsetAddress -> 0x00149913l)
+
+		fixture.wireStimuliUsing(test.asStateMachine)
+	}
+
 	// TODO: must be able to respond to interrupts
 }

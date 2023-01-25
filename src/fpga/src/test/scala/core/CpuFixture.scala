@@ -59,6 +59,11 @@ object CpuFixture {
 		val x8: Byte = 8
 		val x9: Byte = 9
 		val x10: Byte = 10
+		val x18: Byte = 18
+
+		val zero = x0
+		val s1 = x9
+		val s2 = x18
 
 		def jal(rd: Byte, offset: Int) = j(0x6f, rd, offset)
 
@@ -111,6 +116,13 @@ object CpuFixture {
 			val pair = instructions(new CompactOpcodes())
 			(pair._1.toLong & 0x0000ffffl) | ((pair._2.toLong << 16) & 0xffff0000l)
 		}
+
+		def lui(rd: Byte, imm: Int) = u(0x37, rd, imm)
+
+		private def u(opcode: Byte, rd: Byte, imm: Long) =
+			(bits(imm, 19 downto 0) << 12) |
+			((rd & 0x1f) << 7) |
+			(opcode & 0x7f)
 	}
 
 	class CompactOpcodes {
