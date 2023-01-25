@@ -14,7 +14,7 @@ class Ice40Spram16k16WishboneBusAdapter extends Component {
 	io.spram.AD := io.wishbone.ADR
 	io.spram.DI := io.wishbone.DAT_MOSI
 	io.spram.MASKWE := io.wishbone.SEL.asUInt
-	io.spram.WE := io.wishbone.WE // TODO: THIS NEEDS TO BE 'WE && STB'
+	io.spram.WE := io.wishbone.STB && io.wishbone.WE
 	io.spram.CS := io.wishbone.CYC
 }
 

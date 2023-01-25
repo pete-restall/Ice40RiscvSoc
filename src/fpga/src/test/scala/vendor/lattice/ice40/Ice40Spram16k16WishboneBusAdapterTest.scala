@@ -116,16 +116,41 @@ class Ice40Spram16k16WishboneBusAdapterTest extends AnyFlatSpec with Lightweight
 		}
 	}
 
-	it must "assert SPRAM WE asynchronously when Wishbone WE goes high" in simulator { fixture =>
+	it must "assert SPRAM WE asynchronously when Wishbone WE and STB go high" in simulator { fixture =>
+		fixture.io.wishbone.STB #= true
 		fixture.io.wishbone.WE #= true
 		sleep(1)
 		fixture.io.spram.WE.toBoolean must be(true)
 	}
 
+	it must "not assert SPRAM WE when Wishbone WE is high and STB is low" in simulator { fixture =>
+		fixture.io.wishbone.STB #= false
+		fixture.io.wishbone.WE #= true
+		sleep(1)
+		fixture.io.spram.WE.toBoolean must be(false)
+	}
+
+	it must "not assert SPRAM WE when Wishbone WE is low and STB is high" in simulator { fixture =>
+		fixture.io.wishbone.STB #= true
+		fixture.io.wishbone.WE #= false
+		sleep(1)
+		fixture.io.spram.WE.toBoolean must be(false)
+	}
+
 	it must "unassert SPRAM WE asynchronously when Wishbone WE goes low" in simulator { fixture =>
+		fixture.io.wishbone.STB #= true
 		fixture.io.wishbone.WE #= true
 		sleep(1)
 		fixture.io.wishbone.WE #= false
+		sleep(1)
+		fixture.io.spram.WE.toBoolean must be(false)
+	}
+
+	it must "unassert SPRAM WE asynchronously when Wishbone STB goes low" in simulator { fixture =>
+		fixture.io.wishbone.STB #= true
+		fixture.io.wishbone.WE #= true
+		sleep(1)
+		fixture.io.wishbone.STB #= false
 		sleep(1)
 		fixture.io.spram.WE.toBoolean must be(false)
 	}
