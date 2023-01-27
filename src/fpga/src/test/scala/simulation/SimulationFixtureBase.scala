@@ -21,7 +21,8 @@ abstract trait SimulationFixtureBase[TDut <: Component] extends TestSuiteMixin {
 		sim.doSim { dut =>
 			dut.mustNotBeNull("dut")
 			SimTimeout(1_000_000)
-			if (test(dut) == SimulationFixtureBase.waitForExplicitSimulationTermination) {
+			val result = new Component { val result = test(dut) }.result
+			if (result == SimulationFixtureBase.waitForExplicitSimulationTermination) {
 				while (true) {
 					sleep(10)
 				}
