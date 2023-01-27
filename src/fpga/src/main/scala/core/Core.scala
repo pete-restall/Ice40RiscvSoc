@@ -16,92 +16,6 @@ class Core extends Component {
 	val io = new Core.IoBundle()
 	noIoPrefix()
 
-/*
-	private val instructionBus = new IBusSimplePlugin(
-		//resetVector=0x00866000, // Bit 23 = flash (0x00800000), plus next 4KiB boundary after the four bitstreams; just over 1KiB wasted.  SPI flash sectors (minimum erasure blocks) are 4KiB in size.
-		resetVector=0x00000000, // TEMPORARY - START OF THE EBRAM BLOCK...
-		busLatencyMin=1, // From 1 -> 2 adds 100 LUTs
-		injectorStage=true,
-		cmdForkOnSecondStage=true, // might be able to relax this with 'false', if timings are still good (and save 136 LUTs, PLUS decent Fmax improvement)
-		cmdForkPersistence=true, // saves 116 LUTs if this can be set to 'false'; also adds a little extra slack
-		prediction=NONE,
-		catchAccessFault=false,
-		compressedGen=false)
-
-	private val instructionBus = new IBusSimplePlugin(
-		//resetVector=0x00866000, // Bit 23 = flash (0x00800000), plus next 4KiB boundary after the four bitstreams; just over 1KiB wasted.  SPI flash sectors (minimum erasure blocks) are 4KiB in size.
-		//resetVector=0x00000000, // TEMPORARY - START OF THE EBRAM BLOCK...
-		resetVector=resetVector,
-		busLatencyMin=1, // From 1 -> 2 adds 100 LUTs
-		pendingMax=1, // what effect does this have in terms of LUTs ?  Makes it have better Fmax when =2, but executes instructions it shouldn't; =1 is the only value that works at the moment (for non-compact instructions), so dig into it...
-		injectorStage=true,
-		cmdForkOnSecondStage=false, // TODO: might be able to relax this with 'false', if timings are still good (and save 136 LUTs)
-		cmdForkPersistence=true, // if this is 'true' when fork-on-second-stage is 'false' then we get about 2MHz extra Fmax for an extra 31 gates
-		prediction=NONE,
-		catchAccessFault=false,
-		compressedGen=false) // adds another 310 LUTs
-
-	private val dataBus = new DBusSimplePlugin(
-		catchAddressMisaligned=false,
-		catchAccessFault=false)
-
-	private val csr = new CsrPlugin(new CsrPluginConfig(
-		catchIllegalAccess=false,
-		mvendorid=null,
-		marchid=null,
-		mimpid=null,
-		mhartid=null,
-		misaExtensionsInit=66,
-		misaAccess=CsrAccess.NONE,
-		mtvecAccess=CsrAccess.NONE,
-		mtvecInit=0x00000201,
-		mepcAccess=CsrAccess.NONE,
-		mscratchGen=false,
-		mcauseAccess=CsrAccess.READ_ONLY,
-		mbadaddrAccess=CsrAccess.NONE,
-		mcycleAccess=CsrAccess.NONE,
-		minstretAccess=CsrAccess.NONE,
-		ecallGen=false,
-		wfiGenAsWait=false,
-		ucycleAccess=CsrAccess.NONE,
-		uinstretAccess=CsrAccess.NONE))
-
-	private val cpu = new VexRiscv(
-		config=VexRiscvConfig(
-			withMemoryStage=true, // extra 65 LUTs used when true; Fmax waaay off when false
-			withWriteBackStage=true,
-			plugins=List(
-				instructionBus,
-				dataBus,
-				csr,
- 				new DecoderSimplePlugin(
-					catchIllegalInstruction=false),
-				new RegFilePlugin(
-					regFileReadyKind=plugin.SYNC,
-					zeroBoot=false), // TODO: USES 4x EBRAM - WOULD BE BETTER IF IT COULD USE ONLY 2x EBRAM; INVESTIGATE WHY
-				new IntAluPlugin,
-				new SrcPlugin(
-					separatedAddSub=false,
-					executeInsertion=false),
-				new LightShifterPlugin,
-				new HazardSimplePlugin(
-					bypassExecute=false,
-					bypassMemory=false,
-					bypassWriteBack=false,
-					bypassWriteBackBuffer=false,
-					pessimisticUseSrc=false,
-					pessimisticWriteRegFile=false,
-					pessimisticAddressMatch=false),
-				new BranchPlugin(
-					earlyBranch=false,
-					catchAddressMisaligned=false),
-				new YamlPlugin("src/radiant/cpu.yaml"))))
-
-	csr.externalInterrupt := False
-	csr.timerInterrupt := False
-
-*/
-
 	private val cpu = new Cpu(resetVector=0x00000000, mtvecInit=0x00000201, yamlOutFilename=Some("src/radiant/cpu.yaml"))
 
 	private val ledDevice = new Component {
@@ -263,71 +177,75 @@ class Core extends Component {
 	// cpu.ibus -> adapter -> 2:2 mux(ibus, dbusToSharedSlavesBridge : ebram, spram)
 	// cpu.dbus -> adapter -> 1:3 mux(dbus : dbusToSharedSlavesBridge, ledDevice)
 
-	private val ibusAdapter = new WishboneAdapter(cpu.io.ibus.config, cpu.io.ibus.config.copy(useERR=false, useCTI=false, useBTE=false))
-	ibusAdapter.io.wbm <> cpu.io.ibus
-	private val ibus = ibusAdapter.io.wbs
+	private val bridge = new CpuBusBridge(cpu.io.ibus.config, cpu.io.ibus.config.copy(useERR=false, useCTI=false, useBTE=false))
+	bridge.io.cpu.ibus <> cpu.io.ibus // TODO: CAN ENCAPSULATE THIS IN CpuBusBridge.apply() INSTEAD
+	bridge.io.cpu.dbus <> cpu.io.dbus
 
-	private val dbusAdapter = new WishboneAdapter(cpu.io.dbus.config, cpu.io.dbus.config.copy(useERR=false, useCTI=false, useBTE=false))
-	private val dbusToSharedSlavesBridge = new Wishbone(dbusAdapter.io.wbs.config)
-	private val dbusOnlySlaveMap = WishboneBusMasterSlaveMap(
-		(dbusAdapter.io.wbs, m => m.ADR(14), ledDeviceWidthAdjusted.io.master),
-		(dbusAdapter.io.wbs, m => !m.ADR(14), dbusToSharedSlavesBridge))
+	// remember to test that dbus appears first in the shared slave map, to allow priority encoding
 
-	private val dbusOnlySlaveMux = WishboneBusSlaveMultiplexer(dbusOnlySlaveMap.io.masters.head.index, dbusOnlySlaveMap.slaves.head, dbusOnlySlaveMap.slaves.tail:_*)
-	dbusAdapter.io.wbm <> cpu.io.dbus
-	dbusAdapter.io.wbs <> dbusOnlySlaveMux.io.master
+	// def dedicatedDbusSlaveMapFor(sharedSlaveSelector: Wishbone => Bool, dedicatedSlaveSelectors: (slave: Wishbone, selector: Wishbone => Bool)*): WishboneBusMasterSlaveMap = WishboneBusMasterSlaveMap(using dbusAdapter.io.wbs for the master), ie.
+	// WishboneBusMasterSlaveMap(
+	//   (dbusAdapter.io.wbs, bus => bus.ADR(14), ledDeviceWidthAdjusted.io.master),
+	//   (dbusAdapter.io.wbs, bus => !bus.ADR(14), dbusToSharedSlavesBridge))
 
-	private val dbus = new Wishbone(dbusToSharedSlavesBridge.config)
-	private val sharedSlaveMap = WishboneBusMasterSlaveMap(
-		(dbus, m => !m.ADR(14) && !m.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
-		(ibus, m => !m.ADR(14) && !m.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
-		(dbus, m => !m.ADR(14) && m.ADR(6), dataSpramBlockWidthAdjusted.io.master),
-		(ibus, m => !m.ADR(14) && m.ADR(6), dataSpramBlockWidthAdjusted.io.master))
+	// def sharedSlaveMapFor(map: (slave: Wishbone, (dbusSelector: Wishbone => Bool, ibusSelector: Wishbone => Bool))*): WishboneBusMasterSlaveMap = WishboneBusMasterSlaveMap(using dbus and ibus for the masters), ie.
+	// WishboneBusMasterSlaveMap(
+	//   (dbus, bus => !bus.ADR(14) && !bus.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
+	//   (ibus, bus => !bus.ADR(14) && !bus.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
+	//   (dbus, bus => !bus.ADR(14) && bus.ADR(6), dataSpramBlockWidthAdjusted.io.master),
+	//   (ibus, bus => !bus.ADR(14) && bus.ADR(6), dataSpramBlockWidthAdjusted.io.master))
 
-	private val ibusMasterIndex = sharedSlaveMap.masters.indexOf(ibus) // TODO: THIS LOOKUP WANTS PUTTING ON THE WishboneBusMasterSlaveMap CLASS; def masterIoFor(wb): MasterIoBundle
-	private val dbusMasterIndex = sharedSlaveMap.masters.indexOf(dbus) // TODO: WishboneBusMasterSlaveMap CLASS ALSO WANTS; def indexOfMaster(wb): Int && def indexOfSlave(wb): Int
 
-	private val ibusSlaveSelector = sharedSlaveMap.io.masters(ibusMasterIndex)
-	private val dbusSlaveSelector = sharedSlaveMap.io.masters(dbusMasterIndex)
+	private val dataOnlySlaveMap = WishboneBusMasterSlaveMap(
+		(bridge.io.devices.dataOnly, m => m.ADR(14), ledDeviceWidthAdjusted.io.master),
+		(bridge.io.devices.dataOnly, m => !m.ADR(14), bridge.io.devices.dbusToExecutableBridge))
 
-	private val sharedSlaveArbiters = for (slaveIndex <- 0 until sharedSlaveMap.slaves.length) yield {
-		val encoder = new PriorityEncoder(numberOfInputs=sharedSlaveMap.masters.length)
-		val sharedSlaveArbiter = new MultiMasterSingleSlaveArbiter(numberOfMasters=sharedSlaveMap.masters.length)
+	private val executableSlaveMap = WishboneBusMasterSlaveMap(
+		(bridge.io.devices.executable, m => !m.ADR(14) && !m.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
+		(bridge.io.devices.ibus, m => !m.ADR(14) && !m.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
+		(bridge.io.devices.executable, m => !m.ADR(14) && m.ADR(6), dataSpramBlockWidthAdjusted.io.master),
+		(bridge.io.devices.ibus, m => !m.ADR(14) && m.ADR(6), dataSpramBlockWidthAdjusted.io.master))
+
+
+
+	private val dbusOnlySlaveMux = WishboneBusSlaveMultiplexer(dataOnlySlaveMap.io.masters.head.index, dataOnlySlaveMap.slaves.head, dataOnlySlaveMap.slaves.tail:_*)
+	bridge.io.devices.dataOnly <> dbusOnlySlaveMux.io.master
+
+	private val ibusMasterIndex = executableSlaveMap.masters.indexOf(bridge.io.devices.ibus) // TODO: THIS LOOKUP WANTS PUTTING ON THE WishboneBusMasterSlaveMap CLASS; def masterIoFor(wb): MasterIoBundle
+	private val dbusMasterIndex = executableSlaveMap.masters.indexOf(bridge.io.devices.executable) // TODO: WishboneBusMasterSlaveMap CLASS ALSO WANTS; def indexOfMaster(wb): Int && def indexOfSlave(wb): Int
+
+	private val ibusSlaveSelector = executableSlaveMap.io.masters(ibusMasterIndex)
+	private val dbusSlaveSelector = executableSlaveMap.io.masters(dbusMasterIndex)
+
+	private val sharedSlaveArbiters = for (slaveIndex <- 0 until executableSlaveMap.slaves.length) yield {
+		val encoder = new PriorityEncoder(numberOfInputs=executableSlaveMap.masters.length)
+		val sharedSlaveArbiter = new MultiMasterSingleSlaveArbiter(numberOfMasters=executableSlaveMap.masters.length)
 		encoder.io.inputs := sharedSlaveArbiter.io.encoder.inputs
 		sharedSlaveArbiter.io.encoder.isValid := encoder.io.isValid
 		sharedSlaveArbiter.io.encoder.output := encoder.io.output
 
-		sharedSlaveMap.masters.zipWithIndex.foreach { case (master, masterIndex) =>
+		executableSlaveMap.masters.zipWithIndex.foreach { case (master, masterIndex) =>
 			sharedSlaveArbiter.io.masters(masterIndex).request := master.CYC && ibusSlaveSelector.index === slaveIndex
 		}
 
-		(sharedSlaveArbiter, sharedSlaveMap.slaves(slaveIndex))
+		(sharedSlaveArbiter, executableSlaveMap.slaves(slaveIndex))
 	}
 
 
 	private val masterMuxes = sharedSlaveArbiters.map { case (arbiter, slave) =>
-		val masters = sharedSlaveMap.masters.map(master => new Wishbone(master.config))
+		val masters = executableSlaveMap.masters.map(master => new Wishbone(master.config))
 		val selector: UInt = arbiter.io.grantedMasterIndex
 		val mux = WishboneBusMasterMultiplexer(selector, masters.head, masters.tail:_*)
 		mux.io.slave <> slave
 		(mux, masters)
 	}
 
-	sharedSlaveMap.masters.zipWithIndex.foreach { case (master, masterIndex) =>
+	executableSlaveMap.masters.zipWithIndex.foreach { case (master, masterIndex) =>
 		val masters = masterMuxes.map(_._2(masterIndex))
-		val selector: UInt = sharedSlaveMap.io.masters(masterIndex).index
+		val selector: UInt = executableSlaveMap.io.masters(masterIndex).index
 		val mux = WishboneBusSlaveMultiplexer(selector, masters.head, masters.tail:_*)
 		mux.io.master <> master
 	}
-
-	dbusToSharedSlavesBridge.ACK := dbus.ACK
-	dbusToSharedSlavesBridge.DAT_MISO := dbus.DAT_MISO
-	dbus.DAT_MOSI := dbusToSharedSlavesBridge.DAT_MOSI
-	dbus.ADR := dbusToSharedSlavesBridge.ADR
-	dbus.SEL := dbusToSharedSlavesBridge.SEL
-	dbus.WE := dbusToSharedSlavesBridge.WE
-	dbus.CYC := dbusToSharedSlavesBridge.CYC
-	dbus.STB := dbusToSharedSlavesBridge.STB
 }
 
 object Core {

@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.0    git head : 4e3563a282582b41f4eaafc503787757251d23ea
 // Component : Core
-// Git hash  : e8b5771b0567a86063c25ebb984345b501084fa7
+// Git hash  : 662004382189a390ac470b998a9fbe089b2f25c6
 
 `timescale 1ns/1ps
 
@@ -15,12 +15,12 @@ module Core (
 
   wire                cpu_1_interrupts_external;
   wire                cpu_1_interrupts_timer;
-  wire                dbusOnlySlaveMap_masters_0_slaveSelects_0;
-  wire                dbusOnlySlaveMap_masters_0_slaveSelects_1;
-  wire                sharedSlaveMap_masters_0_slaveSelects_0;
-  wire                sharedSlaveMap_masters_0_slaveSelects_1;
-  wire                sharedSlaveMap_masters_1_slaveSelects_0;
-  wire                sharedSlaveMap_masters_1_slaveSelects_1;
+  wire                dataOnlySlaveMap_masters_0_slaveSelects_0;
+  wire                dataOnlySlaveMap_masters_0_slaveSelects_1;
+  wire                executableSlaveMap_masters_0_slaveSelects_0;
+  wire                executableSlaveMap_masters_0_slaveSelects_1;
+  wire                executableSlaveMap_masters_1_slaveSelects_0;
+  wire                executableSlaveMap_masters_1_slaveSelects_1;
   wire                sharedSlaveArbiters_0_0_io_masters_0_request;
   wire                sharedSlaveArbiters_0_0_io_masters_1_request;
   wire                sharedSlaveArbiters_1_0_io_masters_0_request;
@@ -153,26 +153,38 @@ module Core (
   wire       [3:0]    ledDeviceWidthAdjusted_slave_SEL;
   wire                ledDeviceWidthAdjusted_slave_STB;
   wire                ledDeviceWidthAdjusted_slave_WE;
-  wire       [31:0]   ibusAdapter_io_wbm_DAT_MISO;
-  wire                ibusAdapter_io_wbm_ACK;
-  wire                ibusAdapter_io_wbm_ERR;
-  wire       [31:0]   ibusAdapter_io_wbs_DAT_MOSI;
-  wire       [29:0]   ibusAdapter_io_wbs_ADR;
-  wire                ibusAdapter_io_wbs_CYC;
-  wire       [3:0]    ibusAdapter_io_wbs_SEL;
-  wire                ibusAdapter_io_wbs_STB;
-  wire                ibusAdapter_io_wbs_WE;
-  wire       [31:0]   dbusAdapter_io_wbm_DAT_MISO;
-  wire                dbusAdapter_io_wbm_ACK;
-  wire                dbusAdapter_io_wbm_ERR;
-  wire       [31:0]   dbusAdapter_io_wbs_DAT_MOSI;
-  wire       [29:0]   dbusAdapter_io_wbs_ADR;
-  wire                dbusAdapter_io_wbs_CYC;
-  wire       [3:0]    dbusAdapter_io_wbs_SEL;
-  wire                dbusAdapter_io_wbs_STB;
-  wire                dbusAdapter_io_wbs_WE;
-  wire       [0:0]    dbusOnlySlaveMap_masters_0_index;
-  wire                dbusOnlySlaveMap_masters_0_isValid;
+  wire       [31:0]   bridge_cpu_ibus_DAT_MISO;
+  wire                bridge_cpu_ibus_ACK;
+  wire                bridge_cpu_ibus_ERR;
+  wire       [31:0]   bridge_cpu_dbus_DAT_MISO;
+  wire                bridge_cpu_dbus_ACK;
+  wire                bridge_cpu_dbus_ERR;
+  wire       [31:0]   bridge_devices_dataOnly_DAT_MOSI;
+  wire       [29:0]   bridge_devices_dataOnly_ADR;
+  wire                bridge_devices_dataOnly_CYC;
+  wire       [3:0]    bridge_devices_dataOnly_SEL;
+  wire                bridge_devices_dataOnly_STB;
+  wire                bridge_devices_dataOnly_WE;
+  wire       [31:0]   bridge_devices_executable_DAT_MOSI;
+  wire       [29:0]   bridge_devices_executable_ADR;
+  wire                bridge_devices_executable_CYC;
+  wire       [3:0]    bridge_devices_executable_SEL;
+  wire                bridge_devices_executable_STB;
+  wire                bridge_devices_executable_WE;
+  wire       [31:0]   bridge_devices_ibus_DAT_MOSI;
+  wire       [29:0]   bridge_devices_ibus_ADR;
+  wire                bridge_devices_ibus_CYC;
+  wire       [3:0]    bridge_devices_ibus_SEL;
+  wire                bridge_devices_ibus_STB;
+  wire                bridge_devices_ibus_WE;
+  wire       [31:0]   bridge_devices_dbusToExecutableBridge_DAT_MISO;
+  wire                bridge_devices_dbusToExecutableBridge_ACK;
+  wire       [0:0]    dataOnlySlaveMap_masters_0_index;
+  wire                dataOnlySlaveMap_masters_0_isValid;
+  wire       [0:0]    executableSlaveMap_masters_0_index;
+  wire                executableSlaveMap_masters_0_isValid;
+  wire       [0:0]    executableSlaveMap_masters_1_index;
+  wire                executableSlaveMap_masters_1_isValid;
   wire       [31:0]   dbusOnlySlaveMux_master_DAT_MISO;
   wire                dbusOnlySlaveMux_master_ACK;
   wire       [31:0]   dbusOnlySlaveMux_slaves_0_DAT_MOSI;
@@ -187,10 +199,6 @@ module Core (
   wire       [3:0]    dbusOnlySlaveMux_slaves_1_SEL;
   wire                dbusOnlySlaveMux_slaves_1_STB;
   wire                dbusOnlySlaveMux_slaves_1_WE;
-  wire       [0:0]    sharedSlaveMap_masters_0_index;
-  wire                sharedSlaveMap_masters_0_isValid;
-  wire       [0:0]    sharedSlaveMap_masters_1_index;
-  wire                sharedSlaveMap_masters_1_isValid;
   wire       [0:0]    priorityEncoder_2_output_1;
   wire                priorityEncoder_2_isValid;
   wire                sharedSlaveArbiters_0_0_io_encoder_inputs_0;
@@ -261,22 +269,6 @@ module Core (
   wire       [3:0]    wishboneBusSlaveMultiplexer_4_slaves_1_SEL;
   wire                wishboneBusSlaveMultiplexer_4_slaves_1_STB;
   wire                wishboneBusSlaveMultiplexer_4_slaves_1_WE;
-  wire                dbusToSharedSlavesBridge_CYC;
-  wire                dbusToSharedSlavesBridge_STB;
-  wire                dbusToSharedSlavesBridge_ACK;
-  wire                dbusToSharedSlavesBridge_WE;
-  wire       [29:0]   dbusToSharedSlavesBridge_ADR;
-  wire       [31:0]   dbusToSharedSlavesBridge_DAT_MISO;
-  wire       [31:0]   dbusToSharedSlavesBridge_DAT_MOSI;
-  wire       [3:0]    dbusToSharedSlavesBridge_SEL;
-  wire                dbus_CYC;
-  wire                dbus_STB;
-  wire                dbus_ACK;
-  wire                dbus_WE;
-  wire       [29:0]   dbus_ADR;
-  wire       [31:0]   dbus_DAT_MISO;
-  wire       [31:0]   dbus_DAT_MOSI;
-  wire       [3:0]    dbus_SEL;
   wire                masterMuxes_0_1_0_CYC;
   wire                masterMuxes_0_1_0_STB;
   wire                masterMuxes_0_1_0_ACK;
@@ -311,32 +303,32 @@ module Core (
   wire       [3:0]    masterMuxes_1_1_1_SEL;
 
   Cpu cpu_1 (
-    .ibus_CYC            (cpu_1_ibus_CYC                   ), //o
-    .ibus_STB            (cpu_1_ibus_STB                   ), //o
-    .ibus_ACK            (ibusAdapter_io_wbm_ACK           ), //i
-    .ibus_WE             (cpu_1_ibus_WE                    ), //o
-    .ibus_ADR            (cpu_1_ibus_ADR[29:0]             ), //o
-    .ibus_DAT_MISO       (ibusAdapter_io_wbm_DAT_MISO[31:0]), //i
-    .ibus_DAT_MOSI       (cpu_1_ibus_DAT_MOSI[31:0]        ), //o
-    .ibus_SEL            (cpu_1_ibus_SEL[3:0]              ), //o
-    .ibus_ERR            (ibusAdapter_io_wbm_ERR           ), //i
-    .ibus_CTI            (cpu_1_ibus_CTI[2:0]              ), //o
-    .ibus_BTE            (cpu_1_ibus_BTE[1:0]              ), //o
-    .dbus_CYC            (cpu_1_dbus_CYC                   ), //o
-    .dbus_STB            (cpu_1_dbus_STB                   ), //o
-    .dbus_ACK            (dbusAdapter_io_wbm_ACK           ), //i
-    .dbus_WE             (cpu_1_dbus_WE                    ), //o
-    .dbus_ADR            (cpu_1_dbus_ADR[29:0]             ), //o
-    .dbus_DAT_MISO       (dbusAdapter_io_wbm_DAT_MISO[31:0]), //i
-    .dbus_DAT_MOSI       (cpu_1_dbus_DAT_MOSI[31:0]        ), //o
-    .dbus_SEL            (cpu_1_dbus_SEL[3:0]              ), //o
-    .dbus_ERR            (dbusAdapter_io_wbm_ERR           ), //i
-    .dbus_CTI            (cpu_1_dbus_CTI[2:0]              ), //o
-    .dbus_BTE            (cpu_1_dbus_BTE[1:0]              ), //o
-    .interrupts_external (cpu_1_interrupts_external        ), //i
-    .interrupts_timer    (cpu_1_interrupts_timer           ), //i
-    .clk                 (clk                              ), //i
-    .reset               (reset                            )  //i
+    .ibus_CYC            (cpu_1_ibus_CYC                ), //o
+    .ibus_STB            (cpu_1_ibus_STB                ), //o
+    .ibus_ACK            (bridge_cpu_ibus_ACK           ), //i
+    .ibus_WE             (cpu_1_ibus_WE                 ), //o
+    .ibus_ADR            (cpu_1_ibus_ADR[29:0]          ), //o
+    .ibus_DAT_MISO       (bridge_cpu_ibus_DAT_MISO[31:0]), //i
+    .ibus_DAT_MOSI       (cpu_1_ibus_DAT_MOSI[31:0]     ), //o
+    .ibus_SEL            (cpu_1_ibus_SEL[3:0]           ), //o
+    .ibus_ERR            (bridge_cpu_ibus_ERR           ), //i
+    .ibus_CTI            (cpu_1_ibus_CTI[2:0]           ), //o
+    .ibus_BTE            (cpu_1_ibus_BTE[1:0]           ), //o
+    .dbus_CYC            (cpu_1_dbus_CYC                ), //o
+    .dbus_STB            (cpu_1_dbus_STB                ), //o
+    .dbus_ACK            (bridge_cpu_dbus_ACK           ), //i
+    .dbus_WE             (cpu_1_dbus_WE                 ), //o
+    .dbus_ADR            (cpu_1_dbus_ADR[29:0]          ), //o
+    .dbus_DAT_MISO       (bridge_cpu_dbus_DAT_MISO[31:0]), //i
+    .dbus_DAT_MOSI       (cpu_1_dbus_DAT_MOSI[31:0]     ), //o
+    .dbus_SEL            (cpu_1_dbus_SEL[3:0]           ), //o
+    .dbus_ERR            (bridge_cpu_dbus_ERR           ), //i
+    .dbus_CTI            (cpu_1_dbus_CTI[2:0]           ), //o
+    .dbus_BTE            (cpu_1_dbus_BTE[1:0]           ), //o
+    .interrupts_external (cpu_1_interrupts_external     ), //i
+    .interrupts_timer    (cpu_1_interrupts_timer        ), //i
+    .clk                 (clk                           ), //i
+    .reset               (reset                         )  //i
   );
   unamed ledDevice (
     .io_wishbone_CYC      (ledDeviceWidthAdjusted_slave_CYC           ), //i
@@ -624,90 +616,104 @@ module Core (
     .slave_DAT_MOSI  (ledDeviceWidthAdjusted_slave_DAT_MOSI[31:0] ), //o
     .slave_SEL       (ledDeviceWidthAdjusted_slave_SEL[3:0]       )  //o
   );
-  WishboneAdapter_1 ibusAdapter (
-    .io_wbm_CYC      (cpu_1_ibus_CYC                                     ), //i
-    .io_wbm_STB      (cpu_1_ibus_STB                                     ), //i
-    .io_wbm_ACK      (ibusAdapter_io_wbm_ACK                             ), //o
-    .io_wbm_WE       (cpu_1_ibus_WE                                      ), //i
-    .io_wbm_ADR      (cpu_1_ibus_ADR[29:0]                               ), //i
-    .io_wbm_DAT_MISO (ibusAdapter_io_wbm_DAT_MISO[31:0]                  ), //o
-    .io_wbm_DAT_MOSI (cpu_1_ibus_DAT_MOSI[31:0]                          ), //i
-    .io_wbm_SEL      (cpu_1_ibus_SEL[3:0]                                ), //i
-    .io_wbm_ERR      (ibusAdapter_io_wbm_ERR                             ), //o
-    .io_wbm_CTI      (cpu_1_ibus_CTI[2:0]                                ), //i
-    .io_wbm_BTE      (cpu_1_ibus_BTE[1:0]                                ), //i
-    .io_wbs_CYC      (ibusAdapter_io_wbs_CYC                             ), //o
-    .io_wbs_STB      (ibusAdapter_io_wbs_STB                             ), //o
-    .io_wbs_ACK      (wishboneBusSlaveMultiplexer_4_master_ACK           ), //i
-    .io_wbs_WE       (ibusAdapter_io_wbs_WE                              ), //o
-    .io_wbs_ADR      (ibusAdapter_io_wbs_ADR[29:0]                       ), //o
-    .io_wbs_DAT_MISO (wishboneBusSlaveMultiplexer_4_master_DAT_MISO[31:0]), //i
-    .io_wbs_DAT_MOSI (ibusAdapter_io_wbs_DAT_MOSI[31:0]                  ), //o
-    .io_wbs_SEL      (ibusAdapter_io_wbs_SEL[3:0]                        )  //o
+  CpuBusBridge bridge (
+    .cpu_ibus_CYC                            (cpu_1_ibus_CYC                                      ), //i
+    .cpu_ibus_STB                            (cpu_1_ibus_STB                                      ), //i
+    .cpu_ibus_ACK                            (bridge_cpu_ibus_ACK                                 ), //o
+    .cpu_ibus_WE                             (cpu_1_ibus_WE                                       ), //i
+    .cpu_ibus_ADR                            (cpu_1_ibus_ADR[29:0]                                ), //i
+    .cpu_ibus_DAT_MISO                       (bridge_cpu_ibus_DAT_MISO[31:0]                      ), //o
+    .cpu_ibus_DAT_MOSI                       (cpu_1_ibus_DAT_MOSI[31:0]                           ), //i
+    .cpu_ibus_SEL                            (cpu_1_ibus_SEL[3:0]                                 ), //i
+    .cpu_ibus_ERR                            (bridge_cpu_ibus_ERR                                 ), //o
+    .cpu_ibus_CTI                            (cpu_1_ibus_CTI[2:0]                                 ), //i
+    .cpu_ibus_BTE                            (cpu_1_ibus_BTE[1:0]                                 ), //i
+    .cpu_dbus_CYC                            (cpu_1_dbus_CYC                                      ), //i
+    .cpu_dbus_STB                            (cpu_1_dbus_STB                                      ), //i
+    .cpu_dbus_ACK                            (bridge_cpu_dbus_ACK                                 ), //o
+    .cpu_dbus_WE                             (cpu_1_dbus_WE                                       ), //i
+    .cpu_dbus_ADR                            (cpu_1_dbus_ADR[29:0]                                ), //i
+    .cpu_dbus_DAT_MISO                       (bridge_cpu_dbus_DAT_MISO[31:0]                      ), //o
+    .cpu_dbus_DAT_MOSI                       (cpu_1_dbus_DAT_MOSI[31:0]                           ), //i
+    .cpu_dbus_SEL                            (cpu_1_dbus_SEL[3:0]                                 ), //i
+    .cpu_dbus_ERR                            (bridge_cpu_dbus_ERR                                 ), //o
+    .cpu_dbus_CTI                            (cpu_1_dbus_CTI[2:0]                                 ), //i
+    .cpu_dbus_BTE                            (cpu_1_dbus_BTE[1:0]                                 ), //i
+    .devices_dataOnly_CYC                    (bridge_devices_dataOnly_CYC                         ), //o
+    .devices_dataOnly_STB                    (bridge_devices_dataOnly_STB                         ), //o
+    .devices_dataOnly_ACK                    (dbusOnlySlaveMux_master_ACK                         ), //i
+    .devices_dataOnly_WE                     (bridge_devices_dataOnly_WE                          ), //o
+    .devices_dataOnly_ADR                    (bridge_devices_dataOnly_ADR[29:0]                   ), //o
+    .devices_dataOnly_DAT_MISO               (dbusOnlySlaveMux_master_DAT_MISO[31:0]              ), //i
+    .devices_dataOnly_DAT_MOSI               (bridge_devices_dataOnly_DAT_MOSI[31:0]              ), //o
+    .devices_dataOnly_SEL                    (bridge_devices_dataOnly_SEL[3:0]                    ), //o
+    .devices_executable_CYC                  (bridge_devices_executable_CYC                       ), //o
+    .devices_executable_STB                  (bridge_devices_executable_STB                       ), //o
+    .devices_executable_ACK                  (wishboneBusSlaveMultiplexer_3_master_ACK            ), //i
+    .devices_executable_WE                   (bridge_devices_executable_WE                        ), //o
+    .devices_executable_ADR                  (bridge_devices_executable_ADR[29:0]                 ), //o
+    .devices_executable_DAT_MISO             (wishboneBusSlaveMultiplexer_3_master_DAT_MISO[31:0] ), //i
+    .devices_executable_DAT_MOSI             (bridge_devices_executable_DAT_MOSI[31:0]            ), //o
+    .devices_executable_SEL                  (bridge_devices_executable_SEL[3:0]                  ), //o
+    .devices_ibus_CYC                        (bridge_devices_ibus_CYC                             ), //o
+    .devices_ibus_STB                        (bridge_devices_ibus_STB                             ), //o
+    .devices_ibus_ACK                        (wishboneBusSlaveMultiplexer_4_master_ACK            ), //i
+    .devices_ibus_WE                         (bridge_devices_ibus_WE                              ), //o
+    .devices_ibus_ADR                        (bridge_devices_ibus_ADR[29:0]                       ), //o
+    .devices_ibus_DAT_MISO                   (wishboneBusSlaveMultiplexer_4_master_DAT_MISO[31:0] ), //i
+    .devices_ibus_DAT_MOSI                   (bridge_devices_ibus_DAT_MOSI[31:0]                  ), //o
+    .devices_ibus_SEL                        (bridge_devices_ibus_SEL[3:0]                        ), //o
+    .devices_dbusToExecutableBridge_CYC      (dbusOnlySlaveMux_slaves_1_CYC                       ), //i
+    .devices_dbusToExecutableBridge_STB      (dbusOnlySlaveMux_slaves_1_STB                       ), //i
+    .devices_dbusToExecutableBridge_ACK      (bridge_devices_dbusToExecutableBridge_ACK           ), //o
+    .devices_dbusToExecutableBridge_WE       (dbusOnlySlaveMux_slaves_1_WE                        ), //i
+    .devices_dbusToExecutableBridge_ADR      (dbusOnlySlaveMux_slaves_1_ADR[29:0]                 ), //i
+    .devices_dbusToExecutableBridge_DAT_MISO (bridge_devices_dbusToExecutableBridge_DAT_MISO[31:0]), //o
+    .devices_dbusToExecutableBridge_DAT_MOSI (dbusOnlySlaveMux_slaves_1_DAT_MOSI[31:0]            ), //i
+    .devices_dbusToExecutableBridge_SEL      (dbusOnlySlaveMux_slaves_1_SEL[3:0]                  )  //i
   );
-  WishboneAdapter_1 dbusAdapter (
-    .io_wbm_CYC      (cpu_1_dbus_CYC                        ), //i
-    .io_wbm_STB      (cpu_1_dbus_STB                        ), //i
-    .io_wbm_ACK      (dbusAdapter_io_wbm_ACK                ), //o
-    .io_wbm_WE       (cpu_1_dbus_WE                         ), //i
-    .io_wbm_ADR      (cpu_1_dbus_ADR[29:0]                  ), //i
-    .io_wbm_DAT_MISO (dbusAdapter_io_wbm_DAT_MISO[31:0]     ), //o
-    .io_wbm_DAT_MOSI (cpu_1_dbus_DAT_MOSI[31:0]             ), //i
-    .io_wbm_SEL      (cpu_1_dbus_SEL[3:0]                   ), //i
-    .io_wbm_ERR      (dbusAdapter_io_wbm_ERR                ), //o
-    .io_wbm_CTI      (cpu_1_dbus_CTI[2:0]                   ), //i
-    .io_wbm_BTE      (cpu_1_dbus_BTE[1:0]                   ), //i
-    .io_wbs_CYC      (dbusAdapter_io_wbs_CYC                ), //o
-    .io_wbs_STB      (dbusAdapter_io_wbs_STB                ), //o
-    .io_wbs_ACK      (dbusOnlySlaveMux_master_ACK           ), //i
-    .io_wbs_WE       (dbusAdapter_io_wbs_WE                 ), //o
-    .io_wbs_ADR      (dbusAdapter_io_wbs_ADR[29:0]          ), //o
-    .io_wbs_DAT_MISO (dbusOnlySlaveMux_master_DAT_MISO[31:0]), //i
-    .io_wbs_DAT_MOSI (dbusAdapter_io_wbs_DAT_MOSI[31:0]     ), //o
-    .io_wbs_SEL      (dbusAdapter_io_wbs_SEL[3:0]           )  //o
+  WishboneBusMasterSlaveMap_1 dataOnlySlaveMap (
+    .masters_0_index          (dataOnlySlaveMap_masters_0_index         ), //o
+    .masters_0_isValid        (dataOnlySlaveMap_masters_0_isValid       ), //o
+    .masters_0_slaveSelects_0 (dataOnlySlaveMap_masters_0_slaveSelects_0), //i
+    .masters_0_slaveSelects_1 (dataOnlySlaveMap_masters_0_slaveSelects_1)  //i
   );
-  WishboneBusMasterSlaveMap_1 dbusOnlySlaveMap (
-    .masters_0_index          (dbusOnlySlaveMap_masters_0_index         ), //o
-    .masters_0_isValid        (dbusOnlySlaveMap_masters_0_isValid       ), //o
-    .masters_0_slaveSelects_0 (dbusOnlySlaveMap_masters_0_slaveSelects_0), //i
-    .masters_0_slaveSelects_1 (dbusOnlySlaveMap_masters_0_slaveSelects_1)  //i
+  WishboneBusMasterSlaveMap executableSlaveMap (
+    .masters_0_index          (executableSlaveMap_masters_0_index         ), //o
+    .masters_0_isValid        (executableSlaveMap_masters_0_isValid       ), //o
+    .masters_0_slaveSelects_0 (executableSlaveMap_masters_0_slaveSelects_0), //i
+    .masters_0_slaveSelects_1 (executableSlaveMap_masters_0_slaveSelects_1), //i
+    .masters_1_index          (executableSlaveMap_masters_1_index         ), //o
+    .masters_1_isValid        (executableSlaveMap_masters_1_isValid       ), //o
+    .masters_1_slaveSelects_0 (executableSlaveMap_masters_1_slaveSelects_0), //i
+    .masters_1_slaveSelects_1 (executableSlaveMap_masters_1_slaveSelects_1)  //i
   );
   WishboneBusSlaveMultiplexer_2 dbusOnlySlaveMux (
-    .master_CYC        (dbusAdapter_io_wbs_CYC                      ), //i
-    .master_STB        (dbusAdapter_io_wbs_STB                      ), //i
-    .master_ACK        (dbusOnlySlaveMux_master_ACK                 ), //o
-    .master_WE         (dbusAdapter_io_wbs_WE                       ), //i
-    .master_ADR        (dbusAdapter_io_wbs_ADR[29:0]                ), //i
-    .master_DAT_MISO   (dbusOnlySlaveMux_master_DAT_MISO[31:0]      ), //o
-    .master_DAT_MOSI   (dbusAdapter_io_wbs_DAT_MOSI[31:0]           ), //i
-    .master_SEL        (dbusAdapter_io_wbs_SEL[3:0]                 ), //i
-    .slaves_0_CYC      (dbusOnlySlaveMux_slaves_0_CYC               ), //o
-    .slaves_0_STB      (dbusOnlySlaveMux_slaves_0_STB               ), //o
-    .slaves_0_ACK      (ledDeviceWidthAdjusted_master_ACK           ), //i
-    .slaves_0_WE       (dbusOnlySlaveMux_slaves_0_WE                ), //o
-    .slaves_0_ADR      (dbusOnlySlaveMux_slaves_0_ADR[29:0]         ), //o
-    .slaves_0_DAT_MISO (ledDeviceWidthAdjusted_master_DAT_MISO[31:0]), //i
-    .slaves_0_DAT_MOSI (dbusOnlySlaveMux_slaves_0_DAT_MOSI[31:0]    ), //o
-    .slaves_0_SEL      (dbusOnlySlaveMux_slaves_0_SEL[3:0]          ), //o
-    .slaves_1_CYC      (dbusOnlySlaveMux_slaves_1_CYC               ), //o
-    .slaves_1_STB      (dbusOnlySlaveMux_slaves_1_STB               ), //o
-    .slaves_1_ACK      (dbusToSharedSlavesBridge_ACK                ), //i
-    .slaves_1_WE       (dbusOnlySlaveMux_slaves_1_WE                ), //o
-    .slaves_1_ADR      (dbusOnlySlaveMux_slaves_1_ADR[29:0]         ), //o
-    .slaves_1_DAT_MISO (dbusToSharedSlavesBridge_DAT_MISO[31:0]     ), //i
-    .slaves_1_DAT_MOSI (dbusOnlySlaveMux_slaves_1_DAT_MOSI[31:0]    ), //o
-    .slaves_1_SEL      (dbusOnlySlaveMux_slaves_1_SEL[3:0]          ), //o
-    .selector          (dbusOnlySlaveMap_masters_0_index            )  //i
-  );
-  WishboneBusMasterSlaveMap sharedSlaveMap (
-    .masters_0_index          (sharedSlaveMap_masters_0_index         ), //o
-    .masters_0_isValid        (sharedSlaveMap_masters_0_isValid       ), //o
-    .masters_0_slaveSelects_0 (sharedSlaveMap_masters_0_slaveSelects_0), //i
-    .masters_0_slaveSelects_1 (sharedSlaveMap_masters_0_slaveSelects_1), //i
-    .masters_1_index          (sharedSlaveMap_masters_1_index         ), //o
-    .masters_1_isValid        (sharedSlaveMap_masters_1_isValid       ), //o
-    .masters_1_slaveSelects_0 (sharedSlaveMap_masters_1_slaveSelects_0), //i
-    .masters_1_slaveSelects_1 (sharedSlaveMap_masters_1_slaveSelects_1)  //i
+    .master_CYC        (bridge_devices_dataOnly_CYC                         ), //i
+    .master_STB        (bridge_devices_dataOnly_STB                         ), //i
+    .master_ACK        (dbusOnlySlaveMux_master_ACK                         ), //o
+    .master_WE         (bridge_devices_dataOnly_WE                          ), //i
+    .master_ADR        (bridge_devices_dataOnly_ADR[29:0]                   ), //i
+    .master_DAT_MISO   (dbusOnlySlaveMux_master_DAT_MISO[31:0]              ), //o
+    .master_DAT_MOSI   (bridge_devices_dataOnly_DAT_MOSI[31:0]              ), //i
+    .master_SEL        (bridge_devices_dataOnly_SEL[3:0]                    ), //i
+    .slaves_0_CYC      (dbusOnlySlaveMux_slaves_0_CYC                       ), //o
+    .slaves_0_STB      (dbusOnlySlaveMux_slaves_0_STB                       ), //o
+    .slaves_0_ACK      (ledDeviceWidthAdjusted_master_ACK                   ), //i
+    .slaves_0_WE       (dbusOnlySlaveMux_slaves_0_WE                        ), //o
+    .slaves_0_ADR      (dbusOnlySlaveMux_slaves_0_ADR[29:0]                 ), //o
+    .slaves_0_DAT_MISO (ledDeviceWidthAdjusted_master_DAT_MISO[31:0]        ), //i
+    .slaves_0_DAT_MOSI (dbusOnlySlaveMux_slaves_0_DAT_MOSI[31:0]            ), //o
+    .slaves_0_SEL      (dbusOnlySlaveMux_slaves_0_SEL[3:0]                  ), //o
+    .slaves_1_CYC      (dbusOnlySlaveMux_slaves_1_CYC                       ), //o
+    .slaves_1_STB      (dbusOnlySlaveMux_slaves_1_STB                       ), //o
+    .slaves_1_ACK      (bridge_devices_dbusToExecutableBridge_ACK           ), //i
+    .slaves_1_WE       (dbusOnlySlaveMux_slaves_1_WE                        ), //o
+    .slaves_1_ADR      (dbusOnlySlaveMux_slaves_1_ADR[29:0]                 ), //o
+    .slaves_1_DAT_MISO (bridge_devices_dbusToExecutableBridge_DAT_MISO[31:0]), //i
+    .slaves_1_DAT_MOSI (dbusOnlySlaveMux_slaves_1_DAT_MOSI[31:0]            ), //o
+    .slaves_1_SEL      (dbusOnlySlaveMux_slaves_1_SEL[3:0]                  ), //o
+    .selector          (dataOnlySlaveMap_masters_0_index                    )  //i
   );
   PriorityEncoder_1 priorityEncoder_2 (
     .inputs_0 (sharedSlaveArbiters_0_0_io_encoder_inputs_0), //i
@@ -810,14 +816,14 @@ module Core (
     .selector           (sharedSlaveArbiters_1_0_io_grantedMasterIndex    )  //i
   );
   WishboneBusSlaveMultiplexer_2 wishboneBusSlaveMultiplexer_3 (
-    .master_CYC        (dbus_CYC                                             ), //i
-    .master_STB        (dbus_STB                                             ), //i
+    .master_CYC        (bridge_devices_executable_CYC                        ), //i
+    .master_STB        (bridge_devices_executable_STB                        ), //i
     .master_ACK        (wishboneBusSlaveMultiplexer_3_master_ACK             ), //o
-    .master_WE         (dbus_WE                                              ), //i
-    .master_ADR        (dbus_ADR[29:0]                                       ), //i
+    .master_WE         (bridge_devices_executable_WE                         ), //i
+    .master_ADR        (bridge_devices_executable_ADR[29:0]                  ), //i
     .master_DAT_MISO   (wishboneBusSlaveMultiplexer_3_master_DAT_MISO[31:0]  ), //o
-    .master_DAT_MOSI   (dbus_DAT_MOSI[31:0]                                  ), //i
-    .master_SEL        (dbus_SEL[3:0]                                        ), //i
+    .master_DAT_MOSI   (bridge_devices_executable_DAT_MOSI[31:0]             ), //i
+    .master_SEL        (bridge_devices_executable_SEL[3:0]                   ), //i
     .slaves_0_CYC      (wishboneBusSlaveMultiplexer_3_slaves_0_CYC           ), //o
     .slaves_0_STB      (wishboneBusSlaveMultiplexer_3_slaves_0_STB           ), //o
     .slaves_0_ACK      (masterMuxes_0_1_0_ACK                                ), //i
@@ -834,17 +840,17 @@ module Core (
     .slaves_1_DAT_MISO (masterMuxes_1_1_0_DAT_MISO[31:0]                     ), //i
     .slaves_1_DAT_MOSI (wishboneBusSlaveMultiplexer_3_slaves_1_DAT_MOSI[31:0]), //o
     .slaves_1_SEL      (wishboneBusSlaveMultiplexer_3_slaves_1_SEL[3:0]      ), //o
-    .selector          (sharedSlaveMap_masters_0_index                       )  //i
+    .selector          (executableSlaveMap_masters_0_index                   )  //i
   );
   WishboneBusSlaveMultiplexer_2 wishboneBusSlaveMultiplexer_4 (
-    .master_CYC        (ibusAdapter_io_wbs_CYC                               ), //i
-    .master_STB        (ibusAdapter_io_wbs_STB                               ), //i
+    .master_CYC        (bridge_devices_ibus_CYC                              ), //i
+    .master_STB        (bridge_devices_ibus_STB                              ), //i
     .master_ACK        (wishboneBusSlaveMultiplexer_4_master_ACK             ), //o
-    .master_WE         (ibusAdapter_io_wbs_WE                                ), //i
-    .master_ADR        (ibusAdapter_io_wbs_ADR[29:0]                         ), //i
+    .master_WE         (bridge_devices_ibus_WE                               ), //i
+    .master_ADR        (bridge_devices_ibus_ADR[29:0]                        ), //i
     .master_DAT_MISO   (wishboneBusSlaveMultiplexer_4_master_DAT_MISO[31:0]  ), //o
-    .master_DAT_MOSI   (ibusAdapter_io_wbs_DAT_MOSI[31:0]                    ), //i
-    .master_SEL        (ibusAdapter_io_wbs_SEL[3:0]                          ), //i
+    .master_DAT_MOSI   (bridge_devices_ibus_DAT_MOSI[31:0]                   ), //i
+    .master_SEL        (bridge_devices_ibus_SEL[3:0]                         ), //i
     .slaves_0_CYC      (wishboneBusSlaveMultiplexer_4_slaves_0_CYC           ), //o
     .slaves_0_STB      (wishboneBusSlaveMultiplexer_4_slaves_0_STB           ), //o
     .slaves_0_ACK      (masterMuxes_0_1_1_ACK                                ), //i
@@ -861,28 +867,22 @@ module Core (
     .slaves_1_DAT_MISO (masterMuxes_1_1_1_DAT_MISO[31:0]                     ), //i
     .slaves_1_DAT_MOSI (wishboneBusSlaveMultiplexer_4_slaves_1_DAT_MOSI[31:0]), //o
     .slaves_1_SEL      (wishboneBusSlaveMultiplexer_4_slaves_1_SEL[3:0]      ), //o
-    .selector          (sharedSlaveMap_masters_1_index                       )  //i
+    .selector          (executableSlaveMap_masters_1_index                   )  //i
   );
-  assign p23 = ledDevice_io_p23; // @[Core.scala 141:16]
-  assign ledR = ledDevice_io_ledR; // @[Core.scala 142:17]
-  assign ledG = ledDevice_io_ledG; // @[Core.scala 143:17]
-  assign ledB = ledDevice_io_ledB; // @[Core.scala 144:17]
-  assign dbusOnlySlaveMap_masters_0_slaveSelects_0 = dbusAdapter_io_wbs_ADR[14]; // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign dbusOnlySlaveMap_masters_0_slaveSelects_1 = (! dbusAdapter_io_wbs_ADR[14]); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign dbusToSharedSlavesBridge_CYC = dbusOnlySlaveMux_slaves_1_CYC; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign dbusToSharedSlavesBridge_STB = dbusOnlySlaveMux_slaves_1_STB; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign dbusToSharedSlavesBridge_WE = dbusOnlySlaveMux_slaves_1_WE; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign dbusToSharedSlavesBridge_ADR = dbusOnlySlaveMux_slaves_1_ADR; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign dbusToSharedSlavesBridge_DAT_MOSI = dbusOnlySlaveMux_slaves_1_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign dbusToSharedSlavesBridge_SEL = dbusOnlySlaveMux_slaves_1_SEL; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign sharedSlaveMap_masters_0_slaveSelects_0 = ((! dbus_ADR[14]) && (! dbus_ADR[6])); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign sharedSlaveMap_masters_1_slaveSelects_0 = ((! ibusAdapter_io_wbs_ADR[14]) && (! ibusAdapter_io_wbs_ADR[6])); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign sharedSlaveMap_masters_0_slaveSelects_1 = ((! dbus_ADR[14]) && dbus_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign sharedSlaveMap_masters_1_slaveSelects_1 = ((! ibusAdapter_io_wbs_ADR[14]) && ibusAdapter_io_wbs_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign sharedSlaveArbiters_0_0_io_masters_0_request = (dbus_CYC && (sharedSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 301:76]
-  assign sharedSlaveArbiters_0_0_io_masters_1_request = (ibusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 301:76]
-  assign sharedSlaveArbiters_1_0_io_masters_0_request = (dbus_CYC && (sharedSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 301:76]
-  assign sharedSlaveArbiters_1_0_io_masters_1_request = (ibusAdapter_io_wbs_CYC && (sharedSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 301:76]
+  assign p23 = ledDevice_io_p23; // @[Core.scala 55:16]
+  assign ledR = ledDevice_io_ledR; // @[Core.scala 56:17]
+  assign ledG = ledDevice_io_ledG; // @[Core.scala 57:17]
+  assign ledB = ledDevice_io_ledB; // @[Core.scala 58:17]
+  assign dataOnlySlaveMap_masters_0_slaveSelects_0 = bridge_devices_dataOnly_ADR[14]; // @[WishboneBusMasterSlaveMap.scala 98:90]
+  assign dataOnlySlaveMap_masters_0_slaveSelects_1 = (! bridge_devices_dataOnly_ADR[14]); // @[WishboneBusMasterSlaveMap.scala 98:90]
+  assign executableSlaveMap_masters_0_slaveSelects_0 = ((! bridge_devices_executable_ADR[14]) && (! bridge_devices_executable_ADR[6])); // @[WishboneBusMasterSlaveMap.scala 98:90]
+  assign executableSlaveMap_masters_1_slaveSelects_0 = ((! bridge_devices_ibus_ADR[14]) && (! bridge_devices_ibus_ADR[6])); // @[WishboneBusMasterSlaveMap.scala 98:90]
+  assign executableSlaveMap_masters_0_slaveSelects_1 = ((! bridge_devices_executable_ADR[14]) && bridge_devices_executable_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 98:90]
+  assign executableSlaveMap_masters_1_slaveSelects_1 = ((! bridge_devices_ibus_ADR[14]) && bridge_devices_ibus_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 98:90]
+  assign sharedSlaveArbiters_0_0_io_masters_0_request = (bridge_devices_executable_CYC && (executableSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 231:76]
+  assign sharedSlaveArbiters_0_0_io_masters_1_request = (bridge_devices_ibus_CYC && (executableSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 231:76]
+  assign sharedSlaveArbiters_1_0_io_masters_0_request = (bridge_devices_executable_CYC && (executableSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 231:76]
+  assign sharedSlaveArbiters_1_0_io_masters_1_request = (bridge_devices_ibus_CYC && (executableSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 231:76]
   assign masterMuxes_0_1_0_ACK = masterMuxes_0_0_masters_0_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
   assign masterMuxes_0_1_0_DAT_MISO = masterMuxes_0_0_masters_0_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 80:112]
   assign masterMuxes_0_1_1_ACK = masterMuxes_0_0_masters_1_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
@@ -903,8 +903,6 @@ module Core (
   assign masterMuxes_1_1_0_ADR = wishboneBusSlaveMultiplexer_3_slaves_1_ADR; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_1_1_0_DAT_MOSI = wishboneBusSlaveMultiplexer_3_slaves_1_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_1_1_0_SEL = wishboneBusSlaveMultiplexer_3_slaves_1_SEL; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign dbus_ACK = wishboneBusSlaveMultiplexer_3_master_ACK; // @[Core.scala 320:31]
-  assign dbus_DAT_MISO = wishboneBusSlaveMultiplexer_3_master_DAT_MISO; // @[Core.scala 320:31]
   assign masterMuxes_0_1_1_CYC = wishboneBusSlaveMultiplexer_4_slaves_0_CYC; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_0_1_1_STB = wishboneBusSlaveMultiplexer_4_slaves_0_STB; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_0_1_1_WE = wishboneBusSlaveMultiplexer_4_slaves_0_WE; // @[WishboneBusSlaveMultiplexer.scala 84:106]
@@ -917,14 +915,6 @@ module Core (
   assign masterMuxes_1_1_1_ADR = wishboneBusSlaveMultiplexer_4_slaves_1_ADR; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_1_1_1_DAT_MOSI = wishboneBusSlaveMultiplexer_4_slaves_1_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 84:106]
   assign masterMuxes_1_1_1_SEL = wishboneBusSlaveMultiplexer_4_slaves_1_SEL; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign dbusToSharedSlavesBridge_ACK = dbus_ACK; // @[Core.scala 323:38]
-  assign dbusToSharedSlavesBridge_DAT_MISO = dbus_DAT_MISO; // @[Core.scala 324:43]
-  assign dbus_DAT_MOSI = dbusToSharedSlavesBridge_DAT_MOSI; // @[Core.scala 325:23]
-  assign dbus_ADR = dbusToSharedSlavesBridge_ADR; // @[Core.scala 326:18]
-  assign dbus_SEL = dbusToSharedSlavesBridge_SEL; // @[Core.scala 327:18]
-  assign dbus_WE = dbusToSharedSlavesBridge_WE; // @[Core.scala 328:17]
-  assign dbus_CYC = dbusToSharedSlavesBridge_CYC; // @[Core.scala 329:18]
-  assign dbus_STB = dbusToSharedSlavesBridge_STB; // @[Core.scala 330:18]
 
 endmodule
 
@@ -1138,41 +1128,6 @@ module PriorityEncoder_1 (
 
 endmodule
 
-module WishboneBusMasterSlaveMap (
-  output     [0:0]    masters_0_index,
-  output              masters_0_isValid,
-  input               masters_0_slaveSelects_0,
-  input               masters_0_slaveSelects_1,
-  output     [0:0]    masters_1_index,
-  output              masters_1_isValid,
-  input               masters_1_slaveSelects_0,
-  input               masters_1_slaveSelects_1
-);
-
-  wire       [0:0]    simpleEncoder_3_output_1;
-  wire                simpleEncoder_3_isValid;
-  wire       [0:0]    simpleEncoder_4_output_1;
-  wire                simpleEncoder_4_isValid;
-
-  SimpleEncoder_2 simpleEncoder_3 (
-    .inputs_0 (masters_0_slaveSelects_0), //i
-    .inputs_1 (masters_0_slaveSelects_1), //i
-    .output_1 (simpleEncoder_3_output_1), //o
-    .isValid  (simpleEncoder_3_isValid )  //o
-  );
-  SimpleEncoder_2 simpleEncoder_4 (
-    .inputs_0 (masters_1_slaveSelects_0), //i
-    .inputs_1 (masters_1_slaveSelects_1), //i
-    .output_1 (simpleEncoder_4_output_1), //o
-    .isValid  (simpleEncoder_4_isValid )  //o
-  );
-  assign masters_0_index = simpleEncoder_3_output_1; // @[WishboneBusMasterSlaveMap.scala 48:30]
-  assign masters_0_isValid = simpleEncoder_3_isValid; // @[WishboneBusMasterSlaveMap.scala 49:32]
-  assign masters_1_index = simpleEncoder_4_output_1; // @[WishboneBusMasterSlaveMap.scala 48:30]
-  assign masters_1_isValid = simpleEncoder_4_isValid; // @[WishboneBusMasterSlaveMap.scala 49:32]
-
-endmodule
-
 module WishboneBusSlaveMultiplexer_2 (
   input               master_CYC,
   input               master_STB,
@@ -1239,6 +1194,41 @@ module WishboneBusSlaveMultiplexer_2 (
 
 endmodule
 
+module WishboneBusMasterSlaveMap (
+  output     [0:0]    masters_0_index,
+  output              masters_0_isValid,
+  input               masters_0_slaveSelects_0,
+  input               masters_0_slaveSelects_1,
+  output     [0:0]    masters_1_index,
+  output              masters_1_isValid,
+  input               masters_1_slaveSelects_0,
+  input               masters_1_slaveSelects_1
+);
+
+  wire       [0:0]    simpleEncoder_3_output_1;
+  wire                simpleEncoder_3_isValid;
+  wire       [0:0]    simpleEncoder_4_output_1;
+  wire                simpleEncoder_4_isValid;
+
+  SimpleEncoder_2 simpleEncoder_3 (
+    .inputs_0 (masters_0_slaveSelects_0), //i
+    .inputs_1 (masters_0_slaveSelects_1), //i
+    .output_1 (simpleEncoder_3_output_1), //o
+    .isValid  (simpleEncoder_3_isValid )  //o
+  );
+  SimpleEncoder_2 simpleEncoder_4 (
+    .inputs_0 (masters_1_slaveSelects_0), //i
+    .inputs_1 (masters_1_slaveSelects_1), //i
+    .output_1 (simpleEncoder_4_output_1), //o
+    .isValid  (simpleEncoder_4_isValid )  //o
+  );
+  assign masters_0_index = simpleEncoder_3_output_1; // @[WishboneBusMasterSlaveMap.scala 48:30]
+  assign masters_0_isValid = simpleEncoder_3_isValid; // @[WishboneBusMasterSlaveMap.scala 49:32]
+  assign masters_1_index = simpleEncoder_4_output_1; // @[WishboneBusMasterSlaveMap.scala 48:30]
+  assign masters_1_isValid = simpleEncoder_4_isValid; // @[WishboneBusMasterSlaveMap.scala 49:32]
+
+endmodule
+
 module WishboneBusMasterSlaveMap_1 (
   output     [0:0]    masters_0_index,
   output              masters_0_isValid,
@@ -1260,39 +1250,150 @@ module WishboneBusMasterSlaveMap_1 (
 
 endmodule
 
-//WishboneAdapter_1 replaced by WishboneAdapter_1
-
-module WishboneAdapter_1 (
-  input               io_wbm_CYC,
-  input               io_wbm_STB,
-  output              io_wbm_ACK,
-  input               io_wbm_WE,
-  input      [29:0]   io_wbm_ADR,
-  output     [31:0]   io_wbm_DAT_MISO,
-  input      [31:0]   io_wbm_DAT_MOSI,
-  input      [3:0]    io_wbm_SEL,
-  output              io_wbm_ERR,
-  input      [2:0]    io_wbm_CTI,
-  input      [1:0]    io_wbm_BTE,
-  output              io_wbs_CYC,
-  output              io_wbs_STB,
-  input               io_wbs_ACK,
-  output              io_wbs_WE,
-  output     [29:0]   io_wbs_ADR,
-  input      [31:0]   io_wbs_DAT_MISO,
-  output     [31:0]   io_wbs_DAT_MOSI,
-  output     [3:0]    io_wbs_SEL
+module CpuBusBridge (
+  input               cpu_ibus_CYC,
+  input               cpu_ibus_STB,
+  output              cpu_ibus_ACK,
+  input               cpu_ibus_WE,
+  input      [29:0]   cpu_ibus_ADR,
+  output     [31:0]   cpu_ibus_DAT_MISO,
+  input      [31:0]   cpu_ibus_DAT_MOSI,
+  input      [3:0]    cpu_ibus_SEL,
+  output              cpu_ibus_ERR,
+  input      [2:0]    cpu_ibus_CTI,
+  input      [1:0]    cpu_ibus_BTE,
+  input               cpu_dbus_CYC,
+  input               cpu_dbus_STB,
+  output              cpu_dbus_ACK,
+  input               cpu_dbus_WE,
+  input      [29:0]   cpu_dbus_ADR,
+  output     [31:0]   cpu_dbus_DAT_MISO,
+  input      [31:0]   cpu_dbus_DAT_MOSI,
+  input      [3:0]    cpu_dbus_SEL,
+  output              cpu_dbus_ERR,
+  input      [2:0]    cpu_dbus_CTI,
+  input      [1:0]    cpu_dbus_BTE,
+  output              devices_dataOnly_CYC,
+  output              devices_dataOnly_STB,
+  input               devices_dataOnly_ACK,
+  output              devices_dataOnly_WE,
+  output     [29:0]   devices_dataOnly_ADR,
+  input      [31:0]   devices_dataOnly_DAT_MISO,
+  output     [31:0]   devices_dataOnly_DAT_MOSI,
+  output     [3:0]    devices_dataOnly_SEL,
+  output              devices_executable_CYC,
+  output              devices_executable_STB,
+  input               devices_executable_ACK,
+  output              devices_executable_WE,
+  output     [29:0]   devices_executable_ADR,
+  input      [31:0]   devices_executable_DAT_MISO,
+  output     [31:0]   devices_executable_DAT_MOSI,
+  output     [3:0]    devices_executable_SEL,
+  output              devices_ibus_CYC,
+  output              devices_ibus_STB,
+  input               devices_ibus_ACK,
+  output              devices_ibus_WE,
+  output     [29:0]   devices_ibus_ADR,
+  input      [31:0]   devices_ibus_DAT_MISO,
+  output     [31:0]   devices_ibus_DAT_MOSI,
+  output     [3:0]    devices_ibus_SEL,
+  input               devices_dbusToExecutableBridge_CYC,
+  input               devices_dbusToExecutableBridge_STB,
+  output              devices_dbusToExecutableBridge_ACK,
+  input               devices_dbusToExecutableBridge_WE,
+  input      [29:0]   devices_dbusToExecutableBridge_ADR,
+  output     [31:0]   devices_dbusToExecutableBridge_DAT_MISO,
+  input      [31:0]   devices_dbusToExecutableBridge_DAT_MOSI,
+  input      [3:0]    devices_dbusToExecutableBridge_SEL
 );
 
+  wire       [31:0]   cpu_ibus_adapter_io_wbm_DAT_MISO;
+  wire                cpu_ibus_adapter_io_wbm_ACK;
+  wire                cpu_ibus_adapter_io_wbm_ERR;
+  wire       [31:0]   cpu_ibus_adapter_io_wbs_DAT_MOSI;
+  wire       [29:0]   cpu_ibus_adapter_io_wbs_ADR;
+  wire                cpu_ibus_adapter_io_wbs_CYC;
+  wire       [3:0]    cpu_ibus_adapter_io_wbs_SEL;
+  wire                cpu_ibus_adapter_io_wbs_STB;
+  wire                cpu_ibus_adapter_io_wbs_WE;
+  wire       [31:0]   cpu_dbus_adapter_io_wbm_DAT_MISO;
+  wire                cpu_dbus_adapter_io_wbm_ACK;
+  wire                cpu_dbus_adapter_io_wbm_ERR;
+  wire       [31:0]   cpu_dbus_adapter_io_wbs_DAT_MOSI;
+  wire       [29:0]   cpu_dbus_adapter_io_wbs_ADR;
+  wire                cpu_dbus_adapter_io_wbs_CYC;
+  wire       [3:0]    cpu_dbus_adapter_io_wbs_SEL;
+  wire                cpu_dbus_adapter_io_wbs_STB;
+  wire                cpu_dbus_adapter_io_wbs_WE;
 
-  assign io_wbs_CYC = io_wbm_CYC; // @[Wishbone.scala 197:19]
-  assign io_wbs_STB = io_wbm_STB; // @[Wishbone.scala 198:19]
-  assign io_wbs_WE = io_wbm_WE; // @[Wishbone.scala 199:19]
-  assign io_wbm_ACK = io_wbs_ACK; // @[Wishbone.scala 200:19]
-  assign io_wbs_ADR = io_wbm_ADR; // @[Wishbone.scala 257:33]
-  assign io_wbs_DAT_MOSI = io_wbm_DAT_MOSI; // @[Wishbone.scala 257:33]
-  assign io_wbm_DAT_MISO = io_wbs_DAT_MISO; // @[Wishbone.scala 257:33]
-  assign io_wbs_SEL = io_wbm_SEL; // @[Wishbone.scala 257:33]
+  WishboneAdapter_1 cpu_ibus_adapter (
+    .io_wbm_CYC      (cpu_ibus_CYC                          ), //i
+    .io_wbm_STB      (cpu_ibus_STB                          ), //i
+    .io_wbm_ACK      (cpu_ibus_adapter_io_wbm_ACK           ), //o
+    .io_wbm_WE       (cpu_ibus_WE                           ), //i
+    .io_wbm_ADR      (cpu_ibus_ADR[29:0]                    ), //i
+    .io_wbm_DAT_MISO (cpu_ibus_adapter_io_wbm_DAT_MISO[31:0]), //o
+    .io_wbm_DAT_MOSI (cpu_ibus_DAT_MOSI[31:0]               ), //i
+    .io_wbm_SEL      (cpu_ibus_SEL[3:0]                     ), //i
+    .io_wbm_ERR      (cpu_ibus_adapter_io_wbm_ERR           ), //o
+    .io_wbm_CTI      (cpu_ibus_CTI[2:0]                     ), //i
+    .io_wbm_BTE      (cpu_ibus_BTE[1:0]                     ), //i
+    .io_wbs_CYC      (cpu_ibus_adapter_io_wbs_CYC           ), //o
+    .io_wbs_STB      (cpu_ibus_adapter_io_wbs_STB           ), //o
+    .io_wbs_ACK      (devices_ibus_ACK                      ), //i
+    .io_wbs_WE       (cpu_ibus_adapter_io_wbs_WE            ), //o
+    .io_wbs_ADR      (cpu_ibus_adapter_io_wbs_ADR[29:0]     ), //o
+    .io_wbs_DAT_MISO (devices_ibus_DAT_MISO[31:0]           ), //i
+    .io_wbs_DAT_MOSI (cpu_ibus_adapter_io_wbs_DAT_MOSI[31:0]), //o
+    .io_wbs_SEL      (cpu_ibus_adapter_io_wbs_SEL[3:0]      )  //o
+  );
+  WishboneAdapter_1 cpu_dbus_adapter (
+    .io_wbm_CYC      (cpu_dbus_CYC                          ), //i
+    .io_wbm_STB      (cpu_dbus_STB                          ), //i
+    .io_wbm_ACK      (cpu_dbus_adapter_io_wbm_ACK           ), //o
+    .io_wbm_WE       (cpu_dbus_WE                           ), //i
+    .io_wbm_ADR      (cpu_dbus_ADR[29:0]                    ), //i
+    .io_wbm_DAT_MISO (cpu_dbus_adapter_io_wbm_DAT_MISO[31:0]), //o
+    .io_wbm_DAT_MOSI (cpu_dbus_DAT_MOSI[31:0]               ), //i
+    .io_wbm_SEL      (cpu_dbus_SEL[3:0]                     ), //i
+    .io_wbm_ERR      (cpu_dbus_adapter_io_wbm_ERR           ), //o
+    .io_wbm_CTI      (cpu_dbus_CTI[2:0]                     ), //i
+    .io_wbm_BTE      (cpu_dbus_BTE[1:0]                     ), //i
+    .io_wbs_CYC      (cpu_dbus_adapter_io_wbs_CYC           ), //o
+    .io_wbs_STB      (cpu_dbus_adapter_io_wbs_STB           ), //o
+    .io_wbs_ACK      (devices_dataOnly_ACK                  ), //i
+    .io_wbs_WE       (cpu_dbus_adapter_io_wbs_WE            ), //o
+    .io_wbs_ADR      (cpu_dbus_adapter_io_wbs_ADR[29:0]     ), //o
+    .io_wbs_DAT_MISO (devices_dataOnly_DAT_MISO[31:0]       ), //i
+    .io_wbs_DAT_MOSI (cpu_dbus_adapter_io_wbs_DAT_MOSI[31:0]), //o
+    .io_wbs_SEL      (cpu_dbus_adapter_io_wbs_SEL[3:0]      )  //o
+  );
+  assign cpu_ibus_ACK = cpu_ibus_adapter_io_wbm_ACK; // @[WishboneAdapter.scala 33:12]
+  assign cpu_ibus_DAT_MISO = cpu_ibus_adapter_io_wbm_DAT_MISO; // @[WishboneAdapter.scala 33:12]
+  assign cpu_ibus_ERR = cpu_ibus_adapter_io_wbm_ERR; // @[WishboneAdapter.scala 33:12]
+  assign devices_ibus_CYC = cpu_ibus_adapter_io_wbs_CYC; // @[WishboneAdapter.scala 34:11]
+  assign devices_ibus_STB = cpu_ibus_adapter_io_wbs_STB; // @[WishboneAdapter.scala 34:11]
+  assign devices_ibus_WE = cpu_ibus_adapter_io_wbs_WE; // @[WishboneAdapter.scala 34:11]
+  assign devices_ibus_ADR = cpu_ibus_adapter_io_wbs_ADR; // @[WishboneAdapter.scala 34:11]
+  assign devices_ibus_DAT_MOSI = cpu_ibus_adapter_io_wbs_DAT_MOSI; // @[WishboneAdapter.scala 34:11]
+  assign devices_ibus_SEL = cpu_ibus_adapter_io_wbs_SEL; // @[WishboneAdapter.scala 34:11]
+  assign cpu_dbus_ACK = cpu_dbus_adapter_io_wbm_ACK; // @[WishboneAdapter.scala 33:12]
+  assign cpu_dbus_DAT_MISO = cpu_dbus_adapter_io_wbm_DAT_MISO; // @[WishboneAdapter.scala 33:12]
+  assign cpu_dbus_ERR = cpu_dbus_adapter_io_wbm_ERR; // @[WishboneAdapter.scala 33:12]
+  assign devices_dataOnly_CYC = cpu_dbus_adapter_io_wbs_CYC; // @[WishboneAdapter.scala 34:11]
+  assign devices_dataOnly_STB = cpu_dbus_adapter_io_wbs_STB; // @[WishboneAdapter.scala 34:11]
+  assign devices_dataOnly_WE = cpu_dbus_adapter_io_wbs_WE; // @[WishboneAdapter.scala 34:11]
+  assign devices_dataOnly_ADR = cpu_dbus_adapter_io_wbs_ADR; // @[WishboneAdapter.scala 34:11]
+  assign devices_dataOnly_DAT_MOSI = cpu_dbus_adapter_io_wbs_DAT_MOSI; // @[WishboneAdapter.scala 34:11]
+  assign devices_dataOnly_SEL = cpu_dbus_adapter_io_wbs_SEL; // @[WishboneAdapter.scala 34:11]
+  assign devices_executable_CYC = devices_dbusToExecutableBridge_CYC; // @[Wishbone.scala 152:19]
+  assign devices_executable_ADR = devices_dbusToExecutableBridge_ADR; // @[Wishbone.scala 153:19]
+  assign devices_executable_DAT_MOSI = devices_dbusToExecutableBridge_DAT_MOSI; // @[Wishbone.scala 154:19]
+  assign devices_dbusToExecutableBridge_DAT_MISO = devices_executable_DAT_MISO; // @[Wishbone.scala 155:19]
+  assign devices_executable_STB = devices_dbusToExecutableBridge_STB; // @[Wishbone.scala 156:19]
+  assign devices_executable_WE = devices_dbusToExecutableBridge_WE; // @[Wishbone.scala 157:19]
+  assign devices_dbusToExecutableBridge_ACK = devices_executable_ACK; // @[Wishbone.scala 158:19]
+  assign devices_executable_SEL = devices_dbusToExecutableBridge_SEL; // @[Wishbone.scala 257:33]
 
 endmodule
 
@@ -1486,7 +1587,7 @@ module Ice40Spram16k16WishboneBusAdapter_1 (
   assign spram_AD = wishbone_ADR; // @[Ice40Spram16k16WishboneBusAdapter.scala 14:21]
   assign spram_DI = wishbone_DAT_MOSI; // @[Ice40Spram16k16WishboneBusAdapter.scala 15:21]
   assign spram_MASKWE = wishbone_SEL; // @[Ice40Spram16k16WishboneBusAdapter.scala 16:25]
-  assign spram_WE = wishbone_WE; // @[Ice40Spram16k16WishboneBusAdapter.scala 17:21]
+  assign spram_WE = (wishbone_STB && wishbone_WE); // @[Ice40Spram16k16WishboneBusAdapter.scala 17:21]
   assign spram_CS = wishbone_CYC; // @[Ice40Spram16k16WishboneBusAdapter.scala 18:21]
   always @(posedge clk) begin
     if(reset) begin
@@ -1834,19 +1935,19 @@ module unamed (
   reg                 regLedR;
   reg                 regLedG;
   reg                 regLedB;
-  wire                when_Core_l130;
+  wire                when_Core_l44;
 
-  assign io_p23 = regP23; // @[Core.scala 117:24]
-  assign io_ledR = regLedR; // @[Core.scala 120:25]
-  assign io_ledG = regLedG; // @[Core.scala 123:25]
-  assign io_ledB = regLedB; // @[Core.scala 126:25]
-  assign io_wishbone_DAT_MISO = 32'h0; // @[Core.scala 128:38]
-  assign when_Core_l130 = ((io_wishbone_CYC && io_wishbone_WE) && io_wishbone_STB); // @[BaseType.scala 305:24]
+  assign io_p23 = regP23; // @[Core.scala 31:24]
+  assign io_ledR = regLedR; // @[Core.scala 34:25]
+  assign io_ledG = regLedG; // @[Core.scala 37:25]
+  assign io_ledB = regLedB; // @[Core.scala 40:25]
+  assign io_wishbone_DAT_MISO = 32'h0; // @[Core.scala 42:38]
+  assign when_Core_l44 = ((io_wishbone_CYC && io_wishbone_WE) && io_wishbone_STB); // @[BaseType.scala 305:24]
   always @(*) begin
-    if(when_Core_l130) begin
-      io_wishbone_ACK = 1'b1; // @[Core.scala 131:41]
+    if(when_Core_l44) begin
+      io_wishbone_ACK = 1'b1; // @[Core.scala 45:41]
     end else begin
-      io_wishbone_ACK = 1'b0; // @[Core.scala 137:41]
+      io_wishbone_ACK = 1'b0; // @[Core.scala 51:41]
     end
   end
 
@@ -1857,11 +1958,11 @@ module unamed (
       regLedG <= 1'b0; // @[Data.scala 400:33]
       regLedB <= 1'b0; // @[Data.scala 400:33]
     end else begin
-      if(when_Core_l130) begin
-        regP23 <= (! regP23); // @[Core.scala 132:32]
-        regLedR <= (! io_wishbone_DAT_MOSI[0]); // @[Core.scala 133:33]
-        regLedG <= (! io_wishbone_DAT_MOSI[1]); // @[Core.scala 134:33]
-        regLedB <= (! io_wishbone_DAT_MOSI[2]); // @[Core.scala 135:33]
+      if(when_Core_l44) begin
+        regP23 <= (! regP23); // @[Core.scala 46:32]
+        regLedR <= (! io_wishbone_DAT_MOSI[0]); // @[Core.scala 47:33]
+        regLedG <= (! io_wishbone_DAT_MOSI[1]); // @[Core.scala 48:33]
+        regLedB <= (! io_wishbone_DAT_MOSI[2]); // @[Core.scala 49:33]
       end
     end
   end
@@ -2096,6 +2197,42 @@ module SimpleEncoder_2 (
     endcase
   end
 
+
+endmodule
+
+//WishboneAdapter_1 replaced by WishboneAdapter_1
+
+module WishboneAdapter_1 (
+  input               io_wbm_CYC,
+  input               io_wbm_STB,
+  output              io_wbm_ACK,
+  input               io_wbm_WE,
+  input      [29:0]   io_wbm_ADR,
+  output     [31:0]   io_wbm_DAT_MISO,
+  input      [31:0]   io_wbm_DAT_MOSI,
+  input      [3:0]    io_wbm_SEL,
+  output              io_wbm_ERR,
+  input      [2:0]    io_wbm_CTI,
+  input      [1:0]    io_wbm_BTE,
+  output              io_wbs_CYC,
+  output              io_wbs_STB,
+  input               io_wbs_ACK,
+  output              io_wbs_WE,
+  output     [29:0]   io_wbs_ADR,
+  input      [31:0]   io_wbs_DAT_MISO,
+  output     [31:0]   io_wbs_DAT_MOSI,
+  output     [3:0]    io_wbs_SEL
+);
+
+
+  assign io_wbs_CYC = io_wbm_CYC; // @[Wishbone.scala 197:19]
+  assign io_wbs_STB = io_wbm_STB; // @[Wishbone.scala 198:19]
+  assign io_wbs_WE = io_wbm_WE; // @[Wishbone.scala 199:19]
+  assign io_wbm_ACK = io_wbs_ACK; // @[Wishbone.scala 200:19]
+  assign io_wbs_ADR = io_wbm_ADR; // @[Wishbone.scala 257:33]
+  assign io_wbs_DAT_MOSI = io_wbm_DAT_MOSI; // @[Wishbone.scala 257:33]
+  assign io_wbm_DAT_MISO = io_wbs_DAT_MISO; // @[Wishbone.scala 257:33]
+  assign io_wbs_SEL = io_wbm_SEL; // @[Wishbone.scala 257:33]
 
 endmodule
 
