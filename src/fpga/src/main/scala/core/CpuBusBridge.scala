@@ -20,7 +20,7 @@ class CpuBusBridge(cpuBusConfig: WishboneConfig, deviceBusConfig: WishboneConfig
 
 	private val dbusAdapter = WishboneAdapter(
 		io.cpu.dbus,
-		io.devices.dataOnly,
+		io.devices.dbus,
 		allowAddressResize=true,
 		allowDataResize=true,
 		allowTagResize=true)
@@ -35,8 +35,8 @@ class CpuBusBridge(cpuBusConfig: WishboneConfig, deviceBusConfig: WishboneConfig
 		dataOnlyDeviceSelectors.mustNotContainNull("dataOnlyDeviceSelectors", "When data-only devices are used, all data-only dbus selectors must be specified")
 
 		WishboneBusMasterSlaveMap(
-			(io.devices.dataOnly, executableDeviceSelector, io.devices.dbusToExecutableBridge),
-			dataOnlyDeviceSelectors.map(selector => (io.devices.dataOnly, selector._2, selector._1)):_*)
+			(io.devices.dbus, executableDeviceSelector, io.devices.dbusToExecutableBridge),
+			dataOnlyDeviceSelectors.map(selector => (io.devices.dbus, selector._2, selector._1)):_*)
 	}
 
 	def executableDeviceMapFor(
@@ -69,7 +69,7 @@ object CpuBusBridge {
 
 		val devices = new Bundle {
 			val ibus = master(new Wishbone(deviceBusConfig))
-			val dataOnly = master(new Wishbone(deviceBusConfig)) // TODO: RENAME THIS TO dbus
+			val dbus = master(new Wishbone(deviceBusConfig))
 			val dbusToExecutableBridge = slave(new Wishbone(deviceBusConfig))
 			val executable = master(new Wishbone(deviceBusConfig))
 		}

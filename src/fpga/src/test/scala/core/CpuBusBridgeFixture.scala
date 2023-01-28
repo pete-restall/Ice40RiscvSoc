@@ -15,7 +15,7 @@ class CpuBusBridgeFixture() extends Component {
 			cpuBusConfig=new WishboneConfig(addressWidth=16, dataWidth=16, useSTALL=true),
 			deviceBusConfig=new WishboneConfig(addressWidth=32, dataWidth=32, useSTALL=false))
 
-		val dbusSlaves = Seq.fill(5) { WishboneTestDoubles.stubSlaveWith(bridge.devices.dataOnly.config) }
+		val dbusSlaves = Seq.fill(5) { WishboneTestDoubles.stubSlaveWith(bridge.devices.dbus.config) }
 		val dbusSlaveSelects = out Bits((dbusSlaves.length + 1) bits)
 
 		val executableSlaves = Seq.fill(5) { WishboneTestDoubles.stubSlaveWith(bridge.devices.executable.config) }
@@ -23,7 +23,7 @@ class CpuBusBridgeFixture() extends Component {
 		val executableFromIbusSlaveSelects = out Bits(executableSlaves.length bits)
 	}
 
-	private val dut = new CpuBusBridge(io.bridge.cpu.dbus.config, io.bridge.devices.dataOnly.config)
+	private val dut = new CpuBusBridge(io.bridge.cpu.dbus.config, io.bridge.devices.dbus.config)
 	io.bridge <> dut.io
 	io.dbusSlaves.concat(io.executableSlaves).foreach { slave =>
 		slave.ACK := False

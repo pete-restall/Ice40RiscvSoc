@@ -99,7 +99,7 @@ class CpuBusBridgeSimulationTest extends AnyFlatSpec with LightweightSimulationF
 		ioLineFrom(fixture.io.bridge.devices.dbusToExecutableBridge).toLong must be(value)
 	}
 
-	"CpuBridge device's data-only bus" must "have CYC that asynchronously follows the CPU's data bus" in simulator { implicit fixture =>
+	"CpuBridge device's data bus" must "have CYC that asynchronously follows the CPU's data bus" in simulator { implicit fixture =>
 		mustHaveIoLineThatAsynchronouslyFollowsTheCpuDbusIoLine(_.CYC)
 	}
 
@@ -107,7 +107,7 @@ class CpuBusBridgeSimulationTest extends AnyFlatSpec with LightweightSimulationF
 		forAll(booleans) { (value: Boolean) =>
 			ioLineFrom(fixture.io.bridge.cpu.dbus) #= value
 			sleep(1)
-			ioLineFrom(fixture.io.bridge.devices.dataOnly).toBoolean must be(value)
+			ioLineFrom(fixture.io.bridge.devices.dbus).toBoolean must be(value)
 		}
 	}
 
@@ -129,7 +129,7 @@ class CpuBusBridgeSimulationTest extends AnyFlatSpec with LightweightSimulationF
 		ioLine #= value
 		sleep(1)
 
-		val subject = ioLineFrom(fixture.io.bridge.devices.dataOnly)
+		val subject = ioLineFrom(fixture.io.bridge.devices.dbus)
 		val truncatedMask = (1l << subject.getWidth) - 1
 		subject.toLong must be(value & truncatedMask)
 	}
@@ -140,49 +140,49 @@ class CpuBusBridgeSimulationTest extends AnyFlatSpec with LightweightSimulationF
 		}
 	}
 
-	// TODO: WHEN dbus.SEL == null && dataOnly.SEL != null
-	// TODO: WHEN dbus.SEL != null && dataOnly.SEL == null
+	// TODO: WHEN cpu.dbus.SEL == null && devices.dbus.SEL != null
+	// TODO: WHEN cpu.dbus.SEL != null && devices.dbus.SEL == null
 
 	it must "have DAT_MOSI that asynchronously follows the CPU's data bus" in simulator { implicit fixture =>
 		mustHaveIoLinesThatAsynchronouslyFollowTheCpuDbusIoLines(_.DAT_MOSI)
 	}
 
-	"CpuBridge CPU's data bus" must "have ACK that asynchronously follows the device's data-only bus" in simulator { implicit fixture =>
+	"CpuBridge CPU's data bus" must "have ACK that asynchronously follows the device's data bus" in simulator { implicit fixture =>
 		mustHaveIoLineThatAsynchronouslyFollowsTheDataOnlyBusIoLine(_.ACK)
 	}
 
 	private def mustHaveIoLineThatAsynchronouslyFollowsTheDataOnlyBusIoLine(ioLineFrom: Wishbone => Bool)(implicit fixture: CpuBusBridgeFixture) {
 		forAll(booleans) { (value: Boolean) =>
-			ioLineFrom(fixture.io.bridge.devices.dataOnly) #= value
+			ioLineFrom(fixture.io.bridge.devices.dbus) #= value
 			sleep(1)
 			ioLineFrom(fixture.io.bridge.cpu.dbus).toBoolean must be(value)
 		}
 	}
 
-	it must "have STALL that asynchronously follows the device's data-only bus" in simulator { implicit fixture =>
-		if (fixture.io.bridge.cpu.dbus.STALL != null && fixture.io.bridge.devices.dataOnly.STALL != null) {
+	it must "have STALL that asynchronously follows the device's data bus" in simulator { implicit fixture =>
+		if (fixture.io.bridge.cpu.dbus.STALL != null && fixture.io.bridge.devices.dbus.STALL != null) {
 			mustHaveIoLineThatAsynchronouslyFollowsTheDataOnlyBusIoLine(_.STALL)
 		}
 	}
 
-	// TODO: WHEN dbus.STALL == null && dataOnly.STALL != null
-	// TODO: WHEN dbus.STALL != null && dataOnly.STALL == null
+	// TODO: WHEN cpu.dbus.STALL == null && devices.dbus.STALL != null
+	// TODO: WHEN cpu.dbus.STALL != null && devices.dbus.STALL == null
 
-	it must "have ERR that asynchronously follows the device's data-only bus" in simulator { implicit fixture =>
-		if (fixture.io.bridge.cpu.dbus.ERR != null && fixture.io.bridge.devices.dataOnly.ERR != null) {
+	it must "have ERR that asynchronously follows the device's data bus" in simulator { implicit fixture =>
+		if (fixture.io.bridge.cpu.dbus.ERR != null && fixture.io.bridge.devices.dbus.ERR != null) {
 			mustHaveIoLineThatAsynchronouslyFollowsTheDataOnlyBusIoLine(_.ERR)
 		}
 	}
 
-	// TODO: WHEN dbus.ERR == null && dataOnly.ERR != null
-	// TODO: WHEN dbus.ERR != null && dataOnly.ERR == null
+	// TODO: WHEN cpu.dbus.ERR == null && devices.dbus.ERR != null
+	// TODO: WHEN cpu.dbus.ERR != null && devices.dbus.ERR == null
 
-	it must "have DAT_MISO that asynchronously follows the device's data-only bus" in simulator { implicit fixture =>
+	it must "have DAT_MISO that asynchronously follows the device's data bus" in simulator { implicit fixture =>
 		mustHaveIoLinesThatAsynchronouslyFollowTheDataOnlyBusIoLines(_.DAT_MISO)
 	}
 
 	private def mustHaveIoLinesThatAsynchronouslyFollowTheDataOnlyBusIoLines(ioLineFrom: Wishbone => BitVector)(implicit fixture: CpuBusBridgeFixture) {
-		val ioLine = ioLineFrom(fixture.io.bridge.devices.dataOnly)
+		val ioLine = ioLineFrom(fixture.io.bridge.devices.dbus)
 		val value = Random.nextLong(1l << ioLine.getWidth)
 		ioLine #= value
 		sleep(1)
@@ -285,7 +285,7 @@ class CpuBusBridgeSimulationTest extends AnyFlatSpec with LightweightSimulationF
 		subject.toLong must be(value & truncatedMask)
 	}
 
-	"CpuBridge's data-only bus map" must "allow each slave to be selected from the CPU's data bus" in simulator { fixture =>
+	"CpuBridge's data bus map" must "allow each slave to be selected from the CPU's data bus" in simulator { fixture =>
 		forAll(Random.shuffle(fixture.io.dbusSlaves.zipWithIndex)) { case (slave, index) =>
 			fixture.io.bridge.cpu.dbus.ADR #= fixture.firstDbusSlaveAddress + index
 			sleep(1)

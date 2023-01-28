@@ -196,7 +196,7 @@ class Core extends Component {
 
 
 	private val dbusOnlySlaveMux = WishboneBusSlaveMultiplexer(dbusSlaveMap.io.masters.head.index, dbusSlaveMap.slaves.head, dbusSlaveMap.slaves.tail:_*)
-	bridge.io.devices.dataOnly <> dbusOnlySlaveMux.io.master
+	bridge.io.devices.dbus <> dbusOnlySlaveMux.io.master
 
 	private val ibusMasterIndex = executableSlaveMap.masters.indexOf(bridge.io.devices.ibus) // TODO: THIS LOOKUP WANTS PUTTING ON THE WishboneBusMasterSlaveMap CLASS; def masterIoFor(wb): MasterIoBundle
 	private val dbusMasterIndex = executableSlaveMap.masters.indexOf(bridge.io.devices.executable) // TODO: WishboneBusMasterSlaveMap CLASS ALSO WANTS; def indexOfMaster(wb): Int && def indexOfSlave(wb): Int

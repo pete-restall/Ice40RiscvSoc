@@ -70,20 +70,20 @@ class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspec
 		bridge.io.devices.executable.config must be(deviceBusConfig)
 	}
 
-	it must "have a master for connecting to the devices dedicated to the data bus" in spinalContext { () =>
+	it must "have a master for connecting the devices to the data bus" in spinalContext { () =>
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
-		bridge.io.devices.dataOnly.isMasterInterface must be(true)
+		bridge.io.devices.dbus.isMasterInterface must be(true)
 	}
 
-	it must "have a data-only device bus configuration the same as passed to the constructor" in spinalContext { () =>
+	it must "have a device data bus configuration the same as passed to the constructor" in spinalContext { () =>
 		val deviceBusConfig = dummyDeviceBusConfig()
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), deviceBusConfig)
-		bridge.io.devices.dataOnly.config must be(deviceBusConfig)
+		bridge.io.devices.dbus.config must be(deviceBusConfig)
 	}
 
 	it must "not have the same instance for both device busses" in spinalContext { () =>
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
-		bridge.io.devices.executable mustNot be(bridge.io.devices.dataOnly)
+		bridge.io.devices.executable mustNot be(bridge.io.devices.dbus)
 	}
 
 	it must "have a master for the adapter instruction bus" in spinalContext { () =>
@@ -131,13 +131,13 @@ class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspec
 
 	private def dummyDataOnlySelector() = (WishboneTestDoubles.dummy(), (_: Wishbone) => False)
 
-	it must "return a WishboneBusMasterSlaveMap containing the data-only bus as the only master" in spinalContext { () =>
+	it must "return a WishboneBusMasterSlaveMap containing the device data bus as the only master" in spinalContext { () =>
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val map = bridge.dbusDeviceMapFor(dbus => dbus.ADR =/= 0, anyNumberOfStubDataOnlySelectorsFor(bridge):_*)
-		map.masters must equal(Seq(bridge.io.devices.dataOnly))
+		map.masters must equal(Seq(bridge.io.devices.dbus))
 	}
 
-	private def anyNumberOfStubDataOnlySelectorsFor(bridge: CpuBusBridge): Seq[(Wishbone, Wishbone => Bool)] = anyNumberOfStubDataOnlySelectorsFor(bridge.io.devices.dataOnly.config)
+	private def anyNumberOfStubDataOnlySelectorsFor(bridge: CpuBusBridge): Seq[(Wishbone, Wishbone => Bool)] = anyNumberOfStubDataOnlySelectorsFor(bridge.io.devices.dbus.config)
 
 	private def anyNumberOfStubDataOnlySelectorsFor(slaveConfig: WishboneConfig) = Seq.fill(Random.between(0, 10)) { stubDataOnlySelectorFor(slaveConfig) }
 
