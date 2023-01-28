@@ -46,7 +46,6 @@ class CpuBusBridge(cpuBusConfig: WishboneConfig, deviceBusConfig: WishboneConfig
 		firstDevice.mustNotBeNull("firstDevice", "At least one executable device must be specified to provide the CPU with instructions")
 		otherDevices.mustNotContainNull("otherDevices", "When more than one executable device is used all of them must be specified")
 
-		// TODO: THE SELECTOR TUPLE MUST NOT BE NULL, OTHERWISE DEREFERENCING LIKE device._2._1 WILL BE A NULL REF EXCEPTION BECAUSE device._2 IS NULL...
 		val allDevices = firstDevice +: otherDevices
 		val allDeviceMappings = allDevices.flatMap { case (slave, (dbusSelector, ibusSelector)) => Seq(
 			(io.devices.executable, dbusSelector, slave),

@@ -162,6 +162,12 @@ class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspec
 		thrown.getMessage must (include("arg=firstDevice") and include("null"))
 	}
 
+	it must "not accept a null selector tuple" in spinalContext { () =>
+		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
+		val thrown = the [Exception] thrownBy(bridge.executableDeviceMapFor((WishboneTestDoubles.dummy(), null)))
+		thrown.getClass mustNot be(a [NullPointerException])
+	}
+
 	it must "not accept null otherDevices" in spinalContext { () =>
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val thrown = the [IllegalArgumentException] thrownBy(bridge.executableDeviceMapFor(dummyExecutableDevice(), null))
@@ -175,6 +181,13 @@ class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspec
 		val devicesContainingNull = Random.shuffle(Seq.fill(Random.between(2, 10)) { dummyExecutableDevice() } :+ null)
 		val thrown = the [IllegalArgumentException] thrownBy(bridge.executableDeviceMapFor(dummyExecutableDevice(), devicesContainingNull:_*))
 		thrown.getMessage must (include("arg=otherDevices") and include("null"))
+	}
+
+	it must "not accept a null selector tuple in otherDevices" in spinalContext { () =>
+		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
+		val devicesContainingNull = Random.shuffle(Seq.fill(Random.between(2, 10)) { dummyExecutableDevice() } :+ (WishboneTestDoubles.dummy(), null))
+		val thrown = the [Exception] thrownBy(bridge.executableDeviceMapFor(dummyExecutableDevice(), devicesContainingNull:_*))
+		thrown.getClass mustNot be(a [NullPointerException])
 	}
 
 	it must "return a WishboneBusMasterSlaveMap containing the executable bus and ibus as the only two masters, in that order" in spinalContext { () =>
