@@ -31,25 +31,29 @@ class CpuBusBridge(cpuBusConfig: WishboneConfig, deviceBusConfig: WishboneConfig
 		executableDeviceSelector: Wishbone => Bool,
 		dataOnlyDeviceSelectors: (Wishbone, Wishbone => Bool)*): WishboneBusMasterSlaveMap = {
 
-/* TODO: THIS SORT OF THING:
-		val instructions = slave(new Wishbone(bridge.io.devices.executable.config))
-		val data = slave(new Wishbone(bridge.io.devices.dataOnly.config))
+		executableDeviceSelector.mustNotBeNull("executableDeviceSelector", "A selector for multiplexing the dbus to the executable devices must be specified")
+		dataOnlyDeviceSelectors.mustNotContainNull("dataOnlyDeviceSelectors", "When data-only devices are used, all data-only dbus selectors must be specified")
 
-		val dbusDeviceMap = bridge.dbusDeviceMapFor(
-			executableDeviceSelector=dbus => dbus.ADR(3),
-			(data -> (dbus => !dbus.ADR(3))))
-
-		val executableDeviceMap = bridge.executableDeviceMapFor(
-			(instructions -> (dbus => dbus.ADR(3), ibus => ibus.ADR(3))))
-*/
-		null
+		WishboneBusMasterSlaveMap(
+			(io.devices.dataOnly, executableDeviceSelector, io.devices.dbusToExecutableBridge),
+			dataOnlyDeviceSelectors.map(selector => (io.devices.dataOnly, selector._2, selector._1)):_*)
 	}
 
 	def executableDeviceMapFor(
 		firstDevice: (Wishbone, (Wishbone => Bool, Wishbone => Bool)),
 		otherDevices: (Wishbone, (Wishbone => Bool, Wishbone => Bool))*): WishboneBusMasterSlaveMap = {
 
-		null
+		firstDevice.mustNotBeNull("firstDevice", "At least one executable device must be specified to provide the CPU with instructions")
+		otherDevices.mustNotContainNull("otherDevices", "When more than one executable device is used all of them must be specified")
+
+		// TODO: THE SELECTOR TUPLE MUST NOT BE NULL, OTHERWISE DEREFERENCING LIKE device._2._1 WILL BE A NULL REF EXCEPTION BECAUSE device._2 IS NULL...
+		val allDevices = firstDevice +: otherDevices
+		val allDeviceMappings = allDevices.flatMap { case (slave, (dbusSelector, ibusSelector)) => Seq(
+			(io.devices.executable, dbusSelector, slave),
+			(io.devices.ibus, ibusSelector, slave))
+		}
+
+		WishboneBusMasterSlaveMap(allDeviceMappings.head, allDeviceMappings.tail:_*)
 	}
 }
 
@@ -64,11 +68,10 @@ object CpuBusBridge {
 		}
 
 		val devices = new Bundle {
-			val dataOnly = master(new Wishbone(deviceBusConfig))
-			val executable = master(new Wishbone(deviceBusConfig))
-
 			val ibus = master(new Wishbone(deviceBusConfig))
+			val dataOnly = master(new Wishbone(deviceBusConfig)) // TODO: RENAME THIS TO dbus
 			val dbusToExecutableBridge = slave(new Wishbone(deviceBusConfig))
+			val executable = master(new Wishbone(deviceBusConfig))
 		}
 	}
 

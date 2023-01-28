@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.0    git head : 4e3563a282582b41f4eaafc503787757251d23ea
 // Component : Core
-// Git hash  : 662004382189a390ac470b998a9fbe089b2f25c6
+// Git hash  : 0e070ca66e014d5d14e8788f51469370f4b40ee1
 
 `timescale 1ns/1ps
 
@@ -15,8 +15,8 @@ module Core (
 
   wire                cpu_1_interrupts_external;
   wire                cpu_1_interrupts_timer;
-  wire                dataOnlySlaveMap_masters_0_slaveSelects_0;
-  wire                dataOnlySlaveMap_masters_0_slaveSelects_1;
+  wire                dbusSlaveMap_masters_0_slaveSelects_0;
+  wire                dbusSlaveMap_masters_0_slaveSelects_1;
   wire                executableSlaveMap_masters_0_slaveSelects_0;
   wire                executableSlaveMap_masters_0_slaveSelects_1;
   wire                executableSlaveMap_masters_1_slaveSelects_0;
@@ -159,28 +159,28 @@ module Core (
   wire       [31:0]   bridge_cpu_dbus_DAT_MISO;
   wire                bridge_cpu_dbus_ACK;
   wire                bridge_cpu_dbus_ERR;
-  wire       [31:0]   bridge_devices_dataOnly_DAT_MOSI;
-  wire       [29:0]   bridge_devices_dataOnly_ADR;
-  wire                bridge_devices_dataOnly_CYC;
-  wire       [3:0]    bridge_devices_dataOnly_SEL;
-  wire                bridge_devices_dataOnly_STB;
-  wire                bridge_devices_dataOnly_WE;
-  wire       [31:0]   bridge_devices_executable_DAT_MOSI;
-  wire       [29:0]   bridge_devices_executable_ADR;
-  wire                bridge_devices_executable_CYC;
-  wire       [3:0]    bridge_devices_executable_SEL;
-  wire                bridge_devices_executable_STB;
-  wire                bridge_devices_executable_WE;
   wire       [31:0]   bridge_devices_ibus_DAT_MOSI;
   wire       [29:0]   bridge_devices_ibus_ADR;
   wire                bridge_devices_ibus_CYC;
   wire       [3:0]    bridge_devices_ibus_SEL;
   wire                bridge_devices_ibus_STB;
   wire                bridge_devices_ibus_WE;
+  wire       [31:0]   bridge_devices_dataOnly_DAT_MOSI;
+  wire       [29:0]   bridge_devices_dataOnly_ADR;
+  wire                bridge_devices_dataOnly_CYC;
+  wire       [3:0]    bridge_devices_dataOnly_SEL;
+  wire                bridge_devices_dataOnly_STB;
+  wire                bridge_devices_dataOnly_WE;
   wire       [31:0]   bridge_devices_dbusToExecutableBridge_DAT_MISO;
   wire                bridge_devices_dbusToExecutableBridge_ACK;
-  wire       [0:0]    dataOnlySlaveMap_masters_0_index;
-  wire                dataOnlySlaveMap_masters_0_isValid;
+  wire       [31:0]   bridge_devices_executable_DAT_MOSI;
+  wire       [29:0]   bridge_devices_executable_ADR;
+  wire                bridge_devices_executable_CYC;
+  wire       [3:0]    bridge_devices_executable_SEL;
+  wire                bridge_devices_executable_STB;
+  wire                bridge_devices_executable_WE;
+  wire       [0:0]    dbusSlaveMap_masters_0_index;
+  wire                dbusSlaveMap_masters_0_isValid;
   wire       [0:0]    executableSlaveMap_masters_0_index;
   wire                executableSlaveMap_masters_0_isValid;
   wire       [0:0]    executableSlaveMap_masters_1_index;
@@ -599,14 +599,14 @@ module Core (
     .slave_SEL       (dataSpramBlockWidthAdjusted_slave_SEL[3:0]       )  //o
   );
   WishboneBusAddressMappingAdapter ledDeviceWidthAdjusted (
-    .master_CYC      (dbusOnlySlaveMux_slaves_0_CYC               ), //i
-    .master_STB      (dbusOnlySlaveMux_slaves_0_STB               ), //i
+    .master_CYC      (dbusOnlySlaveMux_slaves_1_CYC               ), //i
+    .master_STB      (dbusOnlySlaveMux_slaves_1_STB               ), //i
     .master_ACK      (ledDeviceWidthAdjusted_master_ACK           ), //o
-    .master_WE       (dbusOnlySlaveMux_slaves_0_WE                ), //i
-    .master_ADR      (dbusOnlySlaveMux_slaves_0_ADR[29:0]         ), //i
+    .master_WE       (dbusOnlySlaveMux_slaves_1_WE                ), //i
+    .master_ADR      (dbusOnlySlaveMux_slaves_1_ADR[29:0]         ), //i
     .master_DAT_MISO (ledDeviceWidthAdjusted_master_DAT_MISO[31:0]), //o
-    .master_DAT_MOSI (dbusOnlySlaveMux_slaves_0_DAT_MOSI[31:0]    ), //i
-    .master_SEL      (dbusOnlySlaveMux_slaves_0_SEL[3:0]          ), //i
+    .master_DAT_MOSI (dbusOnlySlaveMux_slaves_1_DAT_MOSI[31:0]    ), //i
+    .master_SEL      (dbusOnlySlaveMux_slaves_1_SEL[3:0]          ), //i
     .slave_CYC       (ledDeviceWidthAdjusted_slave_CYC            ), //o
     .slave_STB       (ledDeviceWidthAdjusted_slave_STB            ), //o
     .slave_ACK       (ledDevice_io_wishbone_ACK                   ), //i
@@ -639,22 +639,6 @@ module Core (
     .cpu_dbus_ERR                            (bridge_cpu_dbus_ERR                                 ), //o
     .cpu_dbus_CTI                            (cpu_1_dbus_CTI[2:0]                                 ), //i
     .cpu_dbus_BTE                            (cpu_1_dbus_BTE[1:0]                                 ), //i
-    .devices_dataOnly_CYC                    (bridge_devices_dataOnly_CYC                         ), //o
-    .devices_dataOnly_STB                    (bridge_devices_dataOnly_STB                         ), //o
-    .devices_dataOnly_ACK                    (dbusOnlySlaveMux_master_ACK                         ), //i
-    .devices_dataOnly_WE                     (bridge_devices_dataOnly_WE                          ), //o
-    .devices_dataOnly_ADR                    (bridge_devices_dataOnly_ADR[29:0]                   ), //o
-    .devices_dataOnly_DAT_MISO               (dbusOnlySlaveMux_master_DAT_MISO[31:0]              ), //i
-    .devices_dataOnly_DAT_MOSI               (bridge_devices_dataOnly_DAT_MOSI[31:0]              ), //o
-    .devices_dataOnly_SEL                    (bridge_devices_dataOnly_SEL[3:0]                    ), //o
-    .devices_executable_CYC                  (bridge_devices_executable_CYC                       ), //o
-    .devices_executable_STB                  (bridge_devices_executable_STB                       ), //o
-    .devices_executable_ACK                  (wishboneBusSlaveMultiplexer_3_master_ACK            ), //i
-    .devices_executable_WE                   (bridge_devices_executable_WE                        ), //o
-    .devices_executable_ADR                  (bridge_devices_executable_ADR[29:0]                 ), //o
-    .devices_executable_DAT_MISO             (wishboneBusSlaveMultiplexer_3_master_DAT_MISO[31:0] ), //i
-    .devices_executable_DAT_MOSI             (bridge_devices_executable_DAT_MOSI[31:0]            ), //o
-    .devices_executable_SEL                  (bridge_devices_executable_SEL[3:0]                  ), //o
     .devices_ibus_CYC                        (bridge_devices_ibus_CYC                             ), //o
     .devices_ibus_STB                        (bridge_devices_ibus_STB                             ), //o
     .devices_ibus_ACK                        (wishboneBusSlaveMultiplexer_4_master_ACK            ), //i
@@ -663,20 +647,36 @@ module Core (
     .devices_ibus_DAT_MISO                   (wishboneBusSlaveMultiplexer_4_master_DAT_MISO[31:0] ), //i
     .devices_ibus_DAT_MOSI                   (bridge_devices_ibus_DAT_MOSI[31:0]                  ), //o
     .devices_ibus_SEL                        (bridge_devices_ibus_SEL[3:0]                        ), //o
-    .devices_dbusToExecutableBridge_CYC      (dbusOnlySlaveMux_slaves_1_CYC                       ), //i
-    .devices_dbusToExecutableBridge_STB      (dbusOnlySlaveMux_slaves_1_STB                       ), //i
+    .devices_dataOnly_CYC                    (bridge_devices_dataOnly_CYC                         ), //o
+    .devices_dataOnly_STB                    (bridge_devices_dataOnly_STB                         ), //o
+    .devices_dataOnly_ACK                    (dbusOnlySlaveMux_master_ACK                         ), //i
+    .devices_dataOnly_WE                     (bridge_devices_dataOnly_WE                          ), //o
+    .devices_dataOnly_ADR                    (bridge_devices_dataOnly_ADR[29:0]                   ), //o
+    .devices_dataOnly_DAT_MISO               (dbusOnlySlaveMux_master_DAT_MISO[31:0]              ), //i
+    .devices_dataOnly_DAT_MOSI               (bridge_devices_dataOnly_DAT_MOSI[31:0]              ), //o
+    .devices_dataOnly_SEL                    (bridge_devices_dataOnly_SEL[3:0]                    ), //o
+    .devices_dbusToExecutableBridge_CYC      (dbusOnlySlaveMux_slaves_0_CYC                       ), //i
+    .devices_dbusToExecutableBridge_STB      (dbusOnlySlaveMux_slaves_0_STB                       ), //i
     .devices_dbusToExecutableBridge_ACK      (bridge_devices_dbusToExecutableBridge_ACK           ), //o
-    .devices_dbusToExecutableBridge_WE       (dbusOnlySlaveMux_slaves_1_WE                        ), //i
-    .devices_dbusToExecutableBridge_ADR      (dbusOnlySlaveMux_slaves_1_ADR[29:0]                 ), //i
+    .devices_dbusToExecutableBridge_WE       (dbusOnlySlaveMux_slaves_0_WE                        ), //i
+    .devices_dbusToExecutableBridge_ADR      (dbusOnlySlaveMux_slaves_0_ADR[29:0]                 ), //i
     .devices_dbusToExecutableBridge_DAT_MISO (bridge_devices_dbusToExecutableBridge_DAT_MISO[31:0]), //o
-    .devices_dbusToExecutableBridge_DAT_MOSI (dbusOnlySlaveMux_slaves_1_DAT_MOSI[31:0]            ), //i
-    .devices_dbusToExecutableBridge_SEL      (dbusOnlySlaveMux_slaves_1_SEL[3:0]                  )  //i
+    .devices_dbusToExecutableBridge_DAT_MOSI (dbusOnlySlaveMux_slaves_0_DAT_MOSI[31:0]            ), //i
+    .devices_dbusToExecutableBridge_SEL      (dbusOnlySlaveMux_slaves_0_SEL[3:0]                  ), //i
+    .devices_executable_CYC                  (bridge_devices_executable_CYC                       ), //o
+    .devices_executable_STB                  (bridge_devices_executable_STB                       ), //o
+    .devices_executable_ACK                  (wishboneBusSlaveMultiplexer_3_master_ACK            ), //i
+    .devices_executable_WE                   (bridge_devices_executable_WE                        ), //o
+    .devices_executable_ADR                  (bridge_devices_executable_ADR[29:0]                 ), //o
+    .devices_executable_DAT_MISO             (wishboneBusSlaveMultiplexer_3_master_DAT_MISO[31:0] ), //i
+    .devices_executable_DAT_MOSI             (bridge_devices_executable_DAT_MOSI[31:0]            ), //o
+    .devices_executable_SEL                  (bridge_devices_executable_SEL[3:0]                  )  //o
   );
-  WishboneBusMasterSlaveMap_1 dataOnlySlaveMap (
-    .masters_0_index          (dataOnlySlaveMap_masters_0_index         ), //o
-    .masters_0_isValid        (dataOnlySlaveMap_masters_0_isValid       ), //o
-    .masters_0_slaveSelects_0 (dataOnlySlaveMap_masters_0_slaveSelects_0), //i
-    .masters_0_slaveSelects_1 (dataOnlySlaveMap_masters_0_slaveSelects_1)  //i
+  WishboneBusMasterSlaveMap_1 dbusSlaveMap (
+    .masters_0_index          (dbusSlaveMap_masters_0_index         ), //o
+    .masters_0_isValid        (dbusSlaveMap_masters_0_isValid       ), //o
+    .masters_0_slaveSelects_0 (dbusSlaveMap_masters_0_slaveSelects_0), //i
+    .masters_0_slaveSelects_1 (dbusSlaveMap_masters_0_slaveSelects_1)  //i
   );
   WishboneBusMasterSlaveMap executableSlaveMap (
     .masters_0_index          (executableSlaveMap_masters_0_index         ), //o
@@ -699,21 +699,21 @@ module Core (
     .master_SEL        (bridge_devices_dataOnly_SEL[3:0]                    ), //i
     .slaves_0_CYC      (dbusOnlySlaveMux_slaves_0_CYC                       ), //o
     .slaves_0_STB      (dbusOnlySlaveMux_slaves_0_STB                       ), //o
-    .slaves_0_ACK      (ledDeviceWidthAdjusted_master_ACK                   ), //i
+    .slaves_0_ACK      (bridge_devices_dbusToExecutableBridge_ACK           ), //i
     .slaves_0_WE       (dbusOnlySlaveMux_slaves_0_WE                        ), //o
     .slaves_0_ADR      (dbusOnlySlaveMux_slaves_0_ADR[29:0]                 ), //o
-    .slaves_0_DAT_MISO (ledDeviceWidthAdjusted_master_DAT_MISO[31:0]        ), //i
+    .slaves_0_DAT_MISO (bridge_devices_dbusToExecutableBridge_DAT_MISO[31:0]), //i
     .slaves_0_DAT_MOSI (dbusOnlySlaveMux_slaves_0_DAT_MOSI[31:0]            ), //o
     .slaves_0_SEL      (dbusOnlySlaveMux_slaves_0_SEL[3:0]                  ), //o
     .slaves_1_CYC      (dbusOnlySlaveMux_slaves_1_CYC                       ), //o
     .slaves_1_STB      (dbusOnlySlaveMux_slaves_1_STB                       ), //o
-    .slaves_1_ACK      (bridge_devices_dbusToExecutableBridge_ACK           ), //i
+    .slaves_1_ACK      (ledDeviceWidthAdjusted_master_ACK                   ), //i
     .slaves_1_WE       (dbusOnlySlaveMux_slaves_1_WE                        ), //o
     .slaves_1_ADR      (dbusOnlySlaveMux_slaves_1_ADR[29:0]                 ), //o
-    .slaves_1_DAT_MISO (bridge_devices_dbusToExecutableBridge_DAT_MISO[31:0]), //i
+    .slaves_1_DAT_MISO (ledDeviceWidthAdjusted_master_DAT_MISO[31:0]        ), //i
     .slaves_1_DAT_MOSI (dbusOnlySlaveMux_slaves_1_DAT_MOSI[31:0]            ), //o
     .slaves_1_SEL      (dbusOnlySlaveMux_slaves_1_SEL[3:0]                  ), //o
-    .selector          (dataOnlySlaveMap_masters_0_index                    )  //i
+    .selector          (dbusSlaveMap_masters_0_index                        )  //i
   );
   PriorityEncoder_1 priorityEncoder_2 (
     .inputs_0 (sharedSlaveArbiters_0_0_io_encoder_inputs_0), //i
@@ -873,16 +873,16 @@ module Core (
   assign ledR = ledDevice_io_ledR; // @[Core.scala 56:17]
   assign ledG = ledDevice_io_ledG; // @[Core.scala 57:17]
   assign ledB = ledDevice_io_ledB; // @[Core.scala 58:17]
-  assign dataOnlySlaveMap_masters_0_slaveSelects_0 = bridge_devices_dataOnly_ADR[14]; // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign dataOnlySlaveMap_masters_0_slaveSelects_1 = (! bridge_devices_dataOnly_ADR[14]); // @[WishboneBusMasterSlaveMap.scala 98:90]
+  assign dbusSlaveMap_masters_0_slaveSelects_0 = (! bridge_devices_dataOnly_ADR[14]); // @[WishboneBusMasterSlaveMap.scala 98:90]
+  assign dbusSlaveMap_masters_0_slaveSelects_1 = bridge_devices_dataOnly_ADR[14]; // @[WishboneBusMasterSlaveMap.scala 98:90]
   assign executableSlaveMap_masters_0_slaveSelects_0 = ((! bridge_devices_executable_ADR[14]) && (! bridge_devices_executable_ADR[6])); // @[WishboneBusMasterSlaveMap.scala 98:90]
   assign executableSlaveMap_masters_1_slaveSelects_0 = ((! bridge_devices_ibus_ADR[14]) && (! bridge_devices_ibus_ADR[6])); // @[WishboneBusMasterSlaveMap.scala 98:90]
   assign executableSlaveMap_masters_0_slaveSelects_1 = ((! bridge_devices_executable_ADR[14]) && bridge_devices_executable_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 98:90]
   assign executableSlaveMap_masters_1_slaveSelects_1 = ((! bridge_devices_ibus_ADR[14]) && bridge_devices_ibus_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign sharedSlaveArbiters_0_0_io_masters_0_request = (bridge_devices_executable_CYC && (executableSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 231:76]
-  assign sharedSlaveArbiters_0_0_io_masters_1_request = (bridge_devices_ibus_CYC && (executableSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 231:76]
-  assign sharedSlaveArbiters_1_0_io_masters_0_request = (bridge_devices_executable_CYC && (executableSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 231:76]
-  assign sharedSlaveArbiters_1_0_io_masters_1_request = (bridge_devices_ibus_CYC && (executableSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 231:76]
+  assign sharedSlaveArbiters_0_0_io_masters_0_request = (bridge_devices_executable_CYC && (executableSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 215:76]
+  assign sharedSlaveArbiters_0_0_io_masters_1_request = (bridge_devices_ibus_CYC && (executableSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 215:76]
+  assign sharedSlaveArbiters_1_0_io_masters_0_request = (bridge_devices_executable_CYC && (executableSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 215:76]
+  assign sharedSlaveArbiters_1_0_io_masters_1_request = (bridge_devices_ibus_CYC && (executableSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 215:76]
   assign masterMuxes_0_1_0_ACK = masterMuxes_0_0_masters_0_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
   assign masterMuxes_0_1_0_DAT_MISO = masterMuxes_0_0_masters_0_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 80:112]
   assign masterMuxes_0_1_1_ACK = masterMuxes_0_0_masters_1_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
@@ -1273,22 +1273,6 @@ module CpuBusBridge (
   output              cpu_dbus_ERR,
   input      [2:0]    cpu_dbus_CTI,
   input      [1:0]    cpu_dbus_BTE,
-  output              devices_dataOnly_CYC,
-  output              devices_dataOnly_STB,
-  input               devices_dataOnly_ACK,
-  output              devices_dataOnly_WE,
-  output     [29:0]   devices_dataOnly_ADR,
-  input      [31:0]   devices_dataOnly_DAT_MISO,
-  output     [31:0]   devices_dataOnly_DAT_MOSI,
-  output     [3:0]    devices_dataOnly_SEL,
-  output              devices_executable_CYC,
-  output              devices_executable_STB,
-  input               devices_executable_ACK,
-  output              devices_executable_WE,
-  output     [29:0]   devices_executable_ADR,
-  input      [31:0]   devices_executable_DAT_MISO,
-  output     [31:0]   devices_executable_DAT_MOSI,
-  output     [3:0]    devices_executable_SEL,
   output              devices_ibus_CYC,
   output              devices_ibus_STB,
   input               devices_ibus_ACK,
@@ -1297,6 +1281,14 @@ module CpuBusBridge (
   input      [31:0]   devices_ibus_DAT_MISO,
   output     [31:0]   devices_ibus_DAT_MOSI,
   output     [3:0]    devices_ibus_SEL,
+  output              devices_dataOnly_CYC,
+  output              devices_dataOnly_STB,
+  input               devices_dataOnly_ACK,
+  output              devices_dataOnly_WE,
+  output     [29:0]   devices_dataOnly_ADR,
+  input      [31:0]   devices_dataOnly_DAT_MISO,
+  output     [31:0]   devices_dataOnly_DAT_MOSI,
+  output     [3:0]    devices_dataOnly_SEL,
   input               devices_dbusToExecutableBridge_CYC,
   input               devices_dbusToExecutableBridge_STB,
   output              devices_dbusToExecutableBridge_ACK,
@@ -1304,7 +1296,15 @@ module CpuBusBridge (
   input      [29:0]   devices_dbusToExecutableBridge_ADR,
   output     [31:0]   devices_dbusToExecutableBridge_DAT_MISO,
   input      [31:0]   devices_dbusToExecutableBridge_DAT_MOSI,
-  input      [3:0]    devices_dbusToExecutableBridge_SEL
+  input      [3:0]    devices_dbusToExecutableBridge_SEL,
+  output              devices_executable_CYC,
+  output              devices_executable_STB,
+  input               devices_executable_ACK,
+  output              devices_executable_WE,
+  output     [29:0]   devices_executable_ADR,
+  input      [31:0]   devices_executable_DAT_MISO,
+  output     [31:0]   devices_executable_DAT_MOSI,
+  output     [3:0]    devices_executable_SEL
 );
 
   wire       [31:0]   cpu_ibus_adapter_io_wbm_DAT_MISO;

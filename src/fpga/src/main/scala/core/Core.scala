@@ -181,34 +181,21 @@ class Core extends Component {
 	bridge.io.cpu.ibus <> cpu.io.ibus // TODO: CAN ENCAPSULATE THIS IN CpuBusBridge.apply() INSTEAD
 	bridge.io.cpu.dbus <> cpu.io.dbus
 
-	// remember to test that dbus appears first in the shared slave map, to allow priority encoding
+	private val dbusSlaveMap = bridge.dbusDeviceMapFor(
+		ibus => !ibus.ADR(14),
+		(ledDeviceWidthAdjusted.io.master -> (dbus => dbus.ADR(14))))
 
-	// def dedicatedDbusSlaveMapFor(sharedSlaveSelector: Wishbone => Bool, dedicatedSlaveSelectors: (slave: Wishbone, selector: Wishbone => Bool)*): WishboneBusMasterSlaveMap = WishboneBusMasterSlaveMap(using dbusAdapter.io.wbs for the master), ie.
-	// WishboneBusMasterSlaveMap(
-	//   (dbusAdapter.io.wbs, bus => bus.ADR(14), ledDeviceWidthAdjusted.io.master),
-	//   (dbusAdapter.io.wbs, bus => !bus.ADR(14), dbusToSharedSlavesBridge))
-
-	// def sharedSlaveMapFor(map: (slave: Wishbone, (dbusSelector: Wishbone => Bool, ibusSelector: Wishbone => Bool))*): WishboneBusMasterSlaveMap = WishboneBusMasterSlaveMap(using dbus and ibus for the masters), ie.
-	// WishboneBusMasterSlaveMap(
-	//   (dbus, bus => !bus.ADR(14) && !bus.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
-	//   (ibus, bus => !bus.ADR(14) && !bus.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
-	//   (dbus, bus => !bus.ADR(14) && bus.ADR(6), dataSpramBlockWidthAdjusted.io.master),
-	//   (ibus, bus => !bus.ADR(14) && bus.ADR(6), dataSpramBlockWidthAdjusted.io.master))
-
-
-	private val dataOnlySlaveMap = WishboneBusMasterSlaveMap(
-		(bridge.io.devices.dataOnly, m => m.ADR(14), ledDeviceWidthAdjusted.io.master),
-		(bridge.io.devices.dataOnly, m => !m.ADR(14), bridge.io.devices.dbusToExecutableBridge))
-
-	private val executableSlaveMap = WishboneBusMasterSlaveMap(
-		(bridge.io.devices.executable, m => !m.ADR(14) && !m.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
-		(bridge.io.devices.ibus, m => !m.ADR(14) && !m.ADR(6), instructionEbramBlockWidthAdjusted.io.master),
-		(bridge.io.devices.executable, m => !m.ADR(14) && m.ADR(6), dataSpramBlockWidthAdjusted.io.master),
-		(bridge.io.devices.ibus, m => !m.ADR(14) && m.ADR(6), dataSpramBlockWidthAdjusted.io.master))
+	private val executableSlaveMap = bridge.executableDeviceMapFor(
+		instructionEbramBlockWidthAdjusted.io.master -> (
+			dbus => !dbus.ADR(14) && !dbus.ADR(6),
+			ibus => !ibus.ADR(14) && !ibus.ADR(6)),
+		dataSpramBlockWidthAdjusted.io.master -> (
+			dbus => !dbus.ADR(14) && dbus.ADR(6),
+			ibus => !ibus.ADR(14) && ibus.ADR(6)))
 
 
 
-	private val dbusOnlySlaveMux = WishboneBusSlaveMultiplexer(dataOnlySlaveMap.io.masters.head.index, dataOnlySlaveMap.slaves.head, dataOnlySlaveMap.slaves.tail:_*)
+	private val dbusOnlySlaveMux = WishboneBusSlaveMultiplexer(dbusSlaveMap.io.masters.head.index, dbusSlaveMap.slaves.head, dbusSlaveMap.slaves.tail:_*)
 	bridge.io.devices.dataOnly <> dbusOnlySlaveMux.io.master
 
 	private val ibusMasterIndex = executableSlaveMap.masters.indexOf(bridge.io.devices.ibus) // TODO: THIS LOOKUP WANTS PUTTING ON THE WishboneBusMasterSlaveMap CLASS; def masterIoFor(wb): MasterIoBundle
