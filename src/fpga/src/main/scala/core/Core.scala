@@ -198,12 +198,6 @@ class Core extends Component {
 	private val dbusOnlySlaveMux = WishboneBusSlaveMultiplexer(dbusSlaveMap.io.masters.head.index, dbusSlaveMap.slaves.head, dbusSlaveMap.slaves.tail:_*)
 	bridge.io.devices.dbus <> dbusOnlySlaveMux.io.master
 
-	private val ibusMasterIndex = executableSlaveMap.masters.indexOf(bridge.io.devices.ibus) // TODO: THIS LOOKUP WANTS PUTTING ON THE WishboneBusMasterSlaveMap CLASS; def masterIoFor(wb): MasterIoBundle
-	private val dbusMasterIndex = executableSlaveMap.masters.indexOf(bridge.io.devices.executable) // TODO: WishboneBusMasterSlaveMap CLASS ALSO WANTS; def indexOfMaster(wb): Int && def indexOfSlave(wb): Int
-
-	private val ibusSlaveSelector = executableSlaveMap.io.masters(ibusMasterIndex)
-	private val dbusSlaveSelector = executableSlaveMap.io.masters(dbusMasterIndex)
-
 	private val sharedSlaveArbiters = for (slaveIndex <- 0 until executableSlaveMap.slaves.length) yield {
 		val encoder = new PriorityEncoder(numberOfInputs=executableSlaveMap.masters.length)
 		val sharedSlaveArbiter = new MultiMasterSingleSlaveArbiter(numberOfMasters=executableSlaveMap.masters.length)
@@ -212,12 +206,11 @@ class Core extends Component {
 		sharedSlaveArbiter.io.encoder.output := encoder.io.output
 
 		executableSlaveMap.masters.zipWithIndex.foreach { case (master, masterIndex) =>
-			sharedSlaveArbiter.io.masters(masterIndex).request := master.CYC && ibusSlaveSelector.index === slaveIndex
+			sharedSlaveArbiter.io.masters(masterIndex).request := master.CYC && executableSlaveMap.io.masters(masterIndex).index === slaveIndex
 		}
 
 		(sharedSlaveArbiter, executableSlaveMap.slaves(slaveIndex))
 	}
-
 
 	private val masterMuxes = sharedSlaveArbiters.map { case (arbiter, slave) =>
 		val masters = executableSlaveMap.masters.map(master => new Wishbone(master.config))
