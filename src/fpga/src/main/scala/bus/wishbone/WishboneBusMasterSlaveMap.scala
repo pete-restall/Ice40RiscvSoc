@@ -7,6 +7,7 @@ import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
 import uk.co.lophtware.msfreference.multiplexing.SimpleEncoder
 
+// TODO: MOST OF THIS CAN BE MADE INTO A GENERIC bus.MasterSlaveMap[TBus] - IT'S ONLY THE SAME-CONFIGURATION TESTS THAT ARE WISHBONE-SPECIFIC
 class WishboneBusMasterSlaveMap(val masters: Seq[Wishbone], val slaves: Seq[Wishbone]) extends Component {
 	masters.mustNotContainNull("masters", "Wishbone masters must all be specified")
 	if (masters.length < 1) {
