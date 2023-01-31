@@ -4,16 +4,12 @@ import org.scalatest.flatspec._
 import org.scalatest.Suite
 
 class CrossbarArbiterSimulationTestSuite extends AnyFlatSpec {
-	override def nestedSuites: IndexedSeq[Suite] =
-		createTestCasesWith(dutCreatedViaApplyFactory=false)// ++
-		//createTestCasesWith(dutCreatedViaApplyFactory=true)
-
-	private def createTestCasesWith(dutCreatedViaApplyFactory: Boolean) = Array(
-		new CrossbarArbiterSimulationTest(numberOfMasters=1, numberOfSlaves=1)/*,
+	override def nestedSuites: IndexedSeq[Suite] = Array(
+		new CrossbarArbiterSimulationTest(numberOfMasters=1, numberOfSlaves=1),
 		new CrossbarArbiterSimulationTest(numberOfMasters=1, numberOfSlaves=2),
 		new CrossbarArbiterSimulationTest(numberOfMasters=2, numberOfSlaves=1),
 		new CrossbarArbiterSimulationTest(numberOfMasters=2, numberOfSlaves=2),
 		new CrossbarArbiterSimulationTest(numberOfMasters=2, numberOfSlaves=3),
 		new CrossbarArbiterSimulationTest(numberOfMasters=2, numberOfSlaves=3),
-		new CrossbarArbiterSimulationTest(numberOfMasters=7, numberOfSlaves=4)*/)
+		new CrossbarArbiterSimulationTest(numberOfMasters=7, numberOfSlaves=4))
 }

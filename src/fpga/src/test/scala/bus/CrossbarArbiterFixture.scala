@@ -12,9 +12,12 @@ class CrossbarArbiterFixture(numberOfMasters: Int, numberOfSlaves: Int) extends 
 
 	def reset(): Unit = {
 		clockDomain.assertReset()
+		clockInactive()
 		sleep(10)
 		clockDomain.deassertReset()
 	}
+
+	def clockInactive(): Unit = clockDomain.fallingEdge()
 
 	def clock(): Unit = {
 		clockActive()
@@ -24,6 +27,4 @@ class CrossbarArbiterFixture(numberOfMasters: Int, numberOfSlaves: Int) extends 
 	}
 
 	def clockActive(): Unit = clockDomain.risingEdge()
-
-	def clockInactive(): Unit = clockDomain.fallingEdge()
 }
