@@ -10,6 +10,7 @@ class CrossbarArbiterSimulationTestSuite extends AnyFlatSpec {
 		new CrossbarArbiterSimulationTest(numberOfMasters=2, numberOfSlaves=1),
 		new CrossbarArbiterSimulationTest(numberOfMasters=2, numberOfSlaves=2),
 		new CrossbarArbiterSimulationTest(numberOfMasters=2, numberOfSlaves=3),
-		new CrossbarArbiterSimulationTest(numberOfMasters=2, numberOfSlaves=3),
+		new CrossbarArbiterSimulationTest(numberOfMasters=3, numberOfSlaves=3),
+		new CrossbarArbiterSimulationTest(numberOfMasters=3, numberOfSlaves=5),
 		new CrossbarArbiterSimulationTest(numberOfMasters=7, numberOfSlaves=4))
 }
