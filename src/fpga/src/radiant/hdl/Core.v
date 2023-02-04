@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.0    git head : 4e3563a282582b41f4eaafc503787757251d23ea
 // Component : Core
-// Git hash  : 0e070ca66e014d5d14e8788f51469370f4b40ee1
+// Git hash  : bf2d03836f804ec48cdffd5804bef8c7b1474914
 
 `timescale 1ns/1ps
 
@@ -21,10 +21,10 @@ module Core (
   wire                executableSlaveMap_masters_0_slaveSelects_1;
   wire                executableSlaveMap_masters_1_slaveSelects_0;
   wire                executableSlaveMap_masters_1_slaveSelects_1;
-  wire                sharedSlaveArbiters_0_0_io_masters_0_request;
-  wire                sharedSlaveArbiters_0_0_io_masters_1_request;
-  wire                sharedSlaveArbiters_1_0_io_masters_0_request;
-  wire                sharedSlaveArbiters_1_0_io_masters_1_request;
+  wire                crossbarArbiter_1_slaves_0_masters_0_request;
+  wire                crossbarArbiter_1_slaves_0_masters_1_request;
+  wire                crossbarArbiter_1_slaves_1_masters_0_request;
+  wire                crossbarArbiter_1_slaves_1_masters_1_request;
   wire       [31:0]   cpu_1_ibus_DAT_MOSI;
   wire       [29:0]   cpu_1_ibus_ADR;
   wire                cpu_1_ibus_CYC;
@@ -165,12 +165,12 @@ module Core (
   wire       [3:0]    bridge_devices_ibus_SEL;
   wire                bridge_devices_ibus_STB;
   wire                bridge_devices_ibus_WE;
-  wire       [31:0]   bridge_devices_dataOnly_DAT_MOSI;
-  wire       [29:0]   bridge_devices_dataOnly_ADR;
-  wire                bridge_devices_dataOnly_CYC;
-  wire       [3:0]    bridge_devices_dataOnly_SEL;
-  wire                bridge_devices_dataOnly_STB;
-  wire                bridge_devices_dataOnly_WE;
+  wire       [31:0]   bridge_devices_dbus_DAT_MOSI;
+  wire       [29:0]   bridge_devices_dbus_ADR;
+  wire                bridge_devices_dbus_CYC;
+  wire       [3:0]    bridge_devices_dbus_SEL;
+  wire                bridge_devices_dbus_STB;
+  wire                bridge_devices_dbus_WE;
   wire       [31:0]   bridge_devices_dbusToExecutableBridge_DAT_MISO;
   wire                bridge_devices_dbusToExecutableBridge_ACK;
   wire       [31:0]   bridge_devices_executable_DAT_MOSI;
@@ -199,28 +199,28 @@ module Core (
   wire       [3:0]    dbusOnlySlaveMux_slaves_1_SEL;
   wire                dbusOnlySlaveMux_slaves_1_STB;
   wire                dbusOnlySlaveMux_slaves_1_WE;
-  wire       [0:0]    priorityEncoder_2_output_1;
-  wire                priorityEncoder_2_isValid;
-  wire                sharedSlaveArbiters_0_0_io_encoder_inputs_0;
-  wire                sharedSlaveArbiters_0_0_io_encoder_inputs_1;
-  wire       [0:0]    sharedSlaveArbiters_0_0_io_grantedMasterIndex;
-  wire                sharedSlaveArbiters_0_0_io_masters_0_isError;
-  wire                sharedSlaveArbiters_0_0_io_masters_0_isStalled;
-  wire                sharedSlaveArbiters_0_0_io_masters_0_isGranted;
-  wire                sharedSlaveArbiters_0_0_io_masters_1_isError;
-  wire                sharedSlaveArbiters_0_0_io_masters_1_isStalled;
-  wire                sharedSlaveArbiters_0_0_io_masters_1_isGranted;
-  wire       [0:0]    priorityEncoder_3_output_1;
-  wire                priorityEncoder_3_isValid;
-  wire                sharedSlaveArbiters_1_0_io_encoder_inputs_0;
-  wire                sharedSlaveArbiters_1_0_io_encoder_inputs_1;
-  wire       [0:0]    sharedSlaveArbiters_1_0_io_grantedMasterIndex;
-  wire                sharedSlaveArbiters_1_0_io_masters_0_isError;
-  wire                sharedSlaveArbiters_1_0_io_masters_0_isStalled;
-  wire                sharedSlaveArbiters_1_0_io_masters_0_isGranted;
-  wire                sharedSlaveArbiters_1_0_io_masters_1_isError;
-  wire                sharedSlaveArbiters_1_0_io_masters_1_isStalled;
-  wire                sharedSlaveArbiters_1_0_io_masters_1_isGranted;
+  wire                crossbarArbiter_1_slaves_0_encoder_inputs_0;
+  wire                crossbarArbiter_1_slaves_0_encoder_inputs_1;
+  wire       [0:0]    crossbarArbiter_1_slaves_0_grantedMasterIndex;
+  wire                crossbarArbiter_1_slaves_0_masters_0_isError;
+  wire                crossbarArbiter_1_slaves_0_masters_0_isStalled;
+  wire                crossbarArbiter_1_slaves_0_masters_0_isGranted;
+  wire                crossbarArbiter_1_slaves_0_masters_1_isError;
+  wire                crossbarArbiter_1_slaves_0_masters_1_isStalled;
+  wire                crossbarArbiter_1_slaves_0_masters_1_isGranted;
+  wire                crossbarArbiter_1_slaves_1_encoder_inputs_0;
+  wire                crossbarArbiter_1_slaves_1_encoder_inputs_1;
+  wire       [0:0]    crossbarArbiter_1_slaves_1_grantedMasterIndex;
+  wire                crossbarArbiter_1_slaves_1_masters_0_isError;
+  wire                crossbarArbiter_1_slaves_1_masters_0_isStalled;
+  wire                crossbarArbiter_1_slaves_1_masters_0_isGranted;
+  wire                crossbarArbiter_1_slaves_1_masters_1_isError;
+  wire                crossbarArbiter_1_slaves_1_masters_1_isStalled;
+  wire                crossbarArbiter_1_slaves_1_masters_1_isGranted;
+  wire       [0:0]    encoders_0_output_1;
+  wire                encoders_0_isValid;
+  wire       [0:0]    encoders_1_output_1;
+  wire                encoders_1_isValid;
   wire       [31:0]   masterMuxes_0_0_masters_0_DAT_MISO;
   wire                masterMuxes_0_0_masters_0_ACK;
   wire       [31:0]   masterMuxes_0_0_masters_1_DAT_MISO;
@@ -647,14 +647,14 @@ module Core (
     .devices_ibus_DAT_MISO                   (wishboneBusSlaveMultiplexer_4_master_DAT_MISO[31:0] ), //i
     .devices_ibus_DAT_MOSI                   (bridge_devices_ibus_DAT_MOSI[31:0]                  ), //o
     .devices_ibus_SEL                        (bridge_devices_ibus_SEL[3:0]                        ), //o
-    .devices_dataOnly_CYC                    (bridge_devices_dataOnly_CYC                         ), //o
-    .devices_dataOnly_STB                    (bridge_devices_dataOnly_STB                         ), //o
-    .devices_dataOnly_ACK                    (dbusOnlySlaveMux_master_ACK                         ), //i
-    .devices_dataOnly_WE                     (bridge_devices_dataOnly_WE                          ), //o
-    .devices_dataOnly_ADR                    (bridge_devices_dataOnly_ADR[29:0]                   ), //o
-    .devices_dataOnly_DAT_MISO               (dbusOnlySlaveMux_master_DAT_MISO[31:0]              ), //i
-    .devices_dataOnly_DAT_MOSI               (bridge_devices_dataOnly_DAT_MOSI[31:0]              ), //o
-    .devices_dataOnly_SEL                    (bridge_devices_dataOnly_SEL[3:0]                    ), //o
+    .devices_dbus_CYC                        (bridge_devices_dbus_CYC                             ), //o
+    .devices_dbus_STB                        (bridge_devices_dbus_STB                             ), //o
+    .devices_dbus_ACK                        (dbusOnlySlaveMux_master_ACK                         ), //i
+    .devices_dbus_WE                         (bridge_devices_dbus_WE                              ), //o
+    .devices_dbus_ADR                        (bridge_devices_dbus_ADR[29:0]                       ), //o
+    .devices_dbus_DAT_MISO                   (dbusOnlySlaveMux_master_DAT_MISO[31:0]              ), //i
+    .devices_dbus_DAT_MOSI                   (bridge_devices_dbus_DAT_MOSI[31:0]                  ), //o
+    .devices_dbus_SEL                        (bridge_devices_dbus_SEL[3:0]                        ), //o
     .devices_dbusToExecutableBridge_CYC      (dbusOnlySlaveMux_slaves_0_CYC                       ), //i
     .devices_dbusToExecutableBridge_STB      (dbusOnlySlaveMux_slaves_0_STB                       ), //i
     .devices_dbusToExecutableBridge_ACK      (bridge_devices_dbusToExecutableBridge_ACK           ), //o
@@ -689,14 +689,14 @@ module Core (
     .masters_1_slaveSelects_1 (executableSlaveMap_masters_1_slaveSelects_1)  //i
   );
   WishboneBusSlaveMultiplexer_2 dbusOnlySlaveMux (
-    .master_CYC        (bridge_devices_dataOnly_CYC                         ), //i
-    .master_STB        (bridge_devices_dataOnly_STB                         ), //i
+    .master_CYC        (bridge_devices_dbus_CYC                             ), //i
+    .master_STB        (bridge_devices_dbus_STB                             ), //i
     .master_ACK        (dbusOnlySlaveMux_master_ACK                         ), //o
-    .master_WE         (bridge_devices_dataOnly_WE                          ), //i
-    .master_ADR        (bridge_devices_dataOnly_ADR[29:0]                   ), //i
+    .master_WE         (bridge_devices_dbus_WE                              ), //i
+    .master_ADR        (bridge_devices_dbus_ADR[29:0]                       ), //i
     .master_DAT_MISO   (dbusOnlySlaveMux_master_DAT_MISO[31:0]              ), //o
-    .master_DAT_MOSI   (bridge_devices_dataOnly_DAT_MOSI[31:0]              ), //i
-    .master_SEL        (bridge_devices_dataOnly_SEL[3:0]                    ), //i
+    .master_DAT_MOSI   (bridge_devices_dbus_DAT_MOSI[31:0]                  ), //i
+    .master_SEL        (bridge_devices_dbus_SEL[3:0]                        ), //i
     .slaves_0_CYC      (dbusOnlySlaveMux_slaves_0_CYC                       ), //o
     .slaves_0_STB      (dbusOnlySlaveMux_slaves_0_STB                       ), //o
     .slaves_0_ACK      (bridge_devices_dbusToExecutableBridge_ACK           ), //i
@@ -715,51 +715,47 @@ module Core (
     .slaves_1_SEL      (dbusOnlySlaveMux_slaves_1_SEL[3:0]                  ), //o
     .selector          (dbusSlaveMap_masters_0_index                        )  //i
   );
-  PriorityEncoder_1 priorityEncoder_2 (
-    .inputs_0 (sharedSlaveArbiters_0_0_io_encoder_inputs_0), //i
-    .inputs_1 (sharedSlaveArbiters_0_0_io_encoder_inputs_1), //i
-    .output_1 (priorityEncoder_2_output_1                 ), //o
-    .isValid  (priorityEncoder_2_isValid                  )  //o
+  WishboneBusCrossbarArbiter crossbarArbiter_1 (
+    .slaves_0_encoder_inputs_0    (crossbarArbiter_1_slaves_0_encoder_inputs_0   ), //o
+    .slaves_0_encoder_inputs_1    (crossbarArbiter_1_slaves_0_encoder_inputs_1   ), //o
+    .slaves_0_encoder_output      (encoders_0_output_1                           ), //i
+    .slaves_0_encoder_isValid     (encoders_0_isValid                            ), //i
+    .slaves_0_grantedMasterIndex  (crossbarArbiter_1_slaves_0_grantedMasterIndex ), //o
+    .slaves_0_masters_0_request   (crossbarArbiter_1_slaves_0_masters_0_request  ), //i
+    .slaves_0_masters_0_isError   (crossbarArbiter_1_slaves_0_masters_0_isError  ), //o
+    .slaves_0_masters_0_isStalled (crossbarArbiter_1_slaves_0_masters_0_isStalled), //o
+    .slaves_0_masters_0_isGranted (crossbarArbiter_1_slaves_0_masters_0_isGranted), //o
+    .slaves_0_masters_1_request   (crossbarArbiter_1_slaves_0_masters_1_request  ), //i
+    .slaves_0_masters_1_isError   (crossbarArbiter_1_slaves_0_masters_1_isError  ), //o
+    .slaves_0_masters_1_isStalled (crossbarArbiter_1_slaves_0_masters_1_isStalled), //o
+    .slaves_0_masters_1_isGranted (crossbarArbiter_1_slaves_0_masters_1_isGranted), //o
+    .slaves_1_encoder_inputs_0    (crossbarArbiter_1_slaves_1_encoder_inputs_0   ), //o
+    .slaves_1_encoder_inputs_1    (crossbarArbiter_1_slaves_1_encoder_inputs_1   ), //o
+    .slaves_1_encoder_output      (encoders_1_output_1                           ), //i
+    .slaves_1_encoder_isValid     (encoders_1_isValid                            ), //i
+    .slaves_1_grantedMasterIndex  (crossbarArbiter_1_slaves_1_grantedMasterIndex ), //o
+    .slaves_1_masters_0_request   (crossbarArbiter_1_slaves_1_masters_0_request  ), //i
+    .slaves_1_masters_0_isError   (crossbarArbiter_1_slaves_1_masters_0_isError  ), //o
+    .slaves_1_masters_0_isStalled (crossbarArbiter_1_slaves_1_masters_0_isStalled), //o
+    .slaves_1_masters_0_isGranted (crossbarArbiter_1_slaves_1_masters_0_isGranted), //o
+    .slaves_1_masters_1_request   (crossbarArbiter_1_slaves_1_masters_1_request  ), //i
+    .slaves_1_masters_1_isError   (crossbarArbiter_1_slaves_1_masters_1_isError  ), //o
+    .slaves_1_masters_1_isStalled (crossbarArbiter_1_slaves_1_masters_1_isStalled), //o
+    .slaves_1_masters_1_isGranted (crossbarArbiter_1_slaves_1_masters_1_isGranted), //o
+    .clk                          (clk                                           ), //i
+    .reset                        (reset                                         )  //i
   );
-  MultiMasterSingleSlaveArbiter_1 sharedSlaveArbiters_0_0 (
-    .io_encoder_inputs_0    (sharedSlaveArbiters_0_0_io_encoder_inputs_0   ), //o
-    .io_encoder_inputs_1    (sharedSlaveArbiters_0_0_io_encoder_inputs_1   ), //o
-    .io_encoder_output      (priorityEncoder_2_output_1                    ), //i
-    .io_encoder_isValid     (priorityEncoder_2_isValid                     ), //i
-    .io_grantedMasterIndex  (sharedSlaveArbiters_0_0_io_grantedMasterIndex ), //o
-    .io_masters_0_request   (sharedSlaveArbiters_0_0_io_masters_0_request  ), //i
-    .io_masters_0_isError   (sharedSlaveArbiters_0_0_io_masters_0_isError  ), //o
-    .io_masters_0_isStalled (sharedSlaveArbiters_0_0_io_masters_0_isStalled), //o
-    .io_masters_0_isGranted (sharedSlaveArbiters_0_0_io_masters_0_isGranted), //o
-    .io_masters_1_request   (sharedSlaveArbiters_0_0_io_masters_1_request  ), //i
-    .io_masters_1_isError   (sharedSlaveArbiters_0_0_io_masters_1_isError  ), //o
-    .io_masters_1_isStalled (sharedSlaveArbiters_0_0_io_masters_1_isStalled), //o
-    .io_masters_1_isGranted (sharedSlaveArbiters_0_0_io_masters_1_isGranted), //o
-    .clk                    (clk                                           ), //i
-    .reset                  (reset                                         )  //i
+  PriorityEncoder_1 encoders_0 (
+    .inputs_0 (crossbarArbiter_1_slaves_0_encoder_inputs_0), //i
+    .inputs_1 (crossbarArbiter_1_slaves_0_encoder_inputs_1), //i
+    .output_1 (encoders_0_output_1                        ), //o
+    .isValid  (encoders_0_isValid                         )  //o
   );
-  PriorityEncoder_1 priorityEncoder_3 (
-    .inputs_0 (sharedSlaveArbiters_1_0_io_encoder_inputs_0), //i
-    .inputs_1 (sharedSlaveArbiters_1_0_io_encoder_inputs_1), //i
-    .output_1 (priorityEncoder_3_output_1                 ), //o
-    .isValid  (priorityEncoder_3_isValid                  )  //o
-  );
-  MultiMasterSingleSlaveArbiter_1 sharedSlaveArbiters_1_0 (
-    .io_encoder_inputs_0    (sharedSlaveArbiters_1_0_io_encoder_inputs_0   ), //o
-    .io_encoder_inputs_1    (sharedSlaveArbiters_1_0_io_encoder_inputs_1   ), //o
-    .io_encoder_output      (priorityEncoder_3_output_1                    ), //i
-    .io_encoder_isValid     (priorityEncoder_3_isValid                     ), //i
-    .io_grantedMasterIndex  (sharedSlaveArbiters_1_0_io_grantedMasterIndex ), //o
-    .io_masters_0_request   (sharedSlaveArbiters_1_0_io_masters_0_request  ), //i
-    .io_masters_0_isError   (sharedSlaveArbiters_1_0_io_masters_0_isError  ), //o
-    .io_masters_0_isStalled (sharedSlaveArbiters_1_0_io_masters_0_isStalled), //o
-    .io_masters_0_isGranted (sharedSlaveArbiters_1_0_io_masters_0_isGranted), //o
-    .io_masters_1_request   (sharedSlaveArbiters_1_0_io_masters_1_request  ), //i
-    .io_masters_1_isError   (sharedSlaveArbiters_1_0_io_masters_1_isError  ), //o
-    .io_masters_1_isStalled (sharedSlaveArbiters_1_0_io_masters_1_isStalled), //o
-    .io_masters_1_isGranted (sharedSlaveArbiters_1_0_io_masters_1_isGranted), //o
-    .clk                    (clk                                           ), //i
-    .reset                  (reset                                         )  //i
+  PriorityEncoder_1 encoders_1 (
+    .inputs_0 (crossbarArbiter_1_slaves_1_encoder_inputs_0), //i
+    .inputs_1 (crossbarArbiter_1_slaves_1_encoder_inputs_1), //i
+    .output_1 (encoders_1_output_1                        ), //o
+    .isValid  (encoders_1_isValid                         )  //o
   );
   WishboneBusMasterMultiplexer_1 masterMuxes_0_0 (
     .masters_0_CYC      (masterMuxes_0_1_0_CYC                                   ), //i
@@ -786,7 +782,7 @@ module Core (
     .slave_DAT_MISO     (instructionEbramBlockWidthAdjusted_master_DAT_MISO[31:0]), //i
     .slave_DAT_MOSI     (masterMuxes_0_0_slave_DAT_MOSI[31:0]                    ), //o
     .slave_SEL          (masterMuxes_0_0_slave_SEL[3:0]                          ), //o
-    .selector           (sharedSlaveArbiters_0_0_io_grantedMasterIndex           )  //i
+    .selector           (crossbarArbiter_1_slaves_0_grantedMasterIndex           )  //i
   );
   WishboneBusMasterMultiplexer_1 masterMuxes_1_0 (
     .masters_0_CYC      (masterMuxes_1_1_0_CYC                            ), //i
@@ -813,7 +809,7 @@ module Core (
     .slave_DAT_MISO     (dataSpramBlockWidthAdjusted_master_DAT_MISO[31:0]), //i
     .slave_DAT_MOSI     (masterMuxes_1_0_slave_DAT_MOSI[31:0]             ), //o
     .slave_SEL          (masterMuxes_1_0_slave_SEL[3:0]                   ), //o
-    .selector           (sharedSlaveArbiters_1_0_io_grantedMasterIndex    )  //i
+    .selector           (crossbarArbiter_1_slaves_1_grantedMasterIndex    )  //i
   );
   WishboneBusSlaveMultiplexer_2 wishboneBusSlaveMultiplexer_3 (
     .master_CYC        (bridge_devices_executable_CYC                        ), //i
@@ -873,16 +869,16 @@ module Core (
   assign ledR = ledDevice_io_ledR; // @[Core.scala 56:17]
   assign ledG = ledDevice_io_ledG; // @[Core.scala 57:17]
   assign ledB = ledDevice_io_ledB; // @[Core.scala 58:17]
-  assign dbusSlaveMap_masters_0_slaveSelects_0 = (! bridge_devices_dataOnly_ADR[14]); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign dbusSlaveMap_masters_0_slaveSelects_1 = bridge_devices_dataOnly_ADR[14]; // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign executableSlaveMap_masters_0_slaveSelects_0 = ((! bridge_devices_executable_ADR[14]) && (! bridge_devices_executable_ADR[6])); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign executableSlaveMap_masters_1_slaveSelects_0 = ((! bridge_devices_ibus_ADR[14]) && (! bridge_devices_ibus_ADR[6])); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign executableSlaveMap_masters_0_slaveSelects_1 = ((! bridge_devices_executable_ADR[14]) && bridge_devices_executable_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign executableSlaveMap_masters_1_slaveSelects_1 = ((! bridge_devices_ibus_ADR[14]) && bridge_devices_ibus_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 98:90]
-  assign sharedSlaveArbiters_0_0_io_masters_0_request = (bridge_devices_executable_CYC && (executableSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 215:76]
-  assign sharedSlaveArbiters_0_0_io_masters_1_request = (bridge_devices_ibus_CYC && (executableSlaveMap_masters_1_index == 1'b0)); // @[Core.scala 215:76]
-  assign sharedSlaveArbiters_1_0_io_masters_0_request = (bridge_devices_executable_CYC && (executableSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 215:76]
-  assign sharedSlaveArbiters_1_0_io_masters_1_request = (bridge_devices_ibus_CYC && (executableSlaveMap_masters_1_index == 1'b1)); // @[Core.scala 215:76]
+  assign dbusSlaveMap_masters_0_slaveSelects_0 = (! bridge_devices_dbus_ADR[14]); // @[WishboneBusMasterSlaveMap.scala 99:90]
+  assign dbusSlaveMap_masters_0_slaveSelects_1 = bridge_devices_dbus_ADR[14]; // @[WishboneBusMasterSlaveMap.scala 99:90]
+  assign executableSlaveMap_masters_0_slaveSelects_0 = ((! bridge_devices_executable_ADR[14]) && (! bridge_devices_executable_ADR[6])); // @[WishboneBusMasterSlaveMap.scala 99:90]
+  assign executableSlaveMap_masters_1_slaveSelects_0 = ((! bridge_devices_ibus_ADR[14]) && (! bridge_devices_ibus_ADR[6])); // @[WishboneBusMasterSlaveMap.scala 99:90]
+  assign executableSlaveMap_masters_0_slaveSelects_1 = ((! bridge_devices_executable_ADR[14]) && bridge_devices_executable_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 99:90]
+  assign executableSlaveMap_masters_1_slaveSelects_1 = ((! bridge_devices_ibus_ADR[14]) && bridge_devices_ibus_ADR[6]); // @[WishboneBusMasterSlaveMap.scala 99:90]
+  assign crossbarArbiter_1_slaves_0_masters_0_request = ((bridge_devices_executable_CYC && executableSlaveMap_masters_0_isValid) && (executableSlaveMap_masters_0_index == 1'b0)); // @[WishboneBusCrossbarArbiter.scala 37:50]
+  assign crossbarArbiter_1_slaves_0_masters_1_request = ((bridge_devices_ibus_CYC && executableSlaveMap_masters_1_isValid) && (executableSlaveMap_masters_1_index == 1'b0)); // @[WishboneBusCrossbarArbiter.scala 37:50]
+  assign crossbarArbiter_1_slaves_1_masters_0_request = ((bridge_devices_executable_CYC && executableSlaveMap_masters_0_isValid) && (executableSlaveMap_masters_0_index == 1'b1)); // @[WishboneBusCrossbarArbiter.scala 37:50]
+  assign crossbarArbiter_1_slaves_1_masters_1_request = ((bridge_devices_ibus_CYC && executableSlaveMap_masters_1_isValid) && (executableSlaveMap_masters_1_index == 1'b1)); // @[WishboneBusCrossbarArbiter.scala 37:50]
   assign masterMuxes_0_1_0_ACK = masterMuxes_0_0_masters_0_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
   assign masterMuxes_0_1_0_DAT_MISO = masterMuxes_0_0_masters_0_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 80:112]
   assign masterMuxes_0_1_1_ACK = masterMuxes_0_0_masters_1_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
@@ -1026,64 +1022,7 @@ module WishboneBusMasterMultiplexer_1 (
 
 endmodule
 
-//MultiMasterSingleSlaveArbiter_1 replaced by MultiMasterSingleSlaveArbiter_1
-
 //PriorityEncoder_1 replaced by PriorityEncoder_1
-
-module MultiMasterSingleSlaveArbiter_1 (
-  output              io_encoder_inputs_0,
-  output              io_encoder_inputs_1,
-  input      [0:0]    io_encoder_output,
-  input               io_encoder_isValid,
-  output     [0:0]    io_grantedMasterIndex,
-  input               io_masters_0_request,
-  output              io_masters_0_isError,
-  output              io_masters_0_isStalled,
-  output              io_masters_0_isGranted,
-  input               io_masters_1_request,
-  output              io_masters_1_isError,
-  output              io_masters_1_isStalled,
-  output              io_masters_1_isGranted,
-  input               clk,
-  input               reset
-);
-
-  reg        [0:0]    grantedMasterIndex;
-  wire                when_MultiMasterSingleSlaveArbiter_l18;
-  wire                when_MultiMasterSingleSlaveArbiter_l18_1;
-
-  assign io_grantedMasterIndex = grantedMasterIndex; // @[MultiMasterSingleSlaveArbiter.scala 13:31]
-  assign when_MultiMasterSingleSlaveArbiter_l18 = (io_encoder_isValid && (! io_masters_0_request)); // @[BaseType.scala 305:24]
-  assign when_MultiMasterSingleSlaveArbiter_l18_1 = (io_encoder_isValid && (! io_masters_1_request)); // @[BaseType.scala 305:24]
-  assign io_encoder_inputs_0 = io_masters_0_request; // @[MultiMasterSingleSlaveArbiter.scala 26:50]
-  assign io_masters_0_isError = (io_masters_0_request && (! io_encoder_isValid)); // @[MultiMasterSingleSlaveArbiter.scala 27:40]
-  assign io_masters_0_isStalled = (io_masters_0_request && (grantedMasterIndex != 1'b0)); // @[MultiMasterSingleSlaveArbiter.scala 28:42]
-  assign io_masters_0_isGranted = (io_masters_0_request && (grantedMasterIndex == 1'b0)); // @[MultiMasterSingleSlaveArbiter.scala 29:42]
-  assign io_encoder_inputs_1 = io_masters_1_request; // @[MultiMasterSingleSlaveArbiter.scala 26:50]
-  assign io_masters_1_isError = (io_masters_1_request && (! io_encoder_isValid)); // @[MultiMasterSingleSlaveArbiter.scala 27:40]
-  assign io_masters_1_isStalled = (io_masters_1_request && (grantedMasterIndex != 1'b1)); // @[MultiMasterSingleSlaveArbiter.scala 28:42]
-  assign io_masters_1_isGranted = (io_masters_1_request && (grantedMasterIndex == 1'b1)); // @[MultiMasterSingleSlaveArbiter.scala 29:42]
-  always @(posedge clk) begin
-    if(reset) begin
-      grantedMasterIndex <= 1'b0; // @[Data.scala 400:33]
-    end else begin
-      case(grantedMasterIndex)
-        1'b0 : begin
-          if(when_MultiMasterSingleSlaveArbiter_l18) begin
-            grantedMasterIndex <= io_encoder_output; // @[MultiMasterSingleSlaveArbiter.scala 19:68]
-          end
-        end
-        default : begin
-          if(when_MultiMasterSingleSlaveArbiter_l18_1) begin
-            grantedMasterIndex <= io_encoder_output; // @[MultiMasterSingleSlaveArbiter.scala 19:68]
-          end
-        end
-      endcase
-    end
-  end
-
-
-endmodule
 
 module PriorityEncoder_1 (
   input               inputs_0,
@@ -1125,6 +1064,107 @@ module PriorityEncoder_1 (
     endcase
   end
 
+
+endmodule
+
+module WishboneBusCrossbarArbiter (
+  output              slaves_0_encoder_inputs_0,
+  output              slaves_0_encoder_inputs_1,
+  input      [0:0]    slaves_0_encoder_output,
+  input               slaves_0_encoder_isValid,
+  output     [0:0]    slaves_0_grantedMasterIndex,
+  input               slaves_0_masters_0_request,
+  output              slaves_0_masters_0_isError,
+  output              slaves_0_masters_0_isStalled,
+  output              slaves_0_masters_0_isGranted,
+  input               slaves_0_masters_1_request,
+  output              slaves_0_masters_1_isError,
+  output              slaves_0_masters_1_isStalled,
+  output              slaves_0_masters_1_isGranted,
+  output              slaves_1_encoder_inputs_0,
+  output              slaves_1_encoder_inputs_1,
+  input      [0:0]    slaves_1_encoder_output,
+  input               slaves_1_encoder_isValid,
+  output     [0:0]    slaves_1_grantedMasterIndex,
+  input               slaves_1_masters_0_request,
+  output              slaves_1_masters_0_isError,
+  output              slaves_1_masters_0_isStalled,
+  output              slaves_1_masters_0_isGranted,
+  input               slaves_1_masters_1_request,
+  output              slaves_1_masters_1_isError,
+  output              slaves_1_masters_1_isStalled,
+  output              slaves_1_masters_1_isGranted,
+  input               clk,
+  input               reset
+);
+
+  wire                arbiter_slaves_0_encoder_inputs_0;
+  wire                arbiter_slaves_0_encoder_inputs_1;
+  wire       [0:0]    arbiter_slaves_0_grantedMasterIndex;
+  wire                arbiter_slaves_0_masters_0_isError;
+  wire                arbiter_slaves_0_masters_0_isStalled;
+  wire                arbiter_slaves_0_masters_0_isGranted;
+  wire                arbiter_slaves_0_masters_1_isError;
+  wire                arbiter_slaves_0_masters_1_isStalled;
+  wire                arbiter_slaves_0_masters_1_isGranted;
+  wire                arbiter_slaves_1_encoder_inputs_0;
+  wire                arbiter_slaves_1_encoder_inputs_1;
+  wire       [0:0]    arbiter_slaves_1_grantedMasterIndex;
+  wire                arbiter_slaves_1_masters_0_isError;
+  wire                arbiter_slaves_1_masters_0_isStalled;
+  wire                arbiter_slaves_1_masters_0_isGranted;
+  wire                arbiter_slaves_1_masters_1_isError;
+  wire                arbiter_slaves_1_masters_1_isStalled;
+  wire                arbiter_slaves_1_masters_1_isGranted;
+
+  CrossbarArbiter arbiter (
+    .slaves_0_encoder_inputs_0    (arbiter_slaves_0_encoder_inputs_0   ), //o
+    .slaves_0_encoder_inputs_1    (arbiter_slaves_0_encoder_inputs_1   ), //o
+    .slaves_0_encoder_output      (slaves_0_encoder_output             ), //i
+    .slaves_0_encoder_isValid     (slaves_0_encoder_isValid            ), //i
+    .slaves_0_grantedMasterIndex  (arbiter_slaves_0_grantedMasterIndex ), //o
+    .slaves_0_masters_0_request   (slaves_0_masters_0_request          ), //i
+    .slaves_0_masters_0_isError   (arbiter_slaves_0_masters_0_isError  ), //o
+    .slaves_0_masters_0_isStalled (arbiter_slaves_0_masters_0_isStalled), //o
+    .slaves_0_masters_0_isGranted (arbiter_slaves_0_masters_0_isGranted), //o
+    .slaves_0_masters_1_request   (slaves_0_masters_1_request          ), //i
+    .slaves_0_masters_1_isError   (arbiter_slaves_0_masters_1_isError  ), //o
+    .slaves_0_masters_1_isStalled (arbiter_slaves_0_masters_1_isStalled), //o
+    .slaves_0_masters_1_isGranted (arbiter_slaves_0_masters_1_isGranted), //o
+    .slaves_1_encoder_inputs_0    (arbiter_slaves_1_encoder_inputs_0   ), //o
+    .slaves_1_encoder_inputs_1    (arbiter_slaves_1_encoder_inputs_1   ), //o
+    .slaves_1_encoder_output      (slaves_1_encoder_output             ), //i
+    .slaves_1_encoder_isValid     (slaves_1_encoder_isValid            ), //i
+    .slaves_1_grantedMasterIndex  (arbiter_slaves_1_grantedMasterIndex ), //o
+    .slaves_1_masters_0_request   (slaves_1_masters_0_request          ), //i
+    .slaves_1_masters_0_isError   (arbiter_slaves_1_masters_0_isError  ), //o
+    .slaves_1_masters_0_isStalled (arbiter_slaves_1_masters_0_isStalled), //o
+    .slaves_1_masters_0_isGranted (arbiter_slaves_1_masters_0_isGranted), //o
+    .slaves_1_masters_1_request   (slaves_1_masters_1_request          ), //i
+    .slaves_1_masters_1_isError   (arbiter_slaves_1_masters_1_isError  ), //o
+    .slaves_1_masters_1_isStalled (arbiter_slaves_1_masters_1_isStalled), //o
+    .slaves_1_masters_1_isGranted (arbiter_slaves_1_masters_1_isGranted), //o
+    .clk                          (clk                                 ), //i
+    .reset                        (reset                               )  //i
+  );
+  assign slaves_0_encoder_inputs_0 = arbiter_slaves_0_encoder_inputs_0; // @[WishboneBusCrossbarArbiter.scala 16:31]
+  assign slaves_0_encoder_inputs_1 = arbiter_slaves_0_encoder_inputs_1; // @[WishboneBusCrossbarArbiter.scala 16:31]
+  assign slaves_0_grantedMasterIndex = arbiter_slaves_0_grantedMasterIndex; // @[WishboneBusCrossbarArbiter.scala 17:58]
+  assign slaves_0_masters_0_isError = arbiter_slaves_0_masters_0_isError; // @[WishboneBusCrossbarArbiter.scala 22:42]
+  assign slaves_0_masters_0_isGranted = arbiter_slaves_0_masters_0_isGranted; // @[WishboneBusCrossbarArbiter.scala 23:44]
+  assign slaves_0_masters_0_isStalled = arbiter_slaves_0_masters_0_isStalled; // @[WishboneBusCrossbarArbiter.scala 24:44]
+  assign slaves_0_masters_1_isError = arbiter_slaves_0_masters_1_isError; // @[WishboneBusCrossbarArbiter.scala 22:42]
+  assign slaves_0_masters_1_isGranted = arbiter_slaves_0_masters_1_isGranted; // @[WishboneBusCrossbarArbiter.scala 23:44]
+  assign slaves_0_masters_1_isStalled = arbiter_slaves_0_masters_1_isStalled; // @[WishboneBusCrossbarArbiter.scala 24:44]
+  assign slaves_1_encoder_inputs_0 = arbiter_slaves_1_encoder_inputs_0; // @[WishboneBusCrossbarArbiter.scala 16:31]
+  assign slaves_1_encoder_inputs_1 = arbiter_slaves_1_encoder_inputs_1; // @[WishboneBusCrossbarArbiter.scala 16:31]
+  assign slaves_1_grantedMasterIndex = arbiter_slaves_1_grantedMasterIndex; // @[WishboneBusCrossbarArbiter.scala 17:58]
+  assign slaves_1_masters_0_isError = arbiter_slaves_1_masters_0_isError; // @[WishboneBusCrossbarArbiter.scala 22:42]
+  assign slaves_1_masters_0_isGranted = arbiter_slaves_1_masters_0_isGranted; // @[WishboneBusCrossbarArbiter.scala 23:44]
+  assign slaves_1_masters_0_isStalled = arbiter_slaves_1_masters_0_isStalled; // @[WishboneBusCrossbarArbiter.scala 24:44]
+  assign slaves_1_masters_1_isError = arbiter_slaves_1_masters_1_isError; // @[WishboneBusCrossbarArbiter.scala 22:42]
+  assign slaves_1_masters_1_isGranted = arbiter_slaves_1_masters_1_isGranted; // @[WishboneBusCrossbarArbiter.scala 23:44]
+  assign slaves_1_masters_1_isStalled = arbiter_slaves_1_masters_1_isStalled; // @[WishboneBusCrossbarArbiter.scala 24:44]
 
 endmodule
 
@@ -1222,10 +1262,10 @@ module WishboneBusMasterSlaveMap (
     .output_1 (simpleEncoder_4_output_1), //o
     .isValid  (simpleEncoder_4_isValid )  //o
   );
-  assign masters_0_index = simpleEncoder_3_output_1; // @[WishboneBusMasterSlaveMap.scala 48:30]
-  assign masters_0_isValid = simpleEncoder_3_isValid; // @[WishboneBusMasterSlaveMap.scala 49:32]
-  assign masters_1_index = simpleEncoder_4_output_1; // @[WishboneBusMasterSlaveMap.scala 48:30]
-  assign masters_1_isValid = simpleEncoder_4_isValid; // @[WishboneBusMasterSlaveMap.scala 49:32]
+  assign masters_0_index = simpleEncoder_3_output_1; // @[WishboneBusMasterSlaveMap.scala 49:30]
+  assign masters_0_isValid = simpleEncoder_3_isValid; // @[WishboneBusMasterSlaveMap.scala 50:32]
+  assign masters_1_index = simpleEncoder_4_output_1; // @[WishboneBusMasterSlaveMap.scala 49:30]
+  assign masters_1_isValid = simpleEncoder_4_isValid; // @[WishboneBusMasterSlaveMap.scala 50:32]
 
 endmodule
 
@@ -1245,8 +1285,8 @@ module WishboneBusMasterSlaveMap_1 (
     .output_1 (simpleEncoder_3_output_1), //o
     .isValid  (simpleEncoder_3_isValid )  //o
   );
-  assign masters_0_index = simpleEncoder_3_output_1; // @[WishboneBusMasterSlaveMap.scala 48:30]
-  assign masters_0_isValid = simpleEncoder_3_isValid; // @[WishboneBusMasterSlaveMap.scala 49:32]
+  assign masters_0_index = simpleEncoder_3_output_1; // @[WishboneBusMasterSlaveMap.scala 49:30]
+  assign masters_0_isValid = simpleEncoder_3_isValid; // @[WishboneBusMasterSlaveMap.scala 50:32]
 
 endmodule
 
@@ -1281,14 +1321,14 @@ module CpuBusBridge (
   input      [31:0]   devices_ibus_DAT_MISO,
   output     [31:0]   devices_ibus_DAT_MOSI,
   output     [3:0]    devices_ibus_SEL,
-  output              devices_dataOnly_CYC,
-  output              devices_dataOnly_STB,
-  input               devices_dataOnly_ACK,
-  output              devices_dataOnly_WE,
-  output     [29:0]   devices_dataOnly_ADR,
-  input      [31:0]   devices_dataOnly_DAT_MISO,
-  output     [31:0]   devices_dataOnly_DAT_MOSI,
-  output     [3:0]    devices_dataOnly_SEL,
+  output              devices_dbus_CYC,
+  output              devices_dbus_STB,
+  input               devices_dbus_ACK,
+  output              devices_dbus_WE,
+  output     [29:0]   devices_dbus_ADR,
+  input      [31:0]   devices_dbus_DAT_MISO,
+  output     [31:0]   devices_dbus_DAT_MOSI,
+  output     [3:0]    devices_dbus_SEL,
   input               devices_dbusToExecutableBridge_CYC,
   input               devices_dbusToExecutableBridge_STB,
   output              devices_dbusToExecutableBridge_ACK,
@@ -1361,10 +1401,10 @@ module CpuBusBridge (
     .io_wbm_BTE      (cpu_dbus_BTE[1:0]                     ), //i
     .io_wbs_CYC      (cpu_dbus_adapter_io_wbs_CYC           ), //o
     .io_wbs_STB      (cpu_dbus_adapter_io_wbs_STB           ), //o
-    .io_wbs_ACK      (devices_dataOnly_ACK                  ), //i
+    .io_wbs_ACK      (devices_dbus_ACK                      ), //i
     .io_wbs_WE       (cpu_dbus_adapter_io_wbs_WE            ), //o
     .io_wbs_ADR      (cpu_dbus_adapter_io_wbs_ADR[29:0]     ), //o
-    .io_wbs_DAT_MISO (devices_dataOnly_DAT_MISO[31:0]       ), //i
+    .io_wbs_DAT_MISO (devices_dbus_DAT_MISO[31:0]           ), //i
     .io_wbs_DAT_MOSI (cpu_dbus_adapter_io_wbs_DAT_MOSI[31:0]), //o
     .io_wbs_SEL      (cpu_dbus_adapter_io_wbs_SEL[3:0]      )  //o
   );
@@ -1380,12 +1420,12 @@ module CpuBusBridge (
   assign cpu_dbus_ACK = cpu_dbus_adapter_io_wbm_ACK; // @[WishboneAdapter.scala 33:12]
   assign cpu_dbus_DAT_MISO = cpu_dbus_adapter_io_wbm_DAT_MISO; // @[WishboneAdapter.scala 33:12]
   assign cpu_dbus_ERR = cpu_dbus_adapter_io_wbm_ERR; // @[WishboneAdapter.scala 33:12]
-  assign devices_dataOnly_CYC = cpu_dbus_adapter_io_wbs_CYC; // @[WishboneAdapter.scala 34:11]
-  assign devices_dataOnly_STB = cpu_dbus_adapter_io_wbs_STB; // @[WishboneAdapter.scala 34:11]
-  assign devices_dataOnly_WE = cpu_dbus_adapter_io_wbs_WE; // @[WishboneAdapter.scala 34:11]
-  assign devices_dataOnly_ADR = cpu_dbus_adapter_io_wbs_ADR; // @[WishboneAdapter.scala 34:11]
-  assign devices_dataOnly_DAT_MOSI = cpu_dbus_adapter_io_wbs_DAT_MOSI; // @[WishboneAdapter.scala 34:11]
-  assign devices_dataOnly_SEL = cpu_dbus_adapter_io_wbs_SEL; // @[WishboneAdapter.scala 34:11]
+  assign devices_dbus_CYC = cpu_dbus_adapter_io_wbs_CYC; // @[WishboneAdapter.scala 34:11]
+  assign devices_dbus_STB = cpu_dbus_adapter_io_wbs_STB; // @[WishboneAdapter.scala 34:11]
+  assign devices_dbus_WE = cpu_dbus_adapter_io_wbs_WE; // @[WishboneAdapter.scala 34:11]
+  assign devices_dbus_ADR = cpu_dbus_adapter_io_wbs_ADR; // @[WishboneAdapter.scala 34:11]
+  assign devices_dbus_DAT_MOSI = cpu_dbus_adapter_io_wbs_DAT_MOSI; // @[WishboneAdapter.scala 34:11]
+  assign devices_dbus_SEL = cpu_dbus_adapter_io_wbs_SEL; // @[WishboneAdapter.scala 34:11]
   assign devices_executable_CYC = devices_dbusToExecutableBridge_CYC; // @[Wishbone.scala 152:19]
   assign devices_executable_ADR = devices_dbusToExecutableBridge_ADR; // @[Wishbone.scala 153:19]
   assign devices_executable_DAT_MOSI = devices_dbusToExecutableBridge_DAT_MOSI; // @[Wishbone.scala 154:19]
@@ -2150,6 +2190,111 @@ module Cpu (
     end
   end
 
+
+endmodule
+
+module CrossbarArbiter (
+  output              slaves_0_encoder_inputs_0,
+  output              slaves_0_encoder_inputs_1,
+  input      [0:0]    slaves_0_encoder_output,
+  input               slaves_0_encoder_isValid,
+  output     [0:0]    slaves_0_grantedMasterIndex,
+  input               slaves_0_masters_0_request,
+  output              slaves_0_masters_0_isError,
+  output              slaves_0_masters_0_isStalled,
+  output              slaves_0_masters_0_isGranted,
+  input               slaves_0_masters_1_request,
+  output              slaves_0_masters_1_isError,
+  output              slaves_0_masters_1_isStalled,
+  output              slaves_0_masters_1_isGranted,
+  output              slaves_1_encoder_inputs_0,
+  output              slaves_1_encoder_inputs_1,
+  input      [0:0]    slaves_1_encoder_output,
+  input               slaves_1_encoder_isValid,
+  output     [0:0]    slaves_1_grantedMasterIndex,
+  input               slaves_1_masters_0_request,
+  output              slaves_1_masters_0_isError,
+  output              slaves_1_masters_0_isStalled,
+  output              slaves_1_masters_0_isGranted,
+  input               slaves_1_masters_1_request,
+  output              slaves_1_masters_1_isError,
+  output              slaves_1_masters_1_isStalled,
+  output              slaves_1_masters_1_isGranted,
+  input               clk,
+  input               reset
+);
+
+  wire                slaveArbiters_0_io_encoder_inputs_0;
+  wire                slaveArbiters_0_io_encoder_inputs_1;
+  wire       [0:0]    slaveArbiters_0_io_grantedMasterIndex;
+  wire                slaveArbiters_0_io_masters_0_isError;
+  wire                slaveArbiters_0_io_masters_0_isStalled;
+  wire                slaveArbiters_0_io_masters_0_isGranted;
+  wire                slaveArbiters_0_io_masters_1_isError;
+  wire                slaveArbiters_0_io_masters_1_isStalled;
+  wire                slaveArbiters_0_io_masters_1_isGranted;
+  wire                slaveArbiters_1_io_encoder_inputs_0;
+  wire                slaveArbiters_1_io_encoder_inputs_1;
+  wire       [0:0]    slaveArbiters_1_io_grantedMasterIndex;
+  wire                slaveArbiters_1_io_masters_0_isError;
+  wire                slaveArbiters_1_io_masters_0_isStalled;
+  wire                slaveArbiters_1_io_masters_0_isGranted;
+  wire                slaveArbiters_1_io_masters_1_isError;
+  wire                slaveArbiters_1_io_masters_1_isStalled;
+  wire                slaveArbiters_1_io_masters_1_isGranted;
+
+  MultiMasterSingleSlaveArbiter_1 slaveArbiters_0 (
+    .io_encoder_inputs_0    (slaveArbiters_0_io_encoder_inputs_0   ), //o
+    .io_encoder_inputs_1    (slaveArbiters_0_io_encoder_inputs_1   ), //o
+    .io_encoder_output      (slaves_0_encoder_output               ), //i
+    .io_encoder_isValid     (slaves_0_encoder_isValid              ), //i
+    .io_grantedMasterIndex  (slaveArbiters_0_io_grantedMasterIndex ), //o
+    .io_masters_0_request   (slaves_0_masters_0_request            ), //i
+    .io_masters_0_isError   (slaveArbiters_0_io_masters_0_isError  ), //o
+    .io_masters_0_isStalled (slaveArbiters_0_io_masters_0_isStalled), //o
+    .io_masters_0_isGranted (slaveArbiters_0_io_masters_0_isGranted), //o
+    .io_masters_1_request   (slaves_0_masters_1_request            ), //i
+    .io_masters_1_isError   (slaveArbiters_0_io_masters_1_isError  ), //o
+    .io_masters_1_isStalled (slaveArbiters_0_io_masters_1_isStalled), //o
+    .io_masters_1_isGranted (slaveArbiters_0_io_masters_1_isGranted), //o
+    .clk                    (clk                                   ), //i
+    .reset                  (reset                                 )  //i
+  );
+  MultiMasterSingleSlaveArbiter_1 slaveArbiters_1 (
+    .io_encoder_inputs_0    (slaveArbiters_1_io_encoder_inputs_0   ), //o
+    .io_encoder_inputs_1    (slaveArbiters_1_io_encoder_inputs_1   ), //o
+    .io_encoder_output      (slaves_1_encoder_output               ), //i
+    .io_encoder_isValid     (slaves_1_encoder_isValid              ), //i
+    .io_grantedMasterIndex  (slaveArbiters_1_io_grantedMasterIndex ), //o
+    .io_masters_0_request   (slaves_1_masters_0_request            ), //i
+    .io_masters_0_isError   (slaveArbiters_1_io_masters_0_isError  ), //o
+    .io_masters_0_isStalled (slaveArbiters_1_io_masters_0_isStalled), //o
+    .io_masters_0_isGranted (slaveArbiters_1_io_masters_0_isGranted), //o
+    .io_masters_1_request   (slaves_1_masters_1_request            ), //i
+    .io_masters_1_isError   (slaveArbiters_1_io_masters_1_isError  ), //o
+    .io_masters_1_isStalled (slaveArbiters_1_io_masters_1_isStalled), //o
+    .io_masters_1_isGranted (slaveArbiters_1_io_masters_1_isGranted), //o
+    .clk                    (clk                                   ), //i
+    .reset                  (reset                                 )  //i
+  );
+  assign slaves_0_encoder_inputs_0 = slaveArbiters_0_io_encoder_inputs_0; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_0_encoder_inputs_1 = slaveArbiters_0_io_encoder_inputs_1; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_0_grantedMasterIndex = slaveArbiters_0_io_grantedMasterIndex; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_0_masters_0_isError = slaveArbiters_0_io_masters_0_isError; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_0_masters_0_isStalled = slaveArbiters_0_io_masters_0_isStalled; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_0_masters_0_isGranted = slaveArbiters_0_io_masters_0_isGranted; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_0_masters_1_isError = slaveArbiters_0_io_masters_1_isError; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_0_masters_1_isStalled = slaveArbiters_0_io_masters_1_isStalled; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_0_masters_1_isGranted = slaveArbiters_0_io_masters_1_isGranted; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_1_encoder_inputs_0 = slaveArbiters_1_io_encoder_inputs_0; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_1_encoder_inputs_1 = slaveArbiters_1_io_encoder_inputs_1; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_1_grantedMasterIndex = slaveArbiters_1_io_grantedMasterIndex; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_1_masters_0_isError = slaveArbiters_1_io_masters_0_isError; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_1_masters_0_isStalled = slaveArbiters_1_io_masters_0_isStalled; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_1_masters_0_isGranted = slaveArbiters_1_io_masters_0_isGranted; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_1_masters_1_isError = slaveArbiters_1_io_masters_1_isError; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_1_masters_1_isStalled = slaveArbiters_1_io_masters_1_isStalled; // @[CrossbarArbiter.scala 14:23]
+  assign slaves_1_masters_1_isGranted = slaveArbiters_1_io_masters_1_isGranted; // @[CrossbarArbiter.scala 14:23]
 
 endmodule
 
@@ -5378,6 +5523,63 @@ module VexRiscv (
       if(execute_CsrPlugin_writeEnable) begin
         CsrPlugin_mip_MSIP <= CsrPlugin_csrMapping_writeDataSignal[3]; // @[Bool.scala 189:10]
       end
+    end
+  end
+
+
+endmodule
+
+//MultiMasterSingleSlaveArbiter_1 replaced by MultiMasterSingleSlaveArbiter_1
+
+module MultiMasterSingleSlaveArbiter_1 (
+  output              io_encoder_inputs_0,
+  output              io_encoder_inputs_1,
+  input      [0:0]    io_encoder_output,
+  input               io_encoder_isValid,
+  output     [0:0]    io_grantedMasterIndex,
+  input               io_masters_0_request,
+  output              io_masters_0_isError,
+  output              io_masters_0_isStalled,
+  output              io_masters_0_isGranted,
+  input               io_masters_1_request,
+  output              io_masters_1_isError,
+  output              io_masters_1_isStalled,
+  output              io_masters_1_isGranted,
+  input               clk,
+  input               reset
+);
+
+  reg        [0:0]    grantedMasterIndex;
+  wire                when_MultiMasterSingleSlaveArbiter_l18;
+  wire                when_MultiMasterSingleSlaveArbiter_l18_1;
+
+  assign io_grantedMasterIndex = grantedMasterIndex; // @[MultiMasterSingleSlaveArbiter.scala 13:31]
+  assign when_MultiMasterSingleSlaveArbiter_l18 = (io_encoder_isValid && (! io_masters_0_request)); // @[BaseType.scala 305:24]
+  assign when_MultiMasterSingleSlaveArbiter_l18_1 = (io_encoder_isValid && (! io_masters_1_request)); // @[BaseType.scala 305:24]
+  assign io_encoder_inputs_0 = io_masters_0_request; // @[MultiMasterSingleSlaveArbiter.scala 26:50]
+  assign io_masters_0_isError = (io_masters_0_request && (! io_encoder_isValid)); // @[MultiMasterSingleSlaveArbiter.scala 27:40]
+  assign io_masters_0_isStalled = (io_masters_0_request && (grantedMasterIndex != 1'b0)); // @[MultiMasterSingleSlaveArbiter.scala 28:42]
+  assign io_masters_0_isGranted = (io_masters_0_request && (grantedMasterIndex == 1'b0)); // @[MultiMasterSingleSlaveArbiter.scala 29:42]
+  assign io_encoder_inputs_1 = io_masters_1_request; // @[MultiMasterSingleSlaveArbiter.scala 26:50]
+  assign io_masters_1_isError = (io_masters_1_request && (! io_encoder_isValid)); // @[MultiMasterSingleSlaveArbiter.scala 27:40]
+  assign io_masters_1_isStalled = (io_masters_1_request && (grantedMasterIndex != 1'b1)); // @[MultiMasterSingleSlaveArbiter.scala 28:42]
+  assign io_masters_1_isGranted = (io_masters_1_request && (grantedMasterIndex == 1'b1)); // @[MultiMasterSingleSlaveArbiter.scala 29:42]
+  always @(posedge clk) begin
+    if(reset) begin
+      grantedMasterIndex <= 1'b0; // @[Data.scala 400:33]
+    end else begin
+      case(grantedMasterIndex)
+        1'b0 : begin
+          if(when_MultiMasterSingleSlaveArbiter_l18) begin
+            grantedMasterIndex <= io_encoder_output; // @[MultiMasterSingleSlaveArbiter.scala 19:68]
+          end
+        end
+        default : begin
+          if(when_MultiMasterSingleSlaveArbiter_l18_1) begin
+            grantedMasterIndex <= io_encoder_output; // @[MultiMasterSingleSlaveArbiter.scala 19:68]
+          end
+        end
+      endcase
     end
   end
 

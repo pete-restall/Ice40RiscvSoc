@@ -15,16 +15,21 @@ trait CrossbarArbiterFixtureTraits extends Component {
 		clockInactive()
 		sleep(10)
 		clockDomain.deassertReset()
+		sleep(10)
 	}
 
-	def clockInactive(): Unit = clockDomain.fallingEdge()
+	def clockInactive(): Unit = {
+		clockDomain.fallingEdge()
+		sleep(10)
+	}
 
 	def clock(): Unit = {
 		clockActive()
-		sleep(10)
 		clockInactive()
-		sleep(10)
 	}
 
-	def clockActive(): Unit = clockDomain.risingEdge()
+	def clockActive(): Unit = {
+		clockDomain.risingEdge()
+		sleep(10)
+	}
 }

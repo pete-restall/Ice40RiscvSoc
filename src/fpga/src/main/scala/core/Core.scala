@@ -198,23 +198,17 @@ class Core extends Component {
 	private val dbusOnlySlaveMux = WishboneBusSlaveMultiplexer(dbusSlaveMap.io.masters.head.index, dbusSlaveMap.slaves.head, dbusSlaveMap.slaves.tail:_*)
 	bridge.io.devices.dbus <> dbusOnlySlaveMux.io.master
 
-	private val sharedSlaveArbiters = for (slaveIndex <- 0 until executableSlaveMap.slaves.length) yield {
-		val encoder = new PriorityEncoder(numberOfInputs=executableSlaveMap.masters.length)
-		val sharedSlaveArbiter = new MultiMasterSingleSlaveArbiter(numberOfMasters=executableSlaveMap.masters.length)
-		encoder.io.inputs := sharedSlaveArbiter.io.encoder.inputs
-		sharedSlaveArbiter.io.encoder.isValid := encoder.io.isValid
-		sharedSlaveArbiter.io.encoder.output := encoder.io.output
-
-		executableSlaveMap.masters.zipWithIndex.foreach { case (master, masterIndex) =>
-			sharedSlaveArbiter.io.masters(masterIndex).request := master.CYC && executableSlaveMap.io.masters(masterIndex).index === slaveIndex
-		}
-
-		(sharedSlaveArbiter, executableSlaveMap.slaves(slaveIndex))
+	private val crossbarArbiter = WishboneBusCrossbarArbiter(executableSlaveMap) // TODO: ADD AN OVERLOAD THAT TAKES AN ENCODER FACTORY...
+	private val encoders = crossbarArbiter.io.slaves.map { slave =>
+		val encoder = PriorityEncoder(slave.encoder.inputs.head, slave.encoder.inputs.tail.toSeq:_*)
+		slave.encoder.isValid := encoder.io.isValid
+		slave.encoder.output := encoder.io.output
+		encoder
 	}
 
-	private val masterMuxes = sharedSlaveArbiters.map { case (arbiter, slave) =>
+	private val masterMuxes = crossbarArbiter.io.slaves.zip(executableSlaveMap.slaves).map { case (arbiter, slave) =>
 		val masters = executableSlaveMap.masters.map(master => new Wishbone(master.config))
-		val selector: UInt = arbiter.io.grantedMasterIndex
+		val selector: UInt = arbiter.grantedMasterIndex
 		val mux = WishboneBusMasterMultiplexer(selector, masters.head, masters.tail:_*)
 		mux.io.slave <> slave
 		(mux, masters)
