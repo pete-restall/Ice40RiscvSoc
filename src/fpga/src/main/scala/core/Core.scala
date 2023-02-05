@@ -198,13 +198,7 @@ class Core extends Component {
 	private val dbusOnlySlaveMux = WishboneBusSlaveMultiplexer(dbusSlaveMap.io.masters.head.index, dbusSlaveMap.slaves.head, dbusSlaveMap.slaves.tail:_*)
 	bridge.io.devices.dbus <> dbusOnlySlaveMux.io.master
 
-	private val crossbarArbiter = WishboneBusCrossbarArbiter(executableSlaveMap) // TODO: ADD AN OVERLOAD THAT TAKES AN ENCODER FACTORY...
-	private val encoders = crossbarArbiter.io.slaves.map { slave =>
-		val encoder = PriorityEncoder(slave.encoder.inputs.head, slave.encoder.inputs.tail.toSeq:_*)
-		slave.encoder.isValid := encoder.io.isValid
-		slave.encoder.output := encoder.io.output
-		encoder
-	}
+	private val crossbarArbiter = WishboneBusCrossbarArbiter(executableSlaveMap, inputs => PriorityEncoder(inputs.head, inputs.tail.toSeq:_*).io)
 
 	private val masterMuxes = crossbarArbiter.io.slaves.zip(executableSlaveMap.slaves).map { case (arbiter, slave) =>
 		val masters = executableSlaveMap.masters.map(master => new Wishbone(master.config))

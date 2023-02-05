@@ -3,9 +3,11 @@ package uk.co.lophtware.msfreference.tests.bus.wishbone
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
+import spinal.core._
 
 import uk.co.lophtware.msfreference.bus.CrossbarArbiter
 import uk.co.lophtware.msfreference.bus.wishbone.{WishboneBusCrossbarArbiter, WishboneBusMasterSlaveMap}
+import uk.co.lophtware.msfreference.multiplexing.Encoder
 import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation.NonSimulationFixture
 
@@ -47,8 +49,18 @@ class WishboneBusCrossbarArbiterTest extends AnyFlatSpec with NonSimulationFixtu
 		arbiter.io must be(a [CrossbarArbiter.IoBundle]);
 	}
 
-	"WishboneBusCrossbarArbiter companion's apply() method" must "not accept a null busMap" in spinalContext { () =>
+	"WishboneBusCrossbarArbiter companion's apply(busMap) method" must "not accept a null busMap" in spinalContext { () =>
 		val thrown = the [IllegalArgumentException] thrownBy WishboneBusCrossbarArbiter(null.asInstanceOf[WishboneBusMasterSlaveMap])
 		thrown.getMessage must (include("arg=busMap") and include("null"))
+	}
+
+	"WishboneBusCrossbarArbiter companion's apply(busMap, encoderFactory) method" must "not accept a null busMap" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusCrossbarArbiter(null.asInstanceOf[WishboneBusMasterSlaveMap], _ => null)
+		thrown.getMessage must (include("arg=busMap") and include("null"))
+	}
+
+	it must "not accept a null encoderFactory" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusCrossbarArbiter(dummyBusMap(), null.asInstanceOf[Vec[Bool] => Encoder.IoBundle])
+		thrown.getMessage must (include("arg=encoderFactory") and include("null"))
 	}
 }
