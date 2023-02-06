@@ -8,6 +8,7 @@ import uk.co.lophtware.msfreference.multiplexing.Encoder
 
 class MultiMasterSingleSlaveArbiter(numberOfMasters: Int) extends Component {
 	val io = new MultiMasterSingleSlaveArbiter.IoBundle(numberOfMasters)
+	noIoPrefix()
 
 	private val grantedMasterIndex = Reg(UInt(io.encoder.output.getWidth bits)) init(0)
 	io.grantedMasterIndex := grantedMasterIndex
