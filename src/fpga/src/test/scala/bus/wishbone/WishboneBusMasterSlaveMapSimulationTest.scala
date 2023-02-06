@@ -7,14 +7,14 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusMasterSlaveMap
+import uk.co.lophtware.msfreference.bus.MasterSlaveMap
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class WishboneBusMasterSlaveMapSimulationTest(numberOfMasters: Int, numberOfSlaves: Int, dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec
+class WishboneBusMasterSlaveMapSimulationTest(numberOfMasters: Int, numberOfSlaves: Int) extends AnyFlatSpec
 	with LightweightSimulationFixture[WishboneBusMasterSlaveMapFixture]
 	with Inspectors {
 
-	protected override def dutFactory() = new WishboneBusMasterSlaveMapFixture(numberOfMasters, numberOfSlaves, dutCreatedViaApplyFactory)
+	protected override def dutFactory() = new WishboneBusMasterSlaveMapFixture(numberOfMasters, numberOfSlaves)
 
 	"WishboneBusMasterSlaveMap masters" must "be able to index each slave" in simulator { fixture =>
 		forAll(fixture.io.wishbone.masters.zipWithIndex) { case (master, masterIndex) =>

@@ -7,9 +7,9 @@ import org.scalatest.{Inspectors, Suite}
 import org.scalatest.matchers.must.Matchers._
 import spinal.core._
 import spinal.core.sim._
+import spinal.lib.bus.wishbone.Wishbone
 
-import uk.co.lophtware.msfreference.bus.{CrossbarArbiter, MultiMasterSingleSlaveArbiter}
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusMasterSlaveMap
+import uk.co.lophtware.msfreference.bus.{CrossbarArbiter, MasterSlaveMap, MultiMasterSingleSlaveArbiter}
 import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.bus.CrossbarArbiterSimulationTest
 import uk.co.lophtware.msfreference.tests.simulation._
@@ -17,7 +17,7 @@ import uk.co.lophtware.msfreference.tests.simulation._
 class WishboneBusCrossbarArbiterSimulationTest(
 	numberOfMasters: Int,
 	numberOfSlaves: Int,
-	busMap: => WishboneBusMasterSlaveMap,
+	busMap: => MasterSlaveMap[Wishbone],
 	dutCreatedViaApplyFactory: Boolean)
 		extends AnyFlatSpec
 		with LightweightSimulationFixture[WishboneBusCrossbarArbiterFixture]

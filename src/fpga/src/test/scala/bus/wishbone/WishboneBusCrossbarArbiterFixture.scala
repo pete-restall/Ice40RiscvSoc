@@ -4,11 +4,11 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.Wishbone
 
-import uk.co.lophtware.msfreference.bus.MultiMasterSingleSlaveArbiter
+import uk.co.lophtware.msfreference.bus.{MasterSlaveMap, MultiMasterSingleSlaveArbiter}
 import uk.co.lophtware.msfreference.bus.wishbone.{WishboneBusCrossbarArbiter, WishboneBusMasterSlaveMap}
 import uk.co.lophtware.msfreference.tests.bus.CrossbarArbiterFixtureTraits
 
-class WishboneBusCrossbarArbiterFixture(busMapFactory: => WishboneBusMasterSlaveMap, dutCreatedViaApplyFactory: Boolean) extends Component with CrossbarArbiterFixtureTraits {
+class WishboneBusCrossbarArbiterFixture(busMapFactory: => MasterSlaveMap[Wishbone], dutCreatedViaApplyFactory: Boolean) extends Component with CrossbarArbiterFixtureTraits {
 	private val busMap = busMapFactory
 
 	override val io = new WishboneBusCrossbarArbiterFixture.IoBundle(busMap)
@@ -52,7 +52,7 @@ class WishboneBusCrossbarArbiterFixture(busMapFactory: => WishboneBusMasterSlave
 }
 
 object WishboneBusCrossbarArbiterFixture {
-	case class IoBundle(private val busMap: WishboneBusMasterSlaveMap) extends WishboneBusCrossbarArbiter.IoBundle(busMap.masters.length, busMap.slaves.length) {
+	case class IoBundle(private val busMap: MasterSlaveMap[Wishbone]) extends WishboneBusCrossbarArbiter.IoBundle(busMap.masters.length, busMap.slaves.length) {
 		val wishbone = new Bundle {
 			val masters = busMap.masters.map(bus => spinal.lib.slave(new Wishbone(bus.config)))
 			val slaves = busMap.slaves.map(bus => spinal.lib.master(new Wishbone(bus.config)))

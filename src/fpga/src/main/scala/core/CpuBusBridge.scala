@@ -5,7 +5,7 @@ import spinal.lib.bus.wishbone.{Wishbone, WishboneAdapter, WishboneConfig}
 import spinal.lib.{master, slave}
 
 import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusMasterSlaveMap
+import uk.co.lophtware.msfreference.bus.MasterSlaveMap
 
 class CpuBusBridge(cpuBusConfig: WishboneConfig, deviceBusConfig: WishboneConfig) extends Component {
 	val io = new CpuBusBridge.IoBundle(cpuBusConfig, deviceBusConfig)
@@ -29,19 +29,19 @@ class CpuBusBridge(cpuBusConfig: WishboneConfig, deviceBusConfig: WishboneConfig
 
 	def dbusDeviceMapFor(
 		executableDeviceSelector: Wishbone => Bool,
-		dataOnlyDeviceSelectors: (Wishbone, Wishbone => Bool)*): WishboneBusMasterSlaveMap = {
+		dataOnlyDeviceSelectors: (Wishbone, Wishbone => Bool)*): MasterSlaveMap[Wishbone] = {
 
 		executableDeviceSelector.mustNotBeNull("executableDeviceSelector", "A selector for multiplexing the dbus to the executable devices must be specified")
 		dataOnlyDeviceSelectors.mustNotContainNull("dataOnlyDeviceSelectors", "When data-only devices are used, all data-only dbus selectors must be specified")
 
-		WishboneBusMasterSlaveMap(
+		MasterSlaveMap(
 			(io.devices.dbus, executableDeviceSelector, io.devices.dbusToExecutableBridge),
 			dataOnlyDeviceSelectors.map(selector => (io.devices.dbus, selector._2, selector._1)):_*)
 	}
 
 	def executableDeviceMapFor(
 		firstDevice: (Wishbone, (Wishbone => Bool, Wishbone => Bool)),
-		otherDevices: (Wishbone, (Wishbone => Bool, Wishbone => Bool))*): WishboneBusMasterSlaveMap = {
+		otherDevices: (Wishbone, (Wishbone => Bool, Wishbone => Bool))*): MasterSlaveMap[Wishbone] = {
 
 		firstDevice.mustNotBeNull("firstDevice", "At least one executable device must be specified to provide the CPU with instructions")
 		otherDevices.mustNotContainNull("otherDevices", "When more than one executable device is used all of them must be specified")
@@ -52,7 +52,7 @@ class CpuBusBridge(cpuBusConfig: WishboneConfig, deviceBusConfig: WishboneConfig
 			(io.devices.ibus, ibusSelector, slave))
 		}
 
-		WishboneBusMasterSlaveMap(allDeviceMappings.head, allDeviceMappings.tail:_*)
+		MasterSlaveMap(allDeviceMappings.head, allDeviceMappings.tail:_*)
 	}
 }
 

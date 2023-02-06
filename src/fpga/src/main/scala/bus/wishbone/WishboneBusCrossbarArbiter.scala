@@ -1,12 +1,13 @@
 package uk.co.lophtware.msfreference.bus.wishbone
 
 import spinal.core._
+import spinal.lib.bus.wishbone.Wishbone
 
 import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.bus.CrossbarArbiter
+import uk.co.lophtware.msfreference.bus.{CrossbarArbiter, MasterSlaveMap}
 import uk.co.lophtware.msfreference.multiplexing.Encoder
 
-class WishboneBusCrossbarArbiter(busMap: WishboneBusMasterSlaveMap) extends Component {
+class WishboneBusCrossbarArbiter(busMap: MasterSlaveMap[Wishbone]) extends Component {
 	busMap.mustNotBeNull("busMap", "Wishbone Bus Master-to-Slave Mappings must be specified")
 
 	val io = new WishboneBusCrossbarArbiter.IoBundle(busMap.masters.length, busMap.slaves.length)
@@ -31,7 +32,7 @@ object WishboneBusCrossbarArbiter {
 	class IoBundle(private val numberOfMasters: Int, private val numberOfSlaves: Int) extends CrossbarArbiter.IoBundle(numberOfMasters, numberOfSlaves) {
 	}
 
-	def apply(busMap: WishboneBusMasterSlaveMap, encoderFactory: Vec[Bool] => Encoder.IoBundle): WishboneBusCrossbarArbiter = {
+	def apply(busMap: MasterSlaveMap[Wishbone], encoderFactory: Vec[Bool] => Encoder.IoBundle): WishboneBusCrossbarArbiter = {
 		encoderFactory.mustNotBeNull("encoderFactory", "Use None (or omit the argument entirely) if you wish to wire encoders to the arbiter manually")
 
 		val arbiter = apply(busMap)
@@ -46,7 +47,7 @@ object WishboneBusCrossbarArbiter {
 		arbiter
 	}
 
-	def apply(busMap: WishboneBusMasterSlaveMap): WishboneBusCrossbarArbiter = {
+	def apply(busMap: MasterSlaveMap[Wishbone]): WishboneBusCrossbarArbiter = {
 		busMap.mustNotBeNull("busMap", "Wishbone master-slave mappings must be specified")
 
 		val arbiter = new WishboneBusCrossbarArbiter(busMap)
