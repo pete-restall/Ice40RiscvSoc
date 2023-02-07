@@ -9,30 +9,25 @@ import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusMasterSlaveMap
 
 class WishboneBusCrossbarArbiterSimulationTestSuite extends AnyFlatSpec {
 	override def nestedSuites: IndexedSeq[Suite] =
-		createTestCasesWith(dutCreatedViaApplyFactory=false) ++
-		createTestCasesWith(dutCreatedViaApplyFactory=true)
+		createTestCasesWith(WishboneConfigTestDoubles.stubWith(addressWidth=16, selWidth=4)) ++
+		createTestCasesWith(WishboneConfigTestDoubles.stubWith(addressWidth=17, selWidth=0)) ++
+		createTestCasesWith(WishboneConfigTestDoubles.stubWith(addressWidth=18, useSTALL=true, useERR=true, useRTY=true))
 
-	private def createTestCasesWith(dutCreatedViaApplyFactory: Boolean): IndexedSeq[WishboneBusCrossbarArbiterSimulationTest] =
-		createTestCasesWith(dutCreatedViaApplyFactory, WishboneConfigTestDoubles.stubWith(addressWidth=16, selWidth=4)) ++
-		createTestCasesWith(dutCreatedViaApplyFactory, WishboneConfigTestDoubles.stubWith(addressWidth=17, selWidth=0)) ++
-		createTestCasesWith(dutCreatedViaApplyFactory, WishboneConfigTestDoubles.stubWith(addressWidth=18, useSTALL=true, useERR=true, useRTY=true))
+	private def createTestCasesWith(busConfig: WishboneConfig): IndexedSeq[WishboneBusCrossbarArbiterSimulationTest] = Array(
+		createTestCaseWith(numberOfMasters=1, numberOfSlaves=1, busConfig),
+		createTestCaseWith(numberOfMasters=1, numberOfSlaves=2, busConfig),
+		createTestCaseWith(numberOfMasters=2, numberOfSlaves=1, busConfig),
+		createTestCaseWith(numberOfMasters=2, numberOfSlaves=2, busConfig),
+		createTestCaseWith(numberOfMasters=2, numberOfSlaves=3, busConfig),
+		createTestCaseWith(numberOfMasters=3, numberOfSlaves=1, busConfig),
+		createTestCaseWith(numberOfMasters=3, numberOfSlaves=2, busConfig),
+		createTestCaseWith(numberOfMasters=7, numberOfSlaves=5, busConfig))
 
-	private def createTestCasesWith(dutCreatedViaApplyFactory: Boolean, busConfig: WishboneConfig): IndexedSeq[WishboneBusCrossbarArbiterSimulationTest] = Array(
-		createTestCaseWith(numberOfMasters=1, numberOfSlaves=1, busConfig, dutCreatedViaApplyFactory),
-		createTestCaseWith(numberOfMasters=1, numberOfSlaves=2, busConfig, dutCreatedViaApplyFactory),
-		createTestCaseWith(numberOfMasters=2, numberOfSlaves=1, busConfig, dutCreatedViaApplyFactory),
-		createTestCaseWith(numberOfMasters=2, numberOfSlaves=2, busConfig, dutCreatedViaApplyFactory),
-		createTestCaseWith(numberOfMasters=2, numberOfSlaves=3, busConfig, dutCreatedViaApplyFactory),
-		createTestCaseWith(numberOfMasters=3, numberOfSlaves=1, busConfig, dutCreatedViaApplyFactory),
-		createTestCaseWith(numberOfMasters=3, numberOfSlaves=2, busConfig, dutCreatedViaApplyFactory),
-		createTestCaseWith(numberOfMasters=7, numberOfSlaves=5, busConfig, dutCreatedViaApplyFactory))
-
-	private def createTestCaseWith(numberOfMasters: Int, numberOfSlaves: Int, busConfig: WishboneConfig, dutCreatedViaApplyFactory: Boolean) =
+	private def createTestCaseWith(numberOfMasters: Int, numberOfSlaves: Int, busConfig: WishboneConfig) =
 		new WishboneBusCrossbarArbiterSimulationTest(
 			numberOfMasters,
 			numberOfSlaves,
-			createBusMapFor(numberOfMasters, numberOfSlaves, busConfig),
-			dutCreatedViaApplyFactory)
+			createBusMapFor(numberOfMasters, numberOfSlaves, busConfig))
 
 	private def createBusMapFor(numberOfMasters: Int, numberOfSlaves: Int, busConfig: WishboneConfig) = {
 		val masters = Seq.fill(numberOfMasters) { WishboneTestDoubles.stubMasterWith(busConfig) }

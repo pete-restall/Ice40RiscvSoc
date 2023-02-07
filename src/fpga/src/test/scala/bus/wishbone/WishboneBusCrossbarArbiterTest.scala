@@ -8,20 +8,20 @@ import spinal.lib.bus.wishbone.Wishbone
 
 import uk.co.lophtware.msfreference.bus.{CrossbarArbiter, MasterSlaveMap}
 import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusCrossbarArbiter
-import uk.co.lophtware.msfreference.multiplexing.Encoder
+import uk.co.lophtware.msfreference.multiplexing.{Encoder, SimpleEncoder}
 import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation.NonSimulationFixture
 
 class WishboneBusCrossbarArbiterTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {
-	"WishboneBusCrossbarArbiter" must "not use the 'io' prefix for signals" in spinalContext { () =>
-		val arbiter = new WishboneBusCrossbarArbiter(dummyBusMap())
+	"WishboneBusCrossbarArbiter companion's apply(busMap) method" must "not use the 'io' prefix for signals" in spinalContext { () =>
+		val arbiter = WishboneBusCrossbarArbiter(dummyBusMap())
 		arbiter.io.name must be("")
 	}
 
 	private def dummyBusMap() = WishboneBusMasterSlaveMapTestDoubles.dummy()
 
 	it must "not accept a null busMap" in spinalContext { () =>
-		val thrown = the [IllegalArgumentException] thrownBy new WishboneBusCrossbarArbiter(null)
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusCrossbarArbiter(null)
 		thrown.getMessage must include("arg=busMap")
 	}
 
@@ -29,7 +29,7 @@ class WishboneBusCrossbarArbiterTest extends AnyFlatSpec with NonSimulationFixtu
 
 	it must "have IO for the number of slaves passed in the bus map" in spinalContext { () =>
 		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {
-			val arbiter = new WishboneBusCrossbarArbiter(stubBusMapWith(numberOfSlaves=numberOfSlaves))
+			val arbiter = WishboneBusCrossbarArbiter(stubBusMapWith(numberOfSlaves=numberOfSlaves))
 			arbiter.io.slaves.length must be(numberOfSlaves)
 		}}
 	}
@@ -40,28 +40,44 @@ class WishboneBusCrossbarArbiterTest extends AnyFlatSpec with NonSimulationFixtu
 
 	it must "have IO for the number of masters passed in the bus map" in spinalContext { () =>
 		forAll(numberOfMasters) { (numberOfMasters: Int) => {
-			val arbiter = new WishboneBusCrossbarArbiter(stubBusMapWith(numberOfMasters=numberOfMasters))
+			val arbiter = WishboneBusCrossbarArbiter(stubBusMapWith(numberOfMasters=numberOfMasters))
 			arbiter.io.slaves.head.masters.length must be(numberOfMasters)
 		}}
 	}
 
 	it must "have CrossbarArbiter IO" in spinalContext { () =>
-		val arbiter = new WishboneBusCrossbarArbiter(dummyBusMap())
+		val arbiter = WishboneBusCrossbarArbiter(dummyBusMap())
 		arbiter.io must be(a [CrossbarArbiter.IoBundle]);
 	}
 
-	"WishboneBusCrossbarArbiter companion's apply(busMap) method" must "not accept a null busMap" in spinalContext { () =>
-		val thrown = the [IllegalArgumentException] thrownBy WishboneBusCrossbarArbiter(null.asInstanceOf[MasterSlaveMap[Wishbone]])
+	"WishboneBusCrossbarArbiter companion's apply(busMap, encoderFactory) method" must "not accept a null busMap" in spinalContext { () =>
+		val thrown = the [IllegalArgumentException] thrownBy WishboneBusCrossbarArbiter(null.asInstanceOf[MasterSlaveMap[Wishbone]], dummyEncoderFactory)
 		thrown.getMessage must (include("arg=busMap") and include("null"))
 	}
 
-	"WishboneBusCrossbarArbiter companion's apply(busMap, encoderFactory) method" must "not accept a null busMap" in spinalContext { () =>
-		val thrown = the [IllegalArgumentException] thrownBy WishboneBusCrossbarArbiter(null.asInstanceOf[MasterSlaveMap[Wishbone]], _ => null)
-		thrown.getMessage must (include("arg=busMap") and include("null"))
-	}
+	private def dummyEncoderFactory(inputs: Vec[Bool]) = new SimpleEncoder(inputs.length).io
 
 	it must "not accept a null encoderFactory" in spinalContext { () =>
 		val thrown = the [IllegalArgumentException] thrownBy WishboneBusCrossbarArbiter(dummyBusMap(), null.asInstanceOf[Vec[Bool] => Encoder.IoBundle])
 		thrown.getMessage must (include("arg=encoderFactory") and include("null"))
+	}
+
+	it must "have IO for the number of slaves passed in the bus map" in spinalContext { () =>
+		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {
+			val arbiter = WishboneBusCrossbarArbiter(stubBusMapWith(numberOfSlaves=numberOfSlaves), dummyEncoderFactory)
+			arbiter.io.slaves.length must be(numberOfSlaves)
+		}}
+	}
+
+	it must "have IO for the number of masters passed in the bus map" in spinalContext { () =>
+		forAll(numberOfMasters) { (numberOfMasters: Int) => {
+			val arbiter = WishboneBusCrossbarArbiter(stubBusMapWith(numberOfMasters=numberOfMasters), dummyEncoderFactory)
+			arbiter.io.slaves.head.masters.length must be(numberOfMasters)
+		}}
+	}
+
+	it must "have CrossbarArbiter IO" in spinalContext { () =>
+		val arbiter = WishboneBusCrossbarArbiter(dummyBusMap(), dummyEncoderFactory)
+		arbiter.io must be(a [CrossbarArbiter.IoBundle]);
 	}
 }

@@ -14,19 +14,14 @@ import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.bus.CrossbarArbiterSimulationTest
 import uk.co.lophtware.msfreference.tests.simulation._
 
-class WishboneBusCrossbarArbiterSimulationTest(
-	numberOfMasters: Int,
-	numberOfSlaves: Int,
-	busMap: => MasterSlaveMap[Wishbone],
-	dutCreatedViaApplyFactory: Boolean)
-		extends AnyFlatSpec
-		with LightweightSimulationFixture[WishboneBusCrossbarArbiterFixture]
-		with Inspectors {
+class WishboneBusCrossbarArbiterSimulationTest(numberOfMasters: Int, numberOfSlaves: Int, busMap: => MasterSlaveMap[Wishbone]) extends AnyFlatSpec
+	with LightweightSimulationFixture[WishboneBusCrossbarArbiterFixture]
+	with Inspectors {
 
-	protected override def dutFactory() = new WishboneBusCrossbarArbiterFixture(busMap, dutCreatedViaApplyFactory)
+	protected override def dutFactory() = new WishboneBusCrossbarArbiterFixture(busMap)
 
 	override def nestedSuites: IndexedSeq[Suite] = Array(new CrossbarArbiterSimulationTest(numberOfMasters, numberOfSlaves) {
-		protected override def dutFactory() = new WishboneBusCrossbarArbiterFixture(busMap, dutCreatedViaApplyFactory)
+		protected override def dutFactory() = new WishboneBusCrossbarArbiterFixture(busMap)
 	})
 
 	"WishboneBusCrossbarArbiter masters" must "not request control of the bus if the slave encoder is not valid" in simulator { fixture =>
