@@ -200,20 +200,7 @@ class Core extends Component {
 
 	private val crossbarArbiter = WishboneBusCrossbarArbiter(executableSlaveMap, inputs => PriorityEncoder(inputs.head, inputs.tail.toSeq:_*).io)
 
-	private val masterMuxes = crossbarArbiter.io.slaves.zip(executableSlaveMap.slaves).map { case (arbiter, slave) =>
-		val masters = executableSlaveMap.masters.map(master => new Wishbone(master.config))
-		val selector: UInt = arbiter.grantedMasterIndex
-		val mux = WishboneBusMasterMultiplexer(selector, masters.head, masters.tail:_*)
-		mux.io.slave <> slave
-		(mux, masters)
-	}
-
-	executableSlaveMap.masters.zipWithIndex.foreach { case (master, masterIndex) =>
-		val masters = masterMuxes.map(_._2(masterIndex))
-		val selector: UInt = executableSlaveMap.io.masters(masterIndex).index
-		val mux = WishboneBusSlaveMultiplexer(selector, masters.head, masters.tail:_*)
-		mux.io.master <> master
-	}
+	private val crossbarMultiplexer = WishboneBusCrossbarMultiplexer(executableSlaveMap, crossbarArbiter)
 }
 
 object Core {

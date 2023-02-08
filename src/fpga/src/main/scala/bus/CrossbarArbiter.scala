@@ -3,10 +3,11 @@ package uk.co.lophtware.msfreference.bus
 import spinal.core._
 
 import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+import uk.co.lophtware.msfreference.IHaveIo
 import uk.co.lophtware.msfreference.bus.MultiMasterSingleSlaveArbiter
 
-class CrossbarArbiter(numberOfMasters: Int, numberOfSlaves: Int) extends Component {
-	val io = new CrossbarArbiter.IoBundle(numberOfMasters, numberOfSlaves)
+class CrossbarArbiter(numberOfMasters: Int, numberOfSlaves: Int) extends Component with IHaveIo[CrossbarArbiter.IoBundle] {
+	override val io = new CrossbarArbiter.IoBundle(numberOfMasters, numberOfSlaves)
 	noIoPrefix()
 
 	private val slaveArbiters = io.slaves.zipWithIndex.map { case (slave, slaveIndex) =>

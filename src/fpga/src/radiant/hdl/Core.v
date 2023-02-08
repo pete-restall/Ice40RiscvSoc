@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.0    git head : 4e3563a282582b41f4eaafc503787757251d23ea
 // Component : Core
-// Git hash  : d86bcc2324851d93834a23cf5c41881ea03080f7
+// Git hash  : 9e5077ae013b5f4dfe25852e91ad863be7b6fcdd
 
 `timescale 1ns/1ps
 
@@ -221,86 +221,22 @@ module Core (
   wire                priorityEncoder_2_isValid;
   wire       [0:0]    priorityEncoder_3_output_1;
   wire                priorityEncoder_3_isValid;
-  wire       [31:0]   masterMuxes_0_0_masters_0_DAT_MISO;
-  wire                masterMuxes_0_0_masters_0_ACK;
-  wire       [31:0]   masterMuxes_0_0_masters_1_DAT_MISO;
-  wire                masterMuxes_0_0_masters_1_ACK;
-  wire       [31:0]   masterMuxes_0_0_slave_DAT_MOSI;
-  wire       [29:0]   masterMuxes_0_0_slave_ADR;
-  wire                masterMuxes_0_0_slave_CYC;
-  wire       [3:0]    masterMuxes_0_0_slave_SEL;
-  wire                masterMuxes_0_0_slave_STB;
-  wire                masterMuxes_0_0_slave_WE;
-  wire       [31:0]   masterMuxes_1_0_masters_0_DAT_MISO;
-  wire                masterMuxes_1_0_masters_0_ACK;
-  wire       [31:0]   masterMuxes_1_0_masters_1_DAT_MISO;
-  wire                masterMuxes_1_0_masters_1_ACK;
-  wire       [31:0]   masterMuxes_1_0_slave_DAT_MOSI;
-  wire       [29:0]   masterMuxes_1_0_slave_ADR;
-  wire                masterMuxes_1_0_slave_CYC;
-  wire       [3:0]    masterMuxes_1_0_slave_SEL;
-  wire                masterMuxes_1_0_slave_STB;
-  wire                masterMuxes_1_0_slave_WE;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_3_master_DAT_MISO;
-  wire                wishboneBusSlaveMultiplexer_3_master_ACK;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_3_slaves_0_DAT_MOSI;
-  wire       [29:0]   wishboneBusSlaveMultiplexer_3_slaves_0_ADR;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_0_CYC;
-  wire       [3:0]    wishboneBusSlaveMultiplexer_3_slaves_0_SEL;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_0_STB;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_0_WE;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_3_slaves_1_DAT_MOSI;
-  wire       [29:0]   wishboneBusSlaveMultiplexer_3_slaves_1_ADR;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_1_CYC;
-  wire       [3:0]    wishboneBusSlaveMultiplexer_3_slaves_1_SEL;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_1_STB;
-  wire                wishboneBusSlaveMultiplexer_3_slaves_1_WE;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_4_master_DAT_MISO;
-  wire                wishboneBusSlaveMultiplexer_4_master_ACK;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_4_slaves_0_DAT_MOSI;
-  wire       [29:0]   wishboneBusSlaveMultiplexer_4_slaves_0_ADR;
-  wire                wishboneBusSlaveMultiplexer_4_slaves_0_CYC;
-  wire       [3:0]    wishboneBusSlaveMultiplexer_4_slaves_0_SEL;
-  wire                wishboneBusSlaveMultiplexer_4_slaves_0_STB;
-  wire                wishboneBusSlaveMultiplexer_4_slaves_0_WE;
-  wire       [31:0]   wishboneBusSlaveMultiplexer_4_slaves_1_DAT_MOSI;
-  wire       [29:0]   wishboneBusSlaveMultiplexer_4_slaves_1_ADR;
-  wire                wishboneBusSlaveMultiplexer_4_slaves_1_CYC;
-  wire       [3:0]    wishboneBusSlaveMultiplexer_4_slaves_1_SEL;
-  wire                wishboneBusSlaveMultiplexer_4_slaves_1_STB;
-  wire                wishboneBusSlaveMultiplexer_4_slaves_1_WE;
-  wire                masterMuxes_0_1_0_CYC;
-  wire                masterMuxes_0_1_0_STB;
-  wire                masterMuxes_0_1_0_ACK;
-  wire                masterMuxes_0_1_0_WE;
-  wire       [29:0]   masterMuxes_0_1_0_ADR;
-  wire       [31:0]   masterMuxes_0_1_0_DAT_MISO;
-  wire       [31:0]   masterMuxes_0_1_0_DAT_MOSI;
-  wire       [3:0]    masterMuxes_0_1_0_SEL;
-  wire                masterMuxes_0_1_1_CYC;
-  wire                masterMuxes_0_1_1_STB;
-  wire                masterMuxes_0_1_1_ACK;
-  wire                masterMuxes_0_1_1_WE;
-  wire       [29:0]   masterMuxes_0_1_1_ADR;
-  wire       [31:0]   masterMuxes_0_1_1_DAT_MISO;
-  wire       [31:0]   masterMuxes_0_1_1_DAT_MOSI;
-  wire       [3:0]    masterMuxes_0_1_1_SEL;
-  wire                masterMuxes_1_1_0_CYC;
-  wire                masterMuxes_1_1_0_STB;
-  wire                masterMuxes_1_1_0_ACK;
-  wire                masterMuxes_1_1_0_WE;
-  wire       [29:0]   masterMuxes_1_1_0_ADR;
-  wire       [31:0]   masterMuxes_1_1_0_DAT_MISO;
-  wire       [31:0]   masterMuxes_1_1_0_DAT_MOSI;
-  wire       [3:0]    masterMuxes_1_1_0_SEL;
-  wire                masterMuxes_1_1_1_CYC;
-  wire                masterMuxes_1_1_1_STB;
-  wire                masterMuxes_1_1_1_ACK;
-  wire                masterMuxes_1_1_1_WE;
-  wire       [29:0]   masterMuxes_1_1_1_ADR;
-  wire       [31:0]   masterMuxes_1_1_1_DAT_MISO;
-  wire       [31:0]   masterMuxes_1_1_1_DAT_MOSI;
-  wire       [3:0]    masterMuxes_1_1_1_SEL;
+  wire       [31:0]   crossbarMultiplexer_masters_0_wishbone_DAT_MISO;
+  wire                crossbarMultiplexer_masters_0_wishbone_ACK;
+  wire       [31:0]   crossbarMultiplexer_masters_1_wishbone_DAT_MISO;
+  wire                crossbarMultiplexer_masters_1_wishbone_ACK;
+  wire       [31:0]   crossbarMultiplexer_slaves_0_wishbone_DAT_MOSI;
+  wire       [29:0]   crossbarMultiplexer_slaves_0_wishbone_ADR;
+  wire                crossbarMultiplexer_slaves_0_wishbone_CYC;
+  wire       [3:0]    crossbarMultiplexer_slaves_0_wishbone_SEL;
+  wire                crossbarMultiplexer_slaves_0_wishbone_STB;
+  wire                crossbarMultiplexer_slaves_0_wishbone_WE;
+  wire       [31:0]   crossbarMultiplexer_slaves_1_wishbone_DAT_MOSI;
+  wire       [29:0]   crossbarMultiplexer_slaves_1_wishbone_ADR;
+  wire                crossbarMultiplexer_slaves_1_wishbone_CYC;
+  wire       [3:0]    crossbarMultiplexer_slaves_1_wishbone_SEL;
+  wire                crossbarMultiplexer_slaves_1_wishbone_STB;
+  wire                crossbarMultiplexer_slaves_1_wishbone_WE;
 
   Cpu cpu_1 (
     .ibus_CYC            (cpu_1_ibus_CYC                ), //o
@@ -459,14 +395,14 @@ module Core (
     .slave_SEL       (wideInstructionEbramBlock_slave_SEL[31:0]              )  //o
   );
   WishboneBusAddressMappingAdapter_2 instructionEbramBlockWidthAdjusted (
-    .master_CYC      (masterMuxes_0_0_slave_CYC                               ), //i
-    .master_STB      (masterMuxes_0_0_slave_STB                               ), //i
+    .master_CYC      (crossbarMultiplexer_slaves_0_wishbone_CYC               ), //i
+    .master_STB      (crossbarMultiplexer_slaves_0_wishbone_STB               ), //i
     .master_ACK      (instructionEbramBlockWidthAdjusted_master_ACK           ), //o
-    .master_WE       (masterMuxes_0_0_slave_WE                                ), //i
-    .master_ADR      (masterMuxes_0_0_slave_ADR[29:0]                         ), //i
+    .master_WE       (crossbarMultiplexer_slaves_0_wishbone_WE                ), //i
+    .master_ADR      (crossbarMultiplexer_slaves_0_wishbone_ADR[29:0]         ), //i
     .master_DAT_MISO (instructionEbramBlockWidthAdjusted_master_DAT_MISO[31:0]), //o
-    .master_DAT_MOSI (masterMuxes_0_0_slave_DAT_MOSI[31:0]                    ), //i
-    .master_SEL      (masterMuxes_0_0_slave_SEL[3:0]                          ), //i
+    .master_DAT_MOSI (crossbarMultiplexer_slaves_0_wishbone_DAT_MOSI[31:0]    ), //i
+    .master_SEL      (crossbarMultiplexer_slaves_0_wishbone_SEL[3:0]          ), //i
     .slave_CYC       (instructionEbramBlockWidthAdjusted_slave_CYC            ), //o
     .slave_STB       (instructionEbramBlockWidthAdjusted_slave_STB            ), //o
     .slave_ACK       (wideInstructionEbramBlock_master_ACK                    ), //i
@@ -581,22 +517,22 @@ module Core (
     .slave_SEL       (wideDataSpramBlock_slave_SEL[7:0]               )  //o
   );
   WishboneBusAddressMappingAdapter_1 dataSpramBlockWidthAdjusted (
-    .master_CYC      (masterMuxes_1_0_slave_CYC                        ), //i
-    .master_STB      (masterMuxes_1_0_slave_STB                        ), //i
-    .master_ACK      (dataSpramBlockWidthAdjusted_master_ACK           ), //o
-    .master_WE       (masterMuxes_1_0_slave_WE                         ), //i
-    .master_ADR      (masterMuxes_1_0_slave_ADR[29:0]                  ), //i
-    .master_DAT_MISO (dataSpramBlockWidthAdjusted_master_DAT_MISO[31:0]), //o
-    .master_DAT_MOSI (masterMuxes_1_0_slave_DAT_MOSI[31:0]             ), //i
-    .master_SEL      (masterMuxes_1_0_slave_SEL[3:0]                   ), //i
-    .slave_CYC       (dataSpramBlockWidthAdjusted_slave_CYC            ), //o
-    .slave_STB       (dataSpramBlockWidthAdjusted_slave_STB            ), //o
-    .slave_ACK       (wideDataSpramBlock_master_ACK                    ), //i
-    .slave_WE        (dataSpramBlockWidthAdjusted_slave_WE             ), //o
-    .slave_ADR       (dataSpramBlockWidthAdjusted_slave_ADR[13:0]      ), //o
-    .slave_DAT_MISO  (wideDataSpramBlock_master_DAT_MISO[31:0]         ), //i
-    .slave_DAT_MOSI  (dataSpramBlockWidthAdjusted_slave_DAT_MOSI[31:0] ), //o
-    .slave_SEL       (dataSpramBlockWidthAdjusted_slave_SEL[3:0]       )  //o
+    .master_CYC      (crossbarMultiplexer_slaves_1_wishbone_CYC           ), //i
+    .master_STB      (crossbarMultiplexer_slaves_1_wishbone_STB           ), //i
+    .master_ACK      (dataSpramBlockWidthAdjusted_master_ACK              ), //o
+    .master_WE       (crossbarMultiplexer_slaves_1_wishbone_WE            ), //i
+    .master_ADR      (crossbarMultiplexer_slaves_1_wishbone_ADR[29:0]     ), //i
+    .master_DAT_MISO (dataSpramBlockWidthAdjusted_master_DAT_MISO[31:0]   ), //o
+    .master_DAT_MOSI (crossbarMultiplexer_slaves_1_wishbone_DAT_MOSI[31:0]), //i
+    .master_SEL      (crossbarMultiplexer_slaves_1_wishbone_SEL[3:0]      ), //i
+    .slave_CYC       (dataSpramBlockWidthAdjusted_slave_CYC               ), //o
+    .slave_STB       (dataSpramBlockWidthAdjusted_slave_STB               ), //o
+    .slave_ACK       (wideDataSpramBlock_master_ACK                       ), //i
+    .slave_WE        (dataSpramBlockWidthAdjusted_slave_WE                ), //o
+    .slave_ADR       (dataSpramBlockWidthAdjusted_slave_ADR[13:0]         ), //o
+    .slave_DAT_MISO  (wideDataSpramBlock_master_DAT_MISO[31:0]            ), //i
+    .slave_DAT_MOSI  (dataSpramBlockWidthAdjusted_slave_DAT_MOSI[31:0]    ), //o
+    .slave_SEL       (dataSpramBlockWidthAdjusted_slave_SEL[3:0]          )  //o
   );
   WishboneBusAddressMappingAdapter ledDeviceWidthAdjusted (
     .master_CYC      (dbusOnlySlaveMux_slaves_1_CYC               ), //i
@@ -617,60 +553,60 @@ module Core (
     .slave_SEL       (ledDeviceWidthAdjusted_slave_SEL[3:0]       )  //o
   );
   CpuBusBridge bridge (
-    .cpu_ibus_CYC                            (cpu_1_ibus_CYC                                      ), //i
-    .cpu_ibus_STB                            (cpu_1_ibus_STB                                      ), //i
-    .cpu_ibus_ACK                            (bridge_cpu_ibus_ACK                                 ), //o
-    .cpu_ibus_WE                             (cpu_1_ibus_WE                                       ), //i
-    .cpu_ibus_ADR                            (cpu_1_ibus_ADR[29:0]                                ), //i
-    .cpu_ibus_DAT_MISO                       (bridge_cpu_ibus_DAT_MISO[31:0]                      ), //o
-    .cpu_ibus_DAT_MOSI                       (cpu_1_ibus_DAT_MOSI[31:0]                           ), //i
-    .cpu_ibus_SEL                            (cpu_1_ibus_SEL[3:0]                                 ), //i
-    .cpu_ibus_ERR                            (bridge_cpu_ibus_ERR                                 ), //o
-    .cpu_ibus_CTI                            (cpu_1_ibus_CTI[2:0]                                 ), //i
-    .cpu_ibus_BTE                            (cpu_1_ibus_BTE[1:0]                                 ), //i
-    .cpu_dbus_CYC                            (cpu_1_dbus_CYC                                      ), //i
-    .cpu_dbus_STB                            (cpu_1_dbus_STB                                      ), //i
-    .cpu_dbus_ACK                            (bridge_cpu_dbus_ACK                                 ), //o
-    .cpu_dbus_WE                             (cpu_1_dbus_WE                                       ), //i
-    .cpu_dbus_ADR                            (cpu_1_dbus_ADR[29:0]                                ), //i
-    .cpu_dbus_DAT_MISO                       (bridge_cpu_dbus_DAT_MISO[31:0]                      ), //o
-    .cpu_dbus_DAT_MOSI                       (cpu_1_dbus_DAT_MOSI[31:0]                           ), //i
-    .cpu_dbus_SEL                            (cpu_1_dbus_SEL[3:0]                                 ), //i
-    .cpu_dbus_ERR                            (bridge_cpu_dbus_ERR                                 ), //o
-    .cpu_dbus_CTI                            (cpu_1_dbus_CTI[2:0]                                 ), //i
-    .cpu_dbus_BTE                            (cpu_1_dbus_BTE[1:0]                                 ), //i
-    .devices_ibus_CYC                        (bridge_devices_ibus_CYC                             ), //o
-    .devices_ibus_STB                        (bridge_devices_ibus_STB                             ), //o
-    .devices_ibus_ACK                        (wishboneBusSlaveMultiplexer_4_master_ACK            ), //i
-    .devices_ibus_WE                         (bridge_devices_ibus_WE                              ), //o
-    .devices_ibus_ADR                        (bridge_devices_ibus_ADR[29:0]                       ), //o
-    .devices_ibus_DAT_MISO                   (wishboneBusSlaveMultiplexer_4_master_DAT_MISO[31:0] ), //i
-    .devices_ibus_DAT_MOSI                   (bridge_devices_ibus_DAT_MOSI[31:0]                  ), //o
-    .devices_ibus_SEL                        (bridge_devices_ibus_SEL[3:0]                        ), //o
-    .devices_dbus_CYC                        (bridge_devices_dbus_CYC                             ), //o
-    .devices_dbus_STB                        (bridge_devices_dbus_STB                             ), //o
-    .devices_dbus_ACK                        (dbusOnlySlaveMux_master_ACK                         ), //i
-    .devices_dbus_WE                         (bridge_devices_dbus_WE                              ), //o
-    .devices_dbus_ADR                        (bridge_devices_dbus_ADR[29:0]                       ), //o
-    .devices_dbus_DAT_MISO                   (dbusOnlySlaveMux_master_DAT_MISO[31:0]              ), //i
-    .devices_dbus_DAT_MOSI                   (bridge_devices_dbus_DAT_MOSI[31:0]                  ), //o
-    .devices_dbus_SEL                        (bridge_devices_dbus_SEL[3:0]                        ), //o
-    .devices_dbusToExecutableBridge_CYC      (dbusOnlySlaveMux_slaves_0_CYC                       ), //i
-    .devices_dbusToExecutableBridge_STB      (dbusOnlySlaveMux_slaves_0_STB                       ), //i
-    .devices_dbusToExecutableBridge_ACK      (bridge_devices_dbusToExecutableBridge_ACK           ), //o
-    .devices_dbusToExecutableBridge_WE       (dbusOnlySlaveMux_slaves_0_WE                        ), //i
-    .devices_dbusToExecutableBridge_ADR      (dbusOnlySlaveMux_slaves_0_ADR[29:0]                 ), //i
-    .devices_dbusToExecutableBridge_DAT_MISO (bridge_devices_dbusToExecutableBridge_DAT_MISO[31:0]), //o
-    .devices_dbusToExecutableBridge_DAT_MOSI (dbusOnlySlaveMux_slaves_0_DAT_MOSI[31:0]            ), //i
-    .devices_dbusToExecutableBridge_SEL      (dbusOnlySlaveMux_slaves_0_SEL[3:0]                  ), //i
-    .devices_executable_CYC                  (bridge_devices_executable_CYC                       ), //o
-    .devices_executable_STB                  (bridge_devices_executable_STB                       ), //o
-    .devices_executable_ACK                  (wishboneBusSlaveMultiplexer_3_master_ACK            ), //i
-    .devices_executable_WE                   (bridge_devices_executable_WE                        ), //o
-    .devices_executable_ADR                  (bridge_devices_executable_ADR[29:0]                 ), //o
-    .devices_executable_DAT_MISO             (wishboneBusSlaveMultiplexer_3_master_DAT_MISO[31:0] ), //i
-    .devices_executable_DAT_MOSI             (bridge_devices_executable_DAT_MOSI[31:0]            ), //o
-    .devices_executable_SEL                  (bridge_devices_executable_SEL[3:0]                  )  //o
+    .cpu_ibus_CYC                            (cpu_1_ibus_CYC                                       ), //i
+    .cpu_ibus_STB                            (cpu_1_ibus_STB                                       ), //i
+    .cpu_ibus_ACK                            (bridge_cpu_ibus_ACK                                  ), //o
+    .cpu_ibus_WE                             (cpu_1_ibus_WE                                        ), //i
+    .cpu_ibus_ADR                            (cpu_1_ibus_ADR[29:0]                                 ), //i
+    .cpu_ibus_DAT_MISO                       (bridge_cpu_ibus_DAT_MISO[31:0]                       ), //o
+    .cpu_ibus_DAT_MOSI                       (cpu_1_ibus_DAT_MOSI[31:0]                            ), //i
+    .cpu_ibus_SEL                            (cpu_1_ibus_SEL[3:0]                                  ), //i
+    .cpu_ibus_ERR                            (bridge_cpu_ibus_ERR                                  ), //o
+    .cpu_ibus_CTI                            (cpu_1_ibus_CTI[2:0]                                  ), //i
+    .cpu_ibus_BTE                            (cpu_1_ibus_BTE[1:0]                                  ), //i
+    .cpu_dbus_CYC                            (cpu_1_dbus_CYC                                       ), //i
+    .cpu_dbus_STB                            (cpu_1_dbus_STB                                       ), //i
+    .cpu_dbus_ACK                            (bridge_cpu_dbus_ACK                                  ), //o
+    .cpu_dbus_WE                             (cpu_1_dbus_WE                                        ), //i
+    .cpu_dbus_ADR                            (cpu_1_dbus_ADR[29:0]                                 ), //i
+    .cpu_dbus_DAT_MISO                       (bridge_cpu_dbus_DAT_MISO[31:0]                       ), //o
+    .cpu_dbus_DAT_MOSI                       (cpu_1_dbus_DAT_MOSI[31:0]                            ), //i
+    .cpu_dbus_SEL                            (cpu_1_dbus_SEL[3:0]                                  ), //i
+    .cpu_dbus_ERR                            (bridge_cpu_dbus_ERR                                  ), //o
+    .cpu_dbus_CTI                            (cpu_1_dbus_CTI[2:0]                                  ), //i
+    .cpu_dbus_BTE                            (cpu_1_dbus_BTE[1:0]                                  ), //i
+    .devices_ibus_CYC                        (bridge_devices_ibus_CYC                              ), //o
+    .devices_ibus_STB                        (bridge_devices_ibus_STB                              ), //o
+    .devices_ibus_ACK                        (crossbarMultiplexer_masters_1_wishbone_ACK           ), //i
+    .devices_ibus_WE                         (bridge_devices_ibus_WE                               ), //o
+    .devices_ibus_ADR                        (bridge_devices_ibus_ADR[29:0]                        ), //o
+    .devices_ibus_DAT_MISO                   (crossbarMultiplexer_masters_1_wishbone_DAT_MISO[31:0]), //i
+    .devices_ibus_DAT_MOSI                   (bridge_devices_ibus_DAT_MOSI[31:0]                   ), //o
+    .devices_ibus_SEL                        (bridge_devices_ibus_SEL[3:0]                         ), //o
+    .devices_dbus_CYC                        (bridge_devices_dbus_CYC                              ), //o
+    .devices_dbus_STB                        (bridge_devices_dbus_STB                              ), //o
+    .devices_dbus_ACK                        (dbusOnlySlaveMux_master_ACK                          ), //i
+    .devices_dbus_WE                         (bridge_devices_dbus_WE                               ), //o
+    .devices_dbus_ADR                        (bridge_devices_dbus_ADR[29:0]                        ), //o
+    .devices_dbus_DAT_MISO                   (dbusOnlySlaveMux_master_DAT_MISO[31:0]               ), //i
+    .devices_dbus_DAT_MOSI                   (bridge_devices_dbus_DAT_MOSI[31:0]                   ), //o
+    .devices_dbus_SEL                        (bridge_devices_dbus_SEL[3:0]                         ), //o
+    .devices_dbusToExecutableBridge_CYC      (dbusOnlySlaveMux_slaves_0_CYC                        ), //i
+    .devices_dbusToExecutableBridge_STB      (dbusOnlySlaveMux_slaves_0_STB                        ), //i
+    .devices_dbusToExecutableBridge_ACK      (bridge_devices_dbusToExecutableBridge_ACK            ), //o
+    .devices_dbusToExecutableBridge_WE       (dbusOnlySlaveMux_slaves_0_WE                         ), //i
+    .devices_dbusToExecutableBridge_ADR      (dbusOnlySlaveMux_slaves_0_ADR[29:0]                  ), //i
+    .devices_dbusToExecutableBridge_DAT_MISO (bridge_devices_dbusToExecutableBridge_DAT_MISO[31:0] ), //o
+    .devices_dbusToExecutableBridge_DAT_MOSI (dbusOnlySlaveMux_slaves_0_DAT_MOSI[31:0]             ), //i
+    .devices_dbusToExecutableBridge_SEL      (dbusOnlySlaveMux_slaves_0_SEL[3:0]                   ), //i
+    .devices_executable_CYC                  (bridge_devices_executable_CYC                        ), //o
+    .devices_executable_STB                  (bridge_devices_executable_STB                        ), //o
+    .devices_executable_ACK                  (crossbarMultiplexer_masters_0_wishbone_ACK           ), //i
+    .devices_executable_WE                   (bridge_devices_executable_WE                         ), //o
+    .devices_executable_ADR                  (bridge_devices_executable_ADR[29:0]                  ), //o
+    .devices_executable_DAT_MISO             (crossbarMultiplexer_masters_0_wishbone_DAT_MISO[31:0]), //i
+    .devices_executable_DAT_MOSI             (bridge_devices_executable_DAT_MOSI[31:0]             ), //o
+    .devices_executable_SEL                  (bridge_devices_executable_SEL[3:0]                   )  //o
   );
   MasterSlaveMap_1 dbusSlaveMap (
     .masters_0_index          (dbusSlaveMap_masters_0_index         ), //o
@@ -715,7 +651,7 @@ module Core (
     .slaves_1_SEL      (dbusOnlySlaveMux_slaves_1_SEL[3:0]                  ), //o
     .selector          (dbusSlaveMap_masters_0_index                        )  //i
   );
-  WishboneBusCrossbarArbiter crossbarArbiter_1 (
+  CrossbarArbiter crossbarArbiter_1 (
     .slaves_0_encoder_inputs_0    (crossbarArbiter_1_slaves_0_encoder_inputs_0   ), //o
     .slaves_0_encoder_inputs_1    (crossbarArbiter_1_slaves_0_encoder_inputs_1   ), //o
     .slaves_0_encoder_output      (priorityEncoder_2_output_1                    ), //i
@@ -757,69 +693,244 @@ module Core (
     .output_1 (priorityEncoder_3_output_1                 ), //o
     .isValid  (priorityEncoder_3_isValid                  )  //o
   );
+  WishboneBusCrossbarMultiplexer crossbarMultiplexer (
+    .masters_0_requestedSlaveIndex (executableSlaveMap_masters_0_index                      ), //i
+    .masters_0_wishbone_CYC        (bridge_devices_executable_CYC                           ), //i
+    .masters_0_wishbone_STB        (bridge_devices_executable_STB                           ), //i
+    .masters_0_wishbone_ACK        (crossbarMultiplexer_masters_0_wishbone_ACK              ), //o
+    .masters_0_wishbone_WE         (bridge_devices_executable_WE                            ), //i
+    .masters_0_wishbone_ADR        (bridge_devices_executable_ADR[29:0]                     ), //i
+    .masters_0_wishbone_DAT_MISO   (crossbarMultiplexer_masters_0_wishbone_DAT_MISO[31:0]   ), //o
+    .masters_0_wishbone_DAT_MOSI   (bridge_devices_executable_DAT_MOSI[31:0]                ), //i
+    .masters_0_wishbone_SEL        (bridge_devices_executable_SEL[3:0]                      ), //i
+    .masters_1_requestedSlaveIndex (executableSlaveMap_masters_1_index                      ), //i
+    .masters_1_wishbone_CYC        (bridge_devices_ibus_CYC                                 ), //i
+    .masters_1_wishbone_STB        (bridge_devices_ibus_STB                                 ), //i
+    .masters_1_wishbone_ACK        (crossbarMultiplexer_masters_1_wishbone_ACK              ), //o
+    .masters_1_wishbone_WE         (bridge_devices_ibus_WE                                  ), //i
+    .masters_1_wishbone_ADR        (bridge_devices_ibus_ADR[29:0]                           ), //i
+    .masters_1_wishbone_DAT_MISO   (crossbarMultiplexer_masters_1_wishbone_DAT_MISO[31:0]   ), //o
+    .masters_1_wishbone_DAT_MOSI   (bridge_devices_ibus_DAT_MOSI[31:0]                      ), //i
+    .masters_1_wishbone_SEL        (bridge_devices_ibus_SEL[3:0]                            ), //i
+    .slaves_0_grantedMasterIndex   (crossbarArbiter_1_slaves_0_grantedMasterIndex           ), //i
+    .slaves_0_wishbone_CYC         (crossbarMultiplexer_slaves_0_wishbone_CYC               ), //o
+    .slaves_0_wishbone_STB         (crossbarMultiplexer_slaves_0_wishbone_STB               ), //o
+    .slaves_0_wishbone_ACK         (instructionEbramBlockWidthAdjusted_master_ACK           ), //i
+    .slaves_0_wishbone_WE          (crossbarMultiplexer_slaves_0_wishbone_WE                ), //o
+    .slaves_0_wishbone_ADR         (crossbarMultiplexer_slaves_0_wishbone_ADR[29:0]         ), //o
+    .slaves_0_wishbone_DAT_MISO    (instructionEbramBlockWidthAdjusted_master_DAT_MISO[31:0]), //i
+    .slaves_0_wishbone_DAT_MOSI    (crossbarMultiplexer_slaves_0_wishbone_DAT_MOSI[31:0]    ), //o
+    .slaves_0_wishbone_SEL         (crossbarMultiplexer_slaves_0_wishbone_SEL[3:0]          ), //o
+    .slaves_1_grantedMasterIndex   (crossbarArbiter_1_slaves_1_grantedMasterIndex           ), //i
+    .slaves_1_wishbone_CYC         (crossbarMultiplexer_slaves_1_wishbone_CYC               ), //o
+    .slaves_1_wishbone_STB         (crossbarMultiplexer_slaves_1_wishbone_STB               ), //o
+    .slaves_1_wishbone_ACK         (dataSpramBlockWidthAdjusted_master_ACK                  ), //i
+    .slaves_1_wishbone_WE          (crossbarMultiplexer_slaves_1_wishbone_WE                ), //o
+    .slaves_1_wishbone_ADR         (crossbarMultiplexer_slaves_1_wishbone_ADR[29:0]         ), //o
+    .slaves_1_wishbone_DAT_MISO    (dataSpramBlockWidthAdjusted_master_DAT_MISO[31:0]       ), //i
+    .slaves_1_wishbone_DAT_MOSI    (crossbarMultiplexer_slaves_1_wishbone_DAT_MOSI[31:0]    ), //o
+    .slaves_1_wishbone_SEL         (crossbarMultiplexer_slaves_1_wishbone_SEL[3:0]          )  //o
+  );
+  assign p23 = ledDevice_io_p23; // @[Core.scala 55:16]
+  assign ledR = ledDevice_io_ledR; // @[Core.scala 56:17]
+  assign ledG = ledDevice_io_ledG; // @[Core.scala 57:17]
+  assign ledB = ledDevice_io_ledB; // @[Core.scala 58:17]
+  assign dbusSlaveMap_masters_0_slaveSelects_0 = (! bridge_devices_dbus_ADR[14]); // @[MasterSlaveMap.scala 84:90]
+  assign dbusSlaveMap_masters_0_slaveSelects_1 = bridge_devices_dbus_ADR[14]; // @[MasterSlaveMap.scala 84:90]
+  assign executableSlaveMap_masters_0_slaveSelects_0 = ((! bridge_devices_executable_ADR[14]) && (! bridge_devices_executable_ADR[6])); // @[MasterSlaveMap.scala 84:90]
+  assign executableSlaveMap_masters_1_slaveSelects_0 = ((! bridge_devices_ibus_ADR[14]) && (! bridge_devices_ibus_ADR[6])); // @[MasterSlaveMap.scala 84:90]
+  assign executableSlaveMap_masters_0_slaveSelects_1 = ((! bridge_devices_executable_ADR[14]) && bridge_devices_executable_ADR[6]); // @[MasterSlaveMap.scala 84:90]
+  assign executableSlaveMap_masters_1_slaveSelects_1 = ((! bridge_devices_ibus_ADR[14]) && bridge_devices_ibus_ADR[6]); // @[MasterSlaveMap.scala 84:90]
+  assign crossbarArbiter_1_slaves_0_masters_0_request = ((bridge_devices_executable_CYC && executableSlaveMap_masters_0_isValid) && (executableSlaveMap_masters_0_index == 1'b0)); // @[WishboneBusCrossbarArbiter.scala 32:50]
+  assign crossbarArbiter_1_slaves_0_masters_1_request = ((bridge_devices_ibus_CYC && executableSlaveMap_masters_1_isValid) && (executableSlaveMap_masters_1_index == 1'b0)); // @[WishboneBusCrossbarArbiter.scala 32:50]
+  assign crossbarArbiter_1_slaves_1_masters_0_request = ((bridge_devices_executable_CYC && executableSlaveMap_masters_0_isValid) && (executableSlaveMap_masters_0_index == 1'b1)); // @[WishboneBusCrossbarArbiter.scala 32:50]
+  assign crossbarArbiter_1_slaves_1_masters_1_request = ((bridge_devices_ibus_CYC && executableSlaveMap_masters_1_isValid) && (executableSlaveMap_masters_1_index == 1'b1)); // @[WishboneBusCrossbarArbiter.scala 32:50]
+
+endmodule
+
+module WishboneBusCrossbarMultiplexer (
+  input      [0:0]    masters_0_requestedSlaveIndex,
+  input               masters_0_wishbone_CYC,
+  input               masters_0_wishbone_STB,
+  output              masters_0_wishbone_ACK,
+  input               masters_0_wishbone_WE,
+  input      [29:0]   masters_0_wishbone_ADR,
+  output     [31:0]   masters_0_wishbone_DAT_MISO,
+  input      [31:0]   masters_0_wishbone_DAT_MOSI,
+  input      [3:0]    masters_0_wishbone_SEL,
+  input      [0:0]    masters_1_requestedSlaveIndex,
+  input               masters_1_wishbone_CYC,
+  input               masters_1_wishbone_STB,
+  output              masters_1_wishbone_ACK,
+  input               masters_1_wishbone_WE,
+  input      [29:0]   masters_1_wishbone_ADR,
+  output     [31:0]   masters_1_wishbone_DAT_MISO,
+  input      [31:0]   masters_1_wishbone_DAT_MOSI,
+  input      [3:0]    masters_1_wishbone_SEL,
+  input      [0:0]    slaves_0_grantedMasterIndex,
+  output              slaves_0_wishbone_CYC,
+  output              slaves_0_wishbone_STB,
+  input               slaves_0_wishbone_ACK,
+  output              slaves_0_wishbone_WE,
+  output     [29:0]   slaves_0_wishbone_ADR,
+  input      [31:0]   slaves_0_wishbone_DAT_MISO,
+  output     [31:0]   slaves_0_wishbone_DAT_MOSI,
+  output     [3:0]    slaves_0_wishbone_SEL,
+  input      [0:0]    slaves_1_grantedMasterIndex,
+  output              slaves_1_wishbone_CYC,
+  output              slaves_1_wishbone_STB,
+  input               slaves_1_wishbone_ACK,
+  output              slaves_1_wishbone_WE,
+  output     [29:0]   slaves_1_wishbone_ADR,
+  input      [31:0]   slaves_1_wishbone_DAT_MISO,
+  output     [31:0]   slaves_1_wishbone_DAT_MOSI,
+  output     [3:0]    slaves_1_wishbone_SEL
+);
+
+  wire       [31:0]   masterMuxes_0_0_masters_0_DAT_MISO;
+  wire                masterMuxes_0_0_masters_0_ACK;
+  wire       [31:0]   masterMuxes_0_0_masters_1_DAT_MISO;
+  wire                masterMuxes_0_0_masters_1_ACK;
+  wire       [31:0]   masterMuxes_0_0_slave_DAT_MOSI;
+  wire       [29:0]   masterMuxes_0_0_slave_ADR;
+  wire                masterMuxes_0_0_slave_CYC;
+  wire       [3:0]    masterMuxes_0_0_slave_SEL;
+  wire                masterMuxes_0_0_slave_STB;
+  wire                masterMuxes_0_0_slave_WE;
+  wire       [31:0]   masterMuxes_1_0_masters_0_DAT_MISO;
+  wire                masterMuxes_1_0_masters_0_ACK;
+  wire       [31:0]   masterMuxes_1_0_masters_1_DAT_MISO;
+  wire                masterMuxes_1_0_masters_1_ACK;
+  wire       [31:0]   masterMuxes_1_0_slave_DAT_MOSI;
+  wire       [29:0]   masterMuxes_1_0_slave_ADR;
+  wire                masterMuxes_1_0_slave_CYC;
+  wire       [3:0]    masterMuxes_1_0_slave_SEL;
+  wire                masterMuxes_1_0_slave_STB;
+  wire                masterMuxes_1_0_slave_WE;
+  wire       [31:0]   wishboneBusSlaveMultiplexer_3_master_DAT_MISO;
+  wire                wishboneBusSlaveMultiplexer_3_master_ACK;
+  wire       [31:0]   wishboneBusSlaveMultiplexer_3_slaves_0_DAT_MOSI;
+  wire       [29:0]   wishboneBusSlaveMultiplexer_3_slaves_0_ADR;
+  wire                wishboneBusSlaveMultiplexer_3_slaves_0_CYC;
+  wire       [3:0]    wishboneBusSlaveMultiplexer_3_slaves_0_SEL;
+  wire                wishboneBusSlaveMultiplexer_3_slaves_0_STB;
+  wire                wishboneBusSlaveMultiplexer_3_slaves_0_WE;
+  wire       [31:0]   wishboneBusSlaveMultiplexer_3_slaves_1_DAT_MOSI;
+  wire       [29:0]   wishboneBusSlaveMultiplexer_3_slaves_1_ADR;
+  wire                wishboneBusSlaveMultiplexer_3_slaves_1_CYC;
+  wire       [3:0]    wishboneBusSlaveMultiplexer_3_slaves_1_SEL;
+  wire                wishboneBusSlaveMultiplexer_3_slaves_1_STB;
+  wire                wishboneBusSlaveMultiplexer_3_slaves_1_WE;
+  wire       [31:0]   wishboneBusSlaveMultiplexer_4_master_DAT_MISO;
+  wire                wishboneBusSlaveMultiplexer_4_master_ACK;
+  wire       [31:0]   wishboneBusSlaveMultiplexer_4_slaves_0_DAT_MOSI;
+  wire       [29:0]   wishboneBusSlaveMultiplexer_4_slaves_0_ADR;
+  wire                wishboneBusSlaveMultiplexer_4_slaves_0_CYC;
+  wire       [3:0]    wishboneBusSlaveMultiplexer_4_slaves_0_SEL;
+  wire                wishboneBusSlaveMultiplexer_4_slaves_0_STB;
+  wire                wishboneBusSlaveMultiplexer_4_slaves_0_WE;
+  wire       [31:0]   wishboneBusSlaveMultiplexer_4_slaves_1_DAT_MOSI;
+  wire       [29:0]   wishboneBusSlaveMultiplexer_4_slaves_1_ADR;
+  wire                wishboneBusSlaveMultiplexer_4_slaves_1_CYC;
+  wire       [3:0]    wishboneBusSlaveMultiplexer_4_slaves_1_SEL;
+  wire                wishboneBusSlaveMultiplexer_4_slaves_1_STB;
+  wire                wishboneBusSlaveMultiplexer_4_slaves_1_WE;
+  wire                masterMuxes_0_1_0_CYC;
+  wire                masterMuxes_0_1_0_STB;
+  wire                masterMuxes_0_1_0_ACK;
+  wire                masterMuxes_0_1_0_WE;
+  wire       [29:0]   masterMuxes_0_1_0_ADR;
+  wire       [31:0]   masterMuxes_0_1_0_DAT_MISO;
+  wire       [31:0]   masterMuxes_0_1_0_DAT_MOSI;
+  wire       [3:0]    masterMuxes_0_1_0_SEL;
+  wire                masterMuxes_0_1_1_CYC;
+  wire                masterMuxes_0_1_1_STB;
+  wire                masterMuxes_0_1_1_ACK;
+  wire                masterMuxes_0_1_1_WE;
+  wire       [29:0]   masterMuxes_0_1_1_ADR;
+  wire       [31:0]   masterMuxes_0_1_1_DAT_MISO;
+  wire       [31:0]   masterMuxes_0_1_1_DAT_MOSI;
+  wire       [3:0]    masterMuxes_0_1_1_SEL;
+  wire                masterMuxes_1_1_0_CYC;
+  wire                masterMuxes_1_1_0_STB;
+  wire                masterMuxes_1_1_0_ACK;
+  wire                masterMuxes_1_1_0_WE;
+  wire       [29:0]   masterMuxes_1_1_0_ADR;
+  wire       [31:0]   masterMuxes_1_1_0_DAT_MISO;
+  wire       [31:0]   masterMuxes_1_1_0_DAT_MOSI;
+  wire       [3:0]    masterMuxes_1_1_0_SEL;
+  wire                masterMuxes_1_1_1_CYC;
+  wire                masterMuxes_1_1_1_STB;
+  wire                masterMuxes_1_1_1_ACK;
+  wire                masterMuxes_1_1_1_WE;
+  wire       [29:0]   masterMuxes_1_1_1_ADR;
+  wire       [31:0]   masterMuxes_1_1_1_DAT_MISO;
+  wire       [31:0]   masterMuxes_1_1_1_DAT_MOSI;
+  wire       [3:0]    masterMuxes_1_1_1_SEL;
+
   WishboneBusMasterMultiplexer_1 masterMuxes_0_0 (
-    .masters_0_CYC      (masterMuxes_0_1_0_CYC                                   ), //i
-    .masters_0_STB      (masterMuxes_0_1_0_STB                                   ), //i
-    .masters_0_ACK      (masterMuxes_0_0_masters_0_ACK                           ), //o
-    .masters_0_WE       (masterMuxes_0_1_0_WE                                    ), //i
-    .masters_0_ADR      (masterMuxes_0_1_0_ADR[29:0]                             ), //i
-    .masters_0_DAT_MISO (masterMuxes_0_0_masters_0_DAT_MISO[31:0]                ), //o
-    .masters_0_DAT_MOSI (masterMuxes_0_1_0_DAT_MOSI[31:0]                        ), //i
-    .masters_0_SEL      (masterMuxes_0_1_0_SEL[3:0]                              ), //i
-    .masters_1_CYC      (masterMuxes_0_1_1_CYC                                   ), //i
-    .masters_1_STB      (masterMuxes_0_1_1_STB                                   ), //i
-    .masters_1_ACK      (masterMuxes_0_0_masters_1_ACK                           ), //o
-    .masters_1_WE       (masterMuxes_0_1_1_WE                                    ), //i
-    .masters_1_ADR      (masterMuxes_0_1_1_ADR[29:0]                             ), //i
-    .masters_1_DAT_MISO (masterMuxes_0_0_masters_1_DAT_MISO[31:0]                ), //o
-    .masters_1_DAT_MOSI (masterMuxes_0_1_1_DAT_MOSI[31:0]                        ), //i
-    .masters_1_SEL      (masterMuxes_0_1_1_SEL[3:0]                              ), //i
-    .slave_CYC          (masterMuxes_0_0_slave_CYC                               ), //o
-    .slave_STB          (masterMuxes_0_0_slave_STB                               ), //o
-    .slave_ACK          (instructionEbramBlockWidthAdjusted_master_ACK           ), //i
-    .slave_WE           (masterMuxes_0_0_slave_WE                                ), //o
-    .slave_ADR          (masterMuxes_0_0_slave_ADR[29:0]                         ), //o
-    .slave_DAT_MISO     (instructionEbramBlockWidthAdjusted_master_DAT_MISO[31:0]), //i
-    .slave_DAT_MOSI     (masterMuxes_0_0_slave_DAT_MOSI[31:0]                    ), //o
-    .slave_SEL          (masterMuxes_0_0_slave_SEL[3:0]                          ), //o
-    .selector           (crossbarArbiter_1_slaves_0_grantedMasterIndex           )  //i
+    .masters_0_CYC      (masterMuxes_0_1_0_CYC                   ), //i
+    .masters_0_STB      (masterMuxes_0_1_0_STB                   ), //i
+    .masters_0_ACK      (masterMuxes_0_0_masters_0_ACK           ), //o
+    .masters_0_WE       (masterMuxes_0_1_0_WE                    ), //i
+    .masters_0_ADR      (masterMuxes_0_1_0_ADR[29:0]             ), //i
+    .masters_0_DAT_MISO (masterMuxes_0_0_masters_0_DAT_MISO[31:0]), //o
+    .masters_0_DAT_MOSI (masterMuxes_0_1_0_DAT_MOSI[31:0]        ), //i
+    .masters_0_SEL      (masterMuxes_0_1_0_SEL[3:0]              ), //i
+    .masters_1_CYC      (masterMuxes_0_1_1_CYC                   ), //i
+    .masters_1_STB      (masterMuxes_0_1_1_STB                   ), //i
+    .masters_1_ACK      (masterMuxes_0_0_masters_1_ACK           ), //o
+    .masters_1_WE       (masterMuxes_0_1_1_WE                    ), //i
+    .masters_1_ADR      (masterMuxes_0_1_1_ADR[29:0]             ), //i
+    .masters_1_DAT_MISO (masterMuxes_0_0_masters_1_DAT_MISO[31:0]), //o
+    .masters_1_DAT_MOSI (masterMuxes_0_1_1_DAT_MOSI[31:0]        ), //i
+    .masters_1_SEL      (masterMuxes_0_1_1_SEL[3:0]              ), //i
+    .slave_CYC          (masterMuxes_0_0_slave_CYC               ), //o
+    .slave_STB          (masterMuxes_0_0_slave_STB               ), //o
+    .slave_ACK          (slaves_0_wishbone_ACK                   ), //i
+    .slave_WE           (masterMuxes_0_0_slave_WE                ), //o
+    .slave_ADR          (masterMuxes_0_0_slave_ADR[29:0]         ), //o
+    .slave_DAT_MISO     (slaves_0_wishbone_DAT_MISO[31:0]        ), //i
+    .slave_DAT_MOSI     (masterMuxes_0_0_slave_DAT_MOSI[31:0]    ), //o
+    .slave_SEL          (masterMuxes_0_0_slave_SEL[3:0]          ), //o
+    .selector           (slaves_0_grantedMasterIndex             )  //i
   );
   WishboneBusMasterMultiplexer_1 masterMuxes_1_0 (
-    .masters_0_CYC      (masterMuxes_1_1_0_CYC                            ), //i
-    .masters_0_STB      (masterMuxes_1_1_0_STB                            ), //i
-    .masters_0_ACK      (masterMuxes_1_0_masters_0_ACK                    ), //o
-    .masters_0_WE       (masterMuxes_1_1_0_WE                             ), //i
-    .masters_0_ADR      (masterMuxes_1_1_0_ADR[29:0]                      ), //i
-    .masters_0_DAT_MISO (masterMuxes_1_0_masters_0_DAT_MISO[31:0]         ), //o
-    .masters_0_DAT_MOSI (masterMuxes_1_1_0_DAT_MOSI[31:0]                 ), //i
-    .masters_0_SEL      (masterMuxes_1_1_0_SEL[3:0]                       ), //i
-    .masters_1_CYC      (masterMuxes_1_1_1_CYC                            ), //i
-    .masters_1_STB      (masterMuxes_1_1_1_STB                            ), //i
-    .masters_1_ACK      (masterMuxes_1_0_masters_1_ACK                    ), //o
-    .masters_1_WE       (masterMuxes_1_1_1_WE                             ), //i
-    .masters_1_ADR      (masterMuxes_1_1_1_ADR[29:0]                      ), //i
-    .masters_1_DAT_MISO (masterMuxes_1_0_masters_1_DAT_MISO[31:0]         ), //o
-    .masters_1_DAT_MOSI (masterMuxes_1_1_1_DAT_MOSI[31:0]                 ), //i
-    .masters_1_SEL      (masterMuxes_1_1_1_SEL[3:0]                       ), //i
-    .slave_CYC          (masterMuxes_1_0_slave_CYC                        ), //o
-    .slave_STB          (masterMuxes_1_0_slave_STB                        ), //o
-    .slave_ACK          (dataSpramBlockWidthAdjusted_master_ACK           ), //i
-    .slave_WE           (masterMuxes_1_0_slave_WE                         ), //o
-    .slave_ADR          (masterMuxes_1_0_slave_ADR[29:0]                  ), //o
-    .slave_DAT_MISO     (dataSpramBlockWidthAdjusted_master_DAT_MISO[31:0]), //i
-    .slave_DAT_MOSI     (masterMuxes_1_0_slave_DAT_MOSI[31:0]             ), //o
-    .slave_SEL          (masterMuxes_1_0_slave_SEL[3:0]                   ), //o
-    .selector           (crossbarArbiter_1_slaves_1_grantedMasterIndex    )  //i
+    .masters_0_CYC      (masterMuxes_1_1_0_CYC                   ), //i
+    .masters_0_STB      (masterMuxes_1_1_0_STB                   ), //i
+    .masters_0_ACK      (masterMuxes_1_0_masters_0_ACK           ), //o
+    .masters_0_WE       (masterMuxes_1_1_0_WE                    ), //i
+    .masters_0_ADR      (masterMuxes_1_1_0_ADR[29:0]             ), //i
+    .masters_0_DAT_MISO (masterMuxes_1_0_masters_0_DAT_MISO[31:0]), //o
+    .masters_0_DAT_MOSI (masterMuxes_1_1_0_DAT_MOSI[31:0]        ), //i
+    .masters_0_SEL      (masterMuxes_1_1_0_SEL[3:0]              ), //i
+    .masters_1_CYC      (masterMuxes_1_1_1_CYC                   ), //i
+    .masters_1_STB      (masterMuxes_1_1_1_STB                   ), //i
+    .masters_1_ACK      (masterMuxes_1_0_masters_1_ACK           ), //o
+    .masters_1_WE       (masterMuxes_1_1_1_WE                    ), //i
+    .masters_1_ADR      (masterMuxes_1_1_1_ADR[29:0]             ), //i
+    .masters_1_DAT_MISO (masterMuxes_1_0_masters_1_DAT_MISO[31:0]), //o
+    .masters_1_DAT_MOSI (masterMuxes_1_1_1_DAT_MOSI[31:0]        ), //i
+    .masters_1_SEL      (masterMuxes_1_1_1_SEL[3:0]              ), //i
+    .slave_CYC          (masterMuxes_1_0_slave_CYC               ), //o
+    .slave_STB          (masterMuxes_1_0_slave_STB               ), //o
+    .slave_ACK          (slaves_1_wishbone_ACK                   ), //i
+    .slave_WE           (masterMuxes_1_0_slave_WE                ), //o
+    .slave_ADR          (masterMuxes_1_0_slave_ADR[29:0]         ), //o
+    .slave_DAT_MISO     (slaves_1_wishbone_DAT_MISO[31:0]        ), //i
+    .slave_DAT_MOSI     (masterMuxes_1_0_slave_DAT_MOSI[31:0]    ), //o
+    .slave_SEL          (masterMuxes_1_0_slave_SEL[3:0]          ), //o
+    .selector           (slaves_1_grantedMasterIndex             )  //i
   );
   WishboneBusSlaveMultiplexer_2 wishboneBusSlaveMultiplexer_3 (
-    .master_CYC        (bridge_devices_executable_CYC                        ), //i
-    .master_STB        (bridge_devices_executable_STB                        ), //i
+    .master_CYC        (masters_0_wishbone_CYC                               ), //i
+    .master_STB        (masters_0_wishbone_STB                               ), //i
     .master_ACK        (wishboneBusSlaveMultiplexer_3_master_ACK             ), //o
-    .master_WE         (bridge_devices_executable_WE                         ), //i
-    .master_ADR        (bridge_devices_executable_ADR[29:0]                  ), //i
+    .master_WE         (masters_0_wishbone_WE                                ), //i
+    .master_ADR        (masters_0_wishbone_ADR[29:0]                         ), //i
     .master_DAT_MISO   (wishboneBusSlaveMultiplexer_3_master_DAT_MISO[31:0]  ), //o
-    .master_DAT_MOSI   (bridge_devices_executable_DAT_MOSI[31:0]             ), //i
-    .master_SEL        (bridge_devices_executable_SEL[3:0]                   ), //i
+    .master_DAT_MOSI   (masters_0_wishbone_DAT_MOSI[31:0]                    ), //i
+    .master_SEL        (masters_0_wishbone_SEL[3:0]                          ), //i
     .slaves_0_CYC      (wishboneBusSlaveMultiplexer_3_slaves_0_CYC           ), //o
     .slaves_0_STB      (wishboneBusSlaveMultiplexer_3_slaves_0_STB           ), //o
     .slaves_0_ACK      (masterMuxes_0_1_0_ACK                                ), //i
@@ -836,17 +947,17 @@ module Core (
     .slaves_1_DAT_MISO (masterMuxes_1_1_0_DAT_MISO[31:0]                     ), //i
     .slaves_1_DAT_MOSI (wishboneBusSlaveMultiplexer_3_slaves_1_DAT_MOSI[31:0]), //o
     .slaves_1_SEL      (wishboneBusSlaveMultiplexer_3_slaves_1_SEL[3:0]      ), //o
-    .selector          (executableSlaveMap_masters_0_index                   )  //i
+    .selector          (masters_0_requestedSlaveIndex                        )  //i
   );
   WishboneBusSlaveMultiplexer_2 wishboneBusSlaveMultiplexer_4 (
-    .master_CYC        (bridge_devices_ibus_CYC                              ), //i
-    .master_STB        (bridge_devices_ibus_STB                              ), //i
+    .master_CYC        (masters_1_wishbone_CYC                               ), //i
+    .master_STB        (masters_1_wishbone_STB                               ), //i
     .master_ACK        (wishboneBusSlaveMultiplexer_4_master_ACK             ), //o
-    .master_WE         (bridge_devices_ibus_WE                               ), //i
-    .master_ADR        (bridge_devices_ibus_ADR[29:0]                        ), //i
+    .master_WE         (masters_1_wishbone_WE                                ), //i
+    .master_ADR        (masters_1_wishbone_ADR[29:0]                         ), //i
     .master_DAT_MISO   (wishboneBusSlaveMultiplexer_4_master_DAT_MISO[31:0]  ), //o
-    .master_DAT_MOSI   (bridge_devices_ibus_DAT_MOSI[31:0]                   ), //i
-    .master_SEL        (bridge_devices_ibus_SEL[3:0]                         ), //i
+    .master_DAT_MOSI   (masters_1_wishbone_DAT_MOSI[31:0]                    ), //i
+    .master_SEL        (masters_1_wishbone_SEL[3:0]                          ), //i
     .slaves_0_CYC      (wishboneBusSlaveMultiplexer_4_slaves_0_CYC           ), //o
     .slaves_0_STB      (wishboneBusSlaveMultiplexer_4_slaves_0_STB           ), //o
     .slaves_0_ACK      (masterMuxes_0_1_1_ACK                                ), //i
@@ -863,162 +974,56 @@ module Core (
     .slaves_1_DAT_MISO (masterMuxes_1_1_1_DAT_MISO[31:0]                     ), //i
     .slaves_1_DAT_MOSI (wishboneBusSlaveMultiplexer_4_slaves_1_DAT_MOSI[31:0]), //o
     .slaves_1_SEL      (wishboneBusSlaveMultiplexer_4_slaves_1_SEL[3:0]      ), //o
-    .selector          (executableSlaveMap_masters_1_index                   )  //i
+    .selector          (masters_1_requestedSlaveIndex                        )  //i
   );
-  assign p23 = ledDevice_io_p23; // @[Core.scala 55:16]
-  assign ledR = ledDevice_io_ledR; // @[Core.scala 56:17]
-  assign ledG = ledDevice_io_ledG; // @[Core.scala 57:17]
-  assign ledB = ledDevice_io_ledB; // @[Core.scala 58:17]
-  assign dbusSlaveMap_masters_0_slaveSelects_0 = (! bridge_devices_dbus_ADR[14]); // @[MasterSlaveMap.scala 84:90]
-  assign dbusSlaveMap_masters_0_slaveSelects_1 = bridge_devices_dbus_ADR[14]; // @[MasterSlaveMap.scala 84:90]
-  assign executableSlaveMap_masters_0_slaveSelects_0 = ((! bridge_devices_executable_ADR[14]) && (! bridge_devices_executable_ADR[6])); // @[MasterSlaveMap.scala 84:90]
-  assign executableSlaveMap_masters_1_slaveSelects_0 = ((! bridge_devices_ibus_ADR[14]) && (! bridge_devices_ibus_ADR[6])); // @[MasterSlaveMap.scala 84:90]
-  assign executableSlaveMap_masters_0_slaveSelects_1 = ((! bridge_devices_executable_ADR[14]) && bridge_devices_executable_ADR[6]); // @[MasterSlaveMap.scala 84:90]
-  assign executableSlaveMap_masters_1_slaveSelects_1 = ((! bridge_devices_ibus_ADR[14]) && bridge_devices_ibus_ADR[6]); // @[MasterSlaveMap.scala 84:90]
-  assign crossbarArbiter_1_slaves_0_masters_0_request = ((bridge_devices_executable_CYC && executableSlaveMap_masters_0_isValid) && (executableSlaveMap_masters_0_index == 1'b0)); // @[WishboneBusCrossbarArbiter.scala 56:50]
-  assign crossbarArbiter_1_slaves_0_masters_1_request = ((bridge_devices_ibus_CYC && executableSlaveMap_masters_1_isValid) && (executableSlaveMap_masters_1_index == 1'b0)); // @[WishboneBusCrossbarArbiter.scala 56:50]
-  assign crossbarArbiter_1_slaves_1_masters_0_request = ((bridge_devices_executable_CYC && executableSlaveMap_masters_0_isValid) && (executableSlaveMap_masters_0_index == 1'b1)); // @[WishboneBusCrossbarArbiter.scala 56:50]
-  assign crossbarArbiter_1_slaves_1_masters_1_request = ((bridge_devices_ibus_CYC && executableSlaveMap_masters_1_isValid) && (executableSlaveMap_masters_1_index == 1'b1)); // @[WishboneBusCrossbarArbiter.scala 56:50]
-  assign masterMuxes_0_1_0_ACK = masterMuxes_0_0_masters_0_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
-  assign masterMuxes_0_1_0_DAT_MISO = masterMuxes_0_0_masters_0_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 80:112]
-  assign masterMuxes_0_1_1_ACK = masterMuxes_0_0_masters_1_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
-  assign masterMuxes_0_1_1_DAT_MISO = masterMuxes_0_0_masters_1_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 80:112]
-  assign masterMuxes_1_1_0_ACK = masterMuxes_1_0_masters_0_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
-  assign masterMuxes_1_1_0_DAT_MISO = masterMuxes_1_0_masters_0_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 80:112]
-  assign masterMuxes_1_1_1_ACK = masterMuxes_1_0_masters_1_ACK; // @[WishboneBusMasterMultiplexer.scala 80:112]
-  assign masterMuxes_1_1_1_DAT_MISO = masterMuxes_1_0_masters_1_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 80:112]
-  assign masterMuxes_0_1_0_CYC = wishboneBusSlaveMultiplexer_3_slaves_0_CYC; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_0_1_0_STB = wishboneBusSlaveMultiplexer_3_slaves_0_STB; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_0_1_0_WE = wishboneBusSlaveMultiplexer_3_slaves_0_WE; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_0_1_0_ADR = wishboneBusSlaveMultiplexer_3_slaves_0_ADR; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_0_1_0_DAT_MOSI = wishboneBusSlaveMultiplexer_3_slaves_0_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_0_1_0_SEL = wishboneBusSlaveMultiplexer_3_slaves_0_SEL; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_0_CYC = wishboneBusSlaveMultiplexer_3_slaves_1_CYC; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_0_STB = wishboneBusSlaveMultiplexer_3_slaves_1_STB; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_0_WE = wishboneBusSlaveMultiplexer_3_slaves_1_WE; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_0_ADR = wishboneBusSlaveMultiplexer_3_slaves_1_ADR; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_0_DAT_MOSI = wishboneBusSlaveMultiplexer_3_slaves_1_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_0_SEL = wishboneBusSlaveMultiplexer_3_slaves_1_SEL; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_0_1_1_CYC = wishboneBusSlaveMultiplexer_4_slaves_0_CYC; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_0_1_1_STB = wishboneBusSlaveMultiplexer_4_slaves_0_STB; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_0_1_1_WE = wishboneBusSlaveMultiplexer_4_slaves_0_WE; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_0_1_1_ADR = wishboneBusSlaveMultiplexer_4_slaves_0_ADR; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_0_1_1_DAT_MOSI = wishboneBusSlaveMultiplexer_4_slaves_0_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_0_1_1_SEL = wishboneBusSlaveMultiplexer_4_slaves_0_SEL; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_1_CYC = wishboneBusSlaveMultiplexer_4_slaves_1_CYC; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_1_STB = wishboneBusSlaveMultiplexer_4_slaves_1_STB; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_1_WE = wishboneBusSlaveMultiplexer_4_slaves_1_WE; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_1_ADR = wishboneBusSlaveMultiplexer_4_slaves_1_ADR; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_1_DAT_MOSI = wishboneBusSlaveMultiplexer_4_slaves_1_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-  assign masterMuxes_1_1_1_SEL = wishboneBusSlaveMultiplexer_4_slaves_1_SEL; // @[WishboneBusSlaveMultiplexer.scala 84:106]
-
-endmodule
-
-//WishboneBusSlaveMultiplexer_2 replaced by WishboneBusSlaveMultiplexer_2
-
-//WishboneBusSlaveMultiplexer_2 replaced by WishboneBusSlaveMultiplexer_2
-
-//WishboneBusMasterMultiplexer_1 replaced by WishboneBusMasterMultiplexer_1
-
-module WishboneBusMasterMultiplexer_1 (
-  input               masters_0_CYC,
-  input               masters_0_STB,
-  output              masters_0_ACK,
-  input               masters_0_WE,
-  input      [29:0]   masters_0_ADR,
-  output     [31:0]   masters_0_DAT_MISO,
-  input      [31:0]   masters_0_DAT_MOSI,
-  input      [3:0]    masters_0_SEL,
-  input               masters_1_CYC,
-  input               masters_1_STB,
-  output              masters_1_ACK,
-  input               masters_1_WE,
-  input      [29:0]   masters_1_ADR,
-  output     [31:0]   masters_1_DAT_MISO,
-  input      [31:0]   masters_1_DAT_MOSI,
-  input      [3:0]    masters_1_SEL,
-  output reg          slave_CYC,
-  output reg          slave_STB,
-  input               slave_ACK,
-  output reg          slave_WE,
-  output reg [29:0]   slave_ADR,
-  input      [31:0]   slave_DAT_MISO,
-  output reg [31:0]   slave_DAT_MOSI,
-  output reg [3:0]    slave_SEL,
-  input      [0:0]    selector
-);
-
-
-  assign masters_0_DAT_MISO = slave_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 14:33]
-  assign masters_0_ACK = (slave_ACK && (selector == 1'b0)); // @[WishboneBusMasterMultiplexer.scala 15:28]
-  assign masters_1_DAT_MISO = slave_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 14:33]
-  assign masters_1_ACK = (slave_ACK && (selector == 1'b1)); // @[WishboneBusMasterMultiplexer.scala 15:28]
-  always @(*) begin
-    case(selector)
-      1'b0 : begin
-        slave_DAT_MOSI = masters_0_DAT_MOSI; // @[WishboneBusMasterMultiplexer.scala 24:51]
-      end
-      default : begin
-        slave_DAT_MOSI = masters_1_DAT_MOSI; // @[WishboneBusMasterMultiplexer.scala 24:51]
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(selector)
-      1'b0 : begin
-        slave_ADR = masters_0_ADR; // @[WishboneBusMasterMultiplexer.scala 25:46]
-      end
-      default : begin
-        slave_ADR = masters_1_ADR; // @[WishboneBusMasterMultiplexer.scala 25:46]
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(selector)
-      1'b0 : begin
-        slave_WE = masters_0_WE; // @[WishboneBusMasterMultiplexer.scala 26:45]
-      end
-      default : begin
-        slave_WE = masters_1_WE; // @[WishboneBusMasterMultiplexer.scala 26:45]
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(selector)
-      1'b0 : begin
-        slave_CYC = masters_0_CYC; // @[WishboneBusMasterMultiplexer.scala 27:46]
-      end
-      default : begin
-        slave_CYC = masters_1_CYC; // @[WishboneBusMasterMultiplexer.scala 27:46]
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(selector)
-      1'b0 : begin
-        slave_STB = masters_0_STB; // @[WishboneBusMasterMultiplexer.scala 28:46]
-      end
-      default : begin
-        slave_STB = masters_1_STB; // @[WishboneBusMasterMultiplexer.scala 28:46]
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(selector)
-      1'b0 : begin
-        slave_SEL = masters_0_SEL; // @[WishboneBusMasterMultiplexer.scala 29:60]
-      end
-      default : begin
-        slave_SEL = masters_1_SEL; // @[WishboneBusMasterMultiplexer.scala 29:60]
-      end
-    endcase
-  end
-
+  assign masterMuxes_0_1_0_ACK = masterMuxes_0_0_masters_0_ACK; // @[WishboneBusMasterMultiplexer.scala 91:120]
+  assign masterMuxes_0_1_0_DAT_MISO = masterMuxes_0_0_masters_0_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 91:120]
+  assign masterMuxes_0_1_1_ACK = masterMuxes_0_0_masters_1_ACK; // @[WishboneBusMasterMultiplexer.scala 91:120]
+  assign masterMuxes_0_1_1_DAT_MISO = masterMuxes_0_0_masters_1_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 91:120]
+  assign slaves_0_wishbone_CYC = masterMuxes_0_0_slave_CYC; // @[Wishbone.scala 152:19]
+  assign slaves_0_wishbone_ADR = masterMuxes_0_0_slave_ADR; // @[Wishbone.scala 153:19]
+  assign slaves_0_wishbone_DAT_MOSI = masterMuxes_0_0_slave_DAT_MOSI; // @[Wishbone.scala 154:19]
+  assign slaves_0_wishbone_STB = masterMuxes_0_0_slave_STB; // @[Wishbone.scala 156:19]
+  assign slaves_0_wishbone_WE = masterMuxes_0_0_slave_WE; // @[Wishbone.scala 157:19]
+  assign slaves_0_wishbone_SEL = masterMuxes_0_0_slave_SEL; // @[Wishbone.scala 257:33]
+  assign masterMuxes_1_1_0_ACK = masterMuxes_1_0_masters_0_ACK; // @[WishboneBusMasterMultiplexer.scala 91:120]
+  assign masterMuxes_1_1_0_DAT_MISO = masterMuxes_1_0_masters_0_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 91:120]
+  assign masterMuxes_1_1_1_ACK = masterMuxes_1_0_masters_1_ACK; // @[WishboneBusMasterMultiplexer.scala 91:120]
+  assign masterMuxes_1_1_1_DAT_MISO = masterMuxes_1_0_masters_1_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 91:120]
+  assign slaves_1_wishbone_CYC = masterMuxes_1_0_slave_CYC; // @[Wishbone.scala 152:19]
+  assign slaves_1_wishbone_ADR = masterMuxes_1_0_slave_ADR; // @[Wishbone.scala 153:19]
+  assign slaves_1_wishbone_DAT_MOSI = masterMuxes_1_0_slave_DAT_MOSI; // @[Wishbone.scala 154:19]
+  assign slaves_1_wishbone_STB = masterMuxes_1_0_slave_STB; // @[Wishbone.scala 156:19]
+  assign slaves_1_wishbone_WE = masterMuxes_1_0_slave_WE; // @[Wishbone.scala 157:19]
+  assign slaves_1_wishbone_SEL = masterMuxes_1_0_slave_SEL; // @[Wishbone.scala 257:33]
+  assign masterMuxes_0_1_0_CYC = wishboneBusSlaveMultiplexer_3_slaves_0_CYC; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_0_1_0_STB = wishboneBusSlaveMultiplexer_3_slaves_0_STB; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_0_1_0_WE = wishboneBusSlaveMultiplexer_3_slaves_0_WE; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_0_1_0_ADR = wishboneBusSlaveMultiplexer_3_slaves_0_ADR; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_0_1_0_DAT_MOSI = wishboneBusSlaveMultiplexer_3_slaves_0_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_0_1_0_SEL = wishboneBusSlaveMultiplexer_3_slaves_0_SEL; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_0_CYC = wishboneBusSlaveMultiplexer_3_slaves_1_CYC; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_0_STB = wishboneBusSlaveMultiplexer_3_slaves_1_STB; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_0_WE = wishboneBusSlaveMultiplexer_3_slaves_1_WE; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_0_ADR = wishboneBusSlaveMultiplexer_3_slaves_1_ADR; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_0_DAT_MOSI = wishboneBusSlaveMultiplexer_3_slaves_1_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_0_SEL = wishboneBusSlaveMultiplexer_3_slaves_1_SEL; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masters_0_wishbone_DAT_MISO = wishboneBusSlaveMultiplexer_3_master_DAT_MISO; // @[Wishbone.scala 155:19]
+  assign masters_0_wishbone_ACK = wishboneBusSlaveMultiplexer_3_master_ACK; // @[Wishbone.scala 158:19]
+  assign masterMuxes_0_1_1_CYC = wishboneBusSlaveMultiplexer_4_slaves_0_CYC; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_0_1_1_STB = wishboneBusSlaveMultiplexer_4_slaves_0_STB; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_0_1_1_WE = wishboneBusSlaveMultiplexer_4_slaves_0_WE; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_0_1_1_ADR = wishboneBusSlaveMultiplexer_4_slaves_0_ADR; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_0_1_1_DAT_MOSI = wishboneBusSlaveMultiplexer_4_slaves_0_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_0_1_1_SEL = wishboneBusSlaveMultiplexer_4_slaves_0_SEL; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_1_CYC = wishboneBusSlaveMultiplexer_4_slaves_1_CYC; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_1_STB = wishboneBusSlaveMultiplexer_4_slaves_1_STB; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_1_WE = wishboneBusSlaveMultiplexer_4_slaves_1_WE; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_1_ADR = wishboneBusSlaveMultiplexer_4_slaves_1_ADR; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_1_DAT_MOSI = wishboneBusSlaveMultiplexer_4_slaves_1_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masterMuxes_1_1_1_SEL = wishboneBusSlaveMultiplexer_4_slaves_1_SEL; // @[WishboneBusSlaveMultiplexer.scala 90:114]
+  assign masters_1_wishbone_DAT_MISO = wishboneBusSlaveMultiplexer_4_master_DAT_MISO; // @[Wishbone.scala 155:19]
+  assign masters_1_wishbone_ACK = wishboneBusSlaveMultiplexer_4_master_ACK; // @[Wishbone.scala 158:19]
 
 endmodule
 
@@ -1067,7 +1072,7 @@ module PriorityEncoder_1 (
 
 endmodule
 
-module WishboneBusCrossbarArbiter (
+module CrossbarArbiter (
   output              slaves_0_encoder_inputs_0,
   output              slaves_0_encoder_inputs_1,
   input      [0:0]    slaves_0_encoder_output,
@@ -1098,141 +1103,81 @@ module WishboneBusCrossbarArbiter (
   input               reset
 );
 
-  wire                arbiter_slaves_0_encoder_inputs_0;
-  wire                arbiter_slaves_0_encoder_inputs_1;
-  wire       [0:0]    arbiter_slaves_0_grantedMasterIndex;
-  wire                arbiter_slaves_0_masters_0_isError;
-  wire                arbiter_slaves_0_masters_0_isStalled;
-  wire                arbiter_slaves_0_masters_0_isGranted;
-  wire                arbiter_slaves_0_masters_1_isError;
-  wire                arbiter_slaves_0_masters_1_isStalled;
-  wire                arbiter_slaves_0_masters_1_isGranted;
-  wire                arbiter_slaves_1_encoder_inputs_0;
-  wire                arbiter_slaves_1_encoder_inputs_1;
-  wire       [0:0]    arbiter_slaves_1_grantedMasterIndex;
-  wire                arbiter_slaves_1_masters_0_isError;
-  wire                arbiter_slaves_1_masters_0_isStalled;
-  wire                arbiter_slaves_1_masters_0_isGranted;
-  wire                arbiter_slaves_1_masters_1_isError;
-  wire                arbiter_slaves_1_masters_1_isStalled;
-  wire                arbiter_slaves_1_masters_1_isGranted;
+  wire                slaveArbiters_0_encoder_inputs_0;
+  wire                slaveArbiters_0_encoder_inputs_1;
+  wire       [0:0]    slaveArbiters_0_grantedMasterIndex;
+  wire                slaveArbiters_0_masters_0_isError;
+  wire                slaveArbiters_0_masters_0_isStalled;
+  wire                slaveArbiters_0_masters_0_isGranted;
+  wire                slaveArbiters_0_masters_1_isError;
+  wire                slaveArbiters_0_masters_1_isStalled;
+  wire                slaveArbiters_0_masters_1_isGranted;
+  wire                slaveArbiters_1_encoder_inputs_0;
+  wire                slaveArbiters_1_encoder_inputs_1;
+  wire       [0:0]    slaveArbiters_1_grantedMasterIndex;
+  wire                slaveArbiters_1_masters_0_isError;
+  wire                slaveArbiters_1_masters_0_isStalled;
+  wire                slaveArbiters_1_masters_0_isGranted;
+  wire                slaveArbiters_1_masters_1_isError;
+  wire                slaveArbiters_1_masters_1_isStalled;
+  wire                slaveArbiters_1_masters_1_isGranted;
 
-  CrossbarArbiter arbiter (
-    .slaves_0_encoder_inputs_0    (arbiter_slaves_0_encoder_inputs_0   ), //o
-    .slaves_0_encoder_inputs_1    (arbiter_slaves_0_encoder_inputs_1   ), //o
-    .slaves_0_encoder_output      (slaves_0_encoder_output             ), //i
-    .slaves_0_encoder_isValid     (slaves_0_encoder_isValid            ), //i
-    .slaves_0_grantedMasterIndex  (arbiter_slaves_0_grantedMasterIndex ), //o
-    .slaves_0_masters_0_request   (slaves_0_masters_0_request          ), //i
-    .slaves_0_masters_0_isError   (arbiter_slaves_0_masters_0_isError  ), //o
-    .slaves_0_masters_0_isStalled (arbiter_slaves_0_masters_0_isStalled), //o
-    .slaves_0_masters_0_isGranted (arbiter_slaves_0_masters_0_isGranted), //o
-    .slaves_0_masters_1_request   (slaves_0_masters_1_request          ), //i
-    .slaves_0_masters_1_isError   (arbiter_slaves_0_masters_1_isError  ), //o
-    .slaves_0_masters_1_isStalled (arbiter_slaves_0_masters_1_isStalled), //o
-    .slaves_0_masters_1_isGranted (arbiter_slaves_0_masters_1_isGranted), //o
-    .slaves_1_encoder_inputs_0    (arbiter_slaves_1_encoder_inputs_0   ), //o
-    .slaves_1_encoder_inputs_1    (arbiter_slaves_1_encoder_inputs_1   ), //o
-    .slaves_1_encoder_output      (slaves_1_encoder_output             ), //i
-    .slaves_1_encoder_isValid     (slaves_1_encoder_isValid            ), //i
-    .slaves_1_grantedMasterIndex  (arbiter_slaves_1_grantedMasterIndex ), //o
-    .slaves_1_masters_0_request   (slaves_1_masters_0_request          ), //i
-    .slaves_1_masters_0_isError   (arbiter_slaves_1_masters_0_isError  ), //o
-    .slaves_1_masters_0_isStalled (arbiter_slaves_1_masters_0_isStalled), //o
-    .slaves_1_masters_0_isGranted (arbiter_slaves_1_masters_0_isGranted), //o
-    .slaves_1_masters_1_request   (slaves_1_masters_1_request          ), //i
-    .slaves_1_masters_1_isError   (arbiter_slaves_1_masters_1_isError  ), //o
-    .slaves_1_masters_1_isStalled (arbiter_slaves_1_masters_1_isStalled), //o
-    .slaves_1_masters_1_isGranted (arbiter_slaves_1_masters_1_isGranted), //o
-    .clk                          (clk                                 ), //i
-    .reset                        (reset                               )  //i
+  MultiMasterSingleSlaveArbiter_1 slaveArbiters_0 (
+    .encoder_inputs_0    (slaveArbiters_0_encoder_inputs_0   ), //o
+    .encoder_inputs_1    (slaveArbiters_0_encoder_inputs_1   ), //o
+    .encoder_output      (slaves_0_encoder_output            ), //i
+    .encoder_isValid     (slaves_0_encoder_isValid           ), //i
+    .grantedMasterIndex  (slaveArbiters_0_grantedMasterIndex ), //o
+    .masters_0_request   (slaves_0_masters_0_request         ), //i
+    .masters_0_isError   (slaveArbiters_0_masters_0_isError  ), //o
+    .masters_0_isStalled (slaveArbiters_0_masters_0_isStalled), //o
+    .masters_0_isGranted (slaveArbiters_0_masters_0_isGranted), //o
+    .masters_1_request   (slaves_0_masters_1_request         ), //i
+    .masters_1_isError   (slaveArbiters_0_masters_1_isError  ), //o
+    .masters_1_isStalled (slaveArbiters_0_masters_1_isStalled), //o
+    .masters_1_isGranted (slaveArbiters_0_masters_1_isGranted), //o
+    .clk                 (clk                                ), //i
+    .reset               (reset                              )  //i
   );
-  assign slaves_0_encoder_inputs_0 = arbiter_slaves_0_encoder_inputs_0; // @[WishboneBusCrossbarArbiter.scala 18:31]
-  assign slaves_0_encoder_inputs_1 = arbiter_slaves_0_encoder_inputs_1; // @[WishboneBusCrossbarArbiter.scala 18:31]
-  assign slaves_0_grantedMasterIndex = arbiter_slaves_0_grantedMasterIndex; // @[WishboneBusCrossbarArbiter.scala 19:58]
-  assign slaves_0_masters_0_isError = arbiter_slaves_0_masters_0_isError; // @[WishboneBusCrossbarArbiter.scala 24:42]
-  assign slaves_0_masters_0_isGranted = arbiter_slaves_0_masters_0_isGranted; // @[WishboneBusCrossbarArbiter.scala 25:44]
-  assign slaves_0_masters_0_isStalled = arbiter_slaves_0_masters_0_isStalled; // @[WishboneBusCrossbarArbiter.scala 26:44]
-  assign slaves_0_masters_1_isError = arbiter_slaves_0_masters_1_isError; // @[WishboneBusCrossbarArbiter.scala 24:42]
-  assign slaves_0_masters_1_isGranted = arbiter_slaves_0_masters_1_isGranted; // @[WishboneBusCrossbarArbiter.scala 25:44]
-  assign slaves_0_masters_1_isStalled = arbiter_slaves_0_masters_1_isStalled; // @[WishboneBusCrossbarArbiter.scala 26:44]
-  assign slaves_1_encoder_inputs_0 = arbiter_slaves_1_encoder_inputs_0; // @[WishboneBusCrossbarArbiter.scala 18:31]
-  assign slaves_1_encoder_inputs_1 = arbiter_slaves_1_encoder_inputs_1; // @[WishboneBusCrossbarArbiter.scala 18:31]
-  assign slaves_1_grantedMasterIndex = arbiter_slaves_1_grantedMasterIndex; // @[WishboneBusCrossbarArbiter.scala 19:58]
-  assign slaves_1_masters_0_isError = arbiter_slaves_1_masters_0_isError; // @[WishboneBusCrossbarArbiter.scala 24:42]
-  assign slaves_1_masters_0_isGranted = arbiter_slaves_1_masters_0_isGranted; // @[WishboneBusCrossbarArbiter.scala 25:44]
-  assign slaves_1_masters_0_isStalled = arbiter_slaves_1_masters_0_isStalled; // @[WishboneBusCrossbarArbiter.scala 26:44]
-  assign slaves_1_masters_1_isError = arbiter_slaves_1_masters_1_isError; // @[WishboneBusCrossbarArbiter.scala 24:42]
-  assign slaves_1_masters_1_isGranted = arbiter_slaves_1_masters_1_isGranted; // @[WishboneBusCrossbarArbiter.scala 25:44]
-  assign slaves_1_masters_1_isStalled = arbiter_slaves_1_masters_1_isStalled; // @[WishboneBusCrossbarArbiter.scala 26:44]
+  MultiMasterSingleSlaveArbiter_1 slaveArbiters_1 (
+    .encoder_inputs_0    (slaveArbiters_1_encoder_inputs_0   ), //o
+    .encoder_inputs_1    (slaveArbiters_1_encoder_inputs_1   ), //o
+    .encoder_output      (slaves_1_encoder_output            ), //i
+    .encoder_isValid     (slaves_1_encoder_isValid           ), //i
+    .grantedMasterIndex  (slaveArbiters_1_grantedMasterIndex ), //o
+    .masters_0_request   (slaves_1_masters_0_request         ), //i
+    .masters_0_isError   (slaveArbiters_1_masters_0_isError  ), //o
+    .masters_0_isStalled (slaveArbiters_1_masters_0_isStalled), //o
+    .masters_0_isGranted (slaveArbiters_1_masters_0_isGranted), //o
+    .masters_1_request   (slaves_1_masters_1_request         ), //i
+    .masters_1_isError   (slaveArbiters_1_masters_1_isError  ), //o
+    .masters_1_isStalled (slaveArbiters_1_masters_1_isStalled), //o
+    .masters_1_isGranted (slaveArbiters_1_masters_1_isGranted), //o
+    .clk                 (clk                                ), //i
+    .reset               (reset                              )  //i
+  );
+  assign slaves_0_encoder_inputs_0 = slaveArbiters_0_encoder_inputs_0; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_0_encoder_inputs_1 = slaveArbiters_0_encoder_inputs_1; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_0_grantedMasterIndex = slaveArbiters_0_grantedMasterIndex; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_0_masters_0_isError = slaveArbiters_0_masters_0_isError; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_0_masters_0_isStalled = slaveArbiters_0_masters_0_isStalled; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_0_masters_0_isGranted = slaveArbiters_0_masters_0_isGranted; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_0_masters_1_isError = slaveArbiters_0_masters_1_isError; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_0_masters_1_isStalled = slaveArbiters_0_masters_1_isStalled; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_0_masters_1_isGranted = slaveArbiters_0_masters_1_isGranted; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_1_encoder_inputs_0 = slaveArbiters_1_encoder_inputs_0; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_1_encoder_inputs_1 = slaveArbiters_1_encoder_inputs_1; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_1_grantedMasterIndex = slaveArbiters_1_grantedMasterIndex; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_1_masters_0_isError = slaveArbiters_1_masters_0_isError; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_1_masters_0_isStalled = slaveArbiters_1_masters_0_isStalled; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_1_masters_0_isGranted = slaveArbiters_1_masters_0_isGranted; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_1_masters_1_isError = slaveArbiters_1_masters_1_isError; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_1_masters_1_isStalled = slaveArbiters_1_masters_1_isStalled; // @[CrossbarArbiter.scala 15:23]
+  assign slaves_1_masters_1_isGranted = slaveArbiters_1_masters_1_isGranted; // @[CrossbarArbiter.scala 15:23]
 
 endmodule
 
-module WishboneBusSlaveMultiplexer_2 (
-  input               master_CYC,
-  input               master_STB,
-  output reg          master_ACK,
-  input               master_WE,
-  input      [29:0]   master_ADR,
-  output reg [31:0]   master_DAT_MISO,
-  input      [31:0]   master_DAT_MOSI,
-  input      [3:0]    master_SEL,
-  output              slaves_0_CYC,
-  output              slaves_0_STB,
-  input               slaves_0_ACK,
-  output              slaves_0_WE,
-  output     [29:0]   slaves_0_ADR,
-  input      [31:0]   slaves_0_DAT_MISO,
-  output     [31:0]   slaves_0_DAT_MOSI,
-  output     [3:0]    slaves_0_SEL,
-  output              slaves_1_CYC,
-  output              slaves_1_STB,
-  input               slaves_1_ACK,
-  output              slaves_1_WE,
-  output     [29:0]   slaves_1_ADR,
-  input      [31:0]   slaves_1_DAT_MISO,
-  output     [31:0]   slaves_1_DAT_MOSI,
-  output     [3:0]    slaves_1_SEL,
-  input      [0:0]    selector
-);
-
-
-  assign slaves_0_DAT_MOSI = master_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 14:32]
-  assign slaves_0_ADR = master_ADR; // @[WishboneBusSlaveMultiplexer.scala 15:27]
-  assign slaves_0_WE = master_WE; // @[WishboneBusSlaveMultiplexer.scala 16:26]
-  assign slaves_0_CYC = (master_CYC && (selector == 1'b0)); // @[WishboneBusSlaveMultiplexer.scala 17:27]
-  assign slaves_0_STB = (master_STB && (selector == 1'b0)); // @[WishboneBusSlaveMultiplexer.scala 18:27]
-  assign slaves_0_SEL = master_SEL; // @[WishboneBusSlaveMultiplexer.scala 19:41]
-  assign slaves_1_DAT_MOSI = master_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 14:32]
-  assign slaves_1_ADR = master_ADR; // @[WishboneBusSlaveMultiplexer.scala 15:27]
-  assign slaves_1_WE = master_WE; // @[WishboneBusSlaveMultiplexer.scala 16:26]
-  assign slaves_1_CYC = (master_CYC && (selector == 1'b1)); // @[WishboneBusSlaveMultiplexer.scala 17:27]
-  assign slaves_1_STB = (master_STB && (selector == 1'b1)); // @[WishboneBusSlaveMultiplexer.scala 18:27]
-  assign slaves_1_SEL = master_SEL; // @[WishboneBusSlaveMultiplexer.scala 19:41]
-  always @(*) begin
-    case(selector)
-      1'b0 : begin
-        master_DAT_MISO = slaves_0_DAT_MISO; // @[WishboneBusSlaveMultiplexer.scala 25:52]
-      end
-      default : begin
-        master_DAT_MISO = slaves_1_DAT_MISO; // @[WishboneBusSlaveMultiplexer.scala 25:52]
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(selector)
-      1'b0 : begin
-        master_ACK = slaves_0_ACK; // @[WishboneBusSlaveMultiplexer.scala 26:47]
-      end
-      default : begin
-        master_ACK = slaves_1_ACK; // @[WishboneBusSlaveMultiplexer.scala 26:47]
-      end
-    endcase
-  end
-
-
-endmodule
+//WishboneBusSlaveMultiplexer_2 replaced by WishboneBusSlaveMultiplexer_2
 
 module MasterSlaveMap (
   output     [0:0]    masters_0_index,
@@ -2193,108 +2138,232 @@ module Cpu (
 
 endmodule
 
-module CrossbarArbiter (
-  output              slaves_0_encoder_inputs_0,
-  output              slaves_0_encoder_inputs_1,
-  input      [0:0]    slaves_0_encoder_output,
-  input               slaves_0_encoder_isValid,
-  output     [0:0]    slaves_0_grantedMasterIndex,
-  input               slaves_0_masters_0_request,
-  output              slaves_0_masters_0_isError,
-  output              slaves_0_masters_0_isStalled,
-  output              slaves_0_masters_0_isGranted,
-  input               slaves_0_masters_1_request,
-  output              slaves_0_masters_1_isError,
-  output              slaves_0_masters_1_isStalled,
-  output              slaves_0_masters_1_isGranted,
-  output              slaves_1_encoder_inputs_0,
-  output              slaves_1_encoder_inputs_1,
-  input      [0:0]    slaves_1_encoder_output,
-  input               slaves_1_encoder_isValid,
-  output     [0:0]    slaves_1_grantedMasterIndex,
-  input               slaves_1_masters_0_request,
-  output              slaves_1_masters_0_isError,
-  output              slaves_1_masters_0_isStalled,
-  output              slaves_1_masters_0_isGranted,
-  input               slaves_1_masters_1_request,
-  output              slaves_1_masters_1_isError,
-  output              slaves_1_masters_1_isStalled,
-  output              slaves_1_masters_1_isGranted,
+//WishboneBusSlaveMultiplexer_2 replaced by WishboneBusSlaveMultiplexer_2
+
+module WishboneBusSlaveMultiplexer_2 (
+  input               master_CYC,
+  input               master_STB,
+  output reg          master_ACK,
+  input               master_WE,
+  input      [29:0]   master_ADR,
+  output reg [31:0]   master_DAT_MISO,
+  input      [31:0]   master_DAT_MOSI,
+  input      [3:0]    master_SEL,
+  output              slaves_0_CYC,
+  output              slaves_0_STB,
+  input               slaves_0_ACK,
+  output              slaves_0_WE,
+  output     [29:0]   slaves_0_ADR,
+  input      [31:0]   slaves_0_DAT_MISO,
+  output     [31:0]   slaves_0_DAT_MOSI,
+  output     [3:0]    slaves_0_SEL,
+  output              slaves_1_CYC,
+  output              slaves_1_STB,
+  input               slaves_1_ACK,
+  output              slaves_1_WE,
+  output     [29:0]   slaves_1_ADR,
+  input      [31:0]   slaves_1_DAT_MISO,
+  output     [31:0]   slaves_1_DAT_MOSI,
+  output     [3:0]    slaves_1_SEL,
+  input      [0:0]    selector
+);
+
+
+  assign slaves_0_DAT_MOSI = master_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 14:32]
+  assign slaves_0_ADR = master_ADR; // @[WishboneBusSlaveMultiplexer.scala 15:27]
+  assign slaves_0_WE = master_WE; // @[WishboneBusSlaveMultiplexer.scala 16:26]
+  assign slaves_0_CYC = (master_CYC && (selector == 1'b0)); // @[WishboneBusSlaveMultiplexer.scala 17:27]
+  assign slaves_0_STB = (master_STB && (selector == 1'b0)); // @[WishboneBusSlaveMultiplexer.scala 18:27]
+  assign slaves_0_SEL = master_SEL; // @[WishboneBusSlaveMultiplexer.scala 19:41]
+  assign slaves_1_DAT_MOSI = master_DAT_MOSI; // @[WishboneBusSlaveMultiplexer.scala 14:32]
+  assign slaves_1_ADR = master_ADR; // @[WishboneBusSlaveMultiplexer.scala 15:27]
+  assign slaves_1_WE = master_WE; // @[WishboneBusSlaveMultiplexer.scala 16:26]
+  assign slaves_1_CYC = (master_CYC && (selector == 1'b1)); // @[WishboneBusSlaveMultiplexer.scala 17:27]
+  assign slaves_1_STB = (master_STB && (selector == 1'b1)); // @[WishboneBusSlaveMultiplexer.scala 18:27]
+  assign slaves_1_SEL = master_SEL; // @[WishboneBusSlaveMultiplexer.scala 19:41]
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        master_DAT_MISO = slaves_0_DAT_MISO; // @[WishboneBusSlaveMultiplexer.scala 31:52]
+      end
+      default : begin
+        master_DAT_MISO = slaves_1_DAT_MISO; // @[WishboneBusSlaveMultiplexer.scala 31:52]
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        master_ACK = slaves_0_ACK; // @[WishboneBusSlaveMultiplexer.scala 32:47]
+      end
+      default : begin
+        master_ACK = slaves_1_ACK; // @[WishboneBusSlaveMultiplexer.scala 32:47]
+      end
+    endcase
+  end
+
+
+endmodule
+
+//WishboneBusMasterMultiplexer_1 replaced by WishboneBusMasterMultiplexer_1
+
+module WishboneBusMasterMultiplexer_1 (
+  input               masters_0_CYC,
+  input               masters_0_STB,
+  output              masters_0_ACK,
+  input               masters_0_WE,
+  input      [29:0]   masters_0_ADR,
+  output     [31:0]   masters_0_DAT_MISO,
+  input      [31:0]   masters_0_DAT_MOSI,
+  input      [3:0]    masters_0_SEL,
+  input               masters_1_CYC,
+  input               masters_1_STB,
+  output              masters_1_ACK,
+  input               masters_1_WE,
+  input      [29:0]   masters_1_ADR,
+  output     [31:0]   masters_1_DAT_MISO,
+  input      [31:0]   masters_1_DAT_MOSI,
+  input      [3:0]    masters_1_SEL,
+  output reg          slave_CYC,
+  output reg          slave_STB,
+  input               slave_ACK,
+  output reg          slave_WE,
+  output reg [29:0]   slave_ADR,
+  input      [31:0]   slave_DAT_MISO,
+  output reg [31:0]   slave_DAT_MOSI,
+  output reg [3:0]    slave_SEL,
+  input      [0:0]    selector
+);
+
+
+  assign masters_0_DAT_MISO = slave_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 14:33]
+  assign masters_0_ACK = (slave_ACK && (selector == 1'b0)); // @[WishboneBusMasterMultiplexer.scala 15:28]
+  assign masters_1_DAT_MISO = slave_DAT_MISO; // @[WishboneBusMasterMultiplexer.scala 14:33]
+  assign masters_1_ACK = (slave_ACK && (selector == 1'b1)); // @[WishboneBusMasterMultiplexer.scala 15:28]
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_DAT_MOSI = masters_0_DAT_MOSI; // @[WishboneBusMasterMultiplexer.scala 25:51]
+      end
+      default : begin
+        slave_DAT_MOSI = masters_1_DAT_MOSI; // @[WishboneBusMasterMultiplexer.scala 25:51]
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_ADR = masters_0_ADR; // @[WishboneBusMasterMultiplexer.scala 26:46]
+      end
+      default : begin
+        slave_ADR = masters_1_ADR; // @[WishboneBusMasterMultiplexer.scala 26:46]
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_WE = masters_0_WE; // @[WishboneBusMasterMultiplexer.scala 27:45]
+      end
+      default : begin
+        slave_WE = masters_1_WE; // @[WishboneBusMasterMultiplexer.scala 27:45]
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_CYC = masters_0_CYC; // @[WishboneBusMasterMultiplexer.scala 28:46]
+      end
+      default : begin
+        slave_CYC = masters_1_CYC; // @[WishboneBusMasterMultiplexer.scala 28:46]
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_STB = masters_0_STB; // @[WishboneBusMasterMultiplexer.scala 29:46]
+      end
+      default : begin
+        slave_STB = masters_1_STB; // @[WishboneBusMasterMultiplexer.scala 29:46]
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(selector)
+      1'b0 : begin
+        slave_SEL = masters_0_SEL; // @[WishboneBusMasterMultiplexer.scala 30:60]
+      end
+      default : begin
+        slave_SEL = masters_1_SEL; // @[WishboneBusMasterMultiplexer.scala 30:60]
+      end
+    endcase
+  end
+
+
+endmodule
+
+//MultiMasterSingleSlaveArbiter_1 replaced by MultiMasterSingleSlaveArbiter_1
+
+module MultiMasterSingleSlaveArbiter_1 (
+  output              encoder_inputs_0,
+  output              encoder_inputs_1,
+  input      [0:0]    encoder_output,
+  input               encoder_isValid,
+  output     [0:0]    grantedMasterIndex,
+  input               masters_0_request,
+  output              masters_0_isError,
+  output              masters_0_isStalled,
+  output              masters_0_isGranted,
+  input               masters_1_request,
+  output              masters_1_isError,
+  output              masters_1_isStalled,
+  output              masters_1_isGranted,
   input               clk,
   input               reset
 );
 
-  wire                slaveArbiters_0_encoder_inputs_0;
-  wire                slaveArbiters_0_encoder_inputs_1;
-  wire       [0:0]    slaveArbiters_0_grantedMasterIndex;
-  wire                slaveArbiters_0_masters_0_isError;
-  wire                slaveArbiters_0_masters_0_isStalled;
-  wire                slaveArbiters_0_masters_0_isGranted;
-  wire                slaveArbiters_0_masters_1_isError;
-  wire                slaveArbiters_0_masters_1_isStalled;
-  wire                slaveArbiters_0_masters_1_isGranted;
-  wire                slaveArbiters_1_encoder_inputs_0;
-  wire                slaveArbiters_1_encoder_inputs_1;
-  wire       [0:0]    slaveArbiters_1_grantedMasterIndex;
-  wire                slaveArbiters_1_masters_0_isError;
-  wire                slaveArbiters_1_masters_0_isStalled;
-  wire                slaveArbiters_1_masters_0_isGranted;
-  wire                slaveArbiters_1_masters_1_isError;
-  wire                slaveArbiters_1_masters_1_isStalled;
-  wire                slaveArbiters_1_masters_1_isGranted;
+  reg        [0:0]    grantedMasterIndex_1;
+  wire                when_MultiMasterSingleSlaveArbiter_l19;
+  wire                when_MultiMasterSingleSlaveArbiter_l19_1;
 
-  MultiMasterSingleSlaveArbiter_1 slaveArbiters_0 (
-    .encoder_inputs_0    (slaveArbiters_0_encoder_inputs_0   ), //o
-    .encoder_inputs_1    (slaveArbiters_0_encoder_inputs_1   ), //o
-    .encoder_output      (slaves_0_encoder_output            ), //i
-    .encoder_isValid     (slaves_0_encoder_isValid           ), //i
-    .grantedMasterIndex  (slaveArbiters_0_grantedMasterIndex ), //o
-    .masters_0_request   (slaves_0_masters_0_request         ), //i
-    .masters_0_isError   (slaveArbiters_0_masters_0_isError  ), //o
-    .masters_0_isStalled (slaveArbiters_0_masters_0_isStalled), //o
-    .masters_0_isGranted (slaveArbiters_0_masters_0_isGranted), //o
-    .masters_1_request   (slaves_0_masters_1_request         ), //i
-    .masters_1_isError   (slaveArbiters_0_masters_1_isError  ), //o
-    .masters_1_isStalled (slaveArbiters_0_masters_1_isStalled), //o
-    .masters_1_isGranted (slaveArbiters_0_masters_1_isGranted), //o
-    .clk                 (clk                                ), //i
-    .reset               (reset                              )  //i
-  );
-  MultiMasterSingleSlaveArbiter_1 slaveArbiters_1 (
-    .encoder_inputs_0    (slaveArbiters_1_encoder_inputs_0   ), //o
-    .encoder_inputs_1    (slaveArbiters_1_encoder_inputs_1   ), //o
-    .encoder_output      (slaves_1_encoder_output            ), //i
-    .encoder_isValid     (slaves_1_encoder_isValid           ), //i
-    .grantedMasterIndex  (slaveArbiters_1_grantedMasterIndex ), //o
-    .masters_0_request   (slaves_1_masters_0_request         ), //i
-    .masters_0_isError   (slaveArbiters_1_masters_0_isError  ), //o
-    .masters_0_isStalled (slaveArbiters_1_masters_0_isStalled), //o
-    .masters_0_isGranted (slaveArbiters_1_masters_0_isGranted), //o
-    .masters_1_request   (slaves_1_masters_1_request         ), //i
-    .masters_1_isError   (slaveArbiters_1_masters_1_isError  ), //o
-    .masters_1_isStalled (slaveArbiters_1_masters_1_isStalled), //o
-    .masters_1_isGranted (slaveArbiters_1_masters_1_isGranted), //o
-    .clk                 (clk                                ), //i
-    .reset               (reset                              )  //i
-  );
-  assign slaves_0_encoder_inputs_0 = slaveArbiters_0_encoder_inputs_0; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_0_encoder_inputs_1 = slaveArbiters_0_encoder_inputs_1; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_0_grantedMasterIndex = slaveArbiters_0_grantedMasterIndex; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_0_masters_0_isError = slaveArbiters_0_masters_0_isError; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_0_masters_0_isStalled = slaveArbiters_0_masters_0_isStalled; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_0_masters_0_isGranted = slaveArbiters_0_masters_0_isGranted; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_0_masters_1_isError = slaveArbiters_0_masters_1_isError; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_0_masters_1_isStalled = slaveArbiters_0_masters_1_isStalled; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_0_masters_1_isGranted = slaveArbiters_0_masters_1_isGranted; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_1_encoder_inputs_0 = slaveArbiters_1_encoder_inputs_0; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_1_encoder_inputs_1 = slaveArbiters_1_encoder_inputs_1; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_1_grantedMasterIndex = slaveArbiters_1_grantedMasterIndex; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_1_masters_0_isError = slaveArbiters_1_masters_0_isError; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_1_masters_0_isStalled = slaveArbiters_1_masters_0_isStalled; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_1_masters_0_isGranted = slaveArbiters_1_masters_0_isGranted; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_1_masters_1_isError = slaveArbiters_1_masters_1_isError; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_1_masters_1_isStalled = slaveArbiters_1_masters_1_isStalled; // @[CrossbarArbiter.scala 14:23]
-  assign slaves_1_masters_1_isGranted = slaveArbiters_1_masters_1_isGranted; // @[CrossbarArbiter.scala 14:23]
+  assign grantedMasterIndex = grantedMasterIndex_1; // @[MultiMasterSingleSlaveArbiter.scala 14:31]
+  assign when_MultiMasterSingleSlaveArbiter_l19 = (encoder_isValid && (! masters_0_request)); // @[BaseType.scala 305:24]
+  assign when_MultiMasterSingleSlaveArbiter_l19_1 = (encoder_isValid && (! masters_1_request)); // @[BaseType.scala 305:24]
+  assign encoder_inputs_0 = masters_0_request; // @[MultiMasterSingleSlaveArbiter.scala 27:50]
+  assign masters_0_isError = (masters_0_request && (! encoder_isValid)); // @[MultiMasterSingleSlaveArbiter.scala 28:40]
+  assign masters_0_isStalled = (masters_0_request && (grantedMasterIndex_1 != 1'b0)); // @[MultiMasterSingleSlaveArbiter.scala 29:42]
+  assign masters_0_isGranted = (masters_0_request && (grantedMasterIndex_1 == 1'b0)); // @[MultiMasterSingleSlaveArbiter.scala 30:42]
+  assign encoder_inputs_1 = masters_1_request; // @[MultiMasterSingleSlaveArbiter.scala 27:50]
+  assign masters_1_isError = (masters_1_request && (! encoder_isValid)); // @[MultiMasterSingleSlaveArbiter.scala 28:40]
+  assign masters_1_isStalled = (masters_1_request && (grantedMasterIndex_1 != 1'b1)); // @[MultiMasterSingleSlaveArbiter.scala 29:42]
+  assign masters_1_isGranted = (masters_1_request && (grantedMasterIndex_1 == 1'b1)); // @[MultiMasterSingleSlaveArbiter.scala 30:42]
+  always @(posedge clk) begin
+    if(reset) begin
+      grantedMasterIndex_1 <= 1'b0; // @[Data.scala 400:33]
+    end else begin
+      case(grantedMasterIndex_1)
+        1'b0 : begin
+          if(when_MultiMasterSingleSlaveArbiter_l19) begin
+            grantedMasterIndex_1 <= encoder_output; // @[MultiMasterSingleSlaveArbiter.scala 20:68]
+          end
+        end
+        default : begin
+          if(when_MultiMasterSingleSlaveArbiter_l19_1) begin
+            grantedMasterIndex_1 <= encoder_output; // @[MultiMasterSingleSlaveArbiter.scala 20:68]
+          end
+        end
+      endcase
+    end
+  end
+
 
 endmodule
 
@@ -5523,63 +5592,6 @@ module VexRiscv (
       if(execute_CsrPlugin_writeEnable) begin
         CsrPlugin_mip_MSIP <= CsrPlugin_csrMapping_writeDataSignal[3]; // @[Bool.scala 189:10]
       end
-    end
-  end
-
-
-endmodule
-
-//MultiMasterSingleSlaveArbiter_1 replaced by MultiMasterSingleSlaveArbiter_1
-
-module MultiMasterSingleSlaveArbiter_1 (
-  output              encoder_inputs_0,
-  output              encoder_inputs_1,
-  input      [0:0]    encoder_output,
-  input               encoder_isValid,
-  output     [0:0]    grantedMasterIndex,
-  input               masters_0_request,
-  output              masters_0_isError,
-  output              masters_0_isStalled,
-  output              masters_0_isGranted,
-  input               masters_1_request,
-  output              masters_1_isError,
-  output              masters_1_isStalled,
-  output              masters_1_isGranted,
-  input               clk,
-  input               reset
-);
-
-  reg        [0:0]    grantedMasterIndex_1;
-  wire                when_MultiMasterSingleSlaveArbiter_l19;
-  wire                when_MultiMasterSingleSlaveArbiter_l19_1;
-
-  assign grantedMasterIndex = grantedMasterIndex_1; // @[MultiMasterSingleSlaveArbiter.scala 14:31]
-  assign when_MultiMasterSingleSlaveArbiter_l19 = (encoder_isValid && (! masters_0_request)); // @[BaseType.scala 305:24]
-  assign when_MultiMasterSingleSlaveArbiter_l19_1 = (encoder_isValid && (! masters_1_request)); // @[BaseType.scala 305:24]
-  assign encoder_inputs_0 = masters_0_request; // @[MultiMasterSingleSlaveArbiter.scala 27:50]
-  assign masters_0_isError = (masters_0_request && (! encoder_isValid)); // @[MultiMasterSingleSlaveArbiter.scala 28:40]
-  assign masters_0_isStalled = (masters_0_request && (grantedMasterIndex_1 != 1'b0)); // @[MultiMasterSingleSlaveArbiter.scala 29:42]
-  assign masters_0_isGranted = (masters_0_request && (grantedMasterIndex_1 == 1'b0)); // @[MultiMasterSingleSlaveArbiter.scala 30:42]
-  assign encoder_inputs_1 = masters_1_request; // @[MultiMasterSingleSlaveArbiter.scala 27:50]
-  assign masters_1_isError = (masters_1_request && (! encoder_isValid)); // @[MultiMasterSingleSlaveArbiter.scala 28:40]
-  assign masters_1_isStalled = (masters_1_request && (grantedMasterIndex_1 != 1'b1)); // @[MultiMasterSingleSlaveArbiter.scala 29:42]
-  assign masters_1_isGranted = (masters_1_request && (grantedMasterIndex_1 == 1'b1)); // @[MultiMasterSingleSlaveArbiter.scala 30:42]
-  always @(posedge clk) begin
-    if(reset) begin
-      grantedMasterIndex_1 <= 1'b0; // @[Data.scala 400:33]
-    end else begin
-      case(grantedMasterIndex_1)
-        1'b0 : begin
-          if(when_MultiMasterSingleSlaveArbiter_l19) begin
-            grantedMasterIndex_1 <= encoder_output; // @[MultiMasterSingleSlaveArbiter.scala 20:68]
-          end
-        end
-        default : begin
-          if(when_MultiMasterSingleSlaveArbiter_l19_1) begin
-            grantedMasterIndex_1 <= encoder_output; // @[MultiMasterSingleSlaveArbiter.scala 20:68]
-          end
-        end
-      endcase
     end
   end
 
