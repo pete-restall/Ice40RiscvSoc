@@ -17,6 +17,12 @@ class WishboneBusSlaveMultiplexer(busConfig: WishboneConfig, numberOfSlaves: Int
 		slave.CYC := io.master.CYC && io.selector === index
 		slave.STB := io.master.STB && io.selector === index
 		Option(slave.SEL).map(_ := io.master.SEL)
+		Option(slave.LOCK).map(_ := io.master.LOCK)
+		Option(slave.BTE).map(_ := io.master.BTE)
+		Option(slave.CTI).map(_ := io.master.CTI)
+		Option(slave.TGA).map(_ := io.master.TGA)
+		Option(slave.TGC).map(_ := io.master.TGC)
+		Option(slave.TGD_MOSI).map(_ := io.master.TGD_MOSI)
 	}
 
 	switch(io.selector) {
@@ -27,6 +33,7 @@ class WishboneBusSlaveMultiplexer(busConfig: WishboneConfig, numberOfSlaves: Int
 				Option(io.master.RTY).map(_ := io.slaves(index).RTY)
 				Option(io.master.ERR).map(_ := io.slaves(index).ERR)
 				Option(io.master.STALL).map(_ := io.slaves(index).STALL)
+				Option(io.master.TGD_MISO).map(_ := io.slaves(index).TGD_MISO)
 			}
 		}
 
@@ -42,11 +49,10 @@ class WishboneBusSlaveMultiplexer(busConfig: WishboneConfig, numberOfSlaves: Int
 
 				Option(io.master.RTY).map(_ := False)
 				Option(io.master.STALL).map(_ := False)
+				Option(io.master.TGD_MISO).map(_ := 0)
 			}
 		}
 	}
-
-	// TODO: PLUS ALL OF THE OTHER LINES: BTE, LOCK, TGA, TGC, TGD_MISO, TGD_MOSI
 }
 
 object WishboneBusSlaveMultiplexer {
@@ -73,16 +79,16 @@ object WishboneBusSlaveMultiplexer {
 			throw new IllegalArgumentException(s"Wishbone slaves must all have the same configuration; arg=otherSlaves, index=${indexOfDifferingConfig}")
 		}
 
-		val mux = new WishboneBusSlaveMultiplexer(firstSlave.config, 1 + otherSlaves.length)
-		if (selector.getWidth != mux.io.selector.getWidth) {
+		val multiplexer = new WishboneBusSlaveMultiplexer(firstSlave.config, 1 + otherSlaves.length)
+		if (selector.getWidth != multiplexer.io.selector.getWidth) {
 			throw new IllegalArgumentException(
 				"Selector is too narrow or too wide to properly index all of the Wishbone slaves; arg=selector, " +
-				s"selectorWidth=${selector.getWidth bits}, numberOfSlaves=${1 + otherSlaves.length}, expectedWidth=${mux.io.selector.getWidth bits}")
+				s"selectorWidth=${selector.getWidth bits}, numberOfSlaves=${1 + otherSlaves.length}, expectedWidth=${multiplexer.io.selector.getWidth bits}")
 		}
 
-		mux.io.selector := selector
-		(firstSlave +: otherSlaves).zip(mux.io.slaves).foreach { case (slave, muxSlave) => slave <> muxSlave }
+		multiplexer.io.selector := selector
+		(firstSlave +: otherSlaves).zip(multiplexer.io.slaves).foreach { case (slave, muxSlave) => slave <> muxSlave }
 
-		mux
+		multiplexer
 	}
 }

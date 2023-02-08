@@ -55,6 +55,62 @@ class WishboneBusSlaveMultiplexerSimulationTest(busConfig: WishboneConfig, numbe
 		}}
 	}
 
+	they must "all have a non-multiplexed master LOCK" in simulator { fixture =>
+		if (fixture.io.master.LOCK != null) {
+			forAll(booleans) { (value: Boolean) =>
+				fixture.io.master.LOCK #= value
+				fixture.io.selector #= fixture.anySlaveIndex()
+				sleep(1)
+				forAll(fixture.io.slaves) { slave => slave.LOCK.toBoolean must be(value) }
+			}
+		}
+	}
+
+	they must "all have a non-multiplexed master BTE" in simulator { fixture =>
+		if (fixture.io.master.BTE != null) {
+			fixture.io.master.BTE #= fixture.anyBte()
+			fixture.io.selector #= fixture.anySlaveIndex()
+			sleep(1)
+			forAll(fixture.io.slaves) { slave => slave.BTE.toInt must be(fixture.io.master.BTE.toInt) }
+		}
+	}
+
+	they must "all have a non-multiplexed master CTI" in simulator { fixture =>
+		if (fixture.io.master.CTI != null) {
+			fixture.io.master.CTI #= fixture.anyCti()
+			fixture.io.selector #= fixture.anySlaveIndex()
+			sleep(1)
+			forAll(fixture.io.slaves) { slave => slave.CTI.toInt must be(fixture.io.master.CTI.toInt) }
+		}
+	}
+
+	they must "all have a non-multiplexed master TGA" in simulator { fixture =>
+		if (fixture.io.master.TGA != null) {
+			fixture.io.master.TGA #= fixture.anyTga()
+			fixture.io.selector #= fixture.anySlaveIndex()
+			sleep(1)
+			forAll(fixture.io.slaves) { slave => slave.TGA.toInt must be(fixture.io.master.TGA.toInt) }
+		}
+	}
+
+	they must "all have a non-multiplexed master TGC" in simulator { fixture =>
+		if (fixture.io.master.TGC != null) {
+			fixture.io.master.TGC #= fixture.anyTgc()
+			fixture.io.selector #= fixture.anySlaveIndex()
+			sleep(1)
+			forAll(fixture.io.slaves) { slave => slave.TGC.toInt must be(fixture.io.master.TGC.toInt) }
+		}
+	}
+
+	they must "all have a non-multiplexed master TGD_MOSI" in simulator { fixture =>
+		if (fixture.io.master.TGD_MOSI != null) {
+			fixture.io.master.TGD_MOSI #= fixture.anyTagData()
+			fixture.io.selector #= fixture.anySlaveIndex()
+			sleep(1)
+			forAll(fixture.io.slaves) { slave => slave.TGD_MOSI.toInt must be(fixture.io.master.TGD_MOSI.toInt) }
+		}
+	}
+
 	they must "all have their DAT_MISO multiplexed to the master" in simulator { fixture =>
 		val slavesInAnyOrder = Random.shuffle(fixture.io.slaves.zipWithIndex.toSeq)
 		fixture.io.slaves.foreach(slave => slave.DAT_MISO #= fixture.anyData())
@@ -62,6 +118,18 @@ class WishboneBusSlaveMultiplexerSimulationTest(busConfig: WishboneConfig, numbe
 			fixture.io.selector #= index
 			sleep(1)
 			fixture.io.master.DAT_MISO.toLong must be(slave.DAT_MISO.toLong)
+		}
+	}
+
+	they must "all have their TGD_MISO multiplexed to the master" in simulator { fixture =>
+		if (fixture.io.master.TGD_MISO != null) {
+			val slavesInAnyOrder = Random.shuffle(fixture.io.slaves.zipWithIndex.toSeq)
+			fixture.io.slaves.foreach(slave => slave.TGD_MISO #= fixture.anyTagData())
+			forAll(slavesInAnyOrder) { case(slave, index) =>
+				fixture.io.selector #= index
+				sleep(1)
+				fixture.io.master.TGD_MISO.toLong must be(slave.TGD_MISO.toLong)
+			}
 		}
 	}
 
@@ -159,6 +227,12 @@ class WishboneBusSlaveMultiplexerSimulationTest(busConfig: WishboneConfig, numbe
 				sleep(1)
 				expectation(fixture.io.master)
 			}
+		}
+	}
+
+	"Multiplexed TGD_MISO" must "be zero for invalid slave indices" in simulator { implicit fixture =>
+		if (fixture.io.master.TGD_MISO != null) {
+			forInvalidSlaves(master => master.TGD_MISO.toLong must be(0))((fixture, slave) => slave.TGD_MISO #= fixture.anyTagData())
 		}
 	}
 
