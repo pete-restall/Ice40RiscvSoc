@@ -16,6 +16,7 @@ class WishboneBusMasterMultiplexer(busConfig: WishboneConfig, numberOfMasters: I
 		Option(master.RTY).map(_ := io.slave.RTY && io.selector === index)
 		Option(master.ERR).map(_ := io.slave.ERR && io.selector === index)
 		Option(master.STALL).map(_ := io.slave.STALL && io.selector === index)
+		Option(master.TGD_MISO).map(_ := io.slave.TGD_MISO)
 	}
 
 	switch(io.selector) {
@@ -27,6 +28,12 @@ class WishboneBusMasterMultiplexer(busConfig: WishboneConfig, numberOfMasters: I
 				io.slave.CYC := io.masters(index).CYC
 				io.slave.STB := io.masters(index).STB
 				Option(io.slave.SEL).map(_ := io.masters(index).SEL)
+				Option(io.slave.LOCK).map(_ := io.masters(index).LOCK)
+				Option(io.slave.BTE).map(_ := io.masters(index).BTE)
+				Option(io.slave.CTI).map(_ := io.masters(index).CTI)
+				Option(io.slave.TGA).map(_ := io.masters(index).TGA)
+				Option(io.slave.TGC).map(_ := io.masters(index).TGC)
+				Option(io.slave.TGD_MOSI).map(_ := io.masters(index).TGD_MOSI)
 			}
 		}
 
@@ -38,11 +45,15 @@ class WishboneBusMasterMultiplexer(busConfig: WishboneConfig, numberOfMasters: I
 				io.slave.CYC := False
 				io.slave.STB := False
 				Option(io.slave.SEL).map(_ := 0)
+				Option(io.slave.LOCK).map(_ := False)
+				Option(io.slave.BTE).map(_ := 0)
+				Option(io.slave.CTI).map(_ := 0)
+				Option(io.slave.TGA).map(_ := 0)
+				Option(io.slave.TGC).map(_ := 0)
+				Option(io.slave.TGD_MOSI).map(_ := 0)
 			}
 		}
 	}
-
-	// TODO: PLUS ALL OF THE OTHER LINES: BTE, LOCK, TGA, TGC, TGD_MISO, TGD_MOSI
 }
 
 object WishboneBusMasterMultiplexer {
@@ -69,16 +80,16 @@ object WishboneBusMasterMultiplexer {
 			throw new IllegalArgumentException(s"Wishbone masters must all have the same configuration; arg=otherMasters, index=${indexOfDifferingConfig}")
 		}
 
-		val mux = new WishboneBusMasterMultiplexer(firstMaster.config, 1 + otherMasters.length)
-		if (selector.getWidth != mux.io.selector.getWidth) {
+		val multiplexer = new WishboneBusMasterMultiplexer(firstMaster.config, 1 + otherMasters.length)
+		if (selector.getWidth != multiplexer.io.selector.getWidth) {
 			throw new IllegalArgumentException(
 				"Selector is too narrow or too wide to properly index all of the Wishbone masters; arg=selector, " +
-				s"selectorWidth=${selector.getWidth bits}, numberOfMasters=${1 + otherMasters.length}, expectedWidth=${mux.io.selector.getWidth bits}")
+				s"selectorWidth=${selector.getWidth bits}, numberOfMasters=${1 + otherMasters.length}, expectedWidth=${multiplexer.io.selector.getWidth bits}")
 		}
 
-		mux.io.selector := selector
-		(firstMaster +: otherMasters).zip(mux.io.masters).foreach { case (master, muxMaster) => master <> muxMaster }
+		multiplexer.io.selector := selector
+		(firstMaster +: otherMasters).zip(multiplexer.io.masters).foreach { case (master, muxMaster) => master <> muxMaster }
 
-		mux
+		multiplexer
 	}
 }

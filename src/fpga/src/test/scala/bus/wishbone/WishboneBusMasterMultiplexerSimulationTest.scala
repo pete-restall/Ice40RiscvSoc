@@ -18,11 +18,20 @@ class WishboneBusMasterMultiplexerSimulationTest(busConfig: WishboneConfig, numb
 
 	protected override def dutFactory() = new WishboneBusMasterMultiplexerFixture(busConfig, numberOfMasters, dutCreatedViaApplyFactory)
 
-	"WishboneBusMasterMultiplexer masters" must "all have a non-multiplexed slave MISO" in simulator { fixture =>
+	"WishboneBusMasterMultiplexer masters" must "all have a non-multiplexed slave DAT_MISO" in simulator { fixture =>
 		fixture.io.slave.DAT_MISO #= fixture.anyData()
 		fixture.io.selector #= fixture.anyMasterIndex()
 		sleep(1)
 		forAll(fixture.io.masters) { master => master.DAT_MISO.toLong must be(fixture.io.slave.DAT_MISO.toLong) }
+	}
+
+	they must "all have a non-multiplexed slave TGD_MISO" in simulator { fixture =>
+		if (fixture.io.slave.TGD_MISO != null) {
+			fixture.io.slave.TGD_MISO #= fixture.anyTagData()
+			fixture.io.selector #= fixture.anyMasterIndex()
+			sleep(1)
+			forAll(fixture.io.masters) { master => master.TGD_MISO.toLong must be(fixture.io.slave.TGD_MISO.toLong) }
+		}
 	}
 
 	they must "all have their DAT_MOSI multiplexed to the slave" in simulator { fixture =>
@@ -53,6 +62,66 @@ class WishboneBusMasterMultiplexerSimulationTest(busConfig: WishboneConfig, numb
 				fixture.io.selector #= index
 				sleep(1)
 				fixture.io.slave.SEL.toInt must be(master.SEL.toInt)
+			}
+		}
+	}
+
+	they must "all have their BTE multiplexed to the slave" in simulator { fixture =>
+		if (fixture.io.slave.BTE != null) {
+			val mastersInAnyOrder = Random.shuffle(fixture.io.masters.zipWithIndex.toSeq)
+			fixture.io.masters.foreach(master => master.BTE #= fixture.anyBte())
+			forAll(mastersInAnyOrder) { case(master, index) =>
+				fixture.io.selector #= index
+				sleep(1)
+				fixture.io.slave.BTE.toInt must be(master.BTE.toInt)
+			}
+		}
+	}
+
+	they must "all have their CTI multiplexed to the slave" in simulator { fixture =>
+		if (fixture.io.slave.CTI != null) {
+			val mastersInAnyOrder = Random.shuffle(fixture.io.masters.zipWithIndex.toSeq)
+			fixture.io.masters.foreach(master => master.CTI #= fixture.anyCti())
+			forAll(mastersInAnyOrder) { case(master, index) =>
+				fixture.io.selector #= index
+				sleep(1)
+				fixture.io.slave.CTI.toInt must be(master.CTI.toInt)
+			}
+		}
+	}
+
+	they must "all have their TGA multiplexed to the slave" in simulator { fixture =>
+		if (fixture.io.slave.TGA != null) {
+			val mastersInAnyOrder = Random.shuffle(fixture.io.masters.zipWithIndex.toSeq)
+			fixture.io.masters.foreach(master => master.TGA #= fixture.anyTga())
+			forAll(mastersInAnyOrder) { case(master, index) =>
+				fixture.io.selector #= index
+				sleep(1)
+				fixture.io.slave.TGA.toInt must be(master.TGA.toInt)
+			}
+		}
+	}
+
+	they must "all have their TGC multiplexed to the slave" in simulator { fixture =>
+		if (fixture.io.slave.TGC != null) {
+			val mastersInAnyOrder = Random.shuffle(fixture.io.masters.zipWithIndex.toSeq)
+			fixture.io.masters.foreach(master => master.TGC #= fixture.anyTgc())
+			forAll(mastersInAnyOrder) { case(master, index) =>
+				fixture.io.selector #= index
+				sleep(1)
+				fixture.io.slave.TGC.toInt must be(master.TGC.toInt)
+			}
+		}
+	}
+
+	they must "all have their TGD_MOSI multiplexed to the slave" in simulator { fixture =>
+		if (fixture.io.slave.TGD_MOSI != null) {
+			val mastersInAnyOrder = Random.shuffle(fixture.io.masters.zipWithIndex.toSeq)
+			fixture.io.masters.foreach(master => master.TGD_MOSI #= fixture.anyTagData())
+			forAll(mastersInAnyOrder) { case(master, index) =>
+				fixture.io.selector #= index
+				sleep(1)
+				fixture.io.slave.TGD_MOSI.toInt must be(master.TGD_MOSI.toInt)
 			}
 		}
 	}
@@ -226,10 +295,58 @@ class WishboneBusMasterMultiplexerSimulationTest(busConfig: WishboneConfig, numb
 		}
 	}
 
+	it must "have false LOCK for invalid master indices" in simulator { implicit fixture =>
+		if (fixture.io.slave.LOCK != null) {
+			forInvalidMasters(slave => slave.LOCK.toBoolean must be(false)) { (fixture, master) =>
+				master.LOCK #= true
+			}
+		}
+	}
+
 	it must "have zero SEL for invalid master indices" in simulator { implicit fixture =>
 		if (fixture.io.slave.SEL != null) {
 			forInvalidMasters(slave => slave.SEL.toInt must be(0)) { (fixture, master) =>
 				master.SEL #= fixture.anySel()
+			}
+		}
+	}
+
+	it must "have zero BTE for invalid master indices" in simulator { implicit fixture =>
+		if (fixture.io.slave.BTE != null) {
+			forInvalidMasters(slave => slave.BTE.toInt must be(0)) { (fixture, master) =>
+				master.BTE #= fixture.anyBte()
+			}
+		}
+	}
+
+	it must "have zero CTI for invalid master indices" in simulator { implicit fixture =>
+		if (fixture.io.slave.CTI != null) {
+			forInvalidMasters(slave => slave.CTI.toInt must be(0)) { (fixture, master) =>
+				master.CTI #= fixture.anyCti()
+			}
+		}
+	}
+
+	it must "have zero TGA for invalid master indices" in simulator { implicit fixture =>
+		if (fixture.io.slave.TGA != null) {
+			forInvalidMasters(slave => slave.TGA.toInt must be(0)) { (fixture, master) =>
+				master.TGA #= fixture.anyTga()
+			}
+		}
+	}
+
+	it must "have zero TGC for invalid master indices" in simulator { implicit fixture =>
+		if (fixture.io.slave.TGC != null) {
+			forInvalidMasters(slave => slave.TGC.toInt must be(0)) { (fixture, master) =>
+				master.TGC #= fixture.anyTgc()
+			}
+		}
+	}
+
+	it must "have zero TGD_MOSI for invalid master indices" in simulator { implicit fixture =>
+		if (fixture.io.slave.TGD_MOSI != null) {
+			forInvalidMasters(slave => slave.TGD_MOSI.toInt must be(0)) { (fixture, master) =>
+				master.TGD_MOSI #= fixture.anyTagData()
 			}
 		}
 	}
@@ -278,5 +395,17 @@ class WishboneBusMasterMultiplexerSimulationTest(busConfig: WishboneConfig, numb
 
 	it must "not follow the value of an unselected master's STB" in simulator { implicit fixture =>
 		mustNotFollowTheValueOfAnUnselectedMastersLine(_.STB)
+	}
+
+	it must "follow the value of the selected master's LOCK" in simulator { implicit fixture =>
+		if (fixture.io.slave.LOCK != null) {
+			mustFollowTheValueOfTheSelectedMastersLine(_.LOCK)
+		}
+	}
+
+	it must "not follow the value of an unselected master's LOCK" in simulator { implicit fixture =>
+		if (fixture.io.slave.LOCK != null) {
+			mustNotFollowTheValueOfAnUnselectedMastersLine(_.LOCK)
+		}
 	}
 }

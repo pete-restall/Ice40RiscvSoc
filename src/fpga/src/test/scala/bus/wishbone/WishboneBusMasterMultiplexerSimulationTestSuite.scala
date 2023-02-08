@@ -98,5 +98,21 @@ class WishboneBusMasterMultiplexerSimulationTestSuite extends AnyFlatSpec {
 				tgdWidth=0,
 				useBTE=false),
 			numberOfMasters=numberOfMasters,
+			dutCreatedViaApplyFactory=dutCreatedViaApplyFactory),
+		new WishboneBusMasterMultiplexerSimulationTest(
+			busConfig=new WishboneConfig(
+				addressWidth=16,
+				dataWidth=16,
+				selWidth=4,
+				useSTALL=true,
+				useLOCK=true,
+				useERR=true,
+				useRTY=true,
+				useCTI=true,
+				tgaWidth=5,
+				tgcWidth=6,
+				tgdWidth=7,
+				useBTE=true),
+			numberOfMasters=numberOfMasters,
 			dutCreatedViaApplyFactory=dutCreatedViaApplyFactory))
 }

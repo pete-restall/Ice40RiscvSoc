@@ -37,4 +37,14 @@ class WishboneBusMasterMultiplexerFixture(busConfig: WishboneConfig, numberOfMas
 	def anyMasterIndex() = Random.nextInt(io.masters.length)
 
 	def anySel() = Random.nextInt(1 << io.slave.SEL.getWidth)
+
+	def anyBte() = Random.nextInt(1 << io.slave.BTE.getWidth)
+
+	def anyCti() = Random.nextInt(1 << io.slave.CTI.getWidth)
+
+	def anyTga() = Random.nextInt(1 << io.slave.TGA.getWidth)
+
+	def anyTgc() = Random.nextInt(1 << io.slave.TGC.getWidth)
+
+	def anyTagData() = Random.nextInt(1 << io.slave.TGD_MOSI.getWidth)
 }
