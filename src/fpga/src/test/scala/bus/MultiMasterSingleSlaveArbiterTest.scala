@@ -30,23 +30,23 @@ class MultiMasterSingleSlaveArbiterTest extends AnyFlatSpec with NonSimulationFi
 	private val numberOfMasters = Seq(1, 2, 3, 4, anyNumberOfMasters()).asTable("numberOfMasters")
 
 	it must "have encoder IO for the number of masters passed to the constructor" in spinalContext {
-		forAll(numberOfMasters) { (numberOfMasters: Int) => {
+		forAll(numberOfMasters) { (numberOfMasters: Int) =>
 			val arbiter = new MultiMasterSingleSlaveArbiter(numberOfMasters)
 			arbiter.io.encoder.inputs.length must be(numberOfMasters)
-		}}
+		}
 	}
 
 	it must "have the same number of bits in the grantedMasterIndex as the encoder output" in spinalContext {
-		forAll(numberOfMasters) { (numberOfMasters: Int) => {
+		forAll(numberOfMasters) { (numberOfMasters: Int) =>
 			val arbiter = new MultiMasterSingleSlaveArbiter(numberOfMasters)
 			arbiter.io.grantedMasterIndex.getWidth must be(arbiter.io.encoder.output.getWidth)
-		}}
+		}
 	}
 
 	it must "have IO for the number of masters passed to the constructor" in spinalContext {
-		forAll(numberOfMasters) { (numberOfMasters: Int) => {
+		forAll(numberOfMasters) { (numberOfMasters: Int) =>
 			val arbiter = new MultiMasterSingleSlaveArbiter(numberOfMasters)
 			arbiter.io.masters.length must be(numberOfMasters)
-		}}
+		}
 	}
 }

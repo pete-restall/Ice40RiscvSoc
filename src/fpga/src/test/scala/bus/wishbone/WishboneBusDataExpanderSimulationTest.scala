@@ -30,27 +30,27 @@ class WishboneBusDataExpanderSimulationTest(slaveConfig: WishboneConfig, numberO
 	private val booleans = Seq(true, false).asTable("value")
 
 	they must "all have the same CYC as the master" in simulator { fixture =>
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			fixture.io.master.CYC #= value
 			sleep(1)
 			forAll(fixture.io.slaves) { slave => slave.CYC.toBoolean must be(fixture.io.master.CYC.toBoolean) }
-		}}
+		}
 	}
 
 	they must "all have the same STB as the master" in simulator { fixture =>
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			fixture.io.master.STB #= value
 			sleep(1)
 			forAll(fixture.io.slaves) { slave => slave.STB.toBoolean must be(fixture.io.master.STB.toBoolean) }
-		}}
+		}
 	}
 
 	they must "all have the same WE as the master" in simulator { fixture =>
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			fixture.io.master.WE #= value
 			sleep(1)
 			forAll(fixture.io.slaves) { slave => slave.WE.toBoolean must be(fixture.io.master.WE.toBoolean) }
-		}}
+		}
 	}
 
 	they must "all have a slice of the master MOSI" in simulator { fixture =>

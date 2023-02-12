@@ -28,10 +28,10 @@ class WishboneBusCrossbarArbiterTest extends AnyFlatSpec with NonSimulationFixtu
 	private val numberOfSlaves = Seq(1, 2, 3, 10).asTable("numberOfSlaves")
 
 	it must "have IO for the number of slaves passed in the bus map" in spinalContext {
-		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {
+		forAll(numberOfSlaves) { (numberOfSlaves: Int) =>
 			val arbiter = WishboneBusCrossbarArbiter(stubBusMapWith(numberOfSlaves=numberOfSlaves))
 			arbiter.io.slaves.length must be(numberOfSlaves)
-		}}
+		}
 	}
 
 	private def stubBusMapWith(numberOfMasters: Int=1, numberOfSlaves: Int=1) = WishboneBusMasterSlaveMapTestDoubles.stubWith(numberOfMasters, numberOfSlaves)
@@ -39,10 +39,10 @@ class WishboneBusCrossbarArbiterTest extends AnyFlatSpec with NonSimulationFixtu
 	private val numberOfMasters = Seq(1, 2, 3, 10).asTable("numberOfMasters")
 
 	it must "have IO for the number of masters passed in the bus map" in spinalContext {
-		forAll(numberOfMasters) { (numberOfMasters: Int) => {
+		forAll(numberOfMasters) { (numberOfMasters: Int) =>
 			val arbiter = WishboneBusCrossbarArbiter(stubBusMapWith(numberOfMasters=numberOfMasters))
 			arbiter.io.slaves.head.masters.length must be(numberOfMasters)
-		}}
+		}
 	}
 
 	it must "have CrossbarArbiter IO" in spinalContext {
@@ -63,17 +63,17 @@ class WishboneBusCrossbarArbiterTest extends AnyFlatSpec with NonSimulationFixtu
 	}
 
 	it must "have IO for the number of slaves passed in the bus map" in spinalContext {
-		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {
+		forAll(numberOfSlaves) { (numberOfSlaves: Int) =>
 			val arbiter = WishboneBusCrossbarArbiter(stubBusMapWith(numberOfSlaves=numberOfSlaves), dummyEncoderFactory)
 			arbiter.io.slaves.length must be(numberOfSlaves)
-		}}
+		}
 	}
 
 	it must "have IO for the number of masters passed in the bus map" in spinalContext {
-		forAll(numberOfMasters) { (numberOfMasters: Int) => {
+		forAll(numberOfMasters) { (numberOfMasters: Int) =>
 			val arbiter = WishboneBusCrossbarArbiter(stubBusMapWith(numberOfMasters=numberOfMasters), dummyEncoderFactory)
 			arbiter.io.slaves.head.masters.length must be(numberOfMasters)
-		}}
+		}
 	}
 
 	it must "have CrossbarArbiter IO" in spinalContext {

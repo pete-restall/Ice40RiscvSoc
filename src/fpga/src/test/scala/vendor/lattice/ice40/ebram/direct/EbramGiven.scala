@@ -13,7 +13,7 @@ class EbramGiven(builder: EbramStateMachineBuilder) extends GivenAnd[EbramGiven,
 
 	def populatedWith(words: Seq[Int])(implicit dummy: DummyImplicit): GivenAnd[EbramGiven, EbramWhen] = {
 		var address = -1
-		populatedWith(words.map(word => { address += 1; (address -> word) }): _*)
+		populatedWith(words.map { word => address += 1; (address -> word) }: _*)
 	}
 
 	def populatedWith(addressesAndWords: (Int, Int)*)(implicit dummy1: DummyImplicit, dummy2: DummyImplicit): GivenAnd[EbramGiven, EbramWhen] =

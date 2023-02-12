@@ -47,12 +47,12 @@ class WishboneBusSlaveMultiplexerSimulationTest(busConfig: WishboneConfig, numbe
 	private val booleans = Seq(true, false).asTable("value")
 
 	they must "all have a non-multiplexed master WE" in simulator { fixture =>
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			fixture.io.master.WE #= value
 			fixture.io.selector #= fixture.anySlaveIndex()
 			sleep(1)
 			forAll(fixture.io.slaves) { slave => slave.WE.toBoolean must be(value) }
-		}}
+		}
 	}
 
 	they must "all have a non-multiplexed master LOCK" in simulator { fixture =>

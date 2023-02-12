@@ -40,26 +40,26 @@ class CrossbarArbiterTest extends AnyFlatSpec with NonSimulationFixture with Tab
 	private val numberOfSlaves = Seq(1, 2, 3, 4, anyNumberOfSlaves()).asTable("numberOfSlaves")
 
 	it must "have IO for the number of slaves passed to the constructor" in spinalContext {
-		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {
+		forAll(numberOfSlaves) { (numberOfSlaves: Int) =>
 			val arbiter = new CrossbarArbiter(anyNumberOfMasters(), numberOfSlaves)
 			arbiter.io.slaves.length must be(numberOfSlaves)
-		}}
+		}
 	}
 
 	private val numberOfMasters = Seq(1, 2, 3, 4, anyNumberOfMasters()).asTable("numberOfMasters")
 
 	"CrossbarArbiter slaves" must "each have encoder IO for the number of masters passed to the constructor" in spinalContext {
-		forAll(numberOfMasters) { (numberOfMasters: Int) => {
+		forAll(numberOfMasters) { (numberOfMasters: Int) =>
 			val arbiter = new CrossbarArbiter(numberOfMasters, anyNumberOfSlaves())
 			forAll(arbiter.io.slaves) { slave => slave.encoder.inputs.length must be(numberOfMasters) }
-		}}
+		}
 	}
 
 	they must "each have arbitration IO for the number of masters passed to the constructor" in spinalContext {
-		forAll(numberOfMasters) { (numberOfMasters: Int) => {
+		forAll(numberOfMasters) { (numberOfMasters: Int) =>
 			val arbiter = new CrossbarArbiter(numberOfMasters, anyNumberOfSlaves())
 			forAll(arbiter.io.slaves) { slave => slave.masters.length must be(numberOfMasters) }
-		}}
+		}
 	}
 
 	they must "have the same number of bits in the grantedMasterIndex as the encoder output" in spinalContext {

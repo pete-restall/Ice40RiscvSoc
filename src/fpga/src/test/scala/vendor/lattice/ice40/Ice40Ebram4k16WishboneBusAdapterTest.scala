@@ -93,18 +93,18 @@ class Ice40Ebram4k16WishboneBusAdapterTest extends AnyFlatSpec with NonSimulatio
 	private val invalidWidths = Seq(2 bits, 4 bits, 8 bits).asTable("invalidWidth")
 
 	it must "not accept EBRAMs with read widths other than 16 bits" in spinalContext {
-		forAll(invalidWidths) { (invalidReadWidth: BitCount) => {
+		forAll(invalidWidths) { (invalidReadWidth: BitCount) =>
 			val invalidEbram = new Ice40Ebram4k(invalidReadWidth, 16 bits)
 			val thrown = the [IllegalArgumentException] thrownBy(Ice40Ebram4k16WishboneBusAdapter(invalidEbram))
 			thrown.getMessage must (include("arg=ebram") and include("16 bits"))
-		}}
+		}
 	}
 
 	it must "not accept EBRAMs with write widths other than 16 bits" in spinalContext {
-		forAll(invalidWidths) { (invalidWriteWidth: BitCount) => {
+		forAll(invalidWidths) { (invalidWriteWidth: BitCount) =>
 			val invalidEbram = new Ice40Ebram4k(16 bits, invalidWriteWidth)
 			val thrown = the [IllegalArgumentException] thrownBy(Ice40Ebram4k16WishboneBusAdapter(invalidEbram))
 			thrown.getMessage must (include("arg=ebram") and include("16 bits"))
-		}}
+		}
 	}
 }

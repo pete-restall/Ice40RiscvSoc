@@ -28,19 +28,19 @@ class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture 
 	private val lessThanOneNumberOfSlaves = Seq(0, -1, -2, -33, -1234).asTable("numberOfSlaves")
 
 	it must "not accept less than 1 slave" in spinalContext {
-		forAll(lessThanOneNumberOfSlaves) { (numberOfSlaves: Int) => {
+		forAll(lessThanOneNumberOfSlaves) { (numberOfSlaves: Int) =>
 			val thrown = the [IllegalArgumentException] thrownBy(new WishboneBusDataExpander(WishboneConfigTestDoubles.dummy(), numberOfSlaves))
 			thrown.getMessage must include("arg=numberOfSlaves")
-		}}
+		}
 	}
 
 	private val numberOfSlaves = Seq(1, 2, 3, anyNumberOfSlaves()).asTable("numberOfSlaves")
 
 	it must "have IO for the number of slaves passed to the constructor" in spinalContext {
-		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {
+		forAll(numberOfSlaves) { (numberOfSlaves: Int) =>
 			val expander = new WishboneBusDataExpander(WishboneConfigTestDoubles.dummy(), numberOfSlaves)
 			expander.io.slaves.length must be(numberOfSlaves)
-		}}
+		}
 	}
 
 	it must "have the same Wishbone configuration for all slaves as passed to the constructor" in spinalContext {
@@ -104,43 +104,43 @@ class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture 
 	private val booleans = Seq(true, false).asTable("value")
 
 	it must "expose STALL to the master if used by the slaves" in spinalContext {
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			val slaveConfig = WishboneConfigTestDoubles.stubWith(useSTALL=value)
 			val expander = new WishboneBusDataExpander(slaveConfig, anyNumberOfSlaves())
 			expander.io.master.config.useSTALL must be(value)
-		}}
+		}
 	}
 
 	it must "expose LOCK to the master if used by the slaves" in spinalContext {
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			val slaveConfig = WishboneConfigTestDoubles.stubWith(useLOCK=value)
 			val expander = new WishboneBusDataExpander(slaveConfig, anyNumberOfSlaves())
 			expander.io.master.config.useLOCK must be(value)
-		}}
+		}
 	}
 
 	it must "expose ERR to the master if used by the slaves" in spinalContext {
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			val slaveConfig = WishboneConfigTestDoubles.stubWith(useERR=value)
 			val expander = new WishboneBusDataExpander(slaveConfig, anyNumberOfSlaves())
 			expander.io.master.config.useERR must be(value)
-		}}
+		}
 	}
 
 	it must "expose RTY to the master if used by the slaves" in spinalContext {
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			val slaveConfig = WishboneConfigTestDoubles.stubWith(useRTY=value)
 			val expander = new WishboneBusDataExpander(slaveConfig, anyNumberOfSlaves())
 			expander.io.master.config.useRTY must be(value)
-		}}
+		}
 	}
 
 	it must "expose CTI to the master if used by the slaves" in spinalContext {
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			val slaveConfig = WishboneConfigTestDoubles.stubWith(useCTI=value)
 			val expander = new WishboneBusDataExpander(slaveConfig, anyNumberOfSlaves())
 			expander.io.master.config.useCTI must be(value)
-		}}
+		}
 	}
 
 	it must "have a master TGA width equal to the slaves" in spinalContext {
@@ -162,11 +162,11 @@ class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture 
 	}
 
 	it must "expose BTE to the master if used by the slaves" in spinalContext {
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			val slaveConfig = WishboneConfigTestDoubles.stubWith(useBTE=value)
 			val expander = new WishboneBusDataExpander(slaveConfig, anyNumberOfSlaves())
 			expander.io.master.config.useBTE must be(value)
-		}}
+		}
 	}
 
 	"WishboneBusDataExpander companion's apply() method" must "not accept a null first slave" in spinalContext {

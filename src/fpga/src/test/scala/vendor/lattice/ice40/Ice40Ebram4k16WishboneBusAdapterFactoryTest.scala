@@ -48,38 +48,38 @@ class Ice40Ebram4k16WishboneBusAdapterFactoryTest extends AnyFlatSpec
 	private val booleans = Seq(true, false).asTable("value")
 
 	it must "wire the EBRAM's CER line" in simulator { fixture =>
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			fixture.io.adapter.WE #= !value
 			fixture.io.adapter.CYC #= true
 			sleep(1)
 			fixture.io.ebram.CER.toBoolean must be(value)
-		}}
+		}
 	}
 
 	it must "wire the EBRAM's CEW line" in simulator { fixture =>
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			fixture.io.adapter.WE #= value
 			fixture.io.adapter.CYC #= true
 			sleep(1)
 			fixture.io.ebram.CEW.toBoolean must be(value)
-		}}
+		}
 	}
 
 	it must "wire the EBRAM's RE line" in simulator { fixture =>
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			fixture.io.adapter.WE #= false
 			fixture.io.adapter.STB #= value
 			sleep(1)
 			fixture.io.ebram.RE.toBoolean must be(value)
-		}}
+		}
 	}
 
 	it must "wire the EBRAM's WE line" in simulator { fixture =>
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			fixture.io.adapter.WE #= true
 			fixture.io.adapter.STB #= value
 			sleep(1)
 			fixture.io.ebram.WE.toBoolean must be(value)
-		}}
+		}
 	}
 }

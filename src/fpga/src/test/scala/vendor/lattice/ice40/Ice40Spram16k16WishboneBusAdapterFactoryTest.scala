@@ -47,19 +47,19 @@ class Ice40Spram16k16WishboneBusAdapterFactoryTest extends AnyFlatSpec
 
 	it must "wire the SPRAM's WE line" in simulator { fixture =>
 		fixture.io.adapter.STB #= true
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			fixture.io.adapter.WE #= value
 			sleep(1)
 			fixture.io.spram.WE.toBoolean must be(value)
-		}}
+		}
 	}
 
 	it must "wire the SPRAM's CS line" in simulator { fixture =>
-		forAll(booleans) { (value: Boolean) => {
+		forAll(booleans) { (value: Boolean) =>
 			fixture.io.adapter.CYC #= value
 			sleep(1)
 			fixture.io.spram.CS.toBoolean must be(value)
-		}}
+		}
 	}
 
 	it must "wire the SPRAM's DO lines" in simulator { fixture =>

@@ -36,10 +36,10 @@ class WishboneBusSelMappingAdapterTest extends AnyFlatSpec with NonSimulationFix
 	private val lessThanZero = Seq(-1 bits, -2 bits, -33 bits, -1234 bits).asTable("invalidSelWidth")
 
 	it must "not accept a slaveSelWidth value less than 0" in spinalContext {
-		forAll(lessThanZero) { (invalidSelWidth: BitCount) => {
+		forAll(lessThanZero) { (invalidSelWidth: BitCount) =>
 			val thrown = the [IllegalArgumentException] thrownBy(new WishboneBusSelMappingAdapter(WishboneConfigTestDoubles.dummy(), invalidSelWidth, dummyMapper))
 			thrown.getMessage must include("arg=slaveSelWidth")
-		}}
+		}
 	}
 
 	it must "not accept a null slaveSelMapper" in spinalContext {

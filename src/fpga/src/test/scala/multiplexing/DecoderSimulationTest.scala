@@ -23,10 +23,10 @@ class DecoderSimulationTest(inputWidth: BitCount, dutCreatedViaApplyFactory: Boo
 	private val inputValues = Random.shuffle(Seq.range(0, inputWidth.value)).asTable("value")
 
 	"Decoder outputs" must "all be false except the single true value corresponding to the selected input" in simulator { fixture =>
-		forAll(inputValues) { (value: Int) => {
+		forAll(inputValues) { (value: Int) =>
 			fixture.io.input #= value
 			sleep(1)
 			forAll(fixture.io.outputs.zipWithIndex) { case(output, index) => output.toBoolean must be(index == value) }
-		}}
+		}
 	}
 }

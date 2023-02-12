@@ -12,10 +12,10 @@ class ValueBitWidthExtensionsTest extends AnyFlatSpec with TableDrivenPropertyCh
 	private val lessThanOne = Seq(0, -1, -2, -33, -1234).asTable("invalidValue")
 
 	"The toCombinationalBitWidth method" must "not accept a value less than 1" in {
-		forAll(lessThanOne) { (invalidValue: Int) => {
+		forAll(lessThanOne) { (invalidValue: Int) =>
 			val thrown = the [IllegalArgumentException] thrownBy(invalidValue.toCombinationalBitWidth)
 			thrown.getMessage must include("arg=value")
-		}}
+		}
 	}
 
 	private val numbersOfValuesVsBitWidths = Seq(
@@ -36,8 +36,8 @@ class ValueBitWidthExtensionsTest extends AnyFlatSpec with TableDrivenPropertyCh
 	).asTable("value", "bitWidth")
 
 	it must "return the minimum number of bits required to represent the given number of values" in {
-		forAll(numbersOfValuesVsBitWidths) { (numberOfValues: Int, bitWidth: BitCount) => {
+		forAll(numbersOfValuesVsBitWidths) { (numberOfValues: Int, bitWidth: BitCount) =>
 			numberOfValues.toCombinationalBitWidth must be(bitWidth)
-		}}
+		}
 	}
 }

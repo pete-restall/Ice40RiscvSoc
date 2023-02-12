@@ -29,19 +29,19 @@ class WishboneBusMasterMultiplexerTest extends AnyFlatSpec with NonSimulationFix
 	private val lessThanOneNumberOfMasters = Seq(0, -1, -2, -33, -1234).asTable("numberOfMasters")
 
 	it must "not accept less than 1 master" in spinalContext {
-		forAll(lessThanOneNumberOfMasters) { (numberOfMasters: Int) => {
+		forAll(lessThanOneNumberOfMasters) { (numberOfMasters: Int) =>
 			val thrown = the [IllegalArgumentException] thrownBy(new WishboneBusMasterMultiplexer(WishboneConfigTestDoubles.dummy(), numberOfMasters))
 			thrown.getMessage must include("arg=numberOfMasters")
-		}}
+		}
 	}
 
 	private val numberOfMasters = Seq(1, 2, 3, anyNumberOfMasters()).asTable("numberOfMasters")
 
 	it must "have IO for the number of masters passed to the constructor" in spinalContext {
-		forAll(numberOfMasters) { (numberOfMasters: Int) => {
+		forAll(numberOfMasters) { (numberOfMasters: Int) =>
 			val mux = new WishboneBusMasterMultiplexer(WishboneConfigTestDoubles.dummy(), numberOfMasters)
 			mux.io.masters.length must be(numberOfMasters)
-		}}
+		}
 	}
 
 	it must "have the same Wishbone configuration for the slave as passed to the constructor" in spinalContext {
@@ -88,10 +88,10 @@ class WishboneBusMasterMultiplexerTest extends AnyFlatSpec with NonSimulationFix
 	).asTable("numberOfMasters", "selectorWidth")
 
 	it must "have a selector of adequate width for the number of masters" in spinalContext{ () =>
-		forAll(sufficientlySizedSelectors) { (numberOfMasters: Int, selectorWidth: BitCount) => {
+		forAll(sufficientlySizedSelectors) { (numberOfMasters: Int, selectorWidth: BitCount) =>
 			val mux = new WishboneBusMasterMultiplexer(WishboneConfigTestDoubles.dummy(), numberOfMasters)
 			mux.io.selector.getWidth must be(selectorWidth.value)
-		}}
+		}
 	}
 
 	"WishboneBusMasterMultiplexer companion's apply() method" must "not accept a null selector" in spinalContext {
@@ -115,12 +115,12 @@ class WishboneBusMasterMultiplexerTest extends AnyFlatSpec with NonSimulationFix
 	).asTable("numberOfMasters", "selectorWidth")
 
 	it must "not accept a selector that is not wide enough for the given number of masters" in spinalContext {
-		forAll(narrowSelectors) { (numberOfMasters: Int, selectorWidth: BitCount) => {
+		forAll(narrowSelectors) { (numberOfMasters: Int, selectorWidth: BitCount) =>
 			val narrowSelector = UInt(selectorWidth)
 			val masters = stubMastersWithSameConfig(numberOfMasters)
 			val thrown = the [IllegalArgumentException] thrownBy WishboneBusMasterMultiplexer(narrowSelector, masters.head, masters.tail:_*)
 			thrown.getMessage must (include("arg=selector") and include("expectedWidth"))
-		}}
+		}
 	}
 
 	private def stubMastersWithSameConfig(numberOfMasters: Int) = {
@@ -141,12 +141,12 @@ class WishboneBusMasterMultiplexerTest extends AnyFlatSpec with NonSimulationFix
 	).asTable("numberOfMasters", "selectorWidth")
 
 	it must "not accept a selector that is too wide for the given number of masters" in spinalContext {
-		forAll(wideSelectors) { (numberOfMasters: Int, selectorWidth: BitCount) => {
+		forAll(wideSelectors) { (numberOfMasters: Int, selectorWidth: BitCount) =>
 			val wideSelector = UInt(selectorWidth)
 			val masters = stubMastersWithSameConfig(numberOfMasters)
 			val thrown = the [IllegalArgumentException] thrownBy WishboneBusMasterMultiplexer(wideSelector, masters.head, masters.tail:_*)
 			thrown.getMessage must (include("arg=selector") and include("expectedWidth"))
-		}}
+		}
 	}
 
 	it must "not accept a null first master" in spinalContext {
@@ -184,10 +184,10 @@ class WishboneBusMasterMultiplexerTest extends AnyFlatSpec with NonSimulationFix
 	}
 
 	it must "have IO for each of the masters passed to the constructor" in spinalContext {
-		forAll(numberOfMasters) { (numberOfMasters: Int) => {
+		forAll(numberOfMasters) { (numberOfMasters: Int) =>
 			val masters = stubMastersWithSameConfig(numberOfMasters)
 			val mux = WishboneBusMasterMultiplexer(stubSelectorFor(masters.length), masters.head, masters.tail:_*)
 			mux.io.masters.length must be(numberOfMasters)
-		}}
+		}
 	}
 }

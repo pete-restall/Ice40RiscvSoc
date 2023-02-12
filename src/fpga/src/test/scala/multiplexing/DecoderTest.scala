@@ -25,10 +25,10 @@ class DecoderTest extends AnyFlatSpec with NonSimulationFixture with TableDriven
 	private val lessThanOneInputWidth = Seq(0 bits, -1 bits, -2 bits, -11 bits, -1024 bits).asTable("inputWidth")
 
 	it must "not accept an input width less than 1 bit" in spinalContext {
-		forAll(lessThanOneInputWidth) { (inputWidth: BitCount) => {
+		forAll(lessThanOneInputWidth) { (inputWidth: BitCount) =>
 			val thrown = the [IllegalArgumentException] thrownBy(new Decoder(inputWidth))
 			thrown.getMessage must include("arg=inputWidth")
-		}}
+		}
 	}
 
 	private val sampleOfInputWidths = Seq(1 bit, 2 bits, 3 bits, 4 bits, anyInputWidth()).asTable("inputWidth")
@@ -36,17 +36,17 @@ class DecoderTest extends AnyFlatSpec with NonSimulationFixture with TableDriven
 	private def anyInputWidth() = Random.between(1, 8) bits
 
 	it must "have an input width the same as passed to the constructor" in spinalContext {
-		forAll(sampleOfInputWidths) { (inputWidth: BitCount) => {
+		forAll(sampleOfInputWidths) { (inputWidth: BitCount) =>
 			val encoder = new Decoder(inputWidth)
 			encoder.io.input.getWidth must be(inputWidth.value)
-		}}
+		}
 	}
 
 	it must "have an output for each possible combination of input (2^N for an N-bit input)" in spinalContext {
-		forAll(sampleOfInputWidths) { (inputWidth: BitCount) => {
+		forAll(sampleOfInputWidths) { (inputWidth: BitCount) =>
 			val encoder = new Decoder(inputWidth)
 			encoder.io.outputs.length must be(1 << inputWidth.value)
-		}}
+		}
 	}
 
 	"Decoder companion's apply() method" must "not accept a null input" in spinalContext {

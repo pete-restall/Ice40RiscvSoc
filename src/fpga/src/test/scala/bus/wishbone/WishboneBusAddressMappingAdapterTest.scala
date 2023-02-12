@@ -36,10 +36,10 @@ class WishboneBusAddressMappingAdapterTest extends AnyFlatSpec with NonSimulatio
 	private val lessThanZero = Seq(-1 bits, -2 bits, -33 bits, -1234 bits).asTable("invalidAddressWidth")
 
 	it must "not accept a slaveAddressWidth value less than 0" in spinalContext {
-		forAll(lessThanZero) { (invalidAddressWidth: BitCount) => {
+		forAll(lessThanZero) { (invalidAddressWidth: BitCount) =>
 			val thrown = the [IllegalArgumentException] thrownBy(new WishboneBusAddressMappingAdapter(WishboneConfigTestDoubles.dummy(), invalidAddressWidth, dummyMapper))
 			thrown.getMessage must include("arg=slaveAddressWidth")
-		}}
+		}
 	}
 
 	it must "not accept a null slaveAddressMapper" in spinalContext {

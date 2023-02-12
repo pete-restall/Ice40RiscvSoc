@@ -120,17 +120,17 @@ class Ice40Ebram4kTest extends AnyFlatSpec with NonSimulationFixture with Matche
 	private val invalidWidths = Seq(0 bits, 1 bits, 3 bits, 5 bits, 12 bits, 17 bits, 32 bits).asTable("invalidWidth")
 
 	it must "not accept invalid read widths" in spinalContext {
-		forAll(invalidWidths) { (invalidReadWidth: BitCount) => {
+		forAll(invalidWidths) { (invalidReadWidth: BitCount) =>
 			val thrown = the [IllegalArgumentException] thrownBy(new Ice40Ebram4k(invalidReadWidth, 16 bits))
 			thrown.getMessage must include("arg=readWidth")
-		}}
+		}
 	}
 
 	it must "not accept invalid write widths" in spinalContext {
-		forAll(invalidWidths) { (invalidWriteWidth: BitCount) => {
+		forAll(invalidWidths) { (invalidWriteWidth: BitCount) =>
 			val thrown = the [IllegalArgumentException] thrownBy(new Ice40Ebram4k(16 bits, invalidWriteWidth))
 			thrown.getMessage must include("arg=writeWidth")
-		}}
+		}
 	}
 
 	it must "have an 8-bit address for a 16-bit data width (read)" in spinalContext {
