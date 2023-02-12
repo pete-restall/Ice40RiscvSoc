@@ -13,7 +13,7 @@ import uk.co.lophtware.msfreference.tests.bus.wishbone.{WishboneTestDoubles, Wis
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspectors {
-	"CpuBusBridge" must "not use the 'io' prefix for signals" in spinalContext { () =>
+	"CpuBusBridge" must "not use the 'io' prefix for signals" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		bridge.io.name must be("")
 	}
@@ -22,99 +22,99 @@ class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspec
 
 	private def dummyDeviceBusConfig() = WishboneConfigTestDoubles.dummy()
 
-	it must "not accept a null cpuBusConfig" in spinalContext { () =>
+	it must "not accept a null cpuBusConfig" in spinalContext {
 		val thrown = the [IllegalArgumentException] thrownBy(new CpuBusBridge(null, dummyDeviceBusConfig()))
 		thrown.getMessage must (include("arg=cpuBusConfig") and include("null"))
 	}
 
-	it must "not accept a null deviceBusConfig" in spinalContext { () =>
+	it must "not accept a null deviceBusConfig" in spinalContext {
 		val thrown = the [IllegalArgumentException] thrownBy(new CpuBusBridge(dummyCpuBusConfig(), null))
 		thrown.getMessage must (include("arg=deviceBusConfig") and include("null"))
 	}
 
-	it must "have a slave for connecting to the CPU's data bus" in spinalContext { () =>
+	it must "have a slave for connecting to the CPU's data bus" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		bridge.io.cpu.dbus.isMasterInterface must be(false)
 	}
 
-	it must "have a CPU data bus configuration the same as passed to the constructor" in spinalContext { () =>
+	it must "have a CPU data bus configuration the same as passed to the constructor" in spinalContext {
 		val cpuBusConfig = dummyCpuBusConfig()
 		val bridge = new CpuBusBridge(cpuBusConfig, dummyDeviceBusConfig())
 		bridge.io.cpu.dbus.config must be(cpuBusConfig)
 	}
 
-	it must "have a slave for connecting to the CPU's instruction bus" in spinalContext { () =>
+	it must "have a slave for connecting to the CPU's instruction bus" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		bridge.io.cpu.ibus.isMasterInterface must be(false)
 	}
 
-	it must "have a CPU instruction bus configuration the same as passed to the constructor" in spinalContext { () =>
+	it must "have a CPU instruction bus configuration the same as passed to the constructor" in spinalContext {
 		val cpuBusConfig = dummyCpuBusConfig()
 		val bridge = new CpuBusBridge(cpuBusConfig, dummyDeviceBusConfig())
 		bridge.io.cpu.ibus.config must be(cpuBusConfig)
 	}
 
-	it must "not have the same instance for both CPU busses" in spinalContext { () =>
+	it must "not have the same instance for both CPU busses" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		bridge.io.cpu.dbus mustNot be(bridge.io.cpu.ibus)
 	}
 
-	it must "have a master for connecting to the devices shared between the instruction and data busses" in spinalContext { () =>
+	it must "have a master for connecting to the devices shared between the instruction and data busses" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		bridge.io.devices.executable.isMasterInterface must be(true)
 	}
 
-	it must "have an executable device bus configuration the same as passed to the constructor" in spinalContext { () =>
+	it must "have an executable device bus configuration the same as passed to the constructor" in spinalContext {
 		val deviceBusConfig = dummyDeviceBusConfig()
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), deviceBusConfig)
 		bridge.io.devices.executable.config must be(deviceBusConfig)
 	}
 
-	it must "have a master for connecting the devices to the data bus" in spinalContext { () =>
+	it must "have a master for connecting the devices to the data bus" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		bridge.io.devices.dbus.isMasterInterface must be(true)
 	}
 
-	it must "have a device data bus configuration the same as passed to the constructor" in spinalContext { () =>
+	it must "have a device data bus configuration the same as passed to the constructor" in spinalContext {
 		val deviceBusConfig = dummyDeviceBusConfig()
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), deviceBusConfig)
 		bridge.io.devices.dbus.config must be(deviceBusConfig)
 	}
 
-	it must "not have the same instance for both device busses" in spinalContext { () =>
+	it must "not have the same instance for both device busses" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		bridge.io.devices.executable mustNot be(bridge.io.devices.dbus)
 	}
 
-	it must "have a master for the adapter instruction bus" in spinalContext { () =>
+	it must "have a master for the adapter instruction bus" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		bridge.io.devices.ibus.isMasterInterface must be(true)
 	}
 
-	it must "have an adapted instruction bus configuration the same as the device bus configuration passed to the constructor" in spinalContext { () =>
+	it must "have an adapted instruction bus configuration the same as the device bus configuration passed to the constructor" in spinalContext {
 		val deviceBusConfig = dummyDeviceBusConfig()
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), deviceBusConfig)
 		bridge.io.devices.ibus.config must be(deviceBusConfig)
 	}
 
-	it must "have a slave for bridging the data bus to the executable bus" in spinalContext { () =>
+	it must "have a slave for bridging the data bus to the executable bus" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		bridge.io.devices.dbusToExecutableBridge.isMasterInterface must be(false)
 	}
 
-	it must "have a data-to-executable bridge configuration the same as the device bus configuration passed to the constructor" in spinalContext { () =>
+	it must "have a data-to-executable bridge configuration the same as the device bus configuration passed to the constructor" in spinalContext {
 		val deviceBusConfig = dummyDeviceBusConfig()
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), deviceBusConfig)
 		bridge.io.devices.dbusToExecutableBridge.config must be(deviceBusConfig)
 	}
 
-	"CpuBusBridge dbusDeviceMapFor" must "not accept a null executableDeviceSelector" in spinalContext { () =>
+	"CpuBusBridge dbusDeviceMapFor" must "not accept a null executableDeviceSelector" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val thrown = the [IllegalArgumentException] thrownBy(bridge.dbusDeviceMapFor(null))
 		thrown.getMessage must (include("arg=executableDeviceSelector") and include("null"))
 	}
 
-	it must "not accept null dataOnlyDeviceSelectors" in spinalContext { () =>
+	it must "not accept null dataOnlyDeviceSelectors" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val thrown = the [IllegalArgumentException] thrownBy(bridge.dbusDeviceMapFor(dummyDbusSelector(), null))
 		thrown.getMessage must (include("arg=dataOnlyDeviceSelectors") and include("null"))
@@ -122,7 +122,7 @@ class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspec
 
 	private def dummyDbusSelector() = (_: Wishbone) => False
 
-	it must "not accept any null dataOnlyDeviceSelectors" in spinalContext { () =>
+	it must "not accept any null dataOnlyDeviceSelectors" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val selectorsContainingNull = Random.shuffle(Seq.fill(Random.between(2, 10)) { dummyDataOnlySelector() } :+ null)
 		val thrown = the [IllegalArgumentException] thrownBy(bridge.dbusDeviceMapFor(dummyDbusSelector(), selectorsContainingNull:_*))
@@ -131,7 +131,7 @@ class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspec
 
 	private def dummyDataOnlySelector() = (WishboneTestDoubles.dummy(), (_: Wishbone) => False)
 
-	it must "return a WishboneBusMasterSlaveMap containing the device data bus as the only master" in spinalContext { () =>
+	it must "return a WishboneBusMasterSlaveMap containing the device data bus as the only master" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val map = bridge.dbusDeviceMapFor(dbus => dbus.ADR =/= 0, anyNumberOfStubDataOnlySelectorsFor(bridge):_*)
 		map.masters must equal(Seq(bridge.io.devices.dbus))
@@ -143,32 +143,32 @@ class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspec
 
 	private def stubDataOnlySelectorFor(slaveConfig: WishboneConfig) = (WishboneTestDoubles.stubSlaveWith(slaveConfig), (_: Wishbone) => False)
 
-	it must "return a WishboneBusMasterSlaveMap containing the dbus-to-executable bridge bus as a slave" in spinalContext { () =>
+	it must "return a WishboneBusMasterSlaveMap containing the dbus-to-executable bridge bus as a slave" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val map = bridge.dbusDeviceMapFor(dbus => dbus.ADR =/= 0, anyNumberOfStubDataOnlySelectorsFor(bridge):_*)
 		map.slaves must contain(bridge.io.devices.dbusToExecutableBridge)
 	}
 
-	it must "return a WishboneBusMasterSlaveMap containing all data-only slaves" in spinalContext { () =>
+	it must "return a WishboneBusMasterSlaveMap containing all data-only slaves" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val dataOnlySelectors = anyNumberOfStubDataOnlySelectorsFor(bridge)
 		val map = bridge.dbusDeviceMapFor(dbus => dbus.ADR =/= 0, dataOnlySelectors:_*)
 		forAll(dataOnlySelectors) { selector => map.slaves must contain(selector._1) }
 	}
 
-	"CpuBusBridge executableDeviceMapFor" must "not accept a null firstDevice" in spinalContext { () =>
+	"CpuBusBridge executableDeviceMapFor" must "not accept a null firstDevice" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val thrown = the [IllegalArgumentException] thrownBy(bridge.executableDeviceMapFor(null))
 		thrown.getMessage must (include("arg=firstDevice") and include("null"))
 	}
 
-	it must "not accept a null selector tuple" in spinalContext { () =>
+	it must "not accept a null selector tuple" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val thrown = the [Exception] thrownBy(bridge.executableDeviceMapFor((WishboneTestDoubles.dummy(), null)))
 		thrown.getClass mustNot be(a [NullPointerException])
 	}
 
-	it must "not accept null otherDevices" in spinalContext { () =>
+	it must "not accept null otherDevices" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val thrown = the [IllegalArgumentException] thrownBy(bridge.executableDeviceMapFor(dummyExecutableDevice(), null))
 		thrown.getMessage must (include("arg=otherDevices") and include("null"))
@@ -176,21 +176,21 @@ class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspec
 
 	private def dummyExecutableDevice() = (WishboneTestDoubles.dummy(), ((_: Wishbone) => False, (_: Wishbone) => False))
 
-	it must "not accept any null otherDevices" in spinalContext { () =>
+	it must "not accept any null otherDevices" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val devicesContainingNull = Random.shuffle(Seq.fill(Random.between(2, 10)) { dummyExecutableDevice() } :+ null)
 		val thrown = the [IllegalArgumentException] thrownBy(bridge.executableDeviceMapFor(dummyExecutableDevice(), devicesContainingNull:_*))
 		thrown.getMessage must (include("arg=otherDevices") and include("null"))
 	}
 
-	it must "not accept a null selector tuple in otherDevices" in spinalContext { () =>
+	it must "not accept a null selector tuple in otherDevices" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val devicesContainingNull = Random.shuffle(Seq.fill(Random.between(2, 10)) { dummyExecutableDevice() } :+ (WishboneTestDoubles.dummy(), null))
 		val thrown = the [Exception] thrownBy(bridge.executableDeviceMapFor(dummyExecutableDevice(), devicesContainingNull:_*))
 		thrown.getClass mustNot be(a [NullPointerException])
 	}
 
-	it must "return a WishboneBusMasterSlaveMap containing the executable bus and ibus as the only two masters, in that order" in spinalContext { () =>
+	it must "return a WishboneBusMasterSlaveMap containing the executable bus and ibus as the only two masters, in that order" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val map = bridge.executableDeviceMapFor(
 			stubExecutableDeviceFor(bridge),
@@ -207,7 +207,7 @@ class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspec
 
 	private def atLeastNumberOfStubExecutableDevicesFor(atLeast: Int, bridge: CpuBusBridge) = Seq.fill(Random.between(atLeast, atLeast + 10)) { stubExecutableDeviceFor(bridge) }
 
-	it must "return a WishboneBusMasterSlaveMap containing all slaves" in spinalContext { () =>
+	it must "return a WishboneBusMasterSlaveMap containing all slaves" in spinalContext {
 		val bridge = new CpuBusBridge(dummyCpuBusConfig(), dummyDeviceBusConfig())
 		val devices = atLeastNumberOfStubExecutableDevicesFor(2, bridge)
 		val map = bridge.executableDeviceMapFor(devices.head, devices.tail:_*)

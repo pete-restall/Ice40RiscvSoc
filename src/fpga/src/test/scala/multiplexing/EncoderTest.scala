@@ -14,7 +14,7 @@ import uk.co.lophtware.msfreference.tests.simulation._
 class EncoderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {
 	private val lessThanOneNumberOfInputs = Seq(0, -1, -2, -11, -1024).asTable("numberOfInputs")
 
-	"Encoder.IoBundle" must "not accept less than 1 input" in spinalContext { () =>
+	"Encoder.IoBundle" must "not accept less than 1 input" in spinalContext {
 		forAll(lessThanOneNumberOfInputs) { (numberOfInputs: Int) => {
 			val thrown = the [IllegalArgumentException] thrownBy(new Encoder.IoBundle(numberOfInputs))
 			thrown.getMessage must include("arg=numberOfInputs")
@@ -25,7 +25,7 @@ class EncoderTest extends AnyFlatSpec with NonSimulationFixture with TableDriven
 
 	private def anyNumberOfInputs() = Random.between(1, 64)
 
-	it must "have IO for the number of inputs passed to the constructor" in spinalContext { () =>
+	it must "have IO for the number of inputs passed to the constructor" in spinalContext {
 		forAll(numberOfInputs) { (numberOfInputs: Int) => {
 			val bundle = new Encoder.IoBundle(numberOfInputs)
 			bundle.inputs.length must be(numberOfInputs)
@@ -47,7 +47,7 @@ class EncoderTest extends AnyFlatSpec with NonSimulationFixture with TableDriven
 		(257, 9)
 	).asTable("numberOfInputs", "outputWidth")
 
-	it must "have an output width sufficient to cover all inputs" in spinalContext { () =>
+	it must "have an output width sufficient to cover all inputs" in spinalContext {
 		forAll(outputWidthsVsNumberOfInputs) { (numberOfInputs: Int, outputWidth: Int) => {
 			val bundle = new Encoder.IoBundle(numberOfInputs)
 			bundle.output.getWidth must be(outputWidth)

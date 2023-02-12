@@ -12,7 +12,7 @@ import uk.co.lophtware.msfreference.core.Cpu
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class CpuTest extends AnyFlatSpec with NonSimulationFixture {
-	"Cpu" must "not use the 'io' prefix for signals" in spinalContext { () =>
+	"Cpu" must "not use the 'io' prefix for signals" in spinalContext {
 		val cpu = new Cpu(anyResetVector(), anyMtvecInit(), dummyYamlOutFilename())
 		cpu.io.name must be("")
 	}
@@ -23,7 +23,7 @@ class CpuTest extends AnyFlatSpec with NonSimulationFixture {
 
 	private def dummyYamlOutFilename() = None
 
-	it must "not accept a null yamlOutFilename" in spinalContext { () =>
+	it must "not accept a null yamlOutFilename" in spinalContext {
 		val thrown = the [IllegalArgumentException] thrownBy(new Cpu(anyResetVector(), anyMtvecInit(), null))
 		thrown.getMessage must (include("arg=yamlOutFilename") and include("null"))
 	}

@@ -14,21 +14,21 @@ import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
 import uk.co.lophtware.msfreference.tests.simulation._
 
 class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
-	"WishboneBusSlaveMultiplexer" must "not use the 'io' prefix for signals" in spinalContext { () =>
+	"WishboneBusSlaveMultiplexer" must "not use the 'io' prefix for signals" in spinalContext {
 		val mux = new WishboneBusSlaveMultiplexer(WishboneConfigTestDoubles.dummy(), anyNumberOfSlaves())
 		mux.io.name must be("")
 	}
 
 	private def anyNumberOfSlaves() = Random.between(1, 32)
 
-	it must "not accept null bus configuration" in spinalContext { () =>
+	it must "not accept null bus configuration" in spinalContext {
 		val thrown = the [IllegalArgumentException] thrownBy(new WishboneBusSlaveMultiplexer(null, 1))
 		thrown.getMessage must (include("arg=busConfig") and include("null"))
 	}
 
 	private val lessThanOneNumberOfSlaves = Seq(0, -1, -2, -33, -1234).asTable("numberOfSlaves")
 
-	it must "not accept less than 1 slave" in spinalContext { () =>
+	it must "not accept less than 1 slave" in spinalContext {
 		forAll(lessThanOneNumberOfSlaves) { (numberOfSlaves: Int) => {
 			val thrown = the [IllegalArgumentException] thrownBy(new WishboneBusSlaveMultiplexer(WishboneConfigTestDoubles.dummy(), numberOfSlaves))
 			thrown.getMessage must include("arg=numberOfSlaves")
@@ -37,38 +37,38 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 
 	private val numberOfSlaves = Seq(1, 2, 3, anyNumberOfSlaves()).asTable("numberOfSlaves")
 
-	it must "have IO for the number of slaves passed to the constructor" in spinalContext { () =>
+	it must "have IO for the number of slaves passed to the constructor" in spinalContext {
 		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {
 			val mux = new WishboneBusSlaveMultiplexer(WishboneConfigTestDoubles.dummy(), numberOfSlaves)
 			mux.io.slaves.length must be(numberOfSlaves)
 		}}
 	}
 
-	it must "have the same Wishbone configuration for the master as passed to the constructor" in spinalContext { () =>
+	it must "have the same Wishbone configuration for the master as passed to the constructor" in spinalContext {
 		val busConfig = WishboneConfigTestDoubles.dummy()
 		val mux = new WishboneBusSlaveMultiplexer(busConfig, anyNumberOfSlaves())
 		mux.io.master.config must equal(busConfig)
 	}
 
-	it must "have the same Wishbone configuration for all slaves as passed to the constructor" in spinalContext { () =>
+	it must "have the same Wishbone configuration for all slaves as passed to the constructor" in spinalContext {
 		val busConfig = WishboneConfigTestDoubles.dummy()
 		val mux = new WishboneBusSlaveMultiplexer(busConfig, anyNumberOfSlaves())
 		forAll(mux.io.slaves) { slave => slave.config must equal(busConfig) }
 	}
 
-	it must "drive all slaves as a master" in spinalContext { () =>
+	it must "drive all slaves as a master" in spinalContext {
 		val mux = new WishboneBusSlaveMultiplexer(WishboneConfigTestDoubles.dummy(), anyNumberOfSlaves())
 		forAll(mux.io.slaves) { slave => slave.isMasterInterface must be(true) }
 	}
 
-	it must "have different slave instances" in spinalContext { () =>
+	it must "have different slave instances" in spinalContext {
 		val mux = new WishboneBusSlaveMultiplexer(WishboneConfigTestDoubles.dummy(), atLeastTwoSlaves())
 		mux.io.slaves.distinct.length must be(mux.io.slaves.length)
 	}
 
 	private def atLeastTwoSlaves() = Random.between(2, 32)
 
-	it must "be a slave to a master" in spinalContext { () =>
+	it must "be a slave to a master" in spinalContext {
 		val mux = new WishboneBusSlaveMultiplexer(WishboneConfigTestDoubles.dummy(), anyNumberOfSlaves())
 		mux.io.master.isMasterInterface must be(false)
 	}
@@ -94,7 +94,7 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		}}
 	}
 
-	"WishboneBusSlaveMultiplexer companion's apply() method" must "not accept a null selector" in spinalContext { () =>
+	"WishboneBusSlaveMultiplexer companion's apply() method" must "not accept a null selector" in spinalContext {
 		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSlaveMultiplexer(null, dummySlave())
 		thrown.getMessage must (include("arg=selector") and include("null"))
 	}
@@ -114,7 +114,7 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		(129, 7 bits)
 	).asTable("numberOfSlaves", "selectorWidth")
 
-	it must "not accept a selector that is not wide enough for the given number of slaves" in spinalContext { () =>
+	it must "not accept a selector that is not wide enough for the given number of slaves" in spinalContext {
 		forAll(narrowSelectors) { (numberOfSlaves: Int, selectorWidth: BitCount) => {
 			val narrowSelector = UInt(selectorWidth)
 			val slaves = stubSlavesWithSameConfig(numberOfSlaves)
@@ -140,7 +140,7 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		(128, 16 bits)
 	).asTable("numberOfSlaves", "selectorWidth")
 
-	it must "not accept a selector that is too wide for the given number of slaves" in spinalContext { () =>
+	it must "not accept a selector that is too wide for the given number of slaves" in spinalContext {
 		forAll(wideSelectors) { (numberOfSlaves: Int, selectorWidth: BitCount) => {
 			val wideSelector = UInt(selectorWidth)
 			val slaves = stubSlavesWithSameConfig(numberOfSlaves)
@@ -149,20 +149,20 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		}}
 	}
 
-	it must "not accept a null first slave" in spinalContext { () =>
+	it must "not accept a null first slave" in spinalContext {
 		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSlaveMultiplexer(stubSelectorFor(1), null)
 		thrown.getMessage must (include("arg=firstSlave") and include("null"))
 	}
 
 	private def stubSelectorFor(numberOfSlaves: Int) = UInt(Math.max(1, log2Up(numberOfSlaves)) bits)
 
-	it must "not accept any null slaves" in spinalContext { () =>
+	it must "not accept any null slaves" in spinalContext {
 		val otherSlavesWithNull = Random.shuffle(Seq.fill(3) { dummySlave() } :+ null)
 		val thrown = the [IllegalArgumentException] thrownBy WishboneBusSlaveMultiplexer(stubSelectorFor(4), dummySlave(), otherSlavesWithNull:_*)
 		thrown.getMessage must (include("arg=otherSlaves") and include("null"))
 	}
 
-	it must "not accept any slave with a different configuration" in spinalContext { () =>
+	it must "not accept any slave with a different configuration" in spinalContext {
 		val firstConfig = WishboneConfigTestDoubles.stub()
 		val secondConfig = WishboneConfigTestDoubles.stubDifferentTo(firstConfig)
 		val slaves = Random.shuffle(Seq.fill(10) { stubSlaveWith(firstConfig) } :+ stubSlaveWith(secondConfig))
@@ -170,20 +170,20 @@ class WishboneBusSlaveMultiplexerTest extends AnyFlatSpec with NonSimulationFixt
 		thrown.getMessage must (include("arg=otherSlaves") and include("same configuration"))
 	}
 
-	it must "compare bus configurations by value and not by reference" in spinalContext { () =>
+	it must "compare bus configurations by value and not by reference" in spinalContext {
 		val firstConfig = WishboneConfigTestDoubles.stub()
 		val secondConfig = firstConfig.copy()
 		val slaves = Random.shuffle(Seq.fill(10) { stubSlaveWith(firstConfig) } :+ stubSlaveWith(secondConfig))
 		noException must be thrownBy(WishboneBusSlaveMultiplexer(stubSelectorFor(10), slaves.head, slaves.tail:_*))
 	}
 
-	it must "use the same Wishbone configuration for the master as the slaves" in spinalContext { () =>
+	it must "use the same Wishbone configuration for the master as the slaves" in spinalContext {
 		val slaves = stubSlavesWithSameConfig(Random.between(1, 10))
 		val mux = WishboneBusSlaveMultiplexer(stubSelectorFor(slaves.length), slaves.head, slaves.tail:_*)
 		mux.io.master.config must equal(slaves.head.config)
 	}
 
-	it must "have IO for each of the slaves passed to the constructor" in spinalContext { () =>
+	it must "have IO for each of the slaves passed to the constructor" in spinalContext {
 		forAll(numberOfSlaves) { (numberOfSlaves: Int) => {
 			val slaves = stubSlavesWithSameConfig(numberOfSlaves)
 			val mux = WishboneBusSlaveMultiplexer(stubSelectorFor(slaves.length), slaves.head, slaves.tail:_*)

@@ -7,11 +7,10 @@ import spinal.core.sim._
 import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 
 trait NonSimulationFixture {
-	protected def spinalContext(test: () => Any) = {
-		test.mustNotBeNull("test")
+	protected def spinalContext(test: => Any) = {
 		NonSimulationFixture.dummySim.doSim { dut =>
 			dut.mustNotBeNull("dut")
-			new Component { test() }
+			new Component { test }
 			simSuccess()
 		}
 	}
