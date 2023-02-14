@@ -7,12 +7,7 @@ import spinal.core.sim._
 import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
 
 abstract trait SimulationFixtureBase[TDut <: Component] extends TestSuiteMixin { this: TestSuite =>
-	private var sim: SimCompiled[TDut] = _
-
-	protected abstract override def withFixture(test: NoArgTest): Outcome = {
-		sim = createSimulation().compile(dutFactory())
-		super.withFixture(test)
-	}
+	private lazy val sim: SimCompiled[TDut] = createSimulation().compile(dutFactory())
 
 	protected def createSimulation(): SpinalSimConfig = ???
 
