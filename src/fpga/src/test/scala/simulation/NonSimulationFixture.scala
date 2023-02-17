@@ -10,7 +10,9 @@ trait NonSimulationFixture {
 	protected def spinalContext(test: => Any) = {
 		NonSimulationFixture.dummySim.doSim { dut =>
 			dut.mustNotBeNull("dut")
+//			ClockDomain(Bool(), Bool()) {
 			new Component { test }
+//			}
 			simSuccess()
 		}
 	}
