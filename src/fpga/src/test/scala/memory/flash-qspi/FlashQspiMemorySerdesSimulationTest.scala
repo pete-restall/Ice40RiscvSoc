@@ -185,7 +185,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.pins.clockEnable.toBoolean must be(false)
 	}
 
-	it must "be low when a write transaction is received without a MOSI byte" in simulator { fixture =>
+	it must "be low when a write-only transaction is received without a MOSI byte" in simulator { fixture =>
 		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount=writeCount)
@@ -195,17 +195,17 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be low when a transaction is received with a MOSI byte but without a write count" in simulator { fixture =>
+	it must "be low when a transaction is received with a MOSI byte but without both read and write counts" in simulator { fixture =>
 		forAll(booleans.asTable("isQspi")) { isQspi =>
 			fixture.reset()
-			fixture.stubCommand(isQspi, writeCount=0)
+			fixture.stubCommand(isQspi, writeCount=0, readCount=0)
 			fixture.stubMosi(anyByte())
 			fixture.clock()
 			fixture.io.pins.clockEnable.toBoolean must be(false)
 		}
 	}
 
-	it must "not rise asynchronously when a write transaction is received with a MOSI byte" in simulator { fixture =>
+	it must "not rise asynchronously when a write-only transaction is received with a MOSI byte" in simulator { fixture =>
 		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount=writeCount)
@@ -217,7 +217,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	private def anyByte() = Random.nextInt(1 << 8)
 
-	it must "be high when a write transaction is received with a MOSI byte" in simulator { fixture =>
+	it must "be high when a write-only transaction is received with a MOSI byte" in simulator { fixture =>
 		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount=writeCount)
@@ -227,9 +227,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be high for (writeCount * 8 bits) SPI clocks or (writeCount * 2) QSPI clocks for a write transaction with " +
-		"no read cycle and no MOSI stalls" in simulator { implicit fixture =>
-
+	it must "be high for (writeCount * 8 bits) SPI clocks or (writeCount * 2) QSPI clocks for a write-only transaction with no MOSI stalls" in simulator { implicit fixture =>
 		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount=writeCount)
@@ -241,17 +239,20 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 	}
 
 	private def clockMustBeEnabledForExact(numberOfBytes: Int, isQspi: Boolean)(implicit fixture: FlashQspiMemorySerdesFixture) = {
+		clockMustBeEnabledFor(numberOfBytes, isQspi)
+		fixture.io.pins.clockEnable.toBoolean must be(false) withClue "at the end of bit-clocking"
+	}
+
+	private def clockMustBeEnabledFor(numberOfBytes: Int, isQspi: Boolean)(implicit fixture: FlashQspiMemorySerdesFixture) = {
 		val clocksPerByte = if (isQspi) 2 else 8
 		for (i <- 0 until clocksPerByte * numberOfBytes) {
 			fixture.clockInactive()
 			fixture.io.pins.clockEnable.toBoolean must be(true) withClue s"at clock ${i}"
 			fixture.clockActive()
 		}
-
-		fixture.io.pins.clockEnable.toBoolean must be(false) withClue "at the end of bit-clocking"
 	}
 
-	it must "be high for 8 SPI clocks or 2 QSPI clocks for a write transaction with no read cycle and a MOSI stall" in simulator { implicit fixture =>
+	it must "be high for 8 SPI clocks or 2 QSPI clocks for a write-only transaction with no read cycle and a MOSI stall" in simulator { implicit fixture =>
 		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount=writeCount)
@@ -263,7 +264,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "not rise asynchronously when a read transaction is received" in simulator { fixture =>
+	it must "not rise asynchronously when a read-only transaction is received" in simulator { fixture =>
 		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, readCount=readCount)
@@ -272,7 +273,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be high on the active edge when a read transaction is received" in simulator { fixture =>
+	it must "be high on the active edge when a read-only transaction is received" in simulator { fixture =>
 		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, readCount=readCount)
@@ -281,7 +282,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be low when a read transaction is received and the payload is not valid" in simulator { fixture =>
+	it must "be low when a read-only transaction is received and the payload is not valid" in simulator { fixture =>
 		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubInvalidCommand(isQspi, readCount=readCount)
@@ -290,9 +291,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be high for (readCount * 8 bits) SPI clocks or (readCount * 2) QSPI clocks for a read transaction with " +
-		"no write cycle and no MISO stalls" in simulator { implicit fixture =>
-
+	it must "be high for (readCount * 8 bits) SPI clocks or (readCount * 2) QSPI clocks for a read-only transaction with no MISO stalls" in simulator { implicit fixture =>
 		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, readCount=readCount)
@@ -303,7 +302,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be high for 8 SPI clocks or 2 QSPI clocks for a read transaction with no write cycle and a MISO stall" in simulator { implicit fixture =>
+	it must "be high for 8 SPI clocks or 2 QSPI clocks for a read-only transaction and a MISO stall" in simulator { implicit fixture =>
 		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, readCount=readCount)
@@ -315,7 +314,69 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	"FlashQspiSerdes" must "register the byte count for write transactions so they can be pipelined" in simulator { implicit fixture =>
+	it must "be low for a new read transaction if the last transaction's MISO byte is still stalled" in simulator { implicit fixture =>
+		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
+			stubFixtureForStalledLastMisoByte(readCount, isQspi)
+			fixture.clockActive()
+			fixture.io.pins.clockEnable.toBoolean must be(false)
+		}
+	}
+
+	private def stubFixtureForStalledLastMisoByte(readCount: Int, isQspi: Boolean)(implicit fixture: FlashQspiMemorySerdesFixture) = {
+		fixture.reset()
+		fixture.stubCommand(isQspi, readCount=readCount)
+		fixture.stubReadyMiso()
+		fixture.clockActive()
+		fixture.stubInvalidCommand(isQspi, readCount=readCount)
+		clockMustBeEnabledFor(numberOfBytes=readCount - 1, isQspi=isQspi)
+		fixture.stubStalledMiso()
+		clockMustBeEnabledForExact(numberOfBytes=1, isQspi=isQspi)
+		fixture.stubCommand(isQspi, readCount=1)
+		fixture.clockInactive()
+	}
+
+	it must "be high for a new write transaction if the last read transaction's MISO byte is still stalled" in simulator { implicit fixture =>
+		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
+			stubFixtureForStalledLastMisoByte(readCount=2, isQspi)
+			fixture.stubCommand(isQspi, writeCount=writeCount)
+			fixture.stubMosi(anyByte())
+			fixture.clockActive()
+			fixture.io.pins.clockEnable.toBoolean must be(true)
+		}
+	}
+
+	it must "be low for the read transaction following a write transaction if the last read transaction's MISO byte is still stalled" in simulator { implicit fixture =>
+		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
+			stubFixtureForStalledLastMisoByte(readCount=2, isQspi)
+			fixture.stubCommand(isQspi, writeCount=writeCount, readCount=1)
+			fixture.stubMosi(anyByte())
+			fixture.clockActive()
+			clockMustBeEnabledForExact(numberOfBytes=writeCount, isQspi)
+			fixture.clockInactive()
+			fixture.clockActive()
+			fixture.io.pins.clockEnable.toBoolean must be(false)
+		}
+	}
+
+	private val writeAndReadCountsVsTransactionTypes = allCombinationsOf(writeCounts, readCounts, booleans).asTable("writeCount", "readCount", "isQspi")
+
+	private def allCombinationsOf[A, B, C](a: Seq[A], b: Seq[B], c: Seq[C]) = for (x <- a; y <- b; z <- c) yield (x, y, z)
+
+	it must "be high for ((writeCount + readCount) * 8 bits) SPI clocks or ((writeCount + readCount) * 2) QSPI clocks for a write-read transaction " +
+		"with no MOSI or MISO stalls" in simulator { implicit fixture =>
+
+		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=writeCount, readCount=readCount)
+			fixture.stubMosi(anyByte())
+			fixture.stubReadyMiso()
+			fixture.clockActive()
+			fixture.stubInvalidCommand(isQspi, readCount=readCount)
+			clockMustBeEnabledForExact(numberOfBytes=writeCount + readCount, isQspi=isQspi)
+		}
+	}
+
+	"FlashQspiSerdes" must "register the byte count for write-only transactions so they can be pipelined" in simulator { implicit fixture =>
 		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount=writeCount)
@@ -326,7 +387,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "register the I/O width for write transactions so they can be pipelined" in simulator { implicit fixture =>
+	it must "register the I/O width for write-only transactions so they can be pipelined" in simulator { implicit fixture =>
 		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount=writeCount)
@@ -337,7 +398,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "register the byte count for read transactions so they can be pipelined" in simulator { implicit fixture =>
+	it must "register the byte count for read-only transactions so they can be pipelined" in simulator { implicit fixture =>
 		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, readCount=readCount)
@@ -348,7 +409,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "register the I/O width for read transactions so they can be pipelined" in simulator { implicit fixture =>
+	it must "register the I/O width for read-only transactions so they can be pipelined" in simulator { implicit fixture =>
 		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, readCount=readCount)
@@ -359,13 +420,41 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	// TODO: MAKE SURE A WRITE-READ TRANSACTION DOESN'T TURN INTO A WRITE-WRITE TRANSACTION IF THE COMMAND IS CHANGED AFTER THE INITIAL WRITE BUT BEFORE THE SECOND BYTE READ
+	it must "register the byte read count for write-read transactions so they can be pipelined" in simulator { implicit fixture =>
+		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=writeCount, readCount=readCount)
+			fixture.stubMosi(anyByte())
+			fixture.stubReadyMiso()
+			fixture.clockActive()
+			fixture.stubCommand(isQspi, readCount=readCount - 1)
+			clockMustBeEnabledForExact(numberOfBytes=writeCount + readCount, isQspi=isQspi)
+		}
+	}
 
-	// TODO: TEST THE SCENARIO WHERE THE LAST MISO BYTE IS NOT READ AND A NEW READ TRANSACTION IS STARTED; THE CLOCK SHOULD NOT BE ENABLED SINCE THE BUFFER IS FULL
+	it must "register the byte write count for write-read transactions so they can be pipelined" in simulator { implicit fixture =>
+		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=writeCount, readCount=readCount)
+			fixture.stubMosi(anyByte())
+			fixture.stubReadyMiso()
+			fixture.clockActive()
+			fixture.stubCommand(isQspi, writeCount=writeCount - 1)
+			clockMustBeEnabledForExact(numberOfBytes=writeCount + readCount, isQspi=isQspi)
+		}
+	}
 
-	// TODO: READ TRANSACTIONS
-	// TODO: MIXED READ-WRITE TRANSACTIONS
-	// TODO: MULTIPLE (PIPELINED) TRANSACTIONS
+	it must "register the I/O width for write-read transactions so they can be pipelined" in simulator { implicit fixture =>
+		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=writeCount, readCount=readCount)
+			fixture.stubMosi(anyByte())
+			fixture.stubReadyMiso()
+			fixture.clockActive()
+			fixture.stubCommand(!isQspi, writeCount=writeCount, readCount=readCount)
+			clockMustBeEnabledForExact(numberOfBytes=writeCount + readCount, isQspi=isQspi)
+		}
+	}
 
 	// TODO: MUST HAVE mosi.ready WHEN READING AND NO MOSI BYTE RECEIVED
 	// TODO: MUST HAVE !mosi.ready WHEN READING AND MOSI BYTE RECEIVED

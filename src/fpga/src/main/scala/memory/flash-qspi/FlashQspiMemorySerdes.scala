@@ -22,7 +22,7 @@ class FlashQspiMemorySerdes extends Component {
 	isMosiFull := io.transaction.mosi.valid // TODO: obviously test the next clock edge (when mosi.valid is set to false) as this should be full for the duration of the write (ie. write a test to ensure we only sample this at the start of the transaction)
 
 	private val hasMoreMosi = Reg(Bool()) init(False)
-	private val hasMoreMiso = Reg(Bool()) init(False)
+	private val hasMoreMiso = Reg(Bool()) init(True)
 	private val bitCounter = Reg(UInt(3 bits)) init(0)
 
 	private val bitCounterWillIncrement = Bool()
@@ -41,7 +41,6 @@ class FlashQspiMemorySerdes extends Component {
 		writeCountRemaining := io.transaction.command.payload.writeCount
 		readCountRemaining := io.transaction.command.payload.readCount
 		hasMoreMosi := io.transaction.mosi.valid
-		hasMoreMiso := True//io.transaction.miso.ready // TODO: THIS IS INVALID; IF THE LAST BYTE OF THE PREVIOUS TRANSACTION HAS NOT BEEN CONSUMED THEN WE SHOULD NOT ALLOW THE TRANSACTION TO START
 		isQspi := io.transaction.command.isQspi
 	}
 
