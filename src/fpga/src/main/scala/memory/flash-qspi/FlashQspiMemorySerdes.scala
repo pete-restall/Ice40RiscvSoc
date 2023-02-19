@@ -19,7 +19,7 @@ class FlashQspiMemorySerdes extends Component {
 	private val writeCountRemaining = Reg(UInt(io.transaction.command.writeCount.getWidth bits)) init(0)
 	private val readCountRemaining = Reg(UInt(io.transaction.command.readCount.getWidth bits)) init(0)
 	private val isMosiFull = Reg(Bool()) init(False)
-	isMosiFull := io.transaction.mosi.valid // TODO: obviously test the next clock edge (when mosi.valid is set to false) as this should be full for the duration of the write (ie. write a test to ensure we only sample this at the start of the transaction)
+//	isMosiFull := io.transaction.mosi.valid // TODO: obviously test the next clock edge (when mosi.valid is set to false) as this should be full for the duration of the write (ie. write a test to ensure we only sample this at the start of the transaction)
 
 	private val hasMoreMosi = Reg(Bool()) init(False)
 	private val mosi = Reg(UInt(8 bits)) init(0)
@@ -38,24 +38,30 @@ class FlashQspiMemorySerdes extends Component {
 	private val bitCounterWillOverflowIfIncremented = Bool()
 	bitCounterWillOverflowIfIncremented := nextBitCounterValue === 0
 
+	when(!isMosiFull && io.transaction.mosi.valid) {
+		isMosiFull := True
+		mosi := io.transaction.mosi.payload
+	}
+
+	when((nextBitCounterValue === 7 && !isQspi) || (nextBitCounterValue === 4 && isQspi)) {
+		isMosiFull := False
+	}
+
 	when(isStartOfTransaction) {
 		// TODO: JUST MAKE A SINGLE REGISTER WITH THE DATA BEING THE ENTIRE PAYLOAD...BUT THIS CAN BE A REFACTORING AFTER THE FUNCTIONALITY HAS BEEN WRITTEN
 		writeCountRemaining := io.transaction.command.payload.writeCount
 		readCountRemaining := io.transaction.command.payload.readCount
 		hasMoreMosi := io.transaction.mosi.valid
 		isQspi := io.transaction.command.isQspi
-		mosi := io.transaction.mosi.payload
 	}
 
 	when(bitCounterWillOverflowIfIncremented && writeCountRemaining =/= 0) {
 		writeCountRemaining := writeCountRemaining - 1
 		hasMoreMosi := io.transaction.mosi.valid
-		mosi := io.transaction.mosi.payload
 	}
 
 	when(!bitCounterWillIncrement && writeCountRemaining =/= 0) {
-		hasMoreMosi := io.transaction.mosi.valid
-		mosi := io.transaction.mosi.payload
+		hasMoreMosi := io.transaction.mosi.valid // TODO: WHEN REFACTORING, SEE IF THIS REGISTER CAN BE REMOVED
 	}
 
 	when(bitCounterWillOverflowIfIncremented && writeCountRemaining === 0) {
