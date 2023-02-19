@@ -22,6 +22,7 @@ class FlashQspiMemorySerdes extends Component {
 	isMosiFull := io.transaction.mosi.valid // TODO: obviously test the next clock edge (when mosi.valid is set to false) as this should be full for the duration of the write (ie. write a test to ensure we only sample this at the start of the transaction)
 
 	private val hasMoreMosi = Reg(Bool()) init(False)
+	private val mosi = Reg(UInt(8 bits)) init(0)
 	private val hasMoreMiso = Reg(Bool()) init(True)
 	private val bitCounter = Reg(UInt(3 bits)) init(0)
 
@@ -38,15 +39,23 @@ class FlashQspiMemorySerdes extends Component {
 	bitCounterWillOverflowIfIncremented := nextBitCounterValue === 0
 
 	when(isStartOfTransaction) {
+		// TODO: JUST MAKE A SINGLE REGISTER WITH THE DATA BEING THE ENTIRE PAYLOAD...BUT THIS CAN BE A REFACTORING AFTER THE FUNCTIONALITY HAS BEEN WRITTEN
 		writeCountRemaining := io.transaction.command.payload.writeCount
 		readCountRemaining := io.transaction.command.payload.readCount
 		hasMoreMosi := io.transaction.mosi.valid
 		isQspi := io.transaction.command.isQspi
+		mosi := io.transaction.mosi.payload
 	}
 
 	when(bitCounterWillOverflowIfIncremented && writeCountRemaining =/= 0) {
 		writeCountRemaining := writeCountRemaining - 1
 		hasMoreMosi := io.transaction.mosi.valid
+		mosi := io.transaction.mosi.payload
+	}
+
+	when(!bitCounterWillIncrement && writeCountRemaining =/= 0) {
+		hasMoreMosi := io.transaction.mosi.valid
+		mosi := io.transaction.mosi.payload
 	}
 
 	when(bitCounterWillOverflowIfIncremented && writeCountRemaining === 0) {
@@ -58,8 +67,20 @@ class FlashQspiMemorySerdes extends Component {
 		bitCounter := nextBitCounterValue
 	}
 
-	io.pins.clockEnable := bitCounterWillIncrement// and not disable until everything clocked out, ie. if mosi becomes invalid during the transaction we need to have saved the mosi byte so can continue shifting it out (this allows pipelining); this also applies to readCount and writeCount changes...
-	io.pins.io0Mosi.outValue := True
+	clockDomain.withRevertedClockEdge() {
+		val mosiOutBit = Reg(Bool()) init(True)
+		switch(bitCounter) {
+			for (i <- 0 to 7) {
+				is(i) {
+					mosiOutBit := mosi(7 - i)
+				}
+			}
+		}
+
+		io.pins.io0Mosi.outValue := !io.pins.clockEnable || mosiOutBit
+	}
+
+	io.pins.clockEnable := bitCounterWillIncrement
 	io.pins.io0Mosi.isTristated := False
 	io.pins.io1Miso.outValue := True
 	io.pins.io1Miso.isTristated := False

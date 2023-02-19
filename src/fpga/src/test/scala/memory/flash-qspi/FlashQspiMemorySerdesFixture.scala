@@ -1,5 +1,7 @@
 package uk.co.lophtware.msfreference.tests.memory.flashqspi
 
+import scala.util.Random
+
 import spinal.core._
 import spinal.core.sim._
 
@@ -29,6 +31,10 @@ class FlashQspiMemorySerdesFixture extends Component {
 		sleep(5)
 	}
 
+	def anyNumberOfClocks(): Unit = {
+		(0 to Random.nextInt(10)).foreach { _ => clock() }
+	}
+
 	def clock(): Unit = {
 		clockActive()
 		clockInactive()
@@ -38,6 +44,10 @@ class FlashQspiMemorySerdesFixture extends Component {
 		sleep(5)
 		clockDomain.risingEdge()
 		sleep(5)
+	}
+
+	def atLeastOneClock(): Unit = {
+		(0 to Random.between(1, 10)).foreach { _ => clock() }
 	}
 
 	def stubCommand(isQspi: Boolean, writeCount: Int = 0, readCount: Int = 0): Unit = {
@@ -60,6 +70,16 @@ class FlashQspiMemorySerdesFixture extends Component {
 	def stubInvalidMosi(byte: Int = 0): Unit = {
 		io.transaction.mosi.payload #= byte
 		io.transaction.mosi.valid #= false
+	}
+
+	def shiftMosiByte(): Int = {
+		var shiftedMosi = 0
+		for (bit <- 7 to 0 by -1) {
+			clock()
+			shiftedMosi = (shiftedMosi << 1) | (if (io.pins.io0Mosi.outValue.toBoolean) 1 else 0)
+		}
+
+		shiftedMosi
 	}
 
 	def stubReadyMiso(): Unit = {

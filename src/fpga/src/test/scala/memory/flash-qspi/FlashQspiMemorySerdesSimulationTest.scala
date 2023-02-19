@@ -60,17 +60,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.transaction.miso.payload.toInt must be(0)
 	}
 
-	"FlashQspiSerdes pin controller" must "hold the IO0 (MOSI) pin high during reset" in simulator { fixture =>
-		fixture.holdInReset()
-		fixture.io.pins.io0Mosi must have(nonTristatedOutValueOf(true))
-	}
-
-	it must "hold the IO0 (MOSI) pin high after reset" in simulator { fixture =>
-		fixture.reset()
-		fixture.io.pins.io0Mosi must have(nonTristatedOutValueOf(true))
-	}
-
-	it must "hold the IO1 (MISO) pin high during reset" in simulator { fixture =>
+	"FlashQspiSerdes pin controller" must "hold the IO1 (MISO) pin high during reset" in simulator { fixture =>
 		fixture.holdInReset()
 		fixture.io.pins.io1Miso must have(nonTristatedOutValueOf(true))
 	}
@@ -455,6 +445,106 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 			clockMustBeEnabledForExact(numberOfBytes=writeCount + readCount, isQspi=isQspi)
 		}
 	}
+
+	"FlashQspiSerdes IO0 (MOSI) line" must "be held high during reset" in simulator { fixture =>
+		fixture.holdInReset()
+		fixture.io.pins.io0Mosi must have(nonTristatedOutValueOf(true))
+	}
+
+	it must "be held high after reset" in simulator { fixture =>
+		fixture.reset()
+		fixture.io.pins.io0Mosi must have(nonTristatedOutValueOf(true))
+	}
+
+	it must "be the MOSI byte shifted out on 8 falling clock edges, most significant bit first, for an SPI write-only transaction" in simulator { fixture =>
+		val transactionMosi = anyByte()
+		fixture.reset()
+		fixture.stubCommand(isQspi=false, writeCount=1)
+		fixture.stubMosi(transactionMosi)
+		for (bit <- 7 to 0 by -1) {
+			val expectedBit = (transactionMosi & (1 << bit)) != 0
+			val previousBit = fixture.io.pins.io0Mosi.outValue.toBoolean
+			fixture.clockActive()
+			fixture.io.pins.io0Mosi must have(nonTristatedOutValueOf(previousBit)) withClue s"for bit ${bit} (previous bit / rising clock)"
+			fixture.clockInactive()
+			fixture.io.pins.io0Mosi must have(nonTristatedOutValueOf(expectedBit)) withClue s"for bit ${bit} (next bit / falling clock)"
+		}
+	}
+
+	it must "be shifted from a registered MOSI byte for an SPI write-only transaction" in simulator { fixture =>
+		val transactionMosi = anyByte()
+		fixture.reset()
+		fixture.stubCommand(isQspi=false, writeCount=1)
+		fixture.stubMosi(transactionMosi)
+		var shiftedMosi = 0
+		for (bit <- 7 to 0 by -1) {
+			fixture.clockActive()
+			fixture.stubMosi(anyByteExcept(transactionMosi))
+			fixture.clockInactive()
+			shiftedMosi = (shiftedMosi << 1) | (if (fixture.io.pins.io0Mosi.outValue.toBoolean) 1 else 0)
+		}
+
+		shiftedMosi must be(transactionMosi)
+	}
+
+	private def anyByteExcept(byte: Int): Int = {
+		val anotherByte = Random.nextInt(1 << 8)
+		if (anotherByte != byte) anotherByte else anyByteExcept(byte)
+	}
+
+	it must "be shifted MOSI bytes for an SPI multi-byte write-only transaction" in simulator { fixture =>
+		forAll(writeCounts) { writeCount =>
+			val transactionMosis = Array.fill(writeCount) { anyByte() }
+			fixture.reset()
+			fixture.stubCommand(isQspi=false, writeCount=writeCount)
+			transactionMosis.foreach { transactionMosi =>
+				fixture.stubMosi(transactionMosi)
+				fixture.shiftMosiByte() must be(transactionMosi)
+			}
+		}
+	}
+
+	it must "be shifted MOSI bytes for an SPI multi-byte write-only transaction when there are stalls" in simulator { fixture =>
+		forAll(writeCounts) { writeCount =>
+			val transactionMosis = Array.fill(writeCount) { anyByte() }
+			fixture.reset()
+			fixture.stubCommand(isQspi=false, writeCount=writeCount)
+			transactionMosis.foreach { transactionMosi =>
+				fixture.stubInvalidMosi(anyByteExcept(transactionMosi))
+				fixture.anyNumberOfClocks()
+				fixture.stubMosi(transactionMosi)
+				fixture.shiftMosiByte() must be(transactionMosi)
+			}
+		}
+	}
+
+	it must "not be modified for an SPI write-only transaction if no MOSI byte has been registered" in simulator { fixture =>
+		fixture.reset()
+		fixture.stubCommand(isQspi=false, writeCount=1)
+		fixture.stubInvalidMosi(0x00)
+		fixture.shiftMosiByte() must be(0xff)
+	}
+
+	it must "not be modified for an SPI write-only transaction until a MOSI byte has been registered" in simulator { fixture =>
+		val transactioMosi = anyByte()
+		fixture.reset()
+		fixture.stubCommand(isQspi=false, writeCount=1)
+		fixture.stubInvalidMosi(anyByteExcept(transactioMosi))
+		fixture.atLeastOneClock()
+		fixture.stubMosi(transactioMosi)
+		fixture.shiftMosiByte() must be(transactioMosi)
+	}
+
+	it must "use the MOSI byte registered on the first rising edge of a transaction" in simulator { fixture =>
+		val transactioMosi = anyByte()
+		fixture.reset()
+		fixture.stubCommand(isQspi=false, writeCount=1)
+		fixture.stubMosi(transactioMosi)
+		fixture.clockActive()
+		fixture.stubMosi(~transactioMosi & 0xff)
+		fixture.shiftMosiByte() must be(transactioMosi)
+	}
+
 
 	// TODO: MUST HAVE mosi.ready WHEN READING AND NO MOSI BYTE RECEIVED
 	// TODO: MUST HAVE !mosi.ready WHEN READING AND MOSI BYTE RECEIVED
