@@ -50,6 +50,12 @@ class FlashQspiMemorySerdesFixture extends Component {
 		(0 to Random.between(1, 10)).foreach { _ => clock() }
 	}
 
+	def clockWhileEnabled(): Unit = {
+		do {
+			clock()
+		} while (io.pins.clockEnable.toBoolean)
+	}
+
 	def stubCommand(isQspi: Boolean, writeCount: Int = 0, readCount: Int = 0): Unit = {
 		stubInvalidCommand(isQspi, writeCount, readCount)
 		io.transaction.command.valid #= true
@@ -72,11 +78,27 @@ class FlashQspiMemorySerdesFixture extends Component {
 		io.transaction.mosi.valid #= false
 	}
 
-	def shiftMosiByte(): Int = {
+	def shiftMosiByte(isQspi: Boolean): Int = if (!isQspi) shiftSpiMosiByte() else shiftQspiMosiByte()
+
+	def shiftSpiMosiByte(): Int = {
 		var shiftedMosi = 0
 		for (bit <- 7 to 0 by -1) {
 			clock()
 			shiftedMosi = (shiftedMosi << 1) | (if (io.pins.io0Mosi.outValue.toBoolean) 1 else 0)
+		}
+
+		shiftedMosi
+	}
+
+	def shiftQspiMosiByte(): Int = {
+		var shiftedMosi = 0
+		for (cycle <- 0 to 1) {
+			clock()
+			shiftedMosi = (shiftedMosi << 4) |
+				(if (io.pins.io0Mosi.outValue.toBoolean) 1 else 0) |
+				(if (io.pins.io1Miso.outValue.toBoolean) 2 else 0) |
+				(if (io.pins.io2_Wp.outValue.toBoolean) 4 else 0) |
+				(if (io.pins.io3_Hold.outValue.toBoolean) 8 else 0)
 		}
 
 		shiftedMosi

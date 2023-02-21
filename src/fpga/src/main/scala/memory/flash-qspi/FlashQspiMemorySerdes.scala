@@ -19,12 +19,13 @@ class FlashQspiMemorySerdes extends Component {
 	private val writeCountRemaining = Reg(UInt(io.transaction.command.writeCount.getWidth bits)) init(0)
 	private val readCountRemaining = Reg(UInt(io.transaction.command.readCount.getWidth bits)) init(0)
 	private val isMosiFull = Reg(Bool()) init(False)
-//	isMosiFull := io.transaction.mosi.valid // TODO: obviously test the next clock edge (when mosi.valid is set to false) as this should be full for the duration of the write (ie. write a test to ensure we only sample this at the start of the transaction)
 
 	private val hasMoreMosi = Reg(Bool()) init(False)
 	private val mosi = Reg(UInt(8 bits)) init(0)
 	private val hasMoreMiso = Reg(Bool()) init(True)
 	private val bitCounter = Reg(UInt(3 bits)) init(0)
+
+	private val isIo0MosiTristated = Reg(Bool()) init(False)
 
 	private val bitCounterWillIncrement = Bool()
 	bitCounterWillIncrement := (writeCountRemaining =/= 0 && hasMoreMosi) || (writeCountRemaining === 0 && readCountRemaining =/= 0 && hasMoreMiso)
@@ -47,12 +48,13 @@ class FlashQspiMemorySerdes extends Component {
 		isMosiFull := False
 	}
 
-	when(isStartOfTransaction) {
+	when(isStartOfTransaction && (io.transaction.command.payload.writeCount =/= 0 || io.transaction.command.payload.readCount =/= 0)) {
 		// TODO: JUST MAKE A SINGLE REGISTER WITH THE DATA BEING THE ENTIRE PAYLOAD...BUT THIS CAN BE A REFACTORING AFTER THE FUNCTIONALITY HAS BEEN WRITTEN
 		writeCountRemaining := io.transaction.command.payload.writeCount
 		readCountRemaining := io.transaction.command.payload.readCount
 		hasMoreMosi := io.transaction.mosi.valid
 		isQspi := io.transaction.command.isQspi
+		isIo0MosiTristated := io.transaction.command.isQspi && io.transaction.command.payload.writeCount === 0
 	}
 
 	when(bitCounterWillOverflowIfIncremented && writeCountRemaining =/= 0) {
@@ -67,6 +69,7 @@ class FlashQspiMemorySerdes extends Component {
 	when(bitCounterWillOverflowIfIncremented && writeCountRemaining === 0) {
 		readCountRemaining := readCountRemaining - 1
 		hasMoreMiso := io.transaction.miso.ready
+		isIo0MosiTristated := isQspi
 	}
 
 	when(bitCounterWillIncrement) {
@@ -75,11 +78,21 @@ class FlashQspiMemorySerdes extends Component {
 
 	clockDomain.withRevertedClockEdge() {
 		val mosiOutBit = Reg(Bool()) init(True)
-		switch(bitCounter) {
+		switch(isQspi ## bitCounter) {
 			for (i <- 0 to 7) {
 				is(i) {
 					mosiOutBit := mosi(7 - i)
 				}
+			}
+
+			for (i <- Seq(8, 12)) {
+				is(i) {
+					mosiOutBit := mosi(12 - i)
+				}
+			}
+
+			default {
+				mosiOutBit := True
 			}
 		}
 
@@ -87,7 +100,7 @@ class FlashQspiMemorySerdes extends Component {
 	}
 
 	io.pins.clockEnable := bitCounterWillIncrement
-	io.pins.io0Mosi.isTristated := False
+	io.pins.io0Mosi.isTristated := isIo0MosiTristated
 	io.pins.io1Miso.outValue := True
 	io.pins.io1Miso.isTristated := False
 	io.pins.io2_Wp.outValue := False
@@ -97,8 +110,8 @@ class FlashQspiMemorySerdes extends Component {
 
 	io.transaction.miso.payload := 0
 	io.transaction.miso.valid := False
-	io.transaction.mosi.ready := !clockDomain.isResetActive && !isMosiFull // need to discriminate between a write transaction and a read transaction...but needs to be a register (and test for this) because if mosi.valid is made false mid-transaction we still need to keep ready low
-	io.transaction.command.ready := !clockDomain.isResetActive && !bitCounterWillIncrement // this should be fine because the clock will be enabled for any read or write transaction...verify that the tests cover this
+	io.transaction.mosi.ready := !clockDomain.isResetActive && !isMosiFull
+	io.transaction.command.ready := !clockDomain.isResetActive && !bitCounterWillIncrement // && !commandFull; remove the !bitCounterWillIncrement and add something similar to 'isMosiFull' because it will allow the command to be changed on multiple clock cycles before a transaction starts, or when waiting on a MOSI or MISO
 }
 
 object FlashQspiMemorySerdes {
