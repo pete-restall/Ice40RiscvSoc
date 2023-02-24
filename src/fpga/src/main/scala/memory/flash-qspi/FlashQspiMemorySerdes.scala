@@ -44,7 +44,7 @@ class FlashQspiMemorySerdes extends Component {
 		mosi := io.transaction.mosi.payload
 	}
 
-	when((nextBitCounterValue === 7 && !isQspi) || (nextBitCounterValue === 4 && isQspi)) {
+	when((nextBitCounterValue === 7 && !isQspi) || (nextBitCounterValue === 4 && isQspi) && bitCounterWillIncrement) {
 		isMosiFull := False
 	}
 
@@ -54,7 +54,6 @@ class FlashQspiMemorySerdes extends Component {
 		readCountRemaining := io.transaction.command.payload.readCount
 		hasMoreMosi := io.transaction.mosi.valid
 		isQspi := io.transaction.command.isQspi
-		isIo0MosiTristated := io.transaction.command.isQspi && io.transaction.command.payload.writeCount === 0
 	}
 
 	when(bitCounterWillOverflowIfIncremented && writeCountRemaining =/= 0) {
@@ -69,7 +68,6 @@ class FlashQspiMemorySerdes extends Component {
 	when(bitCounterWillOverflowIfIncremented && writeCountRemaining === 0) {
 		readCountRemaining := readCountRemaining - 1
 		hasMoreMiso := io.transaction.miso.ready
-		isIo0MosiTristated := isQspi
 	}
 
 	when(bitCounterWillIncrement) {
@@ -77,35 +75,39 @@ class FlashQspiMemorySerdes extends Component {
 	}
 
 	clockDomain.withRevertedClockEdge() {
-		val mosiOutBit = Reg(Bool()) init(True)
+		val mosiOutBits = Reg(Bits(4 bits)) init(B("1011"))
 		switch(isQspi ## bitCounter) {
 			for (i <- 0 to 7) {
 				is(i) {
-					mosiOutBit := mosi(7 - i)
+					mosiOutBits(0) := Mux(io.pins.clockEnable, mosi(7 - i), mosiOutBits(0))
 				}
 			}
 
 			for (i <- Seq(8, 12)) {
 				is(i) {
-					mosiOutBit := mosi(12 - i)
+					mosiOutBits(0) := Mux(io.pins.clockEnable, mosi(12 - i), mosiOutBits(0))
+					mosiOutBits(1) := Mux(io.pins.clockEnable, mosi(13 - i), mosiOutBits(1))
+					mosiOutBits(2) := Mux(io.pins.clockEnable, mosi(14 - i), mosiOutBits(2))
+					mosiOutBits(3) := Mux(io.pins.clockEnable, mosi(15 - i), mosiOutBits(3))
 				}
-			}
-
-			default {
-				mosiOutBit := True
 			}
 		}
 
-		io.pins.io0Mosi.outValue := !io.pins.clockEnable || mosiOutBit
+		val isIo0MosiTristatedNegEdge = Bool()
+		val isIo0MosiTristatedNegEdgeReg = RegNext(isIo0MosiTristatedNegEdge)
+		isIo0MosiTristatedNegEdge := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && isIo0MosiTristatedNegEdgeReg)
+
+		io.pins.io0Mosi.outValue := mosiOutBits(0)
+		io.pins.io0Mosi.isTristated := isIo0MosiTristatedNegEdgeReg
+
+		io.pins.io1Miso.outValue := mosiOutBits(1)
+		io.pins.io2_Wp.outValue := mosiOutBits(2)
+		io.pins.io3_Hold.outValue := mosiOutBits(3)
 	}
 
 	io.pins.clockEnable := bitCounterWillIncrement
-	io.pins.io0Mosi.isTristated := isIo0MosiTristated
-	io.pins.io1Miso.outValue := True
-	io.pins.io1Miso.isTristated := False
-	io.pins.io2_Wp.outValue := False
+	io.pins.io1Miso.isTristated := False // TODO: FOR INITIAL STATE, THIS SHOULD BE TRISTATED
 	io.pins.io2_Wp.isTristated := False
-	io.pins.io3_Hold.outValue := True
 	io.pins.io3_Hold.isTristated := False
 
 	io.transaction.miso.payload := 0

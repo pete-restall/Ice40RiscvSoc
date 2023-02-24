@@ -54,11 +54,13 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 	}
 
 	"FlashQspiSerdes pin controller" must "hold the IO1 (MISO) pin high during reset" in simulator { fixture =>
+		// TODO: Revisit this test - the default SPI mode will need a tristated MISO
 		fixture.holdInReset()
 		fixture.io.pins.io1Miso must have(nonTristatedOutValueOf(true))
 	}
 
 	it must "hold the IO1 (MISO) pin high after reset" in simulator { fixture =>
+		// TODO: Revisit this test - the default SPI mode will need a tristated MISO
 		fixture.reset()
 		fixture.io.pins.io1Miso must have(nonTristatedOutValueOf(true))
 	}
@@ -89,7 +91,9 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	private val booleans = Seq(false, true)
 
-	private val writeCountsVsTransactionTypes = allCombinationsOf(writeCounts, booleans).asTable("writeCount", "isQspi")
+	private val transactionTypes = booleans.asTable("isQspi")
+
+	private val writeCountsVsTransactionTypes = allCombinationsOf(writeCounts, transactionTypes).asTable("writeCount", "isQspi")
 
 	private def allCombinationsOf[A, B](a: Seq[A], b: Seq[B]) = for (x <- a; y <- b) yield (x, y)
 
@@ -449,13 +453,13 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.pins.io0Mosi must have(nonTristatedOutValueOf(true))
 	}
 
-	it must "not be tristated on the first rising clock edge for (Q)SPI write-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first falling clock edge for (Q)SPI write-only transactions" in simulator { implicit fixture =>
 		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
 			fixture.reset()
 			stubIo0MosiAsTristate()
 			fixture.stubCommand(isQspi, writeCount=writeCount)
 			fixture.stubMosi(anyByte())
-			fixture.clockActive()
+			fixture.clock()
 			fixture.io.pins.io0Mosi.isTristated.toBoolean must be(false)
 		}
 	}
@@ -466,26 +470,28 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.clockWhileEnabled()
 		fixture.io.pins.io0Mosi.isTristated.toBoolean must be(true) withClue "because QSPI reads should tristate all I/O pins"
 		fixture.io.pins.clockEnable.toBoolean must be(false) withClue "because QSPI read should have been completed"
+		sleep(50)
 	}
 
-	it must "not be tristated on the first rising clock edge for (Q)SPI write-read transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first falling clock edge for (Q)SPI write-read transactions" in simulator { implicit fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			stubIo0MosiAsTristate()
 			fixture.stubCommand(isQspi, writeCount=writeCount, readCount=readCount)
 			fixture.stubMosi(anyByte())
 			fixture.stubReadyMiso()
-			fixture.clockActive()
+			fixture.clock()
 			fixture.io.pins.io0Mosi.isTristated.toBoolean must be(false)
 		}
 	}
 
-	it must "not be tristated on the first rising clock edge for empty (Q)SPI transactions if not previously tristated" in simulator { implicit fixture =>
+	// TODO: Revisit this test - an empty SPI transaction might be a good way to return to the default SPI state (MOSI high, MISO tristated, /WP low, /HOLD high)
+	it must "not be tristated on the first falling clock edge for empty (Q)SPI transactions if not previously tristated" in simulator { implicit fixture =>
 		forAll(booleans) { isQspi =>
 			fixture.reset()
 			stubIo0MosiAsNonTristate()
 			fixture.stubCommand(isQspi, writeCount=0, readCount=0)
-			fixture.clockActive()
+			fixture.clock()
 			fixture.io.pins.io0Mosi.isTristated.toBoolean must be(false)
 		}
 	}
@@ -496,9 +502,11 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.clockWhileEnabled()
 		fixture.io.pins.io0Mosi.isTristated.toBoolean must be(false) withClue "because QSPI writes should drive all I/O pins"
 		fixture.io.pins.clockEnable.toBoolean must be(false) withClue "because QSPI write should have been completed"
+		sleep(50)
 	}
 
-	it must "be tristate on the first rising clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
+	// TODO: Revisit this test - an empty SPI transaction might be a good way to return to the default SPI state (MOSI high, MISO tristated, /WP low, /HOLD high)
+	it must "be tristated on the first rising clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
 		forAll(booleans) { isQspi =>
 			fixture.reset()
 			stubIo0MosiAsTristate()
@@ -508,77 +516,83 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "not be tristated on the first rising clock edge for SPI read-only transactions" in simulator { implicit fixture =>
+	// TODO: Revisit this test - an empty SPI transaction might be a good way to return to the default SPI state (MOSI high, MISO tristated, /WP low, /HOLD high)
+	it must "be tristated on the first falling clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
+		forAll(booleans) { isQspi =>
+			fixture.reset()
+			stubIo0MosiAsTristate()
+			fixture.stubCommand(isQspi, writeCount=0, readCount=0)
+			fixture.clock()
+			fixture.io.pins.io0Mosi.isTristated.toBoolean must be(true)
+		}
+	}
+
+	it must "not be tristated on the first falling clock edge for SPI read-only transactions" in simulator { implicit fixture =>
 		forAll(readCounts) { readCount =>
 			fixture.reset()
 			stubIo0MosiAsTristate()
 			fixture.stubCommand(isQspi=false, readCount=readCount)
 			fixture.stubReadyMiso()
-			fixture.clockActive()
+			fixture.clock()
 			fixture.io.pins.io0Mosi.isTristated.toBoolean must be(false)
 		}
 	}
 
-	it must "be tristated on the first rising clock edge for QSPI read-only transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first falling clock edge for QSPI read-only transactions" in simulator { implicit fixture =>
 		forAll(readCounts) { readCount =>
 			fixture.reset()
-			stubIo0MosiAsTristate()
+			stubIo0MosiAsNonTristate()
 			fixture.stubCommand(isQspi=true, readCount=readCount)
 			fixture.stubReadyMiso()
-			fixture.clockActive()
+			fixture.clock()
 			fixture.io.pins.io0Mosi.isTristated.toBoolean must be(true)
 		}
 	}
 
-	it must "not be tristated on the first rising clock edge following the last written bit for (Q)SPI write-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first falling clock edge following the last written bit for (Q)SPI write-only transactions" in simulator { implicit fixture =>
 		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
 			fixture.reset()
 			stubIo0MosiAsTristate()
 			fixture.stubCommand(isQspi, writeCount=writeCount)
 			fixture.stubMosi(anyByte())
-			var isTristateOnLastRisingEdge: Boolean = true
-			do {
-				fixture.clockActive()
-				isTristateOnLastRisingEdge = fixture.io.pins.io0Mosi.isTristated.toBoolean
-				fixture.clockInactive()
-			} while (fixture.io.pins.clockEnable.toBoolean)
-			isTristateOnLastRisingEdge must be(false)
+			for (i <- 0 until writeCount * (if (isQspi) 2 else 8) + 1) {
+				fixture.clock()
+			}
+			fixture.io.pins.io0Mosi.isTristated.toBoolean must be(false)
 		}
 	}
 
 	private val writeAndReadCounts = allCombinationsOf(writeCounts, readCounts).asTable("writeCount", "readCount")
 
-	it must "not be tristated on the first rising clock edge following the last written bit for SPI write-read transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first falling clock edge following the last written bit for SPI write-read transactions" in simulator { implicit fixture =>
 		forAll(writeAndReadCounts) { (writeCount, readCount) =>
 			fixture.reset()
 			stubIo0MosiAsTristate()
 			fixture.stubCommand(isQspi=false, writeCount=writeCount, readCount=readCount)
 			fixture.stubMosi(anyByte())
 			fixture.stubStalledMiso()
-			var isTristateOnLastRisingEdge: Boolean = true
-			do {
-				fixture.clockActive()
-				isTristateOnLastRisingEdge = fixture.io.pins.io0Mosi.isTristated.toBoolean
-				fixture.clockInactive()
-			} while (fixture.io.pins.clockEnable.toBoolean)
-			isTristateOnLastRisingEdge must be(false)
+			for (i <- 0 until writeCount * 8 + 1) {
+				fixture.clock()
+			}
+			fixture.io.pins.io0Mosi.isTristated.toBoolean must be(false)
 		}
 	}
 
-	it must "be tristated on the first rising clock edge following the last written bit for QSPI write-read transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first falling clock edge following the last written bit for QSPI write-read transactions" in simulator { implicit fixture =>
 		forAll(writeAndReadCounts) { (writeCount, readCount) =>
 			fixture.reset()
 			stubIo0MosiAsNonTristate()
 			fixture.stubCommand(isQspi=true, writeCount=writeCount, readCount=readCount)
 			fixture.stubMosi(anyByte())
 			fixture.stubStalledMiso()
-			var isTristateOnLastRisingEdge: Boolean = false
-			do {
+			var isTristateOnLastFallingEdge: Boolean = false
+			for (i <- 0 until writeCount * 2 + 1) {
 				fixture.clockActive()
-				isTristateOnLastRisingEdge = fixture.io.pins.io0Mosi.isTristated.toBoolean // TODO: EXAMINE THE VCD FOR THE TESTS TO MAKE SURE THAT THE SWITCH FROM DRIVEN TO TRISTATE IS DONE ON THE CORRECT EDGE
+				fixture.io.pins.io0Mosi.isTristated.toBoolean must be(false) withClue s"on rising edge ${i}"
 				fixture.clockInactive()
-			} while (fixture.io.pins.clockEnable.toBoolean)
-			isTristateOnLastRisingEdge must be(true)
+				isTristateOnLastFallingEdge = fixture.io.pins.io0Mosi.isTristated.toBoolean
+			}
+			isTristateOnLastFallingEdge must be(true)
 		}
 	}
 
@@ -617,23 +631,11 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		shiftedMosi must be(transactionMosi)
 	}
 
-	it must "be shifted MOSI bytes for an SPI multi-byte write-only non-pipelined transaction" in simulator { fixture =>
-		forAll(writeCounts) { writeCount =>
-			val transactionMosis = Array.fill(writeCount) { anyByte() }
-			fixture.reset()
-			fixture.stubCommand(isQspi=false, writeCount=writeCount)
-			forAll(transactionMosis) { transactionMosi =>
-				fixture.stubMosi(transactionMosi)
-				fixture.shiftSpiMosiByte() must be(transactionMosi) // TODO: CAN BE GENERALISED FOR Q(SPI) ?  BUT ONLY WHEN ALL PINS ARE DONE...
-			}
-		}
-	}
-
 	it must "be shifted MOSI bytes for an SPI multi-byte write-only pipelined transaction" in simulator { fixture =>
 		forAll(writeCounts) { writeCount =>
 			val transactionMosis = Array.fill(writeCount) { anyByte() }
 			fixture.reset()
-			fixture.stubCommand(isQspi=false, writeCount=writeCount)
+			fixture.stubCommand(isQspi=false, writeCount)
 			fixture.stubMosi(transactionMosis.head)
 			var transactionMosi = transactionMosis.head
 			forAll(transactionMosis.tail) { nextTransactionMosi =>
@@ -642,65 +644,28 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 					fixture.clockActive()
 					fixture.stubMosi(nextTransactionMosi)
 					fixture.clockInactive()
-					shiftedMosi = (shiftedMosi << 1) | (if (fixture.io.pins.io0Mosi.outValue.toBoolean) 1 else 0)
+					shiftedMosi = (shiftedMosi << 1) | fixture.currentSpiMosiBit
 				}
 
 				shiftedMosi must be(transactionMosi)
 				transactionMosi = nextTransactionMosi
 			}
 
-			fixture.shiftSpiMosiByte() must be(transactionMosi) // TODO: CAN BE GENERALISED FOR Q(SPI) ?  BUT ONLY WHEN ALL PINS ARE DONE...
+			fixture.shiftSpiMosiByte() must be(transactionMosi)
 		}
-	}
-
-	it must "be shifted MOSI bytes for an SPI multi-byte write-only transaction when there are stalls" in simulator { fixture =>
-		forAll(writeCounts) { writeCount =>
-			val transactionMosis = Array.fill(writeCount) { anyByte() }
-			fixture.reset()
-			fixture.stubCommand(isQspi=false, writeCount=writeCount)
-			forAll(transactionMosis) { transactionMosi =>
-				fixture.stubInvalidMosi(anyByteExcept(transactionMosi))
-				fixture.anyNumberOfClocks()
-				fixture.stubMosi(transactionMosi)
-				fixture.shiftSpiMosiByte() must be(transactionMosi) // TODO: CAN BE GENERALISED FOR Q(SPI) ?  BUT ONLY WHEN ALL PINS ARE DONE...
-			}
-		}
-	}
-
-	private def anyByteExcept(byte: Int): Int = {
-		val anotherByte = Random.nextInt(1 << 8)
-		if (anotherByte != byte) anotherByte else anyByteExcept(byte)
 	}
 
 	it must "not be modified for an SPI write-only transaction if no MOSI byte has been registered" in simulator { fixture =>
 		fixture.reset()
 		fixture.stubCommand(isQspi=false, writeCount=1)
+		fixture.stubMosi(0xff)
+		fixture.clock()
 		fixture.stubInvalidMosi(0x00)
-		fixture.shiftSpiMosiByte() must be(0xff) // TODO: CAN BE GENERALISED FOR Q(SPI) ?  BUT ONLY WHEN ALL PINS ARE DONE...
+		fixture.clockWhileEnabled()
+		fixture.shiftSpiMosiByte() must be(0xff)
 	}
 
-	it must "not be modified for an SPI write-only transaction until a MOSI byte has been registered" in simulator { fixture =>
-		val transactioMosi = anyByte()
-		fixture.reset()
-		fixture.stubCommand(isQspi=false, writeCount=1)
-		fixture.stubInvalidMosi(anyByteExcept(transactioMosi))
-		fixture.atLeastOneClock()
-		fixture.stubMosi(transactioMosi)
-		fixture.shiftSpiMosiByte() must be(transactioMosi) // TODO: CAN BE GENERALISED FOR Q(SPI) ?  BUT ONLY WHEN ALL PINS ARE DONE...
-	}
-
-	it must "use the MOSI byte registered on the first rising edge of a transaction" in simulator { fixture =>
-		val transactioMosi = anyByte()
-		fixture.reset()
-		fixture.stubCommand(isQspi=false, writeCount=1)
-		fixture.stubMosi(transactioMosi)
-		fixture.clockActive()
-		fixture.stubMosi(~transactioMosi & 0xff)
-		fixture.shiftSpiMosiByte() must be(transactioMosi) // TODO: CAN BE GENERALISED FOR Q(SPI) ?  BUT ONLY WHEN ALL PINS ARE DONE...
-	}
-///////////////////////////////
-
-	it must "be the bits 4 and 0 of the MOSI byte shifted out on 2 falling clock edges, for a QSPI write-only transaction" in simulator { implicit fixture =>
+	it must "be bits 4 and 0 of the MOSI byte shifted out on 2 falling clock edges, for a QSPI write-only transaction" in simulator { implicit fixture =>
 		forAll(qspiMosiBytesFor(bits=(4, 0)).asTable("transactionMosi")) { transactionMosi =>
 			fixture.reset()
 			fixture.stubCommand(isQspi=true, writeCount=1)
@@ -737,86 +702,95 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-/*
-// TODO: CAN THESE BE GENERALISED INTO A SINGLE TEST FOR SPI / QSPI ?
-	it must "be shifted MOSI bytes for a QSPI multi-byte write-only non-pipelined transaction" in simulator { fixture =>
-		forAll(writeCounts) { writeCount =>
+	"All FlashQspiSerdes IO* (MOSI) lines" must "be shifted MOSI bytes for a (Q)SPI multi-byte write-only non-pipelined transaction" in simulator { fixture =>
+		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
 			val transactionMosis = Array.fill(writeCount) { anyByte() }
 			fixture.reset()
-			fixture.stubCommand(isQspi=true, writeCount=writeCount)
+			fixture.stubCommand(isQspi, writeCount)
 			forAll(transactionMosis) { transactionMosi =>
 				fixture.stubMosi(transactionMosi)
-				fixture.shiftMosiByte(isQspi=true) must be(transactionMosi)
+				fixture.shiftMosiByte(isQspi) must be(transactionMosi)
 			}
 		}
 	}
 
-	it must "be shifted MOSI bytes for an SPI multi-byte write-only pipelined transaction" in simulator { fixture =>
+	they must "be shifted MOSI bytes for a QSPI multi-byte write-only pipelined transaction" in simulator { fixture =>
 		forAll(writeCounts) { writeCount =>
 			val transactionMosis = Array.fill(writeCount) { anyByte() }
 			fixture.reset()
-			fixture.stubCommand(isQspi=false, writeCount=writeCount)
+			fixture.stubCommand(isQspi=true, writeCount)
 			fixture.stubMosi(transactionMosis.head)
 			var transactionMosi = transactionMosis.head
 			forAll(transactionMosis.tail) { nextTransactionMosi =>
 				var shiftedMosi = 0
-				forAll(7 to 0 by -1) { bit =>
+				forAll(0 to 1) { bit =>
 					fixture.clockActive()
 					fixture.stubMosi(nextTransactionMosi)
 					fixture.clockInactive()
-					shiftedMosi = (shiftedMosi << 1) | (if (fixture.io.pins.io0Mosi.outValue.toBoolean) 1 else 0)
+					shiftedMosi = (shiftedMosi << 4) | fixture.currentQspiMosiNybble
 				}
 
 				shiftedMosi must be(transactionMosi)
 				transactionMosi = nextTransactionMosi
 			}
 
-			fixture.shiftMosiByte() must be(transactionMosi)
+			fixture.shiftQspiMosiByte() must be(transactionMosi)
 		}
 	}
 
-	it must "be shifted MOSI bytes for an SPI multi-byte write-only transaction when there are stalls" in simulator { fixture =>
-		forAll(writeCounts) { writeCount =>
+	they must "be shifted MOSI bytes for a (Q)SPI multi-byte write-only transaction when there are stalls" in simulator { fixture =>
+		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
 			val transactionMosis = Array.fill(writeCount) { anyByte() }
 			fixture.reset()
-			fixture.stubCommand(isQspi=false, writeCount=writeCount)
+			fixture.stubCommand(isQspi, writeCount)
 			forAll(transactionMosis) { transactionMosi =>
 				fixture.stubInvalidMosi(anyByteExcept(transactionMosi))
 				fixture.anyNumberOfClocks()
 				fixture.stubMosi(transactionMosi)
-				fixture.shiftMosiByte() must be(transactionMosi)
+				fixture.shiftMosiByte(isQspi) must be(transactionMosi)
 			}
 		}
 	}
 
-	it must "not be modified for an SPI write-only transaction if no MOSI byte has been registered" in simulator { fixture =>
+	private def anyByteExcept(byte: Int): Int = {
+		val anotherByte = Random.nextInt(1 << 8)
+		if (anotherByte != byte) anotherByte else anyByteExcept(byte)
+	}
+
+	they must "not be modified for a QSPI write-only transaction if no MOSI byte has been registered" in simulator { fixture =>
 		fixture.reset()
-		fixture.stubCommand(isQspi=false, writeCount=1)
+		fixture.stubCommand(isQspi=true, writeCount=1)
+		fixture.stubMosi(0xff)
+		fixture.clock()
 		fixture.stubInvalidMosi(0x00)
-		fixture.shiftMosiByte() must be(0xff)
+		fixture.clockWhileEnabled()
+		fixture.shiftQspiMosiByte() must be(0xff)
 	}
 
-	it must "not be modified for an SPI write-only transaction until a MOSI byte has been registered" in simulator { fixture =>
-		val transactioMosi = anyByte()
-		fixture.reset()
-		fixture.stubCommand(isQspi=false, writeCount=1)
-		fixture.stubInvalidMosi(anyByteExcept(transactioMosi))
-		fixture.atLeastOneClock()
-		fixture.stubMosi(transactioMosi)
-		fixture.shiftMosiByte() must be(transactioMosi)
+	they must "not be modified for a (Q)SPI write-only transaction until a MOSI byte has been registered" in simulator { fixture =>
+ 		forAll(transactionTypes) { isQspi =>
+			val transactioMosi = anyByte()
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=1)
+			fixture.stubInvalidMosi(anyByteExcept(transactioMosi))
+			fixture.atLeastOneClock()
+			fixture.stubMosi(transactioMosi)
+			fixture.shiftMosiByte(isQspi) must be(transactioMosi)
+		}
 	}
 
-	it must "use the MOSI byte registered on the first rising edge of a transaction" in simulator { fixture =>
-		val transactioMosi = anyByte()
-		fixture.reset()
-		fixture.stubCommand(isQspi=false, writeCount=1)
-		fixture.stubMosi(transactioMosi)
-		fixture.clockActive()
-		fixture.stubMosi(~transactioMosi & 0xff)
-		fixture.shiftMosiByte() must be(transactioMosi)
+	they must "use the MOSI byte registered on the first rising edge of a transaction" in simulator { fixture =>
+ 		forAll(transactionTypes) { isQspi =>
+			val transactioMosi = anyByte()
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=1)
+			fixture.stubMosi(transactioMosi)
+			fixture.clockActive()
+			fixture.stubMosi(~transactioMosi & 0xff)
+			fixture.shiftMosiByte(isQspi) must be(transactioMosi)
+		}
 	}
-*/
-///////////////////////////////
+
 	"FlashQspiSerdes transaction's MOSI ready flag" must "be held low during reset" in simulator { fixture =>
 		fixture.holdInReset()
 		fixture.io.transaction.mosi.ready.toBoolean must be(false)
@@ -911,10 +885,16 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
+	it must "not be high on the first clock when registered by the previous transaction" in simulator { fixture =>
+		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount)
+			fixture.stubMosi(anyByte())
+			fixture.clockWhileEnabled()
 
-	// TODO: MUST NOT MODIFY THE VALUES OF ANY PINS WHEN A WRITE TRANSACTION IS SUBMITTED WITHOUT A MOSI BYTE
-	// TODO: MUST NOT MODIFY THE TRISTATES OF ANY PINS WHEN A WRITE TRANSACTION IS SUBMITTED WITHOUT A MOSI BYTE
-
-	// TODO: MUST NOT MODIFY THE VALUES OF ANY PINS WHEN A TRANSACTION OF 0 READ AND 0 WRITE IS SUBMITTED
-	// TODO: MUST NOT MODIFY THE TRISTATES OF ANY PINS WHEN A TRANSACTION OF 0 READ AND 0 WRITE IS SUBMITTED
+			fixture.stubCommand(isQspi, writeCount=1)
+			fixture.clockActive()
+			fixture.io.transaction.mosi.ready.toBoolean must be(false)
+		}
+	}
 }

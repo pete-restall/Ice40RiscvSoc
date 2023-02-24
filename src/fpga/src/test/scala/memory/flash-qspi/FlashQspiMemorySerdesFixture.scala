@@ -84,25 +84,29 @@ class FlashQspiMemorySerdesFixture extends Component {
 		var shiftedMosi = 0
 		for (bit <- 7 to 0 by -1) {
 			clock()
-			shiftedMosi = (shiftedMosi << 1) | (if (io.pins.io0Mosi.outValue.toBoolean) 1 else 0)
+			shiftedMosi = (shiftedMosi << 1) | currentSpiMosiBit
 		}
 
 		shiftedMosi
 	}
+
+	def currentSpiMosiBit: Int = if (io.pins.io0Mosi.outValue.toBoolean) 1 else 0
 
 	def shiftQspiMosiByte(): Int = {
 		var shiftedMosi = 0
 		for (cycle <- 0 to 1) {
 			clock()
-			shiftedMosi = (shiftedMosi << 4) |
-				(if (io.pins.io0Mosi.outValue.toBoolean) 1 else 0) |
-				(if (io.pins.io1Miso.outValue.toBoolean) 2 else 0) |
-				(if (io.pins.io2_Wp.outValue.toBoolean) 4 else 0) |
-				(if (io.pins.io3_Hold.outValue.toBoolean) 8 else 0)
+			shiftedMosi = (shiftedMosi << 4) | currentQspiMosiNybble
 		}
 
 		shiftedMosi
 	}
+
+	def currentQspiMosiNybble: Int =
+		(if (io.pins.io0Mosi.outValue.toBoolean) 1 else 0) |
+		(if (io.pins.io1Miso.outValue.toBoolean) 2 else 0) |
+		(if (io.pins.io2_Wp.outValue.toBoolean) 4 else 0) |
+		(if (io.pins.io3_Hold.outValue.toBoolean) 8 else 0)
 
 	def stubReadyMiso(): Unit = {
 		io.transaction.miso.ready #= true
