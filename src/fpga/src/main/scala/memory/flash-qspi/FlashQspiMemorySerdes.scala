@@ -5,6 +5,7 @@ import spinal.lib.{master, slave, Stream}
 
 import uk.co.lophtware.msfreference.pins.TristatePin
 
+// TODO: An empty transaction (writeCount=readCount=0) will revert to the default pin states (tristate and output values) to facilitate state resets when toggling /CS
 class FlashQspiMemorySerdes extends Component {
 	val io = new FlashQspiMemorySerdes.IoBundle()
 	noIoPrefix()
@@ -32,6 +33,8 @@ class FlashQspiMemorySerdes extends Component {
 
 	private val isStartOfTransaction = Bool()
 	isStartOfTransaction := writeCountRemaining === 0 && readCountRemaining === 0 && io.transaction.command.valid
+
+	private val resetToDefaultSpi = RegNext(isStartOfTransaction && (io.transaction.command.payload.writeCount === 0 || io.transaction.command.payload.readCount === 0)) init(True)
 
 	private val nextBitCounterValue = UInt(3 bits)
 	nextBitCounterValue := bitCounter + (isQspi ? U(4) | U(1))
@@ -95,7 +98,7 @@ class FlashQspiMemorySerdes extends Component {
 
 		val isIo0MosiTristatedNegEdge = Bool()
 		val isIo0MosiTristatedNegEdgeReg = RegNext(isIo0MosiTristatedNegEdge)
-		isIo0MosiTristatedNegEdge := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && isIo0MosiTristatedNegEdgeReg)
+		isIo0MosiTristatedNegEdge := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && isIo0MosiTristatedNegEdgeReg && !resetToDefaultSpi)
 
 		io.pins.io0Mosi.outValue := mosiOutBits(0)
 		io.pins.io0Mosi.isTristated := isIo0MosiTristatedNegEdgeReg
