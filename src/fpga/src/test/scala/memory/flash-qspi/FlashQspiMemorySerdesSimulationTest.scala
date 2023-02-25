@@ -71,6 +71,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 	}
 
 	it must "hold the IO2 (/WP) pin low after reset" in simulator { fixture =>
+		// TODO: This pin ought to be brought out to io.pins since the state machine will need to manipulate it for programming / erasing
 		fixture.reset()
 		fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(false))
 	}
@@ -118,7 +119,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 	}
 
 	it must "still stall the MOSI stream when a transaction is received without a write count" in simulator { fixture =>
-		forAll(booleans.asTable("isQspi")) { isQspi =>
+		forAll(transactionTypes) { isQspi =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount=0)
 			fixture.stubMosi(anyByte())
@@ -151,7 +152,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	private def anyReadCount() = Random.between(1, 8)
 
-	private val readCountsVsTransactionTypes = allCombinationsOf(readCounts, booleans).asTable("readCount", "isQspi")
+	private val readCountsVsTransactionTypes = allCombinationsOf(readCounts, transactionTypes).asTable("readCount", "isQspi")
 
 	it must "stall the command stream on the active clock edge when a read transaction is received" in simulator { fixture =>
 		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
@@ -183,7 +184,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 	}
 
 	it must "be low when a transaction is received with a MOSI byte but without both read and write counts" in simulator { fixture =>
-		forAll(booleans.asTable("isQspi")) { isQspi =>
+		forAll(transactionTypes) { isQspi =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount=0, readCount=0)
 			fixture.stubMosi(anyByte())
@@ -345,7 +346,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	private val writeAndReadCountsVsTransactionTypes = allCombinationsOf(writeCounts, readCounts, booleans).asTable("writeCount", "readCount", "isQspi")
+	private val writeAndReadCountsVsTransactionTypes = allCombinationsOf(writeCounts, readCounts, transactionTypes).asTable("writeCount", "readCount", "isQspi")
 
 	private def allCombinationsOf[A, B, C](a: Seq[A], b: Seq[B], c: Seq[C]) = for (x <- a; y <- b; z <- c) yield (x, y, z)
 
@@ -487,7 +488,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	// TODO: Revisit this test - an empty SPI transaction might be a good way to return to the default SPI state (MOSI high, MISO tristated, /WP low, /HOLD high)
 	it must "not be tristated on the first falling clock edge for empty (Q)SPI transactions if not previously tristated" in simulator { implicit fixture =>
-		forAll(booleans) { isQspi =>
+		forAll(transactionTypes) { isQspi =>
 			fixture.reset()
 			stubIo0MosiAsNonTristate()
 			fixture.stubCommand(isQspi, writeCount=0, readCount=0)
@@ -507,7 +508,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	// TODO: Revisit this test - an empty SPI transaction might be a good way to return to the default SPI state (MOSI high, MISO tristated, /WP low, /HOLD high)
 	it must "be tristated on the first rising clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
-		forAll(booleans) { isQspi =>
+		forAll(transactionTypes) { isQspi =>
 			fixture.reset()
 			stubIo0MosiAsTristate()
 			fixture.stubCommand(isQspi, writeCount=0, readCount=0)
@@ -518,7 +519,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	// TODO: Revisit this test - an empty SPI transaction might be a good way to return to the default SPI state (MOSI high, MISO tristated, /WP low, /HOLD high)
 	it must "be tristated on the first falling clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
-		forAll(booleans) { isQspi =>
+		forAll(transactionTypes) { isQspi =>
 			fixture.reset()
 			stubIo0MosiAsTristate()
 			fixture.stubCommand(isQspi, writeCount=0, readCount=0)
