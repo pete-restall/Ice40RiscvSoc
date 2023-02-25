@@ -5,18 +5,10 @@ import spinal.lib.{master, slave, Stream}
 
 import uk.co.lophtware.msfreference.pins.TristatePin
 
-// TODO: An empty transaction (writeCount=readCount=0) will revert to the default pin states (tristate and output values) to facilitate state resets when toggling /CS
 class FlashQspiMemorySerdes extends Component {
 	val io = new FlashQspiMemorySerdes.IoBundle()
 	noIoPrefix()
 
-	private val isReadTransaction = Bool()
-	isReadTransaction := (io.transaction.command.payload.readCount =/= 0 && io.transaction.command.valid)
-
-	private val isWriteTransaction = Bool()
-	isWriteTransaction := (io.transaction.command.payload.writeCount =/= 0 && io.transaction.mosi.valid) // TODO: && io.transaction.command.valid
-
-	private val isQspi = Reg(Bool()) init(False)
 	private val writeCountRemaining = Reg(UInt(io.transaction.command.writeCount.getWidth bits)) init(0)
 	private val readCountRemaining = Reg(UInt(io.transaction.command.readCount.getWidth bits)) init(0)
 	private val isMosiFull = Reg(Bool()) init(False)
@@ -26,13 +18,13 @@ class FlashQspiMemorySerdes extends Component {
 	private val hasMoreMiso = Reg(Bool()) init(True)
 	private val bitCounter = Reg(UInt(3 bits)) init(0)
 
-	private val isIo0MosiTristated = Reg(Bool()) init(False)
-
 	private val bitCounterWillIncrement = Bool()
 	bitCounterWillIncrement := (writeCountRemaining =/= 0 && hasMoreMosi) || (writeCountRemaining === 0 && readCountRemaining =/= 0 && hasMoreMiso)
 
 	private val isStartOfTransaction = Bool()
 	isStartOfTransaction := writeCountRemaining === 0 && readCountRemaining === 0 && io.transaction.command.valid
+
+	private val isQspi = RegNextWhen(io.transaction.command.isQspi, isStartOfTransaction) init(False)
 
 	private val resetToDefaultSpi = RegNext(isStartOfTransaction && (io.transaction.command.payload.writeCount === 0 || io.transaction.command.payload.readCount === 0)) init(True)
 
@@ -52,10 +44,6 @@ class FlashQspiMemorySerdes extends Component {
 	}
 
 	when(isStartOfTransaction) {
-		isQspi := io.transaction.command.isQspi
-	}
-
-	when(isStartOfTransaction && (io.transaction.command.payload.writeCount =/= 0 || io.transaction.command.payload.readCount =/= 0)) {
 		// TODO: JUST MAKE A SINGLE REGISTER WITH THE DATA BEING THE ENTIRE PAYLOAD...BUT THIS CAN BE A REFACTORING AFTER THE FUNCTIONALITY HAS BEEN WRITTEN
 		writeCountRemaining := io.transaction.command.payload.writeCount
 		readCountRemaining := io.transaction.command.payload.readCount
@@ -99,27 +87,28 @@ class FlashQspiMemorySerdes extends Component {
 			}
 		}
 
-		val isIo0MosiTristated = Bool()
-		val isIo1MisoTristated = Bool()
-		val isIo2_WpTristated = Bool()
-		val isIo3_HoldTristated = Bool()
-		val tristated = RegNext(isIo3_HoldTristated ## isIo2_WpTristated ## isIo1MisoTristated ## isIo0MosiTristated) init(B("0010"))
-		isIo0MosiTristated := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && tristated(0) && !resetToDefaultSpi)
-		isIo1MisoTristated := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && tristated(1) && !resetToDefaultSpi) || !isQspi
-		isIo2_WpTristated := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && tristated(2) && !resetToDefaultSpi)
-		isIo3_HoldTristated := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && tristated(3) && !resetToDefaultSpi)
+		val isQspiRead = Bool()
+		isQspiRead := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0)
 
+		val isIo0MosiTristated = Reg(Bool()) init(False)
+		isIo0MosiTristated := isQspiRead || (!io.pins.clockEnable && isIo0MosiTristated && !resetToDefaultSpi)
 		io.pins.io0Mosi.outValue := mosiOutBits(0)
-		io.pins.io0Mosi.isTristated := tristated(0)
+		io.pins.io0Mosi.isTristated := isIo0MosiTristated
 
+		val isIo1MisoTristated = Reg(Bool()) init(True)
+		isIo1MisoTristated := isQspiRead || (!io.pins.clockEnable && isIo1MisoTristated && !resetToDefaultSpi) || !isQspi
 		io.pins.io1Miso.outValue := mosiOutBits(1)
-		io.pins.io1Miso.isTristated := tristated(1)
+		io.pins.io1Miso.isTristated := isIo1MisoTristated
 
+		val isIo2_WpTristated = Reg(Bool()) init(False)
+		isIo2_WpTristated := isQspiRead || (!io.pins.clockEnable && isIo2_WpTristated && !resetToDefaultSpi)
 		io.pins.io2_Wp.outValue := mosiOutBits(2)
-		io.pins.io2_Wp.isTristated := tristated(2)
+		io.pins.io2_Wp.isTristated := isIo2_WpTristated
 
+		val isIo3_HoldTristated = Reg(Bool()) init(False)
+		isIo3_HoldTristated := isQspiRead || (!io.pins.clockEnable && isIo3_HoldTristated && !resetToDefaultSpi)
 		io.pins.io3_Hold.outValue := mosiOutBits(3)
-		io.pins.io3_Hold.isTristated := tristated(3)
+		io.pins.io3_Hold.isTristated := isIo3_HoldTristated
 	}
 
 	io.pins.clockEnable := bitCounterWillIncrement
