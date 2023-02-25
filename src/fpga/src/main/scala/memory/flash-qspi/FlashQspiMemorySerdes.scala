@@ -102,11 +102,12 @@ class FlashQspiMemorySerdes extends Component {
 		val isIo0MosiTristated = Bool()
 		val isIo1MisoTristated = Bool()
 		val isIo2_WpTristated = Bool()
-		val isIo3_HoldTristated = Bool(false)
+		val isIo3_HoldTristated = Bool()
 		val tristated = RegNext(isIo3_HoldTristated ## isIo2_WpTristated ## isIo1MisoTristated ## isIo0MosiTristated) init(B("0010"))
 		isIo0MosiTristated := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && tristated(0) && !resetToDefaultSpi)
 		isIo1MisoTristated := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && tristated(1) && !resetToDefaultSpi) || !isQspi
 		isIo2_WpTristated := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && tristated(2) && !resetToDefaultSpi)
+		isIo3_HoldTristated := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && tristated(3) && !resetToDefaultSpi)
 
 		io.pins.io0Mosi.outValue := mosiOutBits(0)
 		io.pins.io0Mosi.isTristated := tristated(0)
