@@ -51,12 +51,15 @@ class FlashQspiMemorySerdes extends Component {
 		isMosiFull := False
 	}
 
+	when(isStartOfTransaction) {
+		isQspi := io.transaction.command.isQspi
+	}
+
 	when(isStartOfTransaction && (io.transaction.command.payload.writeCount =/= 0 || io.transaction.command.payload.readCount =/= 0)) {
 		// TODO: JUST MAKE A SINGLE REGISTER WITH THE DATA BEING THE ENTIRE PAYLOAD...BUT THIS CAN BE A REFACTORING AFTER THE FUNCTIONALITY HAS BEEN WRITTEN
 		writeCountRemaining := io.transaction.command.payload.writeCount
 		readCountRemaining := io.transaction.command.payload.readCount
 		hasMoreMosi := io.transaction.mosi.valid
-		isQspi := io.transaction.command.isQspi
 	}
 
 	when(bitCounterWillOverflowIfIncremented && writeCountRemaining =/= 0) {
@@ -96,23 +99,28 @@ class FlashQspiMemorySerdes extends Component {
 			}
 		}
 
-		val isIo0MosiTristatedNegEdge = Bool()
-		val isIo0MosiTristatedNegEdgeReg = RegNext(isIo0MosiTristatedNegEdge)
-		isIo0MosiTristatedNegEdge := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && isIo0MosiTristatedNegEdgeReg && !resetToDefaultSpi)
+		val isIo0MosiTristated = Bool()
+		val isIo1MisoTristated = Bool()
+		val isIo2_WpTristated = Bool(false)
+		val isIo3_HoldTristated = Bool(false)
+		val tristated = RegNext(isIo3_HoldTristated ## isIo2_WpTristated ## isIo1MisoTristated ## isIo0MosiTristated) init(B("0010"))
+		isIo0MosiTristated := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && tristated(0) && !resetToDefaultSpi)
+		isIo1MisoTristated := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0) || (!io.pins.clockEnable && tristated(1) && !resetToDefaultSpi) || !isQspi
 
 		io.pins.io0Mosi.outValue := mosiOutBits(0)
-		io.pins.io0Mosi.isTristated := isIo0MosiTristatedNegEdgeReg
+		io.pins.io0Mosi.isTristated := tristated(0)
 
 		io.pins.io1Miso.outValue := mosiOutBits(1)
+		io.pins.io1Miso.isTristated := tristated(1)
+
 		io.pins.io2_Wp.outValue := mosiOutBits(2)
+		io.pins.io2_Wp.isTristated := tristated(2)
+
 		io.pins.io3_Hold.outValue := mosiOutBits(3)
+		io.pins.io3_Hold.isTristated := tristated(3)
 	}
 
 	io.pins.clockEnable := bitCounterWillIncrement
-	io.pins.io1Miso.isTristated := False // TODO: FOR INITIAL STATE, THIS SHOULD BE TRISTATED
-	io.pins.io2_Wp.isTristated := False
-	io.pins.io3_Hold.isTristated := False
-
 	io.transaction.miso.payload := 0
 	io.transaction.miso.valid := False
 	io.transaction.mosi.ready := !clockDomain.isResetActive && !isMosiFull
