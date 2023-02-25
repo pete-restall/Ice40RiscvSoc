@@ -9,58 +9,51 @@ class FlashQspiMemorySerdes extends Component {
 	val io = new FlashQspiMemorySerdes.IoBundle()
 	noIoPrefix()
 
-	private val writeCountRemaining = Reg(UInt(io.transaction.command.writeCount.getWidth bits)) init(0)
-	private val readCountRemaining = Reg(UInt(io.transaction.command.readCount.getWidth bits)) init(0)
-	private val isMosiFull = Reg(Bool()) init(False)
-
-	private val hasMoreMosi = Reg(Bool()) init(False)
-	private val mosi = Reg(UInt(8 bits)) init(0)
-	private val hasMoreMiso = Reg(Bool()) init(True)
-	private val bitCounter = Reg(UInt(3 bits)) init(0)
-
-	private val bitCounterWillIncrement = Bool()
-	bitCounterWillIncrement := (writeCountRemaining =/= 0 && hasMoreMosi) || (writeCountRemaining === 0 && readCountRemaining =/= 0 && hasMoreMiso)
-
 	private val isStartOfTransaction = Bool()
-	isStartOfTransaction := writeCountRemaining === 0 && readCountRemaining === 0 && io.transaction.command.valid
+	private val command = RegNextWhen(io.transaction.command.payload, isStartOfTransaction) init(FlashQspiMemorySerdes.emptyTransaction)
+	isStartOfTransaction := command.writeCount === 0 && command.readCount === 0 && io.transaction.command.valid
 
-	private val isQspi = RegNextWhen(io.transaction.command.isQspi, isStartOfTransaction) init(False)
+	private val mosi = Reg(UInt(8 bits)) init(0)
+	private val isMosiFull = Reg(Bool()) init(False)
+	private val hasMoreMosi = Reg(Bool()) init(False)
+	private val hasMoreMiso = Reg(Bool()) init(True)
 
-	private val resetToDefaultSpi = RegNext(isStartOfTransaction && (io.transaction.command.payload.writeCount === 0 || io.transaction.command.payload.readCount === 0)) init(True)
+	private val bitCounter = Reg(UInt(3 bits)) init(0)
+	private val bitCounterWillIncrement = Bool()
+	bitCounterWillIncrement := (command.writeCount =/= 0 && hasMoreMosi) || (command.writeCount === 0 && command.readCount =/= 0 && hasMoreMiso)
 
 	private val nextBitCounterValue = UInt(3 bits)
-	nextBitCounterValue := bitCounter + (isQspi ? U(4) | U(1))
+	nextBitCounterValue := bitCounter + (command.isQspi ? U(4) | U(1))
 
 	private val bitCounterWillOverflowIfIncremented = Bool()
 	bitCounterWillOverflowIfIncremented := nextBitCounterValue === 0
+
+	private val resetToDefaultSpi = RegNext(isStartOfTransaction && (io.transaction.command.payload.writeCount === 0 || io.transaction.command.payload.readCount === 0)) init(True)
 
 	when(!isMosiFull && io.transaction.mosi.valid) {
 		isMosiFull := True
 		mosi := io.transaction.mosi.payload
 	}
 
-	when((nextBitCounterValue === 7 && !isQspi) || (nextBitCounterValue === 4 && isQspi) && bitCounterWillIncrement) {
+	when((nextBitCounterValue === 7 && !command.isQspi) || (nextBitCounterValue === 4 && command.isQspi) && bitCounterWillIncrement) {
 		isMosiFull := False
 	}
 
 	when(isStartOfTransaction) {
-		// TODO: JUST MAKE A SINGLE REGISTER WITH THE DATA BEING THE ENTIRE PAYLOAD...BUT THIS CAN BE A REFACTORING AFTER THE FUNCTIONALITY HAS BEEN WRITTEN
-		writeCountRemaining := io.transaction.command.payload.writeCount
-		readCountRemaining := io.transaction.command.payload.readCount
 		hasMoreMosi := io.transaction.mosi.valid
 	}
 
-	when(bitCounterWillOverflowIfIncremented && writeCountRemaining =/= 0) {
-		writeCountRemaining := writeCountRemaining - 1
+	when(bitCounterWillOverflowIfIncremented && command.writeCount =/= 0) {
+		command.writeCount := command.writeCount - 1
 		hasMoreMosi := io.transaction.mosi.valid
 	}
 
-	when(!bitCounterWillIncrement && writeCountRemaining =/= 0) {
+	when(!bitCounterWillIncrement && command.writeCount =/= 0) {
 		hasMoreMosi := io.transaction.mosi.valid // TODO: WHEN REFACTORING, SEE IF THIS REGISTER CAN BE REMOVED
 	}
 
-	when(bitCounterWillOverflowIfIncremented && writeCountRemaining === 0) {
-		readCountRemaining := readCountRemaining - 1
+	when(bitCounterWillOverflowIfIncremented && command.writeCount === 0) {
+		command.readCount := command.readCount - 1
 		hasMoreMiso := io.transaction.miso.ready
 	}
 
@@ -70,7 +63,7 @@ class FlashQspiMemorySerdes extends Component {
 
 	clockDomain.withRevertedClockEdge() {
 		val mosiOutBits = Reg(Bits(4 bits)) init(B("1011"))
-		switch(isQspi ## bitCounter) {
+		switch(command.isQspi ## bitCounter) {
 			for (i <- 0 to 7) {
 				is(i) {
 					mosiOutBits(0) := Mux(io.pins.clockEnable, mosi(7 - i), mosiOutBits(0))
@@ -88,7 +81,7 @@ class FlashQspiMemorySerdes extends Component {
 		}
 
 		val isQspiRead = Bool()
-		isQspiRead := (isQspi && writeCountRemaining === 0 && readCountRemaining =/= 0)
+		isQspiRead := (command.isQspi && command.writeCount === 0 && command.readCount =/= 0)
 
 		val isIo0MosiTristated = Reg(Bool()) init(False)
 		isIo0MosiTristated := isQspiRead || (!io.pins.clockEnable && isIo0MosiTristated && !resetToDefaultSpi)
@@ -96,7 +89,7 @@ class FlashQspiMemorySerdes extends Component {
 		io.pins.io0Mosi.isTristated := isIo0MosiTristated
 
 		val isIo1MisoTristated = Reg(Bool()) init(True)
-		isIo1MisoTristated := isQspiRead || (!io.pins.clockEnable && isIo1MisoTristated && !resetToDefaultSpi) || !isQspi
+		isIo1MisoTristated := isQspiRead || (!io.pins.clockEnable && isIo1MisoTristated && !resetToDefaultSpi) || !command.isQspi
 		io.pins.io1Miso.outValue := mosiOutBits(1)
 		io.pins.io1Miso.isTristated := isIo1MisoTristated
 
@@ -142,5 +135,13 @@ object FlashQspiMemorySerdes {
 		val io1Miso = new TristatePin.IoBundle()
 		val io2_Wp = new TristatePin.IoBundle()
 		val io3_Hold = new TristatePin.IoBundle()
+	}
+
+	def emptyTransaction: Transaction = {
+		var empty = Transaction().setAsDirectionLess()
+		empty.isQspi := False
+		empty.readCount := 0
+		empty.writeCount := 0
+		empty.freeze()
 	}
 }
