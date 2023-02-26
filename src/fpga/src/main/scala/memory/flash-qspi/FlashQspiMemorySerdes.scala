@@ -10,7 +10,7 @@ class FlashQspiMemorySerdes extends Component {
 	noIoPrefix()
 
 	private val isStartOfTransaction = Bool()
-	private val command = RegNextWhen(io.transaction.command.payload, isStartOfTransaction) init(FlashQspiMemorySerdes.emptyTransaction)
+	private val command = RegNextWhen(io.transaction.command.payload, isStartOfTransaction) init(FlashQspiMemorySerdes.emptySpiTransaction)
 	isStartOfTransaction := command.writeCount === 0 && command.readCount === 0 && io.transaction.command.valid
 
 	private val mosi = Reg(UInt(8 bits)) init(0)
@@ -158,7 +158,7 @@ object FlashQspiMemorySerdes {
 		val io3_Hold = new TristatePin.IoBundle()
 	}
 
-	def emptyTransaction: Transaction = {
+	def emptySpiTransaction: Transaction = {
 		var empty = Transaction().setAsDirectionLess()
 		empty.isQspi := False
 		empty.readCount := 0
