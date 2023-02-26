@@ -33,16 +33,6 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.transaction.command.ready.toBoolean must be(true)
 	}
 
-	it must "zero the transaction's MISO payload during reset" in simulator { fixture =>
-		fixture.holdInReset()
-		fixture.io.transaction.miso.payload.toInt must be(0)
-	}
-
-	it must "zero the transaction's MISO payload after reset" in simulator { fixture =>
-		fixture.reset()
-		fixture.io.transaction.miso.payload.toInt must be(0)
-	}
-
 	private val writeCounts = Seq(1, 2, 7, anyWriteCount()).asTable("writeCount")
 
 	private def anyWriteCount() = Random.between(1, 8)
@@ -1351,6 +1341,166 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 				fixture.clockInactive()
 			}
 			isValidOnLastShiftedBitRisingEdge must be(true) withClue "at the end of bit-clocking"
+		}
+	}
+
+	"FlashQspiSerdes transaction's MISO payload" must "be zero during reset" in simulator { fixture =>
+		fixture.holdInReset()
+		fixture.io.transaction.miso.payload.toInt must be(0)
+	}
+
+	it must "be zero after reset" in simulator { fixture =>
+		fixture.reset()
+		fixture.io.transaction.miso.payload.toInt must be(0)
+	}
+
+	private val misoSamples = Seq(0x00, 0xff, 0xaa, 0x55, anyByte()).asTable("misoByte")
+
+	it must "be the MISO byte shifted in on 8 rising clock edges, most significant bit first, for an SPI read-only transaction" in simulator { fixture =>
+		forAll(misoSamples) { misoByte =>
+			fixture.reset()
+			fixture.stubCommand(isQspi=false, readCount=1)
+			fixture.stubReadyMiso()
+			fixture.clock()
+			fixture.shiftSpiMisoByte(misoByte)
+			fixture.io.transaction.miso.payload.toInt must be(misoByte)
+		}
+	}
+
+	it must "be the MISO byte shifted in on 2 rising clock edges, most significant nybble first, for a QSPI read-only transaction" in simulator { fixture =>
+		forAll(misoSamples) { misoByte =>
+			fixture.reset()
+			fixture.stubCommand(isQspi=true, readCount=1)
+			fixture.stubReadyMiso()
+			fixture.clock()
+			fixture.shiftQspiMisoByte(misoByte)
+			fixture.io.transaction.miso.payload.toInt must be(misoByte)
+		}
+	}
+
+	private val writeCountsVsMisoSamples = allCombinationsOf(writeCounts, misoSamples).asTable("writeCount", "misoByte")
+
+	it must "be the MISO byte shifted in on 8 rising clock edges, most significant bit first, for an SPI write-read transaction" in simulator { fixture =>
+		fixture.setCurrentQspiMisoNybble(0)
+		forAll(writeCountsVsMisoSamples) { (writeCount, misoByte) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi=false, writeCount, readCount=1)
+			fixture.stubMosi(anyByte())
+			fixture.stubReadyMiso()
+			fixture.doForNumberOfClocks(writeCount * 8 + 1) { }
+			fixture.shiftSpiMisoByte(misoByte)
+			fixture.io.transaction.miso.payload.toInt must be(misoByte)
+		}
+	}
+
+	it must "be the MISO byte shifted in on 2 rising clock edges, most significant nybble first, for a QSPI write-read transaction" in simulator { fixture =>
+		fixture.setCurrentQspiMisoNybble(0)
+		forAll(writeCountsVsMisoSamples) { (writeCount, misoByte) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi=true, writeCount, readCount=1)
+			fixture.stubMosi(anyByte())
+			fixture.stubReadyMiso()
+			fixture.doForNumberOfClocks(writeCount * 2 + 1) { }
+			fixture.shiftQspiMisoByte(misoByte)
+			fixture.io.transaction.miso.payload.toInt must be(misoByte)
+		}
+	}
+
+	it must "be the MISO bytes for a non-pipelined (Q)SPI multi-byte read-only transaction" in simulator { fixture =>
+		fixture.setCurrentQspiMisoNybble(0)
+		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=0, readCount)
+			fixture.stubStalledMiso()
+			fixture.clock()
+			val transactionMisos = Array.fill(readCount) { anyByte() }
+			forAll(transactionMisos) { transactionMiso =>
+				fixture.shiftMisoByte(isQspi, transactionMiso)
+				fixture.io.transaction.miso.valid.toBoolean must be(true)
+				fixture.stubReadyMiso()
+				fixture.clock()
+				fixture.stubStalledMiso()
+				fixture.io.transaction.miso.payload.toInt must be(transactionMiso)
+			}
+		}
+	}
+
+	it must "be the MISO bytes for a non-pipelined (Q)SPI multi-byte read-only transaction with stalls" in simulator { fixture =>
+		fixture.setCurrentQspiMisoNybble(0)
+		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=0, readCount)
+			fixture.stubStalledMiso()
+			fixture.clock()
+			val transactionMisos = Array.fill(readCount) { anyByte() }
+			forAll(transactionMisos) { transactionMiso =>
+				fixture.shiftMisoByte(isQspi, transactionMiso)
+				fixture.io.transaction.miso.valid.toBoolean must be(true)
+				fixture.atLeastOneClock()
+				fixture.stubReadyMiso()
+				fixture.clock()
+				fixture.stubStalledMiso()
+				fixture.io.transaction.miso.payload.toInt must be(transactionMiso)
+			}
+		}
+	}
+
+	it must "be the MISO bytes for a pipelined (Q)SPI multi-byte read-only transaction" in simulator { fixture =>
+		fixture.setCurrentQspiMisoNybble(0)
+		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=0, readCount)
+			fixture.stubReadyMiso()
+			fixture.clock()
+			val transactionMisos = Array.fill(readCount) { anyByte() }
+			forAll(transactionMisos) { transactionMiso =>
+				fixture.shiftMisoByte(isQspi, transactionMiso)
+				fixture.io.transaction.miso.valid.toBoolean must be(true)
+				fixture.io.transaction.miso.payload.toInt must be(transactionMiso)
+			}
+		}
+	}
+
+	it must "not change when a subsequent read-only transaction is made without reading the previous payload" in simulator { fixture =>
+		fixture.setCurrentQspiMisoNybble(0)
+		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=0, readCount)
+			fixture.stubReadyMiso()
+			fixture.clock()
+			for (i <- 0 until readCount - 1) {
+				fixture.shiftMisoByte(isQspi, anyByte())
+			}
+
+			fixture.stubStalledMiso()
+			val unreadByte = anyByte()
+			fixture.shiftMisoByte(isQspi, unreadByte)
+			fixture.stubCommand(isQspi, writeCount=0, 1)
+			fixture.shiftMisoByte(isQspi, anyByteExcept(unreadByte))
+			fixture.io.transaction.miso.payload.toInt must be(unreadByte)
+		}
+	}
+
+	it must "not change when a subsequent write-read transaction is made without reading the previous payload" in simulator { fixture =>
+		fixture.setCurrentQspiMisoNybble(0)
+		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=0, readCount)
+			fixture.stubReadyMiso()
+			fixture.clock()
+			for (i <- 0 until readCount - 1) {
+				fixture.shiftMisoByte(isQspi, anyByte())
+			}
+
+			fixture.stubStalledMiso()
+			val unreadByte = anyByte()
+			fixture.shiftMisoByte(isQspi, unreadByte)
+			fixture.stubCommand(isQspi, writeCount=1, 1)
+			fixture.stubMosi(anyByte())
+			fixture.shiftMosiByte(isQspi)
+			fixture.shiftMisoByte(isQspi, anyByteExcept(unreadByte))
+
+			fixture.io.transaction.miso.payload.toInt must be(unreadByte)
 		}
 	}
 }

@@ -17,6 +17,7 @@ class FlashQspiMemorySerdes extends Component {
 	private val isMosiFull = Reg(Bool()) init(False)
 	private val hasMoreMosi = Reg(Bool()) init(False)
 
+	private val miso = Reg(UInt(8 bits)) init(0)
 	private val isMisoFull = Reg(Bool()) init(False)
 	private val isMisoValid = Reg(Bool()) init(False)
 
@@ -73,6 +74,14 @@ class FlashQspiMemorySerdes extends Component {
 		bitCounter := nextBitCounterValue
 	}
 
+	when(bitCounterWillIncrement && !command.isQspi && command.writeCount === 0) {
+		miso := (miso ## io.pins.io1Miso.inValue)(7 downto 0).asUInt
+	}
+
+	when(bitCounterWillIncrement && command.isQspi && command.writeCount === 0) {
+		miso := (miso ## io.pins.io3_Hold.inValue ## io.pins.io2_Wp.inValue ## io.pins.io1Miso.inValue ## io.pins.io0Mosi.inValue)(7 downto 0).asUInt
+	}
+
 	clockDomain.withRevertedClockEdge() {
 		val mosiOutBits = Reg(Bits(4 bits)) init(B("1011"))
 		switch(command.isQspi ## bitCounter) {
@@ -117,7 +126,7 @@ class FlashQspiMemorySerdes extends Component {
 	}
 
 	io.pins.clockEnable := bitCounterWillIncrement
-	io.transaction.miso.payload := 0
+	io.transaction.miso.payload := miso
 	io.transaction.miso.valid := isMisoValid
 	io.transaction.mosi.ready := !clockDomain.isResetActive && !isMosiFull
 	io.transaction.command.ready := !clockDomain.isResetActive && !bitCounterWillIncrement // && !commandFull; remove the !bitCounterWillIncrement and add something similar to 'isMosiFull' because it will allow the command to be changed on multiple clock cycles before a transaction starts, or when waiting on a MOSI or MISO

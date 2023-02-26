@@ -134,4 +134,29 @@ class FlashQspiMemorySerdesFixture extends Component {
 	def stubStalledMiso(): Unit = {
 		io.transaction.miso.ready #= false
 	}
+
+	def shiftMisoByte(isQspi: Boolean, byte: Int): Unit = if (!isQspi) shiftSpiMisoByte(byte) else shiftQspiMisoByte(byte)
+
+	def shiftSpiMisoByte(byte: Int): Unit = {
+		for (bit <- 7 to 0 by -1) {
+			setCurrentSpiMisoBit((byte & (1 << bit)) != 0)
+			clock()
+		}
+	}
+
+	def setCurrentSpiMisoBit(bit: Boolean): Unit = io.pins.io1Miso.inValue #= bit
+
+	def shiftQspiMisoByte(byte: Int): Unit = {
+		for (nybble <- 4 to 0 by -4) {
+			setCurrentQspiMisoNybble(byte >> nybble)
+			clock()
+		}
+	}
+
+	def setCurrentQspiMisoNybble(nybble: Int): Unit = {
+		io.pins.io0Mosi.inValue #= (nybble & 1) != 0
+		io.pins.io1Miso.inValue #= (nybble & 2) != 0
+		io.pins.io2_Wp.inValue #= (nybble & 4) != 0
+		io.pins.io3_Hold.inValue #= (nybble & 8) != 0
+	}
 }
