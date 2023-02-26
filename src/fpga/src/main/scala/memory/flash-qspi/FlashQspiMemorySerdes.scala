@@ -16,11 +16,13 @@ class FlashQspiMemorySerdes extends Component {
 	private val mosi = Reg(UInt(8 bits)) init(0)
 	private val isMosiFull = Reg(Bool()) init(False)
 	private val hasMoreMosi = Reg(Bool()) init(False)
-	private val hasMoreMiso = Reg(Bool()) init(True)
+
+	private val isMisoFull = Reg(Bool()) init(False)
+	private val isMisoValid = Reg(Bool()) init(False)
 
 	private val bitCounter = Reg(UInt(3 bits)) init(0)
 	private val bitCounterWillIncrement = Bool()
-	bitCounterWillIncrement := (command.writeCount =/= 0 && hasMoreMosi) || (command.writeCount === 0 && command.readCount =/= 0 && hasMoreMiso)
+	bitCounterWillIncrement := (command.writeCount =/= 0 && hasMoreMosi) || (command.writeCount === 0 && command.readCount =/= 0 && !isMisoFull)
 
 	private val nextBitCounterValue = UInt(3 bits)
 	nextBitCounterValue := bitCounter + (command.isQspi ? U(4) | U(1))
@@ -33,6 +35,7 @@ class FlashQspiMemorySerdes extends Component {
 	when(!isMosiFull && io.transaction.mosi.valid) {
 		isMosiFull := True
 		mosi := io.transaction.mosi.payload
+		// TODO: this condition will need to toggle mosi.ready for one cycle
 	}
 
 	when((nextBitCounterValue === 7 && !command.isQspi) || (nextBitCounterValue === 4 && command.isQspi) && bitCounterWillIncrement) {
@@ -54,7 +57,16 @@ class FlashQspiMemorySerdes extends Component {
 
 	when(bitCounterWillOverflowIfIncremented && command.writeCount === 0) {
 		command.readCount := command.readCount - 1
-		hasMoreMiso := io.transaction.miso.ready
+		isMisoFull := !io.transaction.miso.ready
+		isMisoValid := True
+	}
+
+	when(isMisoFull && io.transaction.miso.ready) {
+		isMisoFull := False
+	}
+
+	when(isMisoValid && io.transaction.miso.ready) {
+		isMisoValid := False
 	}
 
 	when(bitCounterWillIncrement) {
@@ -106,7 +118,7 @@ class FlashQspiMemorySerdes extends Component {
 
 	io.pins.clockEnable := bitCounterWillIncrement
 	io.transaction.miso.payload := 0
-	io.transaction.miso.valid := False
+	io.transaction.miso.valid := isMisoValid
 	io.transaction.mosi.ready := !clockDomain.isResetActive && !isMosiFull
 	io.transaction.command.ready := !clockDomain.isResetActive && !bitCounterWillIncrement // && !commandFull; remove the !bitCounterWillIncrement and add something similar to 'isMosiFull' because it will allow the command to be changed on multiple clock cycles before a transaction starts, or when waiting on a MOSI or MISO
 }

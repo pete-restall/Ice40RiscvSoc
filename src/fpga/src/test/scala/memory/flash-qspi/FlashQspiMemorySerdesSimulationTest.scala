@@ -33,16 +33,6 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.transaction.command.ready.toBoolean must be(true)
 	}
 
-	it must "hold the transaction's MISO valid flag low during reset" in simulator { fixture =>
-		fixture.holdInReset()
-		fixture.io.transaction.miso.valid.toBoolean must be(false)
-	}
-
-	it must "hold the transaction's MISO valid flag low after reset" in simulator { fixture =>
-		fixture.reset()
-		fixture.io.transaction.miso.valid.toBoolean must be(false)
-	}
-
 	it must "zero the transaction's MISO payload during reset" in simulator { fixture =>
 		fixture.holdInReset()
 		fixture.io.transaction.miso.payload.toInt must be(0)
@@ -129,6 +119,8 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 			fixture.io.transaction.command.ready.toBoolean must be(false)
 		}
 	}
+
+	// TODO: THE command CANNOT BE PIPELINED - THE clockEnable LINE GOES LOW FOR ONE CLOCK WHILST THE COMMAND IS REGISTERED - FIX THIS
 
 	"FlashQspiSerdes clock enable" must "be held low during reset" in simulator { fixture =>
 		fixture.holdInReset()
@@ -328,6 +320,38 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 			fixture.clockActive()
 			fixture.stubInvalidCommand(isQspi, readCount=readCount)
 			clockMustBeEnabledForExact(numberOfBytes=writeCount + readCount, isQspi=isQspi)
+		}
+	}
+
+	it must "remain low for each clock that MISO is stalled" in simulator { fixture =>
+		forAll(transactionTypes) { isQspi =>
+			var clocksPerByte = if (isQspi) 2 else 8
+			fixture.reset()
+			fixture.stubCommand(isQspi, readCount=2)
+			fixture.stubStalledMiso()
+			fixture.doForNumberOfClocks(clocksPerByte) {
+				fixture.io.pins.clockEnable.toBoolean must be(true)
+			}
+			for (i <- 0 until Random.between(3, 10)) {
+				fixture.clockActive()
+				fixture.io.pins.clockEnable.toBoolean must be(false)
+				fixture.clockInactive()
+			}
+			fixture.stubReadyMiso()
+			fixture.clockActive()
+			fixture.io.pins.clockEnable.toBoolean must be(true)
+		}
+	}
+
+	it must "remain high through the byte transition to enable pipelining when MISO is not stalled" in simulator { fixture =>
+		forAll(transactionTypes) { isQspi =>
+			var clocksPerByte = if (isQspi) 2 else 8
+			fixture.reset()
+			fixture.stubCommand(isQspi, readCount=2)
+			fixture.stubReadyMiso()
+			fixture.doForNumberOfClocks(clocksPerByte * 2) {
+				fixture.io.pins.clockEnable.toBoolean must be(true)
+			}
 		}
 	}
 
@@ -590,7 +614,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 			fixture.stubCommand(isQspi=true, writeCount, readCount)
 			fixture.stubMosi(anyByte())
 			fixture.stubStalledMiso()
-			var isTristateOnLastFallingEdge: Boolean = false
+			var isTristateOnLastFallingEdge = false
 			for (i <- 0 until writeCount * 2 + 1) {
 				fixture.clockActive()
 				pinFrom(fixture.io.pins).isTristated.toBoolean must be(false) withClue s"on rising edge ${i}"
@@ -1179,6 +1203,154 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 			fixture.stubCommand(isQspi, writeCount=1)
 			fixture.clockActive()
 			fixture.io.transaction.mosi.ready.toBoolean must be(false)
+		}
+	}
+
+	"FlashQspiSerdes transaction's MISO valid flag" must "be held low during reset" in simulator { fixture =>
+		fixture.holdInReset()
+		fixture.io.transaction.miso.valid.toBoolean must be(false)
+	}
+
+	it must "be held low after reset" in simulator { fixture =>
+		fixture.reset()
+		fixture.io.transaction.miso.valid.toBoolean must be(false)
+	}
+
+	it must "rise high on the clock's 9th rising edge for SPI read-only transactions" in simulator { fixture =>
+		forAll(readCounts) { readCount =>
+			fixture.reset()
+			fixture.stubCommand(isQspi=false, readCount=readCount)
+			fixture.stubStalledMiso()
+			var isValidOnLastShiftedBitRisingEdge = false
+			for (i <- 0 until 9) {
+				fixture.io.transaction.miso.valid.toBoolean must be(false) withClue s"at clock ${i}"
+				fixture.clockActive()
+				isValidOnLastShiftedBitRisingEdge = fixture.io.transaction.miso.valid.toBoolean
+				fixture.clockInactive()
+			}
+			isValidOnLastShiftedBitRisingEdge must be(true) withClue "at the end of bit-clocking"
+		}
+	}
+
+	it must "rise high on the clock's 3rd rising edge for QSPI read-only transactions" in simulator { fixture =>
+		forAll(readCounts) { readCount =>
+			fixture.reset()
+			fixture.stubCommand(isQspi=true, readCount=readCount)
+			fixture.stubStalledMiso()
+			var isValidOnLastShiftedBitRisingEdge = false
+			for (i <- 0 until 3) {
+				fixture.io.transaction.miso.valid.toBoolean must be(false) withClue s"at clock ${i}"
+				fixture.clockActive()
+				isValidOnLastShiftedBitRisingEdge = fixture.io.transaction.miso.valid.toBoolean
+				fixture.clockInactive()
+			}
+			isValidOnLastShiftedBitRisingEdge must be(true) withClue "at the end of bit-clocking"
+		}
+	}
+
+	it must "remain low throughout (Q)SPI write-only transactions" in simulator { fixture =>
+		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount)
+			fixture.stubMosi(anyByte())
+			fixture.stubStalledMiso()
+			fixture.doWhileClockEnabled {
+				fixture.io.transaction.miso.valid.toBoolean must be(false)
+			}
+		}
+	}
+
+	it must "rise high on the clock's 9th rising edge after the last MOSI bit has been written for SPI write-read transactions" in simulator { fixture =>
+		forAll(writeAndReadCounts) { (writeCount, readCount) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi=false, writeCount, readCount)
+			fixture.stubMosi(anyByte())
+			fixture.stubStalledMiso()
+			var isValidOnLastShiftedBitRisingEdge = false
+			for (i <- 0 until (writeCount * 8) + 9) {
+				fixture.io.transaction.miso.valid.toBoolean must be(false) withClue s"at clock ${i}"
+				fixture.clockActive()
+				isValidOnLastShiftedBitRisingEdge = fixture.io.transaction.miso.valid.toBoolean
+				fixture.clockInactive()
+			}
+			isValidOnLastShiftedBitRisingEdge must be(true) withClue "at the end of bit-clocking"
+		}
+	}
+
+	it must "rise high on the clock's 3rd rising edge after the last MOSI bit has been written for QSPI write-read transactions" in simulator { fixture =>
+		forAll(writeAndReadCounts) { (writeCount, readCount) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi=true, writeCount, readCount)
+			fixture.stubMosi(anyByte())
+			fixture.stubStalledMiso()
+			var isValidOnLastShiftedBitRisingEdge = false
+			for (i <- 0 until (writeCount * 2) + 3) {
+				fixture.io.transaction.miso.valid.toBoolean must be(false) withClue s"at clock ${i}"
+				fixture.clockActive()
+				isValidOnLastShiftedBitRisingEdge = fixture.io.transaction.miso.valid.toBoolean
+				fixture.clockInactive()
+			}
+			isValidOnLastShiftedBitRisingEdge must be(true) withClue "at the end of bit-clocking"
+		}
+	}
+
+	it must "remain high whilst MISO is stalled for Q(SPI) read-only transactions" in simulator { fixture =>
+		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, readCount=readCount)
+			fixture.stubStalledMiso()
+			fixture.clockWhileEnabled()
+			fixture.doForNumberOfClocks(Random.between(3, 10)) {
+				fixture.io.transaction.miso.valid.toBoolean must be(true) withClue "when MISO is stalled"
+			}
+			fixture.stubReadyMiso()
+			fixture.clockActive()
+			fixture.io.transaction.miso.valid.toBoolean must be(false) withClue "when MISO is no longer stalled"
+		}
+	}
+
+	it must "remain high whilst MISO is stalled for Q(SPI) write-read transactions" in simulator { fixture =>
+		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount, readCount)
+			fixture.stubMosi(anyByte())
+			fixture.stubStalledMiso()
+			fixture.clockWhileEnabled()
+			fixture.doForNumberOfClocks(Random.between(3, 10)) {
+				fixture.io.transaction.miso.valid.toBoolean must be(true) withClue "when MISO is stalled"
+			}
+			fixture.stubReadyMiso()
+			fixture.clockActive()
+			fixture.io.transaction.miso.valid.toBoolean must be(false) withClue "when MISO is no longer stalled"
+		}
+	}
+
+	it must "remain high for one clock when MISO is not stalled for Q(SPI) write-read transactions" in simulator { fixture =>
+		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount, readCount)
+			fixture.stubMosi(anyByte())
+			fixture.stubReadyMiso()
+			fixture.clockWhile(io => !io.transaction.miso.valid.toBoolean)
+			fixture.clockActive()
+			fixture.io.transaction.miso.valid.toBoolean must be(false)
+		}
+	}
+
+	it must "rise high on the clock's (number of MOSI stalls + 9th rising edge) after the last MOSI bit has been written for SPI write-read transactions" in simulator { fixture =>
+		forAll(writeAndReadCounts) { (writeCount, readCount) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi=false, writeCount, readCount)
+			fixture.stubMosi(anyByte())
+			fixture.stubStalledMiso()
+			var isValidOnLastShiftedBitRisingEdge = false
+			for (i <- 0 until (writeCount * 8) + 9) {
+				fixture.io.transaction.miso.valid.toBoolean must be(false) withClue s"at clock ${i}"
+				fixture.clockActive()
+				isValidOnLastShiftedBitRisingEdge = fixture.io.transaction.miso.valid.toBoolean
+				fixture.clockInactive()
+			}
+			isValidOnLastShiftedBitRisingEdge must be(true) withClue "at the end of bit-clocking"
 		}
 	}
 }

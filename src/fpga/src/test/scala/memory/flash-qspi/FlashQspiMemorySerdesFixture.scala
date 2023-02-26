@@ -2,6 +2,8 @@ package uk.co.lophtware.msfreference.tests.memory.flashqspi
 
 import scala.util.Random
 
+import org.scalatest.AppendedClues._
+import org.scalatest.matchers.must.Matchers._
 import spinal.core._
 import spinal.core.sim._
 
@@ -32,7 +34,14 @@ class FlashQspiMemorySerdesFixture extends Component {
 	}
 
 	def anyNumberOfClocks(): Unit = {
-		(0 to Random.nextInt(10)).foreach { _ => clock() }
+		doForNumberOfClocks(Random.nextInt(10)) { }
+	}
+
+	def doForNumberOfClocks(numberOfClocks: Int)(afterClock: => Unit): Unit = {
+		(0 until numberOfClocks).foreach { _ =>
+			clock()
+			afterClock
+		}
 	}
 
 	def clock(): Unit = {
@@ -50,11 +59,21 @@ class FlashQspiMemorySerdesFixture extends Component {
 		(0 to Random.between(1, 10)).foreach { _ => clock() }
 	}
 
-	def clockWhileEnabled(): Unit = {
+	def clockWhileEnabled(): Unit = clockWhile(io => io.pins.clockEnable.toBoolean)
+
+	def clockWhile(predicate: FlashQspiMemorySerdes.IoBundle => Boolean): Unit = doClockWhile(predicate) { }
+
+	def doClockWhile(predicate: FlashQspiMemorySerdes.IoBundle => Boolean)(afterClock: => Unit): Unit = {
+		var timeout = 1000
 		do {
 			clock()
-		} while (io.pins.clockEnable.toBoolean)
+			afterClock
+			timeout -= 1
+		} while (predicate(io) && timeout > 0)
+		timeout mustNot be(0) withClue("because of a timeout whilst clocking and waiting for !predicate")
 	}
+
+	def doWhileClockEnabled(afterClock: => Unit): Unit = doClockWhile(io => io.pins.clockEnable.toBoolean) { afterClock }
 
 	def stubCommand(isQspi: Boolean, writeCount: Int = 0, readCount: Int = 0): Unit = {
 		stubInvalidCommand(isQspi, writeCount, readCount)
