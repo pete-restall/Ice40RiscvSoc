@@ -835,13 +835,29 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 	}
 
 	"FlashQspiSerdes IO2 (/WP) line" must "be held low during reset" in simulator { fixture =>
-		fixture.holdInReset()
-		fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(false))
+		forAll(booleans.asTable("isWriteProtected")) { isWriteProtected =>
+			fixture.io.transaction.isWriteProtected #= isWriteProtected
+			fixture.holdInReset()
+			fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(false))
+		}
 	}
 
-	it must "be held low after reset" in simulator { fixture =>
-		fixture.reset()
-		fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(false)) ///////// TODO: MAKE THIS A PASS-THROUGH VALUE FROM io; WE NEED CONTROL OVER IT BY THE STATE MACHINE
+	it must "still be low on the first rising clock edge after reset" in simulator { fixture =>
+		forAll(booleans.asTable("isWriteProtected")) { isWriteProtected =>
+			fixture.io.transaction.isWriteProtected #= isWriteProtected
+			fixture.reset()
+			fixture.clockActive()
+			fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(false))
+		}
+	}
+
+	it must "be the inverted value of the isWriteProtected flag on the first falling clock edge after reset" in simulator { fixture =>
+		forAll(booleans.asTable("isWriteProtected")) { isWriteProtected =>
+			fixture.io.transaction.isWriteProtected #= isWriteProtected
+			fixture.reset()
+			fixture.clock()
+			fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(!isWriteProtected))
+		}
 	}
 
 	it must "not be tristated on the first falling clock edge for (Q)SPI write-only transactions" in simulator { implicit fixture =>
@@ -890,6 +906,79 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	it must "be bits 6 and 2 shifted from a registered MOSI byte for QSPI write-only transactions" in simulator { implicit fixture =>
 		itMustBeTheGivenBitsShiftedFromRegisteredMosiByteForQspiWriteOnlyTransactions((6, 2), pins => pins.io2_Wp)
+	}
+
+	it must "be the last value of bit 2 of the QSPI transaction's MOSI byte for any number of trailing clocks" in simulator { implicit fixture =>
+		forAll(booleans.asTable("bit2")) { bit2 =>
+			fixture.reset()
+			fixture.io.transaction.isWriteProtected #= bit2
+			stubIo2For(value=bit2)
+			fixture.doForNumberOfClocks(Random.between(5, 10)) {
+				fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(bit2))
+			}
+		}
+	}
+
+	private def stubIo2For(value: Boolean)(implicit fixture: FlashQspiMemorySerdesFixture) = stubAllMosiIoFor(value)
+
+	private def stubAllMosiIoFor(value: Boolean)(implicit fixture: FlashQspiMemorySerdesFixture) = {
+		fixture.stubCommand(isQspi=true, anyWriteCount())
+		fixture.stubMosi(if (value) 0xff else 0x00)
+		fixture.clock()
+		fixture.stubInvalidCommand()
+		fixture.clockWhileEnabled()
+	}
+
+	it must "be the inverted value of isWriteProtected on the first falling clock edge of an empty SPI transaction" in simulator { implicit fixture =>
+		forAll(booleans.asTable("isWriteProtected")) { isWriteProtected =>
+			fixture.reset()
+			fixture.io.transaction.isWriteProtected #= isWriteProtected
+			stubIo2For(value=isWriteProtected)
+			fixture.stubCommand(isQspi=false, writeCount=0)
+			assertIo2ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value= !isWriteProtected)
+		}
+	}
+
+	private def assertIo2ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value: Boolean)(implicit fixture: FlashQspiMemorySerdesFixture) = {
+		fixture.clockActive()
+		fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(!value)) withClue "on first rising edge"
+		fixture.clockInactive()
+		fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(value)) withClue "on first falling edge"
+		fixture.doWhileClockEnabled {
+			fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(value)) withClue "for each clock of the transaction"
+		}
+	}
+
+	it must "be the inverted value of isWriteProtected on the first falling clock edge for SPI write-only transactions" in simulator { implicit fixture =>
+		forAll(booleans.asTable("isWriteProtected")) { isWriteProtected =>
+			fixture.reset()
+			fixture.io.transaction.isWriteProtected #= isWriteProtected
+			stubIo2For(value=isWriteProtected)
+			fixture.stubCommand(isQspi=false, anyWriteCount())
+			assertIo2ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value= !isWriteProtected)
+		}
+	}
+
+	it must "be the inverted value of isWriteProtected for SPI write-read transactions" in simulator { implicit fixture =>
+		forAll(booleans.asTable("isWriteProtected")) { isWriteProtected =>
+			fixture.reset()
+			fixture.io.transaction.isWriteProtected #= isWriteProtected
+			stubIo2For(value=isWriteProtected)
+			fixture.stubCommand(isQspi=false, anyWriteCount(), anyReadCount())
+			fixture.stubReadyMiso()
+			assertIo2ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value= !isWriteProtected)
+		}
+	}
+
+	it must "be the inverted value of isWriteProtected for SPI read-only transactions" in simulator { implicit fixture =>
+		forAll(booleans.asTable("isWriteProtected")) { isWriteProtected =>
+			fixture.reset()
+			fixture.io.transaction.isWriteProtected #= isWriteProtected
+			stubIo2For(value=isWriteProtected)
+			fixture.stubCommand(isQspi=false, writeCount=0, anyReadCount())
+			fixture.stubReadyMiso()
+			assertIo2ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value= !isWriteProtected)
+		}
 	}
 
 	"FlashQspiSerdes IO3 (/HOLD) line" must "be held high during reset" in simulator { fixture =>
@@ -948,6 +1037,58 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	it must "be bits 7 and 3 shifted from a registered MOSI byte for QSPI write-only transactions" in simulator { implicit fixture =>
 		itMustBeTheGivenBitsShiftedFromRegisteredMosiByteForQspiWriteOnlyTransactions((7, 3), pins => pins.io3_Hold)
+	}
+
+	it must "be the last value of bit 3 of the QSPI transaction's MOSI byte for any number of trailing clocks" in simulator { implicit fixture =>
+		forAll(booleans.asTable("bit3")) { bit3 =>
+			fixture.reset()
+			stubIo3For(value=bit3)
+			fixture.doForNumberOfClocks(Random.between(5, 10)) {
+				fixture.io.pins.io3_Hold must have(nonTristatedOutValueOf(bit3))
+			}
+		}
+	}
+
+	private def stubIo3For(value: Boolean)(implicit fixture: FlashQspiMemorySerdesFixture) = stubAllMosiIoFor(value)
+
+	it must "be high on the first falling clock edge of an empty SPI transaction" in simulator { implicit fixture =>
+		fixture.reset()
+		stubIo3For(value=false)
+		fixture.stubCommand(isQspi=false, writeCount=0)
+		assertIo3ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value=true)
+	}
+
+	private def assertIo3ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value: Boolean)(implicit fixture: FlashQspiMemorySerdesFixture) = {
+		fixture.clockActive()
+		fixture.io.pins.io3_Hold must have(nonTristatedOutValueOf(!value)) withClue "on first rising edge"
+		fixture.clockInactive()
+		fixture.io.pins.io3_Hold must have(nonTristatedOutValueOf(value)) withClue "on first falling edge"
+		fixture.doWhileClockEnabled {
+			fixture.io.pins.io3_Hold must have(nonTristatedOutValueOf(value)) withClue "for each clock of the transaction"
+		}
+	}
+
+	it must "be high on the first falling clock edge for SPI write-only transactions" in simulator { implicit fixture =>
+		fixture.reset()
+		stubIo3For(value=false)
+		fixture.stubCommand(isQspi=false, anyWriteCount())
+		assertIo3ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value=true)
+	}
+
+	it must "be high for SPI write-read transactions" in simulator { implicit fixture =>
+		fixture.reset()
+		stubIo3For(value=false)
+		fixture.stubCommand(isQspi=false, anyWriteCount(), anyReadCount())
+		fixture.stubReadyMiso()
+		assertIo3ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value=true)
+	}
+
+	it must "be high for SPI read-only transactions" in simulator { implicit fixture =>
+		fixture.reset()
+		stubIo3For(value=false)
+		fixture.stubCommand(isQspi=false, writeCount=0, anyReadCount())
+		fixture.stubReadyMiso()
+		assertIo3ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value=true)
 	}
 
 	"All FlashQspiSerdes IO* (MOSI) lines" must "be shifted MOSI bytes for a (Q)SPI multi-byte write-only non-pipelined transaction" in simulator { fixture =>

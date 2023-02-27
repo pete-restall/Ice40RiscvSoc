@@ -84,10 +84,11 @@ class FlashQspiMemorySerdes extends Component {
 	clockDomain.withRevertedClockEdge() {
 		val mosiOutBits = Reg(Bits(4 bits)) init(B("1011"))
 		switch(command.isQspi ## bitCounter) {
-			// TODO: Compare the shift register approach with the switch approach in terms of LUTs and Fmax
 			for (i <- 0 to 7) {
 				is(i) {
 					mosiOutBits(0) := Mux(io.pins.clockEnable, mosi(7 - i), mosiOutBits(0))
+					mosiOutBits(2) := !io.transaction.isWriteProtected
+					mosiOutBits(3) := True
 				}
 			}
 
@@ -142,6 +143,7 @@ object FlashQspiMemorySerdes {
 		val command = slave(Stream(Transaction()))
 		val mosi = slave(Stream(UInt(8 bits)))
 		val miso = master(Stream(UInt(8 bits)))
+		val isWriteProtected = in Bool()
 	}
 
 	case class Transaction() extends Bundle {

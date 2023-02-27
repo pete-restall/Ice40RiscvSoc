@@ -80,7 +80,7 @@ class FlashQspiMemorySerdesFixture extends Component {
 		io.transaction.command.valid #= true
 	}
 
-	def stubInvalidCommand(isQspi: Boolean, writeCount: Int = 0, readCount: Int = 0): Unit = {
+	def stubInvalidCommand(isQspi: Boolean = false, writeCount: Int = 0, readCount: Int = 0): Unit = {
 		io.transaction.command.payload.isQspi #= isQspi
 		io.transaction.command.payload.writeCount #= writeCount
 		io.transaction.command.payload.readCount #= readCount
