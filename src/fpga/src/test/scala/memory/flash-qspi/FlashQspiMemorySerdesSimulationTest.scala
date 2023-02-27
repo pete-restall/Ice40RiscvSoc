@@ -21,18 +21,6 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 	with TristatePinMatchers
 	with Inspectors {
 
-	protected override def dutFactory() = new FlashQspiMemorySerdesFixture()
-
-	"FlashQspiSerdes" must "hold the transaction command's ready flag low during reset" in simulator { fixture =>
-		fixture.holdInReset()
-		fixture.io.transaction.command.ready.toBoolean must be(false)
-	}
-
-	it must "set the transaction ready flag after reset" in simulator { fixture =>
-		fixture.reset()
-		fixture.io.transaction.command.ready.toBoolean must be(true)
-	}
-
 	private val writeCounts = Seq(1, 2, 7, anyWriteCount()).asTable("writeCount")
 
 	private def anyWriteCount() = Random.between(1, 8)
@@ -45,61 +33,23 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	private def allCombinationsOf[A, B](a: Seq[A], b: Seq[B]) = for (x <- a; y <- b) yield (x, y)
 
-	it must "not stall the MOSI stream when a write transaction is received without a MOSI byte" in simulator { fixture =>
-		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
-			fixture.reset()
-			fixture.stubCommand(isQspi, writeCount)
-			fixture.stubInvalidMosi()
-			fixture.clock()
-			fixture.io.transaction.mosi.ready.toBoolean must be(true)
-		}
-	}
-
-	it must "not stall the MOSI stream asynchronously when a write transaction is received with a MOSI byte" in simulator { fixture =>
-		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
-			fixture.reset()
-			fixture.stubCommand(isQspi, writeCount)
-			fixture.stubMosi(anyByte())
-			sleep(1)
-			fixture.io.transaction.mosi.ready.toBoolean must be(true)
-		}
-	}
-
-	it must "still stall the MOSI stream when a transaction is received without a write count" in simulator { fixture =>
-		forAll(transactionTypes) { isQspi =>
-			fixture.reset()
-			fixture.stubCommand(isQspi, writeCount=0)
-			fixture.stubMosi(anyByte())
-			fixture.clockActive()
-			fixture.io.transaction.mosi.ready.toBoolean must be(false)
-		}
-	}
-
-	it must "stall the MOSI stream on the active clock edge when a write transaction is received with a MOSI byte" in simulator { fixture =>
-		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
-			fixture.reset()
-			fixture.stubCommand(isQspi, writeCount)
-			fixture.stubMosi(anyByte())
-			fixture.clockActive()
-			fixture.io.transaction.mosi.ready.toBoolean must be(false)
-		}
-	}
-
-	it must "stall the MOSI stream on the active clock edge when a MOSI byte is received without a transaction" in simulator { fixture =>
-		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
-			fixture.reset()
-			fixture.stubInvalidCommand(isQspi, writeCount)
-			fixture.stubMosi(anyByte())
-			fixture.clockActive()
-			fixture.io.transaction.mosi.ready.toBoolean must be(false)
-		}
-	}
-
 	private val readCounts = Seq(1, 2, 7, anyReadCount()).asTable("readCount")
 
 	private def anyReadCount() = Random.between(1, 8)
 
 	private val readCountsVsTransactionTypes = allCombinationsOf(readCounts, transactionTypes).asTable("readCount", "isQspi")
+
+	protected override def dutFactory() = new FlashQspiMemorySerdesFixture()
+
+	"FlashQspiSerdes" must "hold the transaction command's ready flag low during reset" in simulator { fixture =>
+		fixture.holdInReset()
+		fixture.io.transaction.command.ready.toBoolean must be(false)
+	}
+
+	it must "set the transaction ready flag after reset" in simulator { fixture =>
+		fixture.reset()
+		fixture.io.transaction.command.ready.toBoolean must be(true)
+	}
 
 	it must "stall the command stream on the active clock edge when a read transaction is received" in simulator { fixture =>
 		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
@@ -1191,6 +1141,56 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 			fixture.clockWhileEnabled()
 
 			fixture.stubCommand(isQspi, writeCount=1)
+			fixture.clockActive()
+			fixture.io.transaction.mosi.ready.toBoolean must be(false)
+		}
+	}
+
+	it must "be high when a write transaction is received without a MOSI byte" in simulator { fixture =>
+		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount)
+			fixture.stubInvalidMosi()
+			fixture.clock()
+			fixture.io.transaction.mosi.ready.toBoolean must be(true)
+		}
+	}
+
+	it must "not rise high asynchronously when a write transaction is received with a MOSI byte" in simulator { fixture =>
+		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount)
+			fixture.stubMosi(anyByte())
+			sleep(1)
+			fixture.io.transaction.mosi.ready.toBoolean must be(true)
+		}
+	}
+
+	it must "fall low on the first active clock edge when an empty transaction is received" in simulator { fixture =>
+		forAll(transactionTypes) { isQspi =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount=0, readCount=0)
+			fixture.stubMosi(anyByte())
+			fixture.clockActive()
+			fixture.io.transaction.mosi.ready.toBoolean must be(false)
+		}
+	}
+
+	it must "fall low on the active clock edge when a write transaction is received with a MOSI byte" in simulator { fixture =>
+		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
+			fixture.reset()
+			fixture.stubCommand(isQspi, writeCount)
+			fixture.stubMosi(anyByte())
+			fixture.clockActive()
+			fixture.io.transaction.mosi.ready.toBoolean must be(false)
+		}
+	}
+
+	it must "fall low on the active clock edge when a MOSI byte is received without a transaction" in simulator { fixture =>
+		forAll(writeCountsVsTransactionTypes) { (writeCount, isQspi) =>
+			fixture.reset()
+			fixture.stubInvalidCommand(isQspi, writeCount)
+			fixture.stubMosi(anyByte())
 			fixture.clockActive()
 			fixture.io.transaction.mosi.ready.toBoolean must be(false)
 		}

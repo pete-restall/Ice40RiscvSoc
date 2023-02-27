@@ -36,7 +36,6 @@ class FlashQspiMemorySerdes extends Component {
 	when(!isMosiFull && io.transaction.mosi.valid) {
 		isMosiFull := True
 		mosi := io.transaction.mosi.payload
-		// TODO: this condition will need to toggle mosi.ready for one cycle
 	}
 
 	when((nextBitCounterValue === 7 && !command.isQspi) || (nextBitCounterValue === 4 && command.isQspi) && bitCounterWillIncrement) {
@@ -85,6 +84,7 @@ class FlashQspiMemorySerdes extends Component {
 	clockDomain.withRevertedClockEdge() {
 		val mosiOutBits = Reg(Bits(4 bits)) init(B("1011"))
 		switch(command.isQspi ## bitCounter) {
+			// TODO: Compare the shift register approach with the switch approach in terms of LUTs and Fmax
 			for (i <- 0 to 7) {
 				is(i) {
 					mosiOutBits(0) := Mux(io.pins.clockEnable, mosi(7 - i), mosiOutBits(0))
