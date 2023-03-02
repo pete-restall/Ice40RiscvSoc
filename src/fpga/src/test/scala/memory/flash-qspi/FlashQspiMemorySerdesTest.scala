@@ -22,7 +22,7 @@ class FlashQspiMemorySerdesTest extends AnyFlatSpec with NonSimulationFixture {
 		serdes.io.transaction.mosi.isMasterInterface must be(false)
 	}
 
-	it must "have the transactions driven as a slave" in spinalContext {
+	it must "have the transaction command driven as a slave" in spinalContext {
 		val serdes = new FlashQspiMemorySerdes()
 		serdes.io.transaction.command.isMasterInterface must be(false)
 	}
