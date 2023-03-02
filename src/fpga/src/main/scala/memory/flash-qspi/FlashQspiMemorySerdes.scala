@@ -47,26 +47,6 @@ class FlashQspiMemorySerdes extends Component {
 		mosi := io.transaction.mosi.payload
 	}
 
-	when((nextBitCounterValue === 7 && !command.isQspi) || (nextBitCounterValue === 4 && command.isQspi)) {
-		isMosiFull := False
-		isCommandFull := command.writeCount(2 downto 1) =/= 0 || (command.writeCount(0) && command.readCount(0)) || command.readCount(2 downto 1) =/= 0
-	}
-
-	when(bitCounterWillOverflowIfIncremented && command.writeCount =/= 0) {
-		command.writeCount := command.writeCount - 1
-		hasMoreMosi := io.transaction.mosi.valid
-	}
-
-	when(!bitCounterWillIncrement && command.writeCount =/= 0) {
-		hasMoreMosi := io.transaction.mosi.valid // TODO: WHEN REFACTORING, SEE IF THIS REGISTER CAN BE REMOVED
-	}
-
-	when(bitCounterWillOverflowIfIncremented && command.writeCount === 0) {
-		command.readCount := command.readCount - 1
-		isMisoFull := !io.transaction.miso.ready
-		isMisoValid := True
-	}
-
 	when(isMisoFull && io.transaction.miso.ready) {
 		isMisoFull := False
 	}
@@ -75,8 +55,17 @@ class FlashQspiMemorySerdes extends Component {
 		isMisoValid := False
 	}
 
+	when((nextBitCounterValue === 7 && !command.isQspi) || (nextBitCounterValue === 4 && command.isQspi)) {
+		isMosiFull := False
+		isCommandFull := command.writeCount(2 downto 1) =/= 0 || (command.writeCount(0) && command.readCount(0)) || command.readCount(2 downto 1) =/= 0
+	}
+
 	when(bitCounterWillIncrement) {
 		bitCounter := nextBitCounterValue
+	}
+
+	when(!bitCounterWillIncrement && command.writeCount =/= 0) {
+		hasMoreMosi := io.transaction.mosi.valid
 	}
 
 	when(bitCounterWillIncrement && !command.isQspi && command.writeCount === 0) {
@@ -85,6 +74,17 @@ class FlashQspiMemorySerdes extends Component {
 
 	when(bitCounterWillIncrement && command.isQspi && command.writeCount === 0) {
 		miso := (miso ## io.pins.io3_Hold.inValue ## io.pins.io2_Wp.inValue ## io.pins.io1Miso.inValue ## io.pins.io0Mosi.inValue)(7 downto 0).asUInt
+	}
+
+	when(bitCounterWillOverflowIfIncremented && command.writeCount =/= 0) {
+		command.writeCount := command.writeCount - 1
+		hasMoreMosi := io.transaction.mosi.valid
+	}
+
+	when(bitCounterWillOverflowIfIncremented && command.writeCount === 0) {
+		command.readCount := command.readCount - 1
+		isMisoFull := !io.transaction.miso.ready
+		isMisoValid := True
 	}
 
 	when(bitCounterWillOverflowIfIncremented && command.writeCount === 1) {
