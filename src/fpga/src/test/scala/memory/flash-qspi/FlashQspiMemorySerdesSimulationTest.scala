@@ -116,21 +116,25 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "remain high on the first active clock edge for a non-pipelined transaction" in simulator { fixture =>
+	it must "remain high on the first active clock edge for a non-pipelined transaction" in simulator { implicit fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount, readCount)
 			fixture.stubMosi(anyByte())
 			fixture.stubReadyMiso()
-// TODO: EXAMINE ALL USES OF forAll - THERE NEEDS TO BE AN ASSERTION IN THERE...
-			val numberOfClocksPerByte = if (isQspi) 2 else 8
-			forAll(0 until (writeCount + readCount) * numberOfClocksPerByte) { _ =>
-				fixture.clock()
-				fixture.stubInvalidCommand(isQspi, writeCount, readCount)
-			}
+			fixture.clock()
+			fixture.stubInvalidCommand(isQspi, writeCount, readCount)
+			discard(numberOfBytes=writeCount + readCount, isQspi, clockAdjust= -1)
 
 			fixture.clockActive()
 			fixture.io.transaction.command.ready.toBoolean must be(true)
+		}
+	}
+
+	private def discard(numberOfBytes: Int, isQspi: Boolean, clockAdjust: Int = 0)(implicit fixture: FlashQspiMemorySerdesFixture) = {
+		val numberOfClocksPerByte = if (isQspi) 2 else 8
+		for (_ <- 0 until numberOfBytes * numberOfClocksPerByte + clockAdjust) {
+			fixture.clock()
 		}
 	}
 
@@ -144,13 +148,6 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 			fixture.clockActive()
 			fixture.io.transaction.command.ready.toBoolean must be(false)
-		}
-	}
-
-	private def discard(numberOfBytes: Int, isQspi: Boolean, clockAdjust: Int = 0)(implicit fixture: FlashQspiMemorySerdesFixture) = {
-		val numberOfClocksPerByte = if (isQspi) 2 else 8
-		for (_ <- 0 until numberOfBytes * numberOfClocksPerByte + clockAdjust) {
-			fixture.clock()
 		}
 	}
 
@@ -813,7 +810,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 			var transactionMosi = transactionMosis.head
 			forAll(transactionMosis.tail) { nextTransactionMosi =>
 				var shiftedMosi = 0
-				forAll(7 to 0 by -1) { bit =>
+				(7 to 0 by -1).foreach { bit =>
 					fixture.clockActive()
 					fixture.stubMosi(nextTransactionMosi)
 					fixture.clockInactive()
@@ -872,7 +869,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 			fixture.stubCommand(isQspi=true, writeCount=1)
 			fixture.stubMosi(transactionMosi)
 			var shiftedMosi = transactionMosi & ~((1 << bits._1) | (1 << bits._2))
-			forAll(bits._1 to bits._2 by -4) { bit =>
+			(bits._1 to bits._2 by -4).foreach { bit =>
 				fixture.clockActive()
 				fixture.stubMosi(~transactionMosi & 0xff)
 				fixture.clockInactive()
@@ -1318,7 +1315,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 			var transactionMosi = transactionMosis.head
 			forAll(transactionMosis.tail) { nextTransactionMosi =>
 				var shiftedMosi = 0
-				forAll(0 to 1) { bit =>
+				(0 to 1).foreach { bit =>
 					fixture.clockActive()
 					fixture.stubMosi(nextTransactionMosi)
 					fixture.clockInactive()
@@ -1455,7 +1452,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 			fixture.stubCommand(isQspi, writeCount, readCount)
 			fixture.stubMosi(anyByte())
 			val numberOfClocksPerByte = if (isQspi) 2 else 8
-			forAll(0 until numberOfClocksPerByte) { i =>
+			(0 until numberOfClocksPerByte).foreach { _ =>
 				fixture.clock()
 				fixture.stubInvalidMosi()
 			}
@@ -1465,15 +1462,12 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "fall low on the first active clock edge for a pipelined transaction" in simulator { fixture =>
+	it must "fall low on the first active clock edge for a pipelined transaction" in simulator { implicit fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount, readCount)
 			fixture.stubMosi(anyByte())
-			val numberOfClocksPerByte = if (isQspi) 2 else 8
-			forAll(0 until numberOfClocksPerByte) { i =>
-				fixture.clock()
-			}
+			discard(numberOfBytes=1, isQspi)
 
 			fixture.clockActive()
 			fixture.io.transaction.mosi.ready.toBoolean must be(false)
