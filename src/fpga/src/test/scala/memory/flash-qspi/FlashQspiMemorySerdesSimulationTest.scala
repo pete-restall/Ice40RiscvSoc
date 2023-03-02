@@ -45,8 +45,6 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	protected override def dutFactory() = new FlashQspiMemorySerdesFixture()
 
-// TODO: NORMALISE THE LANGUAGE - REPLACE 'rising edge' WITH 'active edge', etc.
-
 	"FlashQspiSerdes transaction command's ready flag" must "be held low during reset" in simulator { fixture =>
 		fixture.holdInReset()
 		fixture.io.transaction.command.ready.toBoolean must be(false)
@@ -70,7 +68,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	private def anyByte() = Random.nextInt(1 << 8)
 
-	it must "fall low on the first rising clock edge when the transaction's command is valid" in simulator { fixture =>
+	it must "fall low on the first active clock edge when the transaction's command is valid" in simulator { fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount, readCount)
@@ -81,7 +79,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "rise high on the last rising clock edge of the shifted bit clock for a non-pipelined transaction" in simulator { fixture =>
+	it must "rise high on the last active clock edge of the shifted bit clock for a non-pipelined transaction" in simulator { fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount, readCount)
@@ -100,7 +98,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "rise high on the last rising clock edge of the shifted bit clock for a pipelined transaction" in simulator { fixture =>
+	it must "rise high on the last active clock edge of the shifted bit clock for a pipelined transaction" in simulator { fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount, readCount)
@@ -118,7 +116,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "remain high on the first rising clock edge for a non-pipelined transaction" in simulator { fixture =>
+	it must "remain high on the first active clock edge for a non-pipelined transaction" in simulator { fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount, readCount)
@@ -136,7 +134,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "fall low on the first rising clock edge for a pipelined transaction" in simulator { implicit fixture =>
+	it must "fall low on the first active clock edge for a pipelined transaction" in simulator { implicit fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount, readCount)
@@ -587,7 +585,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.pins.io0Mosi must have(nonTristatedOutValueOf(true))
 	}
 
-	it must "not be tristated on the first falling clock edge for (Q)SPI write-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for (Q)SPI write-only transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForSpiAndQspiWriteOnlyTransactions(pins => pins.io0Mosi)
 	}
 
@@ -613,7 +611,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		sleep(50)
 	}
 
-	it must "not be tristated on the first falling clock edge for (Q)SPI write-read transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for (Q)SPI write-read transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForSpiAndQspiWriteThenReadTransactions(pins => pins.io0Mosi)
 	}
 
@@ -629,7 +627,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "not be tristated on the first falling clock edge for empty (Q)SPI transactions if not previously tristated" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for empty (Q)SPI transactions if not previously tristated" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForEmptySpiAndQspiTransactionsIfNotPreviouslyTristated(pins => pins.io0Mosi)
 	}
 
@@ -654,7 +652,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		sleep(50)
 	}
 
-	it must "be tristated on the first rising clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
+	it must "be tristated on the first active clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
 		itMustBeTristatedOnTheFirstRisingClockEdgeForEmptySpiAndQspiTransactionsIfPreviouslyTristated(pins => pins.io0Mosi)
 	}
 
@@ -668,7 +666,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "not be tristated on the first falling clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForEmptySpiAndQspiTransactionsIfPreviouslyTristated(pins => pins.io0Mosi)
 	}
 
@@ -682,7 +680,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "not be tristated on the first falling clock edge for SPI read-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for SPI read-only transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForSpiReadOnlyTransactions(pins => pins.io0Mosi)
 	}
 
@@ -697,7 +695,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be tristated on the first falling clock edge for QSPI read-only transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge for QSPI read-only transactions" in simulator { implicit fixture =>
 		itMustBeTristatedOnTheFirstFallingClockEdgeForQspiReadOnlyTransactions(pins => pins.io0Mosi)
 	}
 
@@ -712,7 +710,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "not be tristated on the first falling clock edge following the last written bit for (Q)SPI write-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge following the last written bit for (Q)SPI write-only transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeFollowingTheLastWrittenBitForSpiAndQspiWriteOnlyTransactions(pins => pins.io0Mosi)
 	}
 
@@ -731,7 +729,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	private val writeAndReadCounts = allCombinationsOf(writeCounts, readCounts).asTable("writeCount", "readCount")
 
-	it must "not be tristated on the first falling clock edge following the last written bit for SPI write-read transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge following the last written bit for SPI write-read transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeFollowingTheLastWrittenBitForSpiWriteThenReadTransactions(pins => pins.io0Mosi)
 	}
 
@@ -749,7 +747,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be tristated on the first falling clock edge following the last written bit for QSPI write-read transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge following the last written bit for QSPI write-read transactions" in simulator { implicit fixture =>
 		itMustBeTristatedOnTheFirstFallingClockEdgeFollowingTheLastWrittenBitForQspiWriteThenReadTransactions(pins => pins.io0Mosi)
 	}
 
@@ -763,7 +761,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 			var isTristateOnLastFallingEdge = false
 			for (i <- 0 until writeCount * 2 + 1) {
 				fixture.clockActive()
-				pinFrom(fixture.io.pins).isTristated.toBoolean must be(false) withClue s"on rising edge ${i}"
+				pinFrom(fixture.io.pins).isTristated.toBoolean must be(false) withClue s"on active clock edge ${i}"
 				fixture.clockInactive()
 				isTristateOnLastFallingEdge = pinFrom(fixture.io.pins).isTristated.toBoolean
 			}
@@ -771,7 +769,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be the MOSI byte shifted out on 8 falling clock edges, most significant bit first, for an SPI write-only transaction" in simulator { implicit fixture =>
+	it must "be the MOSI byte shifted out on 8 inactive clock edges, most significant bit first, for an SPI write-only transaction" in simulator { implicit fixture =>
 		val transactionMosi = anyByte()
 		fixture.reset()
 		fixture.stubCommand(isQspi=false, writeCount=1)
@@ -840,7 +838,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.shiftSpiMosiByte() must be(0xff)
 	}
 
-	it must "be bits 4 and 0 of the MOSI byte shifted out on 2 falling clock edges, for QSPI write-only transactions" in simulator { implicit fixture =>
+	it must "be bits 4 and 0 of the MOSI byte shifted out on 2 inactive clock edges, for QSPI write-only transactions" in simulator { implicit fixture =>
 		itMustBeTheGivenBitsOfTheMosiByteShiftedOutOnTwoFallingClockEdgesForQspiWriteOnlyTransactions((4, 0), pins => pins.io0Mosi)
 	}
 
@@ -895,7 +893,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.pins.io1Miso must have(tristatedOutValueOf(true))
 	}
 
-	it must "be tristated on the first falling clock edge for SPI write-only transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge for SPI write-only transactions" in simulator { implicit fixture =>
 		forAll(writeCounts) { writeCount =>
 			fixture.reset()
 			stubAllMosiAsTristate()
@@ -906,7 +904,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "not be tristated on the first falling clock edge for QSPI write-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for QSPI write-only transactions" in simulator { implicit fixture =>
 		forAll(writeCounts) { writeCount =>
 			fixture.reset()
 			stubAllMosiAsTristate()
@@ -917,7 +915,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be tristated on the first falling clock edge for SPI write-read transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge for SPI write-read transactions" in simulator { implicit fixture =>
 		forAll(writeAndReadCounts) { (writeCount, readCount) =>
 			fixture.reset()
 			stubAllMosiAsTristate()
@@ -929,7 +927,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "not be tristated on the first falling clock edge for QSPI write-read transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for QSPI write-read transactions" in simulator { implicit fixture =>
 		forAll(writeAndReadCounts) { (writeCount, readCount) =>
 			fixture.reset()
 			stubAllMosiAsTristate()
@@ -941,7 +939,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be tristated on the first falling clock edge for empty SPI transactions if not previously tristated" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge for empty SPI transactions if not previously tristated" in simulator { implicit fixture =>
 		fixture.reset()
 		stubAllMosiAsNonTristate()
 		fixture.stubCommand(isQspi=false, writeCount=0, readCount=0)
@@ -949,7 +947,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.pins.io1Miso.isTristated.toBoolean must be(true)
 	}
 
-	it must "not be tristated on the first falling clock edge for empty QSPI transactions if not previously tristated" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for empty QSPI transactions if not previously tristated" in simulator { implicit fixture =>
 		fixture.reset()
 		stubAllMosiAsNonTristate()
 		fixture.stubCommand(isQspi=true, writeCount=0, readCount=0)
@@ -957,11 +955,11 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.pins.io1Miso.isTristated.toBoolean must be(false)
 	}
 
-	it must "be tristated on the first rising clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
+	it must "be tristated on the first active clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
 		itMustBeTristatedOnTheFirstRisingClockEdgeForEmptySpiAndQspiTransactionsIfPreviouslyTristated(pins => pins.io1Miso)
 	}
 
-	it must "be tristated on the first falling clock edge for empty SPI transactions if previously tristated" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge for empty SPI transactions if previously tristated" in simulator { implicit fixture =>
 		fixture.reset()
 		stubAllMosiAsTristate()
 		fixture.stubCommand(isQspi=false, writeCount=0, readCount=0)
@@ -969,7 +967,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.pins.io1Miso.isTristated.toBoolean must be(true)
 	}
 
-	it must "not be tristated on the first falling clock edge for empty QSPI transactions if previously tristated" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for empty QSPI transactions if previously tristated" in simulator { implicit fixture =>
 		fixture.reset()
 		stubAllMosiAsTristate()
 		fixture.stubCommand(isQspi=true, writeCount=0, readCount=0)
@@ -977,7 +975,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.pins.io1Miso.isTristated.toBoolean must be(false)
 	}
 
-	it must "be tristated on the first falling clock edge for (Q)SPI read-only transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge for (Q)SPI read-only transactions" in simulator { implicit fixture =>
 		forAll(readCountsVsTransactionTypes) { (readCount, isQspi) =>
 			fixture.reset()
 			stubAllMosiAsTristate()
@@ -988,7 +986,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be tristated on the first falling clock edge following the last written bit for SPI write-only transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge following the last written bit for SPI write-only transactions" in simulator { implicit fixture =>
 		forAll(writeCounts) { writeCount =>
 			fixture.reset()
 			stubAllMosiAsTristate()
@@ -1001,7 +999,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "not be tristated on the first falling clock edge following the last written bit for QSPI write-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge following the last written bit for QSPI write-only transactions" in simulator { implicit fixture =>
 		forAll(writeCounts) { writeCount =>
 			fixture.reset()
 			stubAllMosiAsTristate()
@@ -1014,7 +1012,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be tristated on the first falling clock edge following the last written bit for SPI write-read transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge following the last written bit for SPI write-read transactions" in simulator { implicit fixture =>
 		forAll(writeAndReadCounts) { (writeCount, readCount) =>
 			fixture.reset()
 			stubAllMosiAsTristate()
@@ -1028,11 +1026,11 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be tristated on the first falling clock edge following the last written bit for QSPI write-read transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge following the last written bit for QSPI write-read transactions" in simulator { implicit fixture =>
 		itMustBeTristatedOnTheFirstFallingClockEdgeFollowingTheLastWrittenBitForQspiWriteThenReadTransactions(pins => pins.io1Miso)
 	}
 
-	it must "be bits 5 and 1 of the MOSI byte shifted out on 2 falling clock edges, for QSPI write-only transactions" in simulator { implicit fixture =>
+	it must "be bits 5 and 1 of the MOSI byte shifted out on 2 inactive clock edges, for QSPI write-only transactions" in simulator { implicit fixture =>
 		itMustBeTheGivenBitsOfTheMosiByteShiftedOutOnTwoFallingClockEdgesForQspiWriteOnlyTransactions((5, 1), pins => pins.io1Miso)
 	}
 
@@ -1048,7 +1046,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "still be low on the first rising clock edge after reset" in simulator { fixture =>
+	it must "still be low on the first active clock edge after reset" in simulator { fixture =>
 		forAll(booleans.asTable("isWriteProtected")) { isWriteProtected =>
 			fixture.io.transaction.isWriteProtected #= isWriteProtected
 			fixture.reset()
@@ -1057,7 +1055,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be the inverted value of the isWriteProtected flag on the first falling clock edge after reset" in simulator { fixture =>
+	it must "be the inverted value of the isWriteProtected flag on the first inactive clock edge after reset" in simulator { fixture =>
 		forAll(booleans.asTable("isWriteProtected")) { isWriteProtected =>
 			fixture.io.transaction.isWriteProtected #= isWriteProtected
 			fixture.reset()
@@ -1066,47 +1064,47 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "not be tristated on the first falling clock edge for (Q)SPI write-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for (Q)SPI write-only transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForSpiAndQspiWriteOnlyTransactions(pins => pins.io2_Wp)
 	}
 
-	it must "not be tristated on the first falling clock edge for (Q)SPI write-read transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for (Q)SPI write-read transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForSpiAndQspiWriteThenReadTransactions(pins => pins.io2_Wp)
 	}
 
-	it must "not be tristated on the first falling clock edge for empty (Q)SPI transactions if not previously tristated" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for empty (Q)SPI transactions if not previously tristated" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForEmptySpiAndQspiTransactionsIfNotPreviouslyTristated(pins => pins.io2_Wp)
 	}
 
-	it must "be tristated on the first rising clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
+	it must "be tristated on the first active clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
 		itMustBeTristatedOnTheFirstRisingClockEdgeForEmptySpiAndQspiTransactionsIfPreviouslyTristated(pins => pins.io2_Wp)
 	}
 
-	it must "not be tristated on the first falling clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForEmptySpiAndQspiTransactionsIfPreviouslyTristated(pins => pins.io2_Wp)
 	}
 
-	it must "not be tristated on the first falling clock edge for SPI read-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for SPI read-only transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForSpiReadOnlyTransactions(pins => pins.io2_Wp)
 	}
 
-	it must "be tristated on the first falling clock edge for QSPI read-only transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge for QSPI read-only transactions" in simulator { implicit fixture =>
 		itMustBeTristatedOnTheFirstFallingClockEdgeForQspiReadOnlyTransactions(pins => pins.io2_Wp)
 	}
 
-	it must "not be tristated on the first falling clock edge following the last written bit for (Q)SPI write-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge following the last written bit for (Q)SPI write-only transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeFollowingTheLastWrittenBitForSpiAndQspiWriteOnlyTransactions(pins => pins.io2_Wp)
 	}
 
-	it must "not be tristated on the first falling clock edge following the last written bit for SPI write-read transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge following the last written bit for SPI write-read transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeFollowingTheLastWrittenBitForSpiWriteThenReadTransactions(pins => pins.io2_Wp)
 	}
 
-	it must "be tristated on the first falling clock edge following the last written bit for QSPI write-read transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge following the last written bit for QSPI write-read transactions" in simulator { implicit fixture =>
 		itMustBeTristatedOnTheFirstFallingClockEdgeFollowingTheLastWrittenBitForQspiWriteThenReadTransactions(pins => pins.io2_Wp)
 	}
 
-	it must "be bits 6 and 2 of the MOSI byte shifted out on 2 falling clock edges, for QSPI write-only transactions" in simulator { implicit fixture =>
+	it must "be bits 6 and 2 of the MOSI byte shifted out on 2 inactive clock edges, for QSPI write-only transactions" in simulator { implicit fixture =>
 		itMustBeTheGivenBitsOfTheMosiByteShiftedOutOnTwoFallingClockEdgesForQspiWriteOnlyTransactions((6, 2), pins => pins.io2_Wp)
 	}
 
@@ -1135,7 +1133,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.clockWhileEnabled()
 	}
 
-	it must "be the inverted value of isWriteProtected on the first falling clock edge of an empty SPI transaction" in simulator { implicit fixture =>
+	it must "be the inverted value of isWriteProtected on the first inactive clock edge of an empty SPI transaction" in simulator { implicit fixture =>
 		forAll(booleans.asTable("isWriteProtected")) { isWriteProtected =>
 			fixture.reset()
 			fixture.io.transaction.isWriteProtected #= isWriteProtected
@@ -1147,16 +1145,16 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	private def assertIo2ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value: Boolean)(implicit fixture: FlashQspiMemorySerdesFixture) = {
 		fixture.clockActive()
-		fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(!value)) withClue "on first rising edge"
+		fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(!value)) withClue "on first active clock edge"
 		fixture.stubInvalidCommand()
 		fixture.clockInactive()
-		fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(value)) withClue "on first falling edge"
+		fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(value)) withClue "on first inactive clock edge"
 		fixture.doWhileClockEnabled {
 			fixture.io.pins.io2_Wp must have(nonTristatedOutValueOf(value)) withClue "for each clock of the transaction"
 		}
 	}
 
-	it must "be the inverted value of isWriteProtected on the first falling clock edge for SPI write-only transactions" in simulator { implicit fixture =>
+	it must "be the inverted value of isWriteProtected on the first inactive clock edge for SPI write-only transactions" in simulator { implicit fixture =>
 		forAll(booleans.asTable("isWriteProtected")) { isWriteProtected =>
 			fixture.reset()
 			fixture.io.transaction.isWriteProtected #= isWriteProtected
@@ -1198,47 +1196,47 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.pins.io3_Hold must have(nonTristatedOutValueOf(true))
 	}
 
-	it must "not be tristated on the first falling clock edge for (Q)SPI write-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for (Q)SPI write-only transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForSpiAndQspiWriteOnlyTransactions(pins => pins.io3_Hold)
 	}
 
-	it must "not be tristated on the first falling clock edge for (Q)SPI write-read transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for (Q)SPI write-read transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForSpiAndQspiWriteThenReadTransactions(pins => pins.io3_Hold)
 	}
 
-	it must "not be tristated on the first falling clock edge for empty (Q)SPI transactions if not previously tristated" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for empty (Q)SPI transactions if not previously tristated" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForEmptySpiAndQspiTransactionsIfNotPreviouslyTristated(pins => pins.io3_Hold)
 	}
 
-	it must "be tristated on the first rising clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
+	it must "be tristated on the first active clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
 		itMustBeTristatedOnTheFirstRisingClockEdgeForEmptySpiAndQspiTransactionsIfPreviouslyTristated(pins => pins.io3_Hold)
 	}
 
-	it must "not be tristated on the first falling clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for empty Q(SPI) transactions if previously tristated" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForEmptySpiAndQspiTransactionsIfPreviouslyTristated(pins => pins.io3_Hold)
 	}
 
-	it must "not be tristated on the first falling clock edge for SPI read-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge for SPI read-only transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeForSpiReadOnlyTransactions(pins => pins.io3_Hold)
 	}
 
-	it must "be tristated on the first falling clock edge for QSPI read-only transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge for QSPI read-only transactions" in simulator { implicit fixture =>
 		itMustBeTristatedOnTheFirstFallingClockEdgeForQspiReadOnlyTransactions(pins => pins.io3_Hold)
 	}
 
-	it must "not be tristated on the first falling clock edge following the last written bit for (Q)SPI write-only transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge following the last written bit for (Q)SPI write-only transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeFollowingTheLastWrittenBitForSpiAndQspiWriteOnlyTransactions(pins => pins.io3_Hold)
 	}
 
-	it must "not be tristated on the first falling clock edge following the last written bit for SPI write-read transactions" in simulator { implicit fixture =>
+	it must "not be tristated on the first inactive clock edge following the last written bit for SPI write-read transactions" in simulator { implicit fixture =>
 		itMustNotBeTristatedOnTheFirstFallingClockEdgeFollowingTheLastWrittenBitForSpiWriteThenReadTransactions(pins => pins.io3_Hold)
 	}
 
-	it must "be tristated on the first falling clock edge following the last written bit for QSPI write-read transactions" in simulator { implicit fixture =>
+	it must "be tristated on the first inactive clock edge following the last written bit for QSPI write-read transactions" in simulator { implicit fixture =>
 		itMustBeTristatedOnTheFirstFallingClockEdgeFollowingTheLastWrittenBitForQspiWriteThenReadTransactions(pins => pins.io3_Hold)
 	}
 
-	it must "be bits 7 and 3 of the MOSI byte shifted out on 2 falling clock edges, for QSPI write-only transactions" in simulator { implicit fixture =>
+	it must "be bits 7 and 3 of the MOSI byte shifted out on 2 inactive clock edges, for QSPI write-only transactions" in simulator { implicit fixture =>
 		itMustBeTheGivenBitsOfTheMosiByteShiftedOutOnTwoFallingClockEdgesForQspiWriteOnlyTransactions((7, 3), pins => pins.io3_Hold)
 	}
 
@@ -1258,7 +1256,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	private def stubIo3For(value: Boolean)(implicit fixture: FlashQspiMemorySerdesFixture) = stubAllMosiIoFor(value)
 
-	it must "be high on the first falling clock edge of an empty SPI transaction" in simulator { implicit fixture =>
+	it must "be high on the first inactive clock edge of an empty SPI transaction" in simulator { implicit fixture =>
 		fixture.reset()
 		stubIo3For(value=false)
 		fixture.stubCommand(isQspi=false, writeCount=0)
@@ -1267,16 +1265,16 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	private def assertIo3ValueOnFirstFallingClockEdgeAndSubsequentClocksHas(value: Boolean)(implicit fixture: FlashQspiMemorySerdesFixture) = {
 		fixture.clockActive()
-		fixture.io.pins.io3_Hold must have(nonTristatedOutValueOf(!value)) withClue "on first rising edge"
+		fixture.io.pins.io3_Hold must have(nonTristatedOutValueOf(!value)) withClue "on first active clock edge"
 		fixture.stubInvalidCommand()
 		fixture.clockInactive()
-		fixture.io.pins.io3_Hold must have(nonTristatedOutValueOf(value)) withClue "on first falling edge"
+		fixture.io.pins.io3_Hold must have(nonTristatedOutValueOf(value)) withClue "on first inactive clock edge"
 		fixture.doWhileClockEnabled {
 			fixture.io.pins.io3_Hold must have(nonTristatedOutValueOf(value)) withClue "for each clock of the transaction"
 		}
 	}
 
-	it must "be high on the first falling clock edge for SPI write-only transactions" in simulator { implicit fixture =>
+	it must "be high on the first inactive clock edge for SPI write-only transactions" in simulator { implicit fixture =>
 		fixture.reset()
 		stubIo3For(value=false)
 		fixture.stubCommand(isQspi=false, anyWriteCount())
@@ -1376,7 +1374,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	they must "use the MOSI byte registered on the first rising edge of a transaction" in simulator { fixture =>
+	they must "use the MOSI byte registered on the first active clock edge of a transaction" in simulator { fixture =>
  		forAll(transactionTypes) { isQspi =>
 			val transactioMosi = anyByte()
 			fixture.reset()
@@ -1408,7 +1406,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "fall low on the first rising clock edge when the transaction's MOSI byte is valid" in simulator { fixture =>
+	it must "fall low on the first active clock edge when the transaction's MOSI byte is valid" in simulator { fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubInvalidCommand(isQspi, writeCount, readCount)
@@ -1418,7 +1416,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "rise high on the last rising clock edge of the shifted bit clock for a non-pipelined transaction" in simulator { fixture =>
+	it must "rise high on the last active clock edge of the shifted bit clock for a non-pipelined transaction" in simulator { fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount, readCount)
@@ -1435,7 +1433,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "rise high on the last rising clock edge of the shifted bit clock for a pipelined transaction" in simulator { fixture =>
+	it must "rise high on the last active clock edge of the shifted bit clock for a pipelined transaction" in simulator { fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount, readCount)
@@ -1451,7 +1449,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "remain high on the first rising clock edge for a non-pipelined transaction" in simulator { fixture =>
+	it must "remain high on the first active clock edge for a non-pipelined transaction" in simulator { fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount, readCount)
@@ -1467,7 +1465,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "fall low on the first rising clock edge for a pipelined transaction" in simulator { fixture =>
+	it must "fall low on the first active clock edge for a pipelined transaction" in simulator { fixture =>
 		forAll(writeAndReadCountsVsTransactionTypes) { (writeCount, readCount, isQspi) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount, readCount)
@@ -1555,7 +1553,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		fixture.io.transaction.miso.valid.toBoolean must be(false)
 	}
 
-	it must "rise high on the clock's 9th rising edge for SPI read-only transactions" in simulator { fixture =>
+	it must "rise high on the clock's 9th active clock edge for SPI read-only transactions" in simulator { fixture =>
 		forAll(readCounts) { readCount =>
 			fixture.reset()
 			fixture.stubCommand(isQspi=false, readCount=readCount)
@@ -1571,7 +1569,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "rise high on the clock's 3rd rising edge for QSPI read-only transactions" in simulator { fixture =>
+	it must "rise high on the clock's 3rd active clock edge for QSPI read-only transactions" in simulator { fixture =>
 		forAll(readCounts) { readCount =>
 			fixture.reset()
 			fixture.stubCommand(isQspi=true, readCount=readCount)
@@ -1599,7 +1597,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "rise high on the clock's 9th rising edge after the last MOSI bit has been written for SPI write-read transactions" in simulator { fixture =>
+	it must "rise high on the clock's 9th active clock edge after the last MOSI bit has been written for SPI write-read transactions" in simulator { fixture =>
 		forAll(writeAndReadCounts) { (writeCount, readCount) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi=false, writeCount, readCount)
@@ -1616,7 +1614,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "rise high on the clock's 3rd rising edge after the last MOSI bit has been written for QSPI write-read transactions" in simulator { fixture =>
+	it must "rise high on the clock's 3rd active clock edge after the last MOSI bit has been written for QSPI write-read transactions" in simulator { fixture =>
 		forAll(writeAndReadCounts) { (writeCount, readCount) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi=true, writeCount, readCount)
@@ -1676,7 +1674,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "rise high on the clock's (number of MOSI stalls + 9th rising edge) after the last MOSI bit has been written for SPI write-read transactions" in simulator { fixture =>
+	it must "rise high on the clock's (number of MOSI stalls + 9th active clock edge) after the last MOSI bit has been written for SPI write-read transactions" in simulator { fixture =>
 		forAll(writeAndReadCounts) { (writeCount, readCount) =>
 			fixture.reset()
 			fixture.stubCommand(isQspi=false, writeCount, readCount)
@@ -1705,7 +1703,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	private val misoSamples = Seq(0x00, 0xff, 0xaa, 0x55, anyByte()).asTable("misoByte")
 
-	it must "be the MISO byte shifted in on 8 rising clock edges, most significant bit first, for an SPI read-only transaction" in simulator { fixture =>
+	it must "be the MISO byte shifted in on 8 active clock edges, most significant bit first, for an SPI read-only transaction" in simulator { fixture =>
 		forAll(misoSamples) { misoByte =>
 			fixture.reset()
 			fixture.stubCommand(isQspi=false, readCount=1)
@@ -1716,7 +1714,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be the MISO byte shifted in on 2 rising clock edges, most significant nybble first, for a QSPI read-only transaction" in simulator { fixture =>
+	it must "be the MISO byte shifted in on 2 active clock edges, most significant nybble first, for a QSPI read-only transaction" in simulator { fixture =>
 		forAll(misoSamples) { misoByte =>
 			fixture.reset()
 			fixture.stubCommand(isQspi=true, readCount=1)
@@ -1729,7 +1727,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 
 	private val writeCountsVsMisoSamples = allCombinationsOf(writeCounts, misoSamples).asTable("writeCount", "misoByte")
 
-	it must "be the MISO byte shifted in on 8 rising clock edges, most significant bit first, for an SPI write-read transaction" in simulator { fixture =>
+	it must "be the MISO byte shifted in on 8 active clock edges, most significant bit first, for an SPI write-read transaction" in simulator { fixture =>
 		fixture.setCurrentQspiMisoNybble(0)
 		forAll(writeCountsVsMisoSamples) { (writeCount, misoByte) =>
 			fixture.reset()
@@ -1742,7 +1740,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 		}
 	}
 
-	it must "be the MISO byte shifted in on 2 rising clock edges, most significant nybble first, for a QSPI write-read transaction" in simulator { fixture =>
+	it must "be the MISO byte shifted in on 2 active clock edges, most significant nybble first, for a QSPI write-read transaction" in simulator { fixture =>
 		fixture.setCurrentQspiMisoNybble(0)
 		forAll(writeCountsVsMisoSamples) { (writeCount, misoByte) =>
 			fixture.reset()
