@@ -11,19 +11,19 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 	protected override def dutFactory() = slaveDutFactory()
 
 	"Wishbone Master interface" must "hold CYC inactive in reset" in verification { dut =>
-		when (dut.clockDomain.isResetActive) {
+		dut.clockDomain.duringReset {
 			formallyAssume(!dut.asWishboneSlave.CYC)
 		}
 	}
 
 	it must "hold WE inactive in reset" in verification { dut =>
-		when (dut.clockDomain.isResetActive) {
+		dut.clockDomain.duringReset {
 			formallyAssume(!dut.asWishboneSlave.WE)
 		}
 	}
 
 	it must "hold STB inactive in reset" in verification { dut =>
-		when (dut.clockDomain.isResetActive) {
+		dut.clockDomain.duringReset {
 			formallyAssume(!dut.asWishboneSlave.STB)
 		}
 	}
@@ -38,14 +38,14 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 	}
 
 	it must "not change WE during STB" in verification { dut =>
-		when (pastValid && past(dut.asWishboneSlave.STB)) {
+		when(pastValid && past(dut.asWishboneSlave.STB)) {
 			formallyAssume(dut.asWishboneSlave.STB === past(dut.asWishboneSlave.STB))
 		}
 	}
 
 	it must "not change STB during STALL" in verification { dut =>
 		if (dut.asWishboneSlave.STALL != null) {
-			when (pastValid && past(dut.asWishboneSlave.STALL)) {
+			when(pastValid && past(dut.asWishboneSlave.STALL)) {
 				formallyAssume(dut.asWishboneSlave.STB === past(dut.asWishboneSlave.STB))
 			}
 		}
@@ -53,7 +53,7 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 
 	it must "not change WE during STALL" in verification { dut =>
 		if (dut.asWishboneSlave.STALL != null) {
-			when (pastValid && past(dut.asWishboneSlave.STALL)) {
+			when(pastValid && past(dut.asWishboneSlave.STALL)) {
 				formallyAssume(dut.asWishboneSlave.WE === past(dut.asWishboneSlave.WE))
 			}
 		}
@@ -61,7 +61,7 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 
 	it must "not change ADR during STALL" in verification { dut =>
 		if (dut.asWishboneSlave.STALL != null) {
-			when (pastValid && past(dut.asWishboneSlave.STALL)) {
+			when(pastValid && past(dut.asWishboneSlave.STALL)) {
 				formallyAssume(dut.asWishboneSlave.ADR === past(dut.asWishboneSlave.ADR))
 			}
 		}
@@ -69,21 +69,21 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 
 	it must "not change MOSI during STALL" in verification { dut =>
 		if (dut.asWishboneSlave.STALL != null) {
-			when (pastValid && past(dut.asWishboneSlave.STALL)) {
+			when(pastValid && past(dut.asWishboneSlave.STALL)) {
 				formallyAssume(dut.asWishboneSlave.DAT_MOSI === past(dut.asWishboneSlave.DAT_MOSI))
 			}
 		}
 	}
 
 	"Wishbone Slave interface" must "hold ACK inactive in reset" in verification { dut =>
-		when (dut.clockDomain.isResetActive) {
+		dut.clockDomain.duringReset {
 			formallyAssert(!dut.asWishboneSlave.ACK)
 		}
 	}
 
 	it must "hold ERR inactive in reset" in verification { dut =>
 		if (dut.asWishboneSlave.ERR != null) {
-			when (dut.clockDomain.isResetActive) {
+			dut.clockDomain.duringReset {
 				formallyAssert(!dut.asWishboneSlave.ERR)
 			}
 		}
@@ -91,7 +91,7 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 
 	it must "hold RTY inactive in reset" in verification { dut =>
 		if (dut.asWishboneSlave.RTY != null) {
-			when (dut.clockDomain.isResetActive) {
+			dut.clockDomain.duringReset {
 				formallyAssert(!dut.asWishboneSlave.RTY)
 			}
 		}
@@ -151,22 +151,22 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 		val numberOfStbs = Reg(UInt(16 bits)) init(0)
 		val numberOfAcks = Reg(UInt(16 bits)) init(0)
 
-		when (cycleStarted) {
+		when(cycleStarted) {
 			numberOfAcks := 0
 			numberOfStbs := 0
 		}
 
-		when (dut.asWishboneSlave.CYC) {
-			when (dut.asWishboneSlave.STB) {
+		when(dut.asWishboneSlave.CYC) {
+			when(dut.asWishboneSlave.STB) {
 				numberOfStbs := numberOfStbs + 1
 			}
 
-			when (dut.asWishboneSlave.ACK) {
+			when(dut.asWishboneSlave.ACK) {
 				numberOfAcks := numberOfAcks + 1
 			}
 		}
 
-		when (pastValid && cycleEnded && !cycleEndedWithStb) {
+		when(pastValid && cycleEnded && !cycleEndedWithStb) {
 			formallyAssert(numberOfAcks === numberOfStbs)
 		}
 	}
@@ -181,22 +181,22 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 		val numberOfStbs = Reg(UInt(16 bits)) init(0)
 		val numberOfAcks = Reg(UInt(16 bits)) init(0)
 
-		when (cycleStarted) {
+		when(cycleStarted) {
 			numberOfAcks := 0
 			numberOfStbs := 0
 		}
 
-		when (dut.asWishboneSlave.CYC) {
-			when (dut.asWishboneSlave.STB) {
+		when(dut.asWishboneSlave.CYC) {
+			when(dut.asWishboneSlave.STB) {
 				numberOfStbs := numberOfStbs + 1
 			}
 
-			when (dut.asWishboneSlave.ACK) {
+			when(dut.asWishboneSlave.ACK) {
 				numberOfAcks := numberOfAcks + 1
 			}
 		}
 
-		when (pastValid && cycleEndedWithStb) {
+		when(pastValid && cycleEndedWithStb) {
 			formallyAssert(numberOfAcks === numberOfStbs - 1)
 		}
 	}
