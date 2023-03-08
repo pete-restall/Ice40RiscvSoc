@@ -22,11 +22,10 @@ abstract trait FormalVerificationFixture[TDut <: Component] extends TestSuiteMix
 		var status: Status = null
 		val runTests = () => super.runTests(testName, args)
 		val workspaceName = s"${TestsPackage.relativeClassNameOf(getClass)}_${stage}"
-		simulation.workspaceName(workspaceName).doVerify(new Component {
-			val dut = FormalDut(dutFactory())
-			fixtureDut = dut
 
-			setDefinitionName(workspaceName)
+		simulation.workspaceName(workspaceName).doVerify(new Component {
+			fixtureDut = FormalDut(dutFactory())
+			setDefinitionName("dut")
 			assumeInitial(ClockDomain.current.isResetActive)
 			status = runTests()
 		})
@@ -50,21 +49,21 @@ object FormalVerificationFixture {
 	private val config = SpinalConfig(
 		defaultClockDomainFrequency = FixedFrequency(100 MHz),
 		defaultConfigForClockDomains = ClockDomainConfig(
-			clockEdge = RISING,
-			resetKind = ASYNC,
-			resetActiveLevel = LOW,
-			softResetActiveLevel = LOW,
-			clockEnableActiveLevel = HIGH)).includeFormal
+			clockEdge=RISING,
+			resetKind=ASYNC,
+			resetActiveLevel=LOW,
+			softResetActiveLevel=LOW,
+			clockEnableActiveLevel=HIGH)).includeFormal
 
 	def createBoundedModelSimulation() = new SpinalFormalConfig()
 		.withSymbiYosys
-		.withBMC(depth=100)
+		.withBMC(depth=50)
 		.workspacePath(envVars("SPINALSIM_WORKSPACE"))
 		.withConfig(config)
 
 	def createInductiveSimulation() = new SpinalFormalConfig()
 		.withSymbiYosys
-		.withProve(depth=200)
+		.withProve(depth=100)
 		.workspacePath(envVars("SPINALSIM_WORKSPACE"))
 		.withConfig(config)
 }
