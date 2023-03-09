@@ -39,7 +39,7 @@ class FlashQspiMemoryStateMachine extends StateMachine {
 
 		whenIsActive {
 			reset := False
-			when(!io.bitBanger.isBitBangingRequested && io.driver.transaction.readWriteStrobe.ready) {
+			when(!isBitBangingGranted || !io.bitBanger.isBitBangingRequested && io.driver.transaction.readWriteStrobe.ready) { // TODO: TRY AND GET RID OF !isBitBangingGranted - ONLY REQUIRED TO SATISFY INDUCTANCE
 				goto(fastReadIdleState)
 			}
 		}
@@ -51,7 +51,7 @@ class FlashQspiMemoryStateMachine extends StateMachine {
 		}
 
 		whenIsActive {
-			when(io.bitBanger.isBitBangingRequested && io.driver.transaction.readWriteStrobe.ready) {
+			when(isBitBangingGranted || io.bitBanger.isBitBangingRequested && io.driver.transaction.readWriteStrobe.ready) { // TODO: TRY AND GET RID OF isBitBangingGranted - ONLY REQUIRED TO SATISFY INDUCTANCE
 				goto(initialState)
 			}
 		}
