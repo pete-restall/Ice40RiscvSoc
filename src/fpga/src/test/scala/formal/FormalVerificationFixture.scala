@@ -26,7 +26,7 @@ abstract trait FormalVerificationFixture[TDut <: Component] extends TestSuiteMix
 		simulation.workspaceName(workspaceName).doVerify(new Component {
 			fixtureDut = FormalDut(dutFactory())
 			setDefinitionName("dut")
-			assumeInitial(ClockDomain.current.isResetActive)
+			assumeInitial(clockDomain.isResetActive)
 			status = runTests()
 		})
 		status
