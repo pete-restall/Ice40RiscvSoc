@@ -78,31 +78,31 @@ class FlashQspiMemoryStateMachineVerification extends AnyFlatSpec with FormalVer
 	}
 
 	it must "not change when isQspiRequested is stable whilst bit-banging" in verification { dut =>
-		when(pastValid && past(stable(dut.clockDomain.isResetActive) && stable(dut.io.bitBanger.isBitBangingGranted) && stable(dut.io.bitBanger.isQspiRequested) && stable(dut.io.bitBanger._Cs))) {
+		when(pastValid && past(stable(dut.clockDomain.isResetActive) && stable(dut.io.bitBanger.isBitBangingGranted) && stable(dut.io.bitBanger.isQspiRequested) && stable(dut.io.bitBanger.isChipSelected))) {
 			formallyAssert(stable(dut.io.bitBanger.isQspiGranted))
 		}
 	}
 
-	it must "change from low to high when /CS is low whilst bit-banging the isQspiRequested flag" in verification { dut =>
-		when(pastValid && past(dut.io.bitBanger.isBitBangingGranted && !dut.io.bitBanger._Cs && !dut.io.bitBanger.isQspiGranted && rose(dut.io.bitBanger.isQspiRequested))) {
+	it must "change from low to high when isChipSelected whilst bit-banging the isQspiRequested flag" in verification { dut =>
+		when(pastValid && past(dut.io.bitBanger.isBitBangingGranted && dut.io.bitBanger.isChipSelected && !dut.io.bitBanger.isQspiGranted && rose(dut.io.bitBanger.isQspiRequested))) {
 			formallyAssert(dut.io.bitBanger.isQspiGranted)
 		}
 	}
 
-	it must "not change from high to low when /CS is low whilst bit-banging the isQspiRequested flag" in verification { dut =>
-		when(pastValid && past(dut.io.bitBanger.isBitBangingGranted && !dut.io.bitBanger._Cs && dut.io.bitBanger.isQspiGranted && fell(dut.io.bitBanger.isQspiRequested))) {
+	it must "not change from high to low when isChipSelected whilst bit-banging the isQspiRequested flag" in verification { dut =>
+		when(pastValid && past(dut.io.bitBanger.isBitBangingGranted && dut.io.bitBanger.isChipSelected && dut.io.bitBanger.isQspiGranted && fell(dut.io.bitBanger.isQspiRequested))) {
 			formallyAssert(dut.io.bitBanger.isQspiGranted)
 		}
 	}
 
-	it must "change from low to high when /CS is high whilst bit-banging the isQspiRequested flag" in verification { dut =>
-		when(pastValid && past(dut.io.bitBanger.isBitBangingGranted && dut.io.bitBanger._Cs && !dut.io.bitBanger.isQspiGranted && rose(dut.io.bitBanger.isQspiRequested))) {
+	it must "change from low to high when not isChipSelected whilst bit-banging the isQspiRequested flag" in verification { dut =>
+		when(pastValid && past(dut.io.bitBanger.isBitBangingGranted && !dut.io.bitBanger.isChipSelected && !dut.io.bitBanger.isQspiGranted && rose(dut.io.bitBanger.isQspiRequested))) {
 			formallyAssert(dut.io.bitBanger.isQspiGranted)
 		}
 	}
 
-	it must "change from high to low when /CS is high whilst bit-banging the isQspiRequested flag" in verification { dut =>
-		when(pastValid && past(dut.io.bitBanger.isBitBangingGranted && dut.io.bitBanger._Cs && dut.io.bitBanger.isQspiGranted && fell(dut.io.bitBanger.isQspiRequested))) {
+	it must "change from high to low when not isChipSelected whilst bit-banging the isQspiRequested flag" in verification { dut =>
+		when(pastValid && past(dut.io.bitBanger.isBitBangingGranted && !dut.io.bitBanger.isChipSelected && dut.io.bitBanger.isQspiGranted && fell(dut.io.bitBanger.isQspiRequested))) {
 			formallyAssert(!dut.io.bitBanger.isQspiGranted)
 		}
 	}
@@ -130,19 +130,19 @@ class FlashQspiMemoryStateMachineVerification extends AnyFlatSpec with FormalVer
 			formallyAssert(!dut.io.bitBanger.isTransactionValid)
 		}
 	}
-	"FlashQspiMemoryStateMachine driver /CS line" must "be high during reset" in verification { dut =>
+	"FlashQspiMemoryStateMachine driver's isChipSelected flag" must "be low during reset" in verification { dut =>
 		dut.clockDomain.duringReset {
-			formallyAssert(dut.io.driver._Cs)
+			formallyAssert(!dut.io.driver.isChipSelected)
 		}
 	}
 
-	it must "follow the bit-banger's /CS when bit-banging" in verification { dut =>
+	it must "follow the bit-banger's isChipSelected flag when bit-banging" in verification { dut =>
 		when(dut.io.bitBanger.isBitBangingGranted) {
-			formallyAssert(dut.io.driver._Cs === dut.io.bitBanger._Cs)
+			formallyAssert(dut.io.driver.isChipSelected === dut.io.bitBanger.isChipSelected)
 		}
 	}
 
-	"FlashQspiMemoryStateMachine driver reset line" must "be high during reset" in verification { dut =>
+	"FlashQspiMemoryStateMachine driver reset flag" must "be high during reset" in verification { dut =>
 		dut.clockDomain.duringReset {
 			formallyAssert(dut.io.driver.reset)
 		}
@@ -178,9 +178,9 @@ class FlashQspiMemoryStateMachineVerification extends AnyFlatSpec with FormalVer
 		}
 	}
 
-	it must "follow the inverse of the bit-banger's _Wp flag when bit-banging" in verification { dut =>
+	it must "follow the bit-banger's isWriteProtected flag when bit-banging" in verification { dut =>
 		when(dut.io.bitBanger.isBitBangingGranted) {
-			formallyAssert(dut.io.driver.transaction.isWriteProtected === !dut.io.bitBanger._Wp)
+			formallyAssert(dut.io.driver.transaction.isWriteProtected === dut.io.bitBanger.isWriteProtected)
 		}
 	}
 

@@ -10,8 +10,8 @@ class FlashQspiMemoryStateMachineVerificationFixture extends Component {
 	val io = dut.io
 
 	def withStimuli: this.type = {
-		anyseq(io.bitBanger._Cs)
-		anyseq(io.bitBanger._Wp)
+		anyseq(io.bitBanger.isChipSelected)
+		anyseq(io.bitBanger.isWriteProtected)
 		anyseq(io.bitBanger.isQspiRequested)
 		anyseq(io.bitBanger.isBitBangingRequested)
 		anyseq(io.driver.transaction.readWriteStrobe.ready)
