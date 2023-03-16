@@ -14,7 +14,17 @@ class FlashQspiMemoryStateMachineVerificationFixture extends Component {
 		anyseq(io.bitBanger.isWriteProtected)
 		anyseq(io.bitBanger.isQspiRequested)
 		anyseq(io.bitBanger.isBitBangingRequested)
+		anyseq(io.fastReader.valid)
+		anyseq(io.fastReader.payload)
 		anyseq(io.driver.transaction.readWriteStrobe.ready)
 		this
 	}
+
+	def isCurrentState(name: String): Bool = (dut.stateReg === getStateEnumByName(name))
+
+	private def getStateEnumByName(name: String) = dut.enumOf(getStateByName(name))
+
+	private def getStateByName(name: String) = dut.states.find(_.name == name).get
+
+	def isNextState(name: String): Bool = (dut.stateNext === getStateEnumByName(name))
 }
