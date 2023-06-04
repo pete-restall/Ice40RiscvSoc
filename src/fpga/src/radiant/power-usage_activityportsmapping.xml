@@ -1,0 +1,1704 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PwrIpInstActivityPortsMappings>
+    <PwrIpInstActivityPortsMapping PwrTabName="Logic Block" PwrIpName="Logic">
+        <PwrIpInstIdentifier Key="Clk" Value="COMBINATORIAL"/>
+        <ActivityPortsMapping/>
+    </PwrIpInstActivityPortsMapping>
+    <PwrIpInstActivityPortsMapping PwrTabName="Logic Block" PwrIpName="Logic">
+        <PwrIpInstIdentifier Key="Clk" Value="clk_c"/>
+        <ActivityPortsMapping>
+            <Clk Name="Clk::SLICE_138">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_booted"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_2"/>
+            </Clk>
+            <Clk Name="Clk::SLICE_62">
+                <ActivityPort Port="Q0" Net="_zz_reset_2[15]"/>
+            </Clk>
+            <Clk Name="Clk::SLICE_63">
+                <ActivityPort Port="Q0" Net="_zz_reset_2[13]"/>
+                <ActivityPort Port="Q1" Net="_zz_reset_2[14]"/>
+            </Clk>
+            <Clk Name="Clk::SLICE_64">
+                <ActivityPort Port="Q0" Net="_zz_reset_2[11]"/>
+                <ActivityPort Port="Q1" Net="_zz_reset_2[12]"/>
+            </Clk>
+            <Clk Name="Clk::SLICE_65">
+                <ActivityPort Port="Q0" Net="_zz_reset_2[9]"/>
+                <ActivityPort Port="Q1" Net="_zz_reset_2[10]"/>
+            </Clk>
+            <Clk Name="Clk::SLICE_66">
+                <ActivityPort Port="Q0" Net="_zz_reset_2[7]"/>
+                <ActivityPort Port="Q1" Net="_zz_reset_2[8]"/>
+            </Clk>
+            <Clk Name="Clk::SLICE_67">
+                <ActivityPort Port="Q0" Net="_zz_reset_2[5]"/>
+                <ActivityPort Port="Q1" Net="_zz_reset_2[6]"/>
+            </Clk>
+            <Clk Name="Clk::SLICE_68">
+                <ActivityPort Port="Q0" Net="_zz_reset_2[3]"/>
+                <ActivityPort Port="Q1" Net="_zz_reset_2[4]"/>
+            </Clk>
+            <Clk Name="Clk::SLICE_69">
+                <ActivityPort Port="Q0" Net="_zz_reset_2[1]"/>
+                <ActivityPort Port="Q1" Net="_zz_reset_2[2]"/>
+            </Clk>
+            <Clk Name="Clk::SLICE_70">
+                <ActivityPort Port="Q1" Net="_zz_reset_2[0]"/>
+            </Clk>
+            <Clk Name="Clk::SLICE_72">
+                <ActivityPort Port="Q0" Net="bufferCC_1.buffers_0"/>
+            </Clk>
+            <Clk Name="Clk::bufferCC_1.SLICE_1097">
+                <ActivityPort Port="Q1" Net="bufferCC_1_io_dataOut"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_101">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[4]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[3]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_106">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_108">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_110">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_112">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_114">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_116">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_118">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_120">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[28]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[29]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_121">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_123">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_125">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_127">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_129">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_131">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_133">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_135">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_READ_DATA[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_675">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.wishbone_STB_regNext"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.crossbarArbiter_1_slaves_1_grantedMasterIndex[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_73">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[32]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[31]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_75">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[30]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[29]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_77">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[28]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[27]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_79">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[26]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[25]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_81">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[24]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[23]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_83">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[22]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[21]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_85">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[20]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[19]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_87">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[18]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[17]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_89">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[16]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[15]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_91">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[14]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[13]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_93">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[12]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[11]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_95">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[10]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[9]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_97">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[8]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[7]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.SLICE_99">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[6]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c._zz_readed_error_2[5]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_1098">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_CYC"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_144">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_MEMORY_ADDRESS_LOW[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_MEMORY_ADDRESS_LOW[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_306">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_MEMORY_STORE"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_310">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_INSTRUCTION[12]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_INSTRUCTION[11]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_601">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_602">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_604">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_606">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_608">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_610">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_612">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_614">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_ADR[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_616">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_cpu_1_dBus_cmd_rData_address[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_cpu_1_dBus_cmd_rData_address[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_642">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_644">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_646">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_648">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_650">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1_cpu_1_dBus_cmd_rData_size[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1_cpu_1_dBus_cmd_rData_size[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_678">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.isNotReadWaitState"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_728">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_WE"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.SLICE_791">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_ibus_CYC"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c.SLICE_801">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c.risingOccupancy"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_c.SLICE_839">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_rspJoin_rspBuffer_discardCounter[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_104">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mstatus_MPP[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_105">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_interrupt_code[2]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mip_MSIP"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1067">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_LightShifterPlugin_isActive"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1085">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mstatus_MIE"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1088">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_valid"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1089">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_arbitration_isValid"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1147">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2_FORCE_ZERO"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1149">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC_LESS_UNSIGNED"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1150">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_ALU_BITWISE_CTRL[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1208">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1_dBus_cmd_payload_size[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1226">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_CSR_WRITE_OPCODE"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1227">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_ENV_CTRL[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1230">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.N_342"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1233">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[31]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1234">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mie_MEIE"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1248">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_141">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_ENABLE"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.HazardSimplePlugin_writeBackBuffer_payload_address[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1410">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_VALID"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_1420">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_REGFILE_WRITE_VALID"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_146">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[6]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[7]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_147">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_149">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_151">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_153">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_155">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_157">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_159">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_161">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_163">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_165">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_168">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_170">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_172">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_174">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_176">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_REGFILE_WRITE_DATA[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_178">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[6]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[7]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_179">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_181">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_183">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_185">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_187">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_189">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_191">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_193">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_195">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_198">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[6]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[7]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_199">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_201">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_203">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_205">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_207">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_209">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_211">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_rsp_inst[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_213">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_214">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_216">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_218">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_220">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_cmd_rData_pc[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_223">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_ADDRESS_LOW[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_MEMORY_ADDRESS_LOW[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_225">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_INSTRUCTION[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_INSTRUCTION[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_226">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_INSTRUCTION[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_INSTRUCTION[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_228">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_INSTRUCTION[14]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_INSTRUCTION[13]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_230">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_INSTRUCTION[12]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_INSTRUCTION[11]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_232">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_INSTRUCTION[10]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_INSTRUCTION[9]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_235">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.HazardSimplePlugin_writeBackBuffer_payload_address[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.HazardSimplePlugin_writeBackBuffer_payload_address[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_237">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.HazardSimplePlugin_writeBackBuffer_payload_address[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.HazardSimplePlugin_writeBackBuffer_payload_address[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_240">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_242">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_244">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_246">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_248">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_25">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_LightShifterPlugin_amplitudeReg[3]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_250">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_252">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_254">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_256">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_258">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_26">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_LightShifterPlugin_amplitudeReg[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_LightShifterPlugin_amplitudeReg[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_260">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_262">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_264">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_266">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_268">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_27">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_LightShifterPlugin_amplitudeReg[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_270">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC1[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_272">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.HazardSimplePlugin_writeBackBuffer_valid"/>
+                <ActivityPort Port="Q1" Net="io_p23_c"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_273">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mcause_exceptionCode[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_274">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_276">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_278">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_280">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_282">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_284">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_286">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_288">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_290">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_292">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_294">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_296">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_298">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_300">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_302">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mepc[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_304">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_ENV_CTRL[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_305">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_MEMORY_ENABLE"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_308">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_INSTRUCTION[14]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_INSTRUCTION[13]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_312">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_INSTRUCTION[10]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_INSTRUCTION[9]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_314">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_INSTRUCTION[8]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_INSTRUCTION[7]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_316">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_INSTRUCTION[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_INSTRUCTION[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_318">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.writeBack_arbitration_isValid"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_arbitration_isValid"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_319">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_interrupt_valid"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_pipelineLiberator_pcValids_2"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_322">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_pipelineLiberator_pcValids_1"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_pipelineLiberator_pcValids_0"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_325">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_ALU_CTRL[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_ALU_CTRL[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_327">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_BRANCH_CTRL[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_BRANCH_CTRL[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_333">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1_dBus_cmd_payload_wr"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_336">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[30]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[29]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_338">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[28]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[27]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_340">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[26]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[25]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_342">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[24]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[23]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_344">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[22]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[21]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_346">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[20]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[19]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_348">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[18]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[17]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_350">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[16]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[15]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_352">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[14]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[13]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_354">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[12]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[11]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_356">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[10]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[9]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_358">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[8]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[7]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_360">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[6]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[5]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_362">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_363">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_365">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS1[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_367">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_369">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_371">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_373">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_375">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_377">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_379">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_381">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_383">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_385">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_387">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_389">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_RS2[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_391">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1_dBus_cmd_payload_data[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1_dBus_cmd_payload_data[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_393">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1_dBus_cmd_payload_data[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1_dBus_cmd_payload_data[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_395">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1_dBus_cmd_payload_data[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1_dBus_cmd_payload_data[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_397">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1_dBus_cmd_payload_data[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1_dBus_cmd_payload_data[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_399">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SHIFT_CTRL[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SHIFT_CTRL[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_401">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_403">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_405">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_407">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_409">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_411">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_413">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_415">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_417">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_419">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_421">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_423">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_425">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_427">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_429">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_431">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_SRC2[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_436">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_CsrPlugin_csr_768"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_CsrPlugin_csr_772"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_438">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_CsrPlugin_csr_834"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_CsrPlugin_csr_836"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_440">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_442">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_444">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_446">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_448">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_45">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[31]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_450">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_452">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_454">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_456">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_459">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_46">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_461">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[9]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_462">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[8]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_INSTRUCTION[7]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_464">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_466">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_468">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_47">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_470">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_472">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_474">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_476">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_478">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_48">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_480">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_482">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_484">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_486">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_488">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_49">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_490">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_492">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_PC[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_496">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mie_MSIE"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mie_MTIE"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_50">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_500">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.CsrPlugin_mstatus_MPIE"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_501">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_503">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_505">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_507">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_509">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_51">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_511">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_513">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_515">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_517">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_519">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_52">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_521">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_523">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_525">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_527">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_529">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_53">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_531">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_DATA[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_534">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_536">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_538">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_54">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_540">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_542">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_544">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_546">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_548">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_55">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_550">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_552">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_554">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_556">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_558">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_56">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_560">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_562">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_IBusSimplePlugin_injector_decodeInput_payload_pc[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_568">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.ANC0"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.IBusSimplePlugin_cmd_rValid"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_57">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_570">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[8]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[9]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_571">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_573">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_575">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_577">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_579">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_58">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_581">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_583">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_585">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_587">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_589">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_59">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_592">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_594">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_596">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_598">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.IBusSimplePlugin_fetchPc_pcReg[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_60">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_CALC[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_618">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[31]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[30]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_620">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[29]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[28]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_622">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[27]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[26]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_624">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[25]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[24]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_626">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[23]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[22]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_628">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[21]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[20]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_630">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[19]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[18]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_632">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[17]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[16]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_634">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[15]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[14]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_636">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_638">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_640">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_dbus_DAT_MOSI[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_655">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[13]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[12]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_657">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[11]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[10]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_659">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[9]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[8]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_661">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[7]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[6]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_663">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[5]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_665">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[3]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[2]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_667">
+                <ActivityPort Port="Q0" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[1]"/>
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1_ibus_ADR[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_739">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_IS_CSR"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_797">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.N_308"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_804">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_BRANCH_DO"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_854">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_to_memory_REGFILE_WRITE_VALID"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_858">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.memory_to_writeBack_ENV_CTRL[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_906">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.execute_LightShifterPlugin_amplitudeReg[4]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_958">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1.decode_to_execute_MEMORY_ENABLE"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.cpu_1.cpu_1.SLICE_960">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.cpu_1.cpu_1_dBus_cmd_payload_size[1]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.crossbarArbiter_1.slaveArbiters_0.SLICE_1408">
+                <ActivityPort Port="Q1" Net="sanitisedClockArea_core.crossbarArbiter_1_slaves_0_grantedMasterIndex[0]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.ledDevice.SLICE_1285">
+                <ActivityPort Port="Q1" Net="io_ledR_c"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.ledDevice.SLICE_670">
+                <ActivityPort Port="Q0" Net="io_ledB_c"/>
+                <ActivityPort Port="Q1" Net="io_ledG_c"/>
+            </Clk>
+        </ActivityPortsMapping>
+    </PwrIpInstActivityPortsMapping>
+    <PwrIpInstActivityPortsMapping PwrTabName="Clocks" PwrIpName="Clocks">
+        <PwrIpInstIdentifier Key="Clk" Value="COMBINATORIAL"/>
+        <ActivityPortsMapping/>
+    </PwrIpInstActivityPortsMapping>
+    <PwrIpInstActivityPortsMapping PwrTabName="Clocks" PwrIpName="Clocks">
+        <PwrIpInstIdentifier Key="Clk" Value="clk_c"/>
+        <ActivityPortsMapping/>
+    </PwrIpInstActivityPortsMapping>
+    <PwrIpInstActivityPortsMapping PwrTabName="I/O" PwrIpName="Input Output">
+        <PwrIpInstIdentifier Key="Bank" Value="0"/>
+        <PwrIpInstIdentifier Key="Clk" Value="clk_c"/>
+        <PwrIpInstIdentifier Key="_InType" Value="LVCMOS33"/>
+        <PwrIpInstIdentifier Key="_OutType" Value="LVCMOS33-8"/>
+        <PwrIpInstIdentifier Key="_Pull" Value="Pullup_100k"/>
+        <ActivityPortsMapping>
+            <Clk Name="Clk::clk_ibuf.bb_inst">
+                <ActivityPort Port="PADDI" Net="clk_c"/>
+            </Clk>
+        </ActivityPortsMapping>
+    </PwrIpInstActivityPortsMapping>
+    <PwrIpInstActivityPortsMapping PwrTabName="I/O" PwrIpName="Input Output">
+        <PwrIpInstIdentifier Key="Bank" Value="1"/>
+        <PwrIpInstIdentifier Key="Clk" Value="COMBINATORIAL"/>
+        <PwrIpInstIdentifier Key="_InType" Value="LVCMOS33"/>
+        <PwrIpInstIdentifier Key="_OutType" Value="LVCMOS33-8"/>
+        <PwrIpInstIdentifier Key="_Pull" Value="Pullup_100k"/>
+        <ActivityPortsMapping/>
+    </PwrIpInstActivityPortsMapping>
+    <PwrIpInstActivityPortsMapping PwrTabName="I/O" PwrIpName="Input Output">
+        <PwrIpInstIdentifier Key="Bank" Value="0"/>
+        <PwrIpInstIdentifier Key="Clk" Value="clk_c"/>
+        <PwrIpInstIdentifier Key="_InType" Value="LVCMOS33"/>
+        <PwrIpInstIdentifier Key="_OutType" Value="LVCMOS33-8"/>
+        <PwrIpInstIdentifier Key="_Pull" Value="na"/>
+        <ActivityPortsMapping>
+            <Clk Name="Clk::io_ledB_obuf.bb_inst">
+                <ActivityPort Port="IOPAD" Net="io_ledB"/>
+            </Clk>
+            <Clk Name="Clk::io_ledG_obuf.bb_inst">
+                <ActivityPort Port="IOPAD" Net="io_ledG"/>
+            </Clk>
+            <Clk Name="Clk::io_ledR_obuf.bb_inst">
+                <ActivityPort Port="IOPAD" Net="io_ledR"/>
+            </Clk>
+            <Clk Name="Clk::io_p23_obuf.bb_inst">
+                <ActivityPort Port="IOPAD" Net="io_p23"/>
+            </Clk>
+        </ActivityPortsMapping>
+    </PwrIpInstActivityPortsMapping>
+    <PwrIpInstActivityPortsMapping PwrTabName="I/O" PwrIpName="Bank Voltage">
+        <PwrIpInstIdentifier Key="Bank" Value="0"/>
+        <ActivityPortsMapping/>
+    </PwrIpInstActivityPortsMapping>
+    <PwrIpInstActivityPortsMapping PwrTabName="I/O" PwrIpName="Bank Voltage">
+        <PwrIpInstIdentifier Key="Bank" Value="1"/>
+        <ActivityPortsMapping/>
+    </PwrIpInstActivityPortsMapping>
+    <PwrIpInstActivityPortsMapping PwrTabName="I/O" PwrIpName="Bank Voltage">
+        <PwrIpInstIdentifier Key="Bank" Value="2"/>
+        <ActivityPortsMapping/>
+    </PwrIpInstActivityPortsMapping>
+    <PwrIpInstActivityPortsMapping PwrTabName="Block RAM" PwrIpName="EBR">
+        <PwrIpInstIdentifier Key="_RdType" Value="RD"/>
+        <PwrIpInstIdentifier Key="_WrType" Value="WR"/>
+        <PwrIpInstIdentifier Key="rdClk" Value="clk_c"/>
+        <PwrIpInstIdentifier Key="wrClk" Value="clk_c"/>
+        <ActivityPortsMapping>
+            <Clk Name="rdClk::sanitisedClockArea_core.cpu_1.cpu_1.RegFilePlugin_regFile_1_RegFilePlugin_regFile_1_0_0.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[0]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[1]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[10]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[11]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[12]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[13]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[14]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[15]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[2]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[3]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[4]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[5]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[6]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[7]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[8]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[9]"/>
+            </Clk>
+            <Clk Name="rdClk::sanitisedClockArea_core.cpu_1.cpu_1.RegFilePlugin_regFile_1_RegFilePlugin_regFile_1_0_1.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[16]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[17]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[26]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[27]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[28]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[29]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[30]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[31]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[18]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[19]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[20]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[21]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[22]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[23]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[24]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[25]"/>
+            </Clk>
+            <Clk Name="rdClk::sanitisedClockArea_core.cpu_1.cpu_1.RegFilePlugin_regFile_RegFilePlugin_regFile_0_0.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[0]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[1]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[10]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[11]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[12]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[13]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[14]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[15]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[2]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[3]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[4]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[5]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[6]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[7]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[8]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[9]"/>
+            </Clk>
+            <Clk Name="rdClk::sanitisedClockArea_core.cpu_1.cpu_1.RegFilePlugin_regFile_RegFilePlugin_regFile_0_1.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[16]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[17]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[26]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[27]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[28]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[29]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[30]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[31]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[18]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[19]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[20]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[21]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[22]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[23]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[24]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[25]"/>
+            </Clk>
+            <Clk Name="rdClk::sanitisedClockArea_core.ice40Ebram4k_2.native.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[0]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[1]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[10]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[11]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[12]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[13]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[14]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[15]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[2]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[3]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[4]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[5]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[6]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[7]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[8]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[9]"/>
+            </Clk>
+            <Clk Name="rdClk::sanitisedClockArea_core.ice40Ebram4k_3.native.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[0]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[1]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[10]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[11]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[12]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[13]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[14]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[15]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[2]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[3]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[4]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[5]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[6]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[7]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[8]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[9]"/>
+            </Clk>
+            <Clk Name="wrClk::sanitisedClockArea_core.cpu_1.cpu_1.RegFilePlugin_regFile_1_RegFilePlugin_regFile_1_0_0.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[0]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[1]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[10]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[11]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[12]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[13]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[14]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[15]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[2]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[3]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[4]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[5]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[6]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[7]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[8]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[9]"/>
+            </Clk>
+            <Clk Name="wrClk::sanitisedClockArea_core.cpu_1.cpu_1.RegFilePlugin_regFile_1_RegFilePlugin_regFile_1_0_1.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[16]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[17]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[26]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[27]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[28]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[29]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[30]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[31]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[18]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[19]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[20]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[21]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[22]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[23]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[24]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port0[25]"/>
+            </Clk>
+            <Clk Name="wrClk::sanitisedClockArea_core.cpu_1.cpu_1.RegFilePlugin_regFile_RegFilePlugin_regFile_0_0.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[0]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[1]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[10]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[11]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[12]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[13]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[14]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[15]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[2]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[3]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[4]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[5]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[6]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[7]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[8]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[9]"/>
+            </Clk>
+            <Clk Name="wrClk::sanitisedClockArea_core.cpu_1.cpu_1.RegFilePlugin_regFile_RegFilePlugin_regFile_0_1.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[16]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[17]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[26]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[27]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[28]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[29]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[30]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[31]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[18]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[19]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[20]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[21]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[22]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[23]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[24]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.cpu_1.cpu_1._zz_RegFilePlugin_regFile_port1[25]"/>
+            </Clk>
+            <Clk Name="wrClk::sanitisedClockArea_core.ice40Ebram4k_2.native.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[0]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[1]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[10]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[11]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[12]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[13]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[14]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[15]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[2]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[3]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[4]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[5]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[6]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[7]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[8]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.ice40Ebram4k_2_DO_1[9]"/>
+            </Clk>
+            <Clk Name="wrClk::sanitisedClockArea_core.ice40Ebram4k_3.native.ebr_inst">
+                <ActivityPort Port="RDATA0" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[0]"/>
+                <ActivityPort Port="RDATA1" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[1]"/>
+                <ActivityPort Port="RDATA10" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[10]"/>
+                <ActivityPort Port="RDATA11" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[11]"/>
+                <ActivityPort Port="RDATA12" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[12]"/>
+                <ActivityPort Port="RDATA13" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[13]"/>
+                <ActivityPort Port="RDATA14" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[14]"/>
+                <ActivityPort Port="RDATA15" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[15]"/>
+                <ActivityPort Port="RDATA2" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[2]"/>
+                <ActivityPort Port="RDATA3" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[3]"/>
+                <ActivityPort Port="RDATA4" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[4]"/>
+                <ActivityPort Port="RDATA5" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[5]"/>
+                <ActivityPort Port="RDATA6" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[6]"/>
+                <ActivityPort Port="RDATA7" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[7]"/>
+                <ActivityPort Port="RDATA8" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[8]"/>
+                <ActivityPort Port="RDATA9" Net="sanitisedClockArea_core.ice40Ebram4k_3_DO_1[9]"/>
+            </Clk>
+        </ActivityPortsMapping>
+    </PwrIpInstActivityPortsMapping>
+    <PwrIpInstActivityPortsMapping PwrTabName="SRAM" PwrIpName="SRAM">
+        <PwrIpInstIdentifier Key="Clk" Value="clk_c"/>
+        <PwrIpInstIdentifier Key="_Type" Value="VFB_B"/>
+        <ActivityPortsMapping>
+            <Clk Name="Clk::sanitisedClockArea_core.dataSprams_0.vfb_b_inst">
+                <ActivityPort Port="DATAOUT0" Net="sanitisedClockArea_core.dataSprams_0_DO[0]"/>
+                <ActivityPort Port="DATAOUT1" Net="sanitisedClockArea_core.dataSprams_0_DO[1]"/>
+                <ActivityPort Port="DATAOUT10" Net="sanitisedClockArea_core.dataSprams_0_DO[10]"/>
+                <ActivityPort Port="DATAOUT11" Net="sanitisedClockArea_core.dataSprams_0_DO[11]"/>
+                <ActivityPort Port="DATAOUT12" Net="sanitisedClockArea_core.dataSprams_0_DO[12]"/>
+                <ActivityPort Port="DATAOUT13" Net="sanitisedClockArea_core.dataSprams_0_DO[13]"/>
+                <ActivityPort Port="DATAOUT14" Net="sanitisedClockArea_core.dataSprams_0_DO[14]"/>
+                <ActivityPort Port="DATAOUT15" Net="sanitisedClockArea_core.dataSprams_0_DO[15]"/>
+                <ActivityPort Port="DATAOUT2" Net="sanitisedClockArea_core.dataSprams_0_DO[2]"/>
+                <ActivityPort Port="DATAOUT3" Net="sanitisedClockArea_core.dataSprams_0_DO[3]"/>
+                <ActivityPort Port="DATAOUT4" Net="sanitisedClockArea_core.dataSprams_0_DO[4]"/>
+                <ActivityPort Port="DATAOUT5" Net="sanitisedClockArea_core.dataSprams_0_DO[5]"/>
+                <ActivityPort Port="DATAOUT6" Net="sanitisedClockArea_core.dataSprams_0_DO[6]"/>
+                <ActivityPort Port="DATAOUT7" Net="sanitisedClockArea_core.dataSprams_0_DO[7]"/>
+                <ActivityPort Port="DATAOUT8" Net="sanitisedClockArea_core.dataSprams_0_DO[8]"/>
+                <ActivityPort Port="DATAOUT9" Net="sanitisedClockArea_core.dataSprams_0_DO[9]"/>
+            </Clk>
+            <Clk Name="Clk::sanitisedClockArea_core.dataSprams_1.vfb_b_inst">
+                <ActivityPort Port="DATAOUT0" Net="sanitisedClockArea_core.dataSprams_1_DO[0]"/>
+                <ActivityPort Port="DATAOUT1" Net="sanitisedClockArea_core.dataSprams_1_DO[1]"/>
+                <ActivityPort Port="DATAOUT10" Net="sanitisedClockArea_core.dataSprams_1_DO[10]"/>
+                <ActivityPort Port="DATAOUT11" Net="sanitisedClockArea_core.dataSprams_1_DO[11]"/>
+                <ActivityPort Port="DATAOUT12" Net="sanitisedClockArea_core.dataSprams_1_DO[12]"/>
+                <ActivityPort Port="DATAOUT13" Net="sanitisedClockArea_core.dataSprams_1_DO[13]"/>
+                <ActivityPort Port="DATAOUT14" Net="sanitisedClockArea_core.dataSprams_1_DO[14]"/>
+                <ActivityPort Port="DATAOUT15" Net="sanitisedClockArea_core.dataSprams_1_DO[15]"/>
+                <ActivityPort Port="DATAOUT2" Net="sanitisedClockArea_core.dataSprams_1_DO[2]"/>
+                <ActivityPort Port="DATAOUT3" Net="sanitisedClockArea_core.dataSprams_1_DO[3]"/>
+                <ActivityPort Port="DATAOUT4" Net="sanitisedClockArea_core.dataSprams_1_DO[4]"/>
+                <ActivityPort Port="DATAOUT5" Net="sanitisedClockArea_core.dataSprams_1_DO[5]"/>
+                <ActivityPort Port="DATAOUT6" Net="sanitisedClockArea_core.dataSprams_1_DO[6]"/>
+                <ActivityPort Port="DATAOUT7" Net="sanitisedClockArea_core.dataSprams_1_DO[7]"/>
+                <ActivityPort Port="DATAOUT8" Net="sanitisedClockArea_core.dataSprams_1_DO[8]"/>
+                <ActivityPort Port="DATAOUT9" Net="sanitisedClockArea_core.dataSprams_1_DO[9]"/>
+            </Clk>
+        </ActivityPortsMapping>
+    </PwrIpInstActivityPortsMapping>
+</PwrIpInstActivityPortsMappings>
