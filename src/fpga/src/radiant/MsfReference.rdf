@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RadiantProject version="4.2" title="MsfReference" device="iCE40UP5K-SG48I" performance_grade="High-Performance_1.2V" default_implementation="default_impl">
+    <Options/>
+    <Implementation title="default_impl" dir="default_impl" description="default_impl" synthesis="synplify" default_strategy="Default">
+        <Options def_top="MsfReference"/>
+        <Source name="hdl/Core.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="hdl/MsfReference.v" type="Verilog" type_short="Verilog">
+            <Options top_module="MsfReference"/>
+        </Source>
+        <Source name="source/default_impl/default_impl.pdc" type="Physical Constraints File" type_short="PDC">
+            <Options/>
+        </Source>
+        <Source name="source/default_impl/default_impl.sdc" type="Pre-Synthesis Constraints File" type_short="SDC">
+            <Options/>
+        </Source>
+    </Implementation>
+    <Strategy name="Default" file="Default.sty"/>
+</RadiantProject>

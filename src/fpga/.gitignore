@@ -1,0 +1,9 @@
+.bloop
+.bsp
+.metals
+.vscode
+simWorkspace
+target/
+tmp
+verbose.log
+src/thirdparty/oss-cad-suite
