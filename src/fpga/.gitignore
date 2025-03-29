@@ -1,7 +1,3 @@
-.bloop
-.bsp
-.metals
-.vscode
 simWorkspace
 target/
 tmp
