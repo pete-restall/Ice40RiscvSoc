@@ -26,21 +26,31 @@ abstract trait FormalVerificationFixture[TDut <: Component] extends TestSuiteMix
 		simulation.workspaceName(workspaceName).doVerify(new Component {
 			fixtureDut = FormalDut(dutFactory())
 			setDefinitionName("dut")
+
 			assumeInitial(clockDomain.isResetActive)
+
 			status = runTests()
 		})
 		status
 	}
 
-	private def createBoundedModelSimulation(): SpinalFormalConfig = FormalVerificationFixture.createBoundedModelSimulation()
+	private def createBoundedModelSimulation(): SpinalFormalConfig = FormalVerificationFixture.createBoundedModelSimulation().withBMC(depth=bmcDepth)
 
-	private def createInductiveSimulation(): SpinalFormalConfig = FormalVerificationFixture.createInductiveSimulation()
+	protected def bmcDepth = 50
+
+	private def createInductiveSimulation(): SpinalFormalConfig = FormalVerificationFixture.createInductiveSimulation().withProve(depth=proofDepth)
+
+	protected def proofDepth = 100
 
 	override def suiteName: String = runningStage
 
 	protected def dutFactory(): TDut = ???
 
-	protected def verification(test: TDut => Any) = test(fixtureDut)
+	protected def proof(test: TDut => Any) = test(fixtureDut)
+
+	protected def bmcOnly(test: TDut => Any) = if (runningStage == "BMC") { test(fixtureDut) }
+
+	protected def inductiveOnly(test: TDut => Any) = if (runningStage == "INDUCTIVE") { test(fixtureDut) }
 }
 
 object FormalVerificationFixture {

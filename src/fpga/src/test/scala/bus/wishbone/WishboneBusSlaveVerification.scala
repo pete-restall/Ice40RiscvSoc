@@ -10,40 +10,40 @@ import uk.co.lophtware.msfreference.tests.formal._
 class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](slaveDutFactory: () => TDut) extends AnyFlatSpec with FormalVerificationFixture[TDut] {
 	protected override def dutFactory() = slaveDutFactory()
 
-	"Wishbone Master interface" must "hold CYC inactive in reset" in verification { dut =>
+	"Wishbone Master interface" must "hold CYC inactive in reset" in proof { dut =>
 		dut.clockDomain.duringReset {
 			formallyAssume(!dut.asWishboneSlave.CYC)
 		}
 	}
 
-	it must "hold WE inactive in reset" in verification { dut =>
+	it must "hold WE inactive in reset" in proof { dut =>
 		dut.clockDomain.duringReset {
 			formallyAssume(!dut.asWishboneSlave.WE)
 		}
 	}
 
-	it must "hold STB inactive in reset" in verification { dut =>
+	it must "hold STB inactive in reset" in proof { dut =>
 		dut.clockDomain.duringReset {
 			formallyAssume(!dut.asWishboneSlave.STB)
 		}
 	}
 
-	it must "not activate CYC within the first clock edge after reset" in verification { dut =>
+	it must "not activate CYC within the first clock edge after reset" in proof { dut =>
 		formallyAssume(!pastValid && !dut.asWishboneSlave.CYC)
 		formallyAssume(pastValid && past(dut.clockDomain.isResetActive) && !dut.asWishboneSlave.CYC)
 	}
 
-	it must "activate STB only during a cycle" in verification { dut =>
+	it must "activate STB only during a cycle" in proof { dut =>
 		formallyAssume(!dut.asWishboneSlave.STB || (dut.asWishboneSlave.STB && dut.asWishboneSlave.CYC))
 	}
 
-	it must "not change WE during STB" in verification { dut =>
+	it must "not change WE during STB" in proof { dut =>
 		when(pastValid && past(dut.asWishboneSlave.STB)) {
 			formallyAssume(dut.asWishboneSlave.STB === past(dut.asWishboneSlave.STB))
 		}
 	}
 
-	it must "not change STB during STALL" in verification { dut =>
+	it must "not change STB during STALL" in proof { dut =>
 		if (dut.asWishboneSlave.STALL != null) {
 			when(pastValid && past(dut.asWishboneSlave.STALL)) {
 				formallyAssume(dut.asWishboneSlave.STB === past(dut.asWishboneSlave.STB))
@@ -51,7 +51,7 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 		}
 	}
 
-	it must "not change WE during STALL" in verification { dut =>
+	it must "not change WE during STALL" in proof { dut =>
 		if (dut.asWishboneSlave.STALL != null) {
 			when(pastValid && past(dut.asWishboneSlave.STALL)) {
 				formallyAssume(dut.asWishboneSlave.WE === past(dut.asWishboneSlave.WE))
@@ -59,7 +59,7 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 		}
 	}
 
-	it must "not change ADR during STALL" in verification { dut =>
+	it must "not change ADR during STALL" in proof { dut =>
 		if (dut.asWishboneSlave.STALL != null) {
 			when(pastValid && past(dut.asWishboneSlave.STALL)) {
 				formallyAssume(dut.asWishboneSlave.ADR === past(dut.asWishboneSlave.ADR))
@@ -67,7 +67,7 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 		}
 	}
 
-	it must "not change MOSI during STALL" in verification { dut =>
+	it must "not change MOSI during STALL" in proof { dut =>
 		if (dut.asWishboneSlave.STALL != null) {
 			when(pastValid && past(dut.asWishboneSlave.STALL)) {
 				formallyAssume(dut.asWishboneSlave.DAT_MOSI === past(dut.asWishboneSlave.DAT_MOSI))
@@ -75,13 +75,13 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 		}
 	}
 
-	"Wishbone Slave interface" must "hold ACK inactive in reset" in verification { dut =>
+	"Wishbone Slave interface" must "hold ACK inactive in reset" in proof { dut =>
 		dut.clockDomain.duringReset {
 			formallyAssert(!dut.asWishboneSlave.ACK)
 		}
 	}
 
-	it must "hold ERR inactive in reset" in verification { dut =>
+	it must "hold ERR inactive in reset" in proof { dut =>
 		if (dut.asWishboneSlave.ERR != null) {
 			dut.clockDomain.duringReset {
 				formallyAssert(!dut.asWishboneSlave.ERR)
@@ -89,7 +89,7 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 		}
 	}
 
-	it must "hold RTY inactive in reset" in verification { dut =>
+	it must "hold RTY inactive in reset" in proof { dut =>
 		if (dut.asWishboneSlave.RTY != null) {
 			dut.clockDomain.duringReset {
 				formallyAssert(!dut.asWishboneSlave.RTY)
@@ -97,57 +97,57 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 		}
 	}
 
-	it must "not assert ACK and ERR at the same time" in verification { dut =>
+	it must "not assert ACK and ERR at the same time" in proof { dut =>
 		if (dut.asWishboneSlave.ERR != null) {
 			formallyAssert((!dut.asWishboneSlave.ACK && !dut.asWishboneSlave.ERR) || (dut.asWishboneSlave.ACK ^ dut.asWishboneSlave.ERR))
 		}
 	}
 
-	it must "not assert ACK and RTY at the same time" in verification { dut =>
+	it must "not assert ACK and RTY at the same time" in proof { dut =>
 		if (dut.asWishboneSlave.RTY != null) {
 			formallyAssert((!dut.asWishboneSlave.ACK && !dut.asWishboneSlave.RTY) || (dut.asWishboneSlave.ACK ^ dut.asWishboneSlave.RTY))
 		}
 	}
 
-	it must "not assert ERR and RTY at the same time" in verification { dut =>
+	it must "not assert ERR and RTY at the same time" in proof { dut =>
 		if (dut.asWishboneSlave.ERR != null && dut.asWishboneSlave.RTY != null) {
 			formallyAssert((!dut.asWishboneSlave.ERR && !dut.asWishboneSlave.RTY) || (dut.asWishboneSlave.ERR ^ dut.asWishboneSlave.RTY))
 		}
 	}
 
-	it must "not assert ACK without CYC" in verification { dut =>
+	it must "not assert ACK without CYC" in proof { dut =>
 		formallyAssert(!dut.asWishboneSlave.ACK || (dut.asWishboneSlave.ACK && dut.asWishboneSlave.CYC))
 	}
 
-	it must "not assert ERR without CYC" in verification { dut =>
+	it must "not assert ERR without CYC" in proof { dut =>
 		if (dut.asWishboneSlave.ERR != null) {
 			formallyAssert(!dut.asWishboneSlave.ERR || (dut.asWishboneSlave.ERR && dut.asWishboneSlave.CYC))
 		}
 	}
 
-	it must "not assert RTY without CYC" in verification { dut =>
+	it must "not assert RTY without CYC" in proof { dut =>
 		if (dut.asWishboneSlave.RTY != null) {
 			formallyAssert(!dut.asWishboneSlave.RTY || (dut.asWishboneSlave.RTY && dut.asWishboneSlave.CYC))
 		}
 	}
 
-	it must "not assert ACK without a previous STB" in verification { dut =>
+	it must "not assert ACK without a previous STB" in proof { dut =>
 		formallyAssert(!dut.asWishboneSlave.ACK || (pastValid && dut.asWishboneSlave.ACK && past(dut.asWishboneSlave.STB)))
 	}
 
-	it must "not assert ERR without a previous STB" in verification { dut =>
+	it must "not assert ERR without a previous STB" in proof { dut =>
 		if (dut.asWishboneSlave.ERR != null) {
 			formallyAssert(!dut.asWishboneSlave.ERR || (pastValid && dut.asWishboneSlave.ERR && past(dut.asWishboneSlave.STB)))
 		}
 	}
 
-	it must "not assert RTY without a previous STB" in verification { dut =>
+	it must "not assert RTY without a previous STB" in proof { dut =>
 		if (dut.asWishboneSlave.RTY != null) {
 			formallyAssert(!dut.asWishboneSlave.RTY || (pastValid && dut.asWishboneSlave.RTY && past(dut.asWishboneSlave.STB)))
 		}
 	}
 
-	it must "contain the same number of ACKs as STBs when STB is not active on the last clock of CYC" in verification { implicit dut =>
+	it must "contain the same number of ACKs as STBs when STB is not active on the last clock of CYC" in proof { implicit dut =>
 		val numberOfStbs = Reg(UInt(16 bits)) init(0)
 		val numberOfAcks = Reg(UInt(16 bits)) init(0)
 
@@ -177,7 +177,7 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 
 	private def cycleEnded(implicit dut: TDut) = pastValid && past(dut.asWishboneSlave.CYC) && !dut.asWishboneSlave.CYC
 
-	it must "contain the one less ACK than there were STBs when STB is active on the last clock of CYC" in verification { implicit dut =>
+	it must "contain the one less ACK than there were STBs when STB is active on the last clock of CYC" in proof { implicit dut =>
 		val numberOfStbs = Reg(UInt(16 bits)) init(0)
 		val numberOfAcks = Reg(UInt(16 bits)) init(0)
 
@@ -201,7 +201,7 @@ class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](sl
 		}
 	}
 
-	it must "only assert STALL during STB" in verification { dut =>
+	it must "only assert STALL during STB" in proof { dut =>
 		if (dut.asWishboneSlave.STALL != null) {
 			formallyAssert(dut.asWishboneSlave.STB)
 		}
