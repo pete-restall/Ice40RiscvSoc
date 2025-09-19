@@ -20,6 +20,8 @@ class FlashQspiMemoryStateMachineVerificationFixture extends Component {
 		this
 	}
 
+	def allStatePredicates: Seq[Bool] = dut.states.filter(_ != dut.stateBoot).map(state => isCurrentState(state.name)).toSeq
+
 	def isCurrentState(name: String): Bool = (dut.stateReg === getStateEnumByName(name))
 
 	private def getStateEnumByName(name: String) = dut.enumOf(getStateByName(name))

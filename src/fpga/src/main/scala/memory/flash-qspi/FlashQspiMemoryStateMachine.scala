@@ -20,21 +20,28 @@ class FlashQspiMemoryStateMachine extends StateMachine {
 
 	private val isTransactionInProgress = !io.driver.transaction.readWriteStrobe.ready
 
+	private val mustTransitionToInitialState = isBitBangingGranted || io.bitBanger.isBitBangingRequested && !isTransactionInProgress
+
 	private val isFastReadChipSelected = Reg(Bool()) init(False)
-	io.driver.isChipSelected := !reset && (isTransactionInProgress || isBitBangingGranted && io.bitBanger.isChipSelected || !isBitBangingGranted && isFastReadChipSelected)
+	io.driver.isChipSelected := !reset && (
+		isTransactionInProgress ||
+		isBitBangingGranted && io.bitBanger.isChipSelected ||
+		!isBitBangingGranted && isFastReadChipSelected)
 
 	private val isFastReaderReady = Reg(Bool()) init(False)
-	io.fastReader.ready := /*!isTransactionInProgress && */isFastReaderReady
+	io.fastReader.ready := !isTransactionInProgress && !mustTransitionToInitialState && isFastReaderReady
 
 	private val transactionStrobe = Reg(Bool()) init(False)
+	io.driver.transaction.readWriteStrobe.valid := transactionStrobe
+
+	private val isWriteTransaction = Reg(Bool()) init(False)
+	io.driver.transaction.readWriteStrobe.payload := isWriteTransaction
+
+	private val transactionMosi = Reg(UInt(8 bits)) init(0xff)
+	io.driver.transaction.mosi := transactionMosi
 
 	io.driver.transaction.isQspi := io.bitBanger.isQspiGranted // TODO: && isBitBangingGranted || whateverLogicFastReadUses
 	io.driver.transaction.isWriteProtected := isBitBangingGranted.clockDomain.isResetActive || io.bitBanger.isWriteProtected // TODO: && isBitBangingGranted; must always be True when !isBitBangingGranted
-	io.driver.transaction.mosi := 0xff
-	io.driver.transaction.readWriteStrobe.valid := transactionStrobe // TODO - THIS IS NOT FOR BIT-BANGING; IT'S FOR THE FAST READ...
-	io.driver.transaction.readWriteStrobe.payload := False // TODO - THIS IS NOT FOR BIT-BANGING; IT'S FOR THE FAST READ...
-
-	private val mustTransitionToInitialState = isBitBangingGranted || io.bitBanger.isBitBangingRequested && !isTransactionInProgress
 
 	private val initialState = new State with EntryPoint {
 		onEntry {
@@ -42,14 +49,15 @@ class FlashQspiMemoryStateMachine extends StateMachine {
 			isBitBangingGranted := True
 			isFastReadChipSelected := False
 			isFastReaderReady := False
-transactionStrobe := False
+			transactionStrobe := False
+			transactionMosi := 0xff
 		}
 
 		whenIsActive {
-isFastReadChipSelected := False
-transactionStrobe := False
-			isFastReaderReady := False
 			reset := False
+			isFastReadChipSelected := False
+			isFastReaderReady := False
+			transactionStrobe := False
 			isQspiGranted :=
 				(!io.bitBanger.isChipSelected && io.bitBanger.isQspiRequested) ||
 				(io.bitBanger.isChipSelected && isQspiGranted) ||
@@ -61,103 +69,134 @@ transactionStrobe := False
 		}
 	}
 
+	private val nextAddress = Reg(UInt(24 bits)) init(0)
+
 	private val fastReadEntryState: State = new State {
 		onEntry {
+			reset := False
 			isBitBangingGranted := False
+			isFastReaderReady := False
 			isFastReadChipSelected := False
 			isQspiGranted := False
-			isFastReaderReady := False
-reset := False
 		}
 
 		whenIsActive {
-			isFastReaderReady := False
+			reset := False
 			isBitBangingGranted := False
 			isFastReadChipSelected := True
+			isFastReaderReady := False
 			isQspiGranted := False
-reset := False
-transactionStrobe := True
+			isWriteTransaction := True
+			transactionStrobe := True
+			transactionMosi := 0xeb
+
 			when(mustTransitionToInitialState) {
 				goto(initialState)
-			} elsewhen(io.driver.transaction.readWriteStrobe.fire) {
-//				transactionStrobe := True
-// all of the preamble - SPI fast-read command then goto fastReadSendAddressState
-transactionStrobe := False
+			}
+
+			nextAddress := 0
+			// TODO: SEND ADDRESS OF 0x000000 AND THE DUMMY BYTES TO THE FLASH (AND MAKE SURE TRISTATE IS ACTIVE BEFORE THE FALLING EDGE) BUT DO NOT START THE READ; THIS MEANS THE INITIAL READ CAN START FROM 0.  PROBABLY BEST MAKE THE STARTING ADDRESS CONFIGURABLE, TOO
+
+			when(!mustTransitionToInitialState && io.driver.transaction.readWriteStrobe.fire) {
+				transactionStrobe := False
 				goto(fastReadSendAddressState)
 			}
 		}
 	}
 
 	private val fastReadSendAddressState: State = new State {
+		private var addressCounter = Reg(UInt(3 bits)) init(0)
+
 		onEntry {
-transactionStrobe := False
+			reset := False
 			isFastReaderReady := False
-//isFastReadChipSelected := True
-reset := False
+			isQspiGranted := True
+			isWriteTransaction := True
+			transactionStrobe := False
+			addressCounter := 0
 		}
 
 		whenIsActive {
-isFastReadChipSelected := True
-reset := False
-
-
-transactionStrobe := True
+			reset := False
 			isFastReaderReady := False
+			isFastReadChipSelected := True
+			isQspiGranted := True
+			isWriteTransaction := True
+			transactionStrobe := True
+
+// TODO: send the address bytes followed by the number of read bytes to get MISO populated
+
+//			isFastReaderReady := False
+
 			when(mustTransitionToInitialState) {
 				goto(initialState)
-			} elsewhen(io.driver.transaction.readWriteStrobe.fire) {
-// send the address bytes (obviously not in an 'otherwise')
-transactionStrobe := False
+			} elsewhen(io.driver.transaction.readWriteStrobe.fire && addressCounter === 5) {
 				goto(fastReadIdleState)
+			} elsewhen(io.driver.transaction.readWriteStrobe.fire) {
+				addressCounter := addressCounter + 1
 			}
 		}
 	}
 
 	private val fastReadIdleState: State = new State {
 		onEntry {
-isFastReadChipSelected := True
-isFastReaderReady := False
-reset := False
-transactionStrobe := False
+			reset := False
+			isFastReadChipSelected := True
+			isFastReaderReady := True
+			isQspiGranted := True
+			isWriteTransaction := False
+			transactionStrobe := False
 		}
 
 		whenIsActive {
-			val nextAddress = RegNextWhen(io.fastReader.payload + 1, io.fastReader.fire) init(0)
-nextAddress.setName("NEXT_ADDRESS")
-			isFastReadChipSelected := True
-reset := False
-transactionStrobe := False
+			reset := False
+
+			isFastReaderReady := True
+			isQspiGranted := True
+			isWriteTransaction := False
+			transactionStrobe := False
 
 			when(mustTransitionToInitialState) {
-				isFastReaderReady := False
 				goto(initialState)
-			} elsewhen(!isTransactionInProgress && !isFastReaderReady) {
-				isFastReaderReady := True
-			} elsewhen(io.fastReader.fire && io.fastReader.payload === nextAddress) {
-				isFastReaderReady := False
-				goto(fastReadByteState)
-			} elsewhen(io.fastReader.fire && io.fastReader.payload =/= nextAddress) {
-				isFastReaderReady := False
+			}
+
+			when(io.fastReader.fire) {
+				nextAddress := io.fastReader.payload + 1
+			}
+
+			when(!mustTransitionToInitialState && io.fastReader.fire && io.fastReader.payload === nextAddress) {
+				//goto(fastReadByteState) // can avoid the state transition by handling the transaction here...
+			}
+
+			when(!mustTransitionToInitialState && io.fastReader.fire && io.fastReader.payload =/= nextAddress) {
 				goto(dirtyAddressState)
 			}
 		}
+
+//		onExit { isFastReadChipSelected := False } // TODO: CAN THIS BE REMOVED ?
 	}
 
 	private val dirtyAddressState: State = new State {
 		onEntry {
+			reset := False
 			isFastReadChipSelected := False
 			isFastReaderReady := False
-reset := False
+			isQspiGranted := True
+			transactionStrobe := False
 		}
 
 		whenIsActive {
+			reset := False
 			isFastReaderReady := False
 			isFastReadChipSelected := False
-reset := False
+			isQspiGranted := True
+			transactionStrobe := False
 
 			when(mustTransitionToInitialState) {
 				goto(initialState)
-			} elsewhen(!isTransactionInProgress) {
+			}
+
+			when(!mustTransitionToInitialState && !isTransactionInProgress) {
 				goto(fastReadSendAddressState)
 			}
 		}
@@ -165,19 +204,23 @@ reset := False
 
 	private val fastReadByteState: State = new State {
 		onEntry {
+			reset := False
 			isFastReadChipSelected := True
 			isFastReaderReady := False
-reset := False
+			isQspiGranted := True
 		}
 
 		whenIsActive {
+			reset := False
 			isFastReadChipSelected := True
 			isFastReaderReady := False
-reset := False
+			isQspiGranted := True
 
 			when(mustTransitionToInitialState) {
 				goto(initialState)
-			} elsewhen(!isTransactionInProgress) {
+			}
+
+			when(!mustTransitionToInitialState && !isTransactionInProgress) {
 				goto(fastReadIdleState)
 			}
 		}
@@ -211,6 +254,7 @@ object FlashQspiMemoryTransactionDriver { // TODO: THIS WILL BE THE THING THAT C
 		val readWriteStrobe = slave(Stream(Bool())) // wishbone adapter to control this; ready = stateMachine.isTransactionValid && serdes.command.isReady
 		val mosi = in UInt(8 bits) // wishbone adapter to control this
 		val miso = out UInt(8 bits) // wishbone adapter to control this
+// TODO: WHAT WE REALLY WANT IS TO BE ABLE TO SEND / RECEIVE MULTIPLE BYTES IN ONE TRANSACTION - THE SERDES MIGHT BE RUNNING A LOT FASTER, SO ONE BYTE AT A TIME IS A WASTE... WOULD BE GOOD TO SUPPLY A VARIABLE FOR THE BUFFER SIZE, THOUGH; 1-7 bytes
 	}
 }
 
