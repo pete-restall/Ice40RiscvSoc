@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.multiplexing
+package net.restall.ice40riscvsoc.tests.multiplexing
 
 import scala.util.Random
 
@@ -7,9 +7,9 @@ import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 
-import uk.co.lophtware.msfreference.multiplexing.PriorityEncoder
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.multiplexing.PriorityEncoder
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class PriorityEncoderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {
 	"PriorityEncoder" must "not use the 'io' prefix for signals" in spinalContext {

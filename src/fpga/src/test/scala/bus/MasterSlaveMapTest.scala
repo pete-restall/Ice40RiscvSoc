@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus
+package net.restall.ice40riscvsoc.tests.bus
 
 import scala.util.Random
 
@@ -8,9 +8,9 @@ import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 
-import uk.co.lophtware.msfreference.bus.MasterSlaveMap
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.bus.MasterSlaveMap
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class MasterSlaveMapTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
 	"MasterSlaveMap" must "not use the 'io' prefix for signals" in spinalContext {

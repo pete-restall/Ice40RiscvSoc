@@ -1,10 +1,10 @@
-package uk.co.lophtware.msfreference.tests.core.cpu
+package net.restall.ice40riscvsoc.tests.core.cpu
 
 import scala.collection.immutable.LinearSeq
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.core.Cpu
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.core.Cpu
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class CpuStateMachineBuilder(
 	cpu: Cpu.IoBundle,

@@ -1,10 +1,10 @@
 // Generator : SpinalHDL v1.8.0    git head : 4e3563a282582b41f4eaafc503787757251d23ea
-// Component : MsfReference
+// Component : IceSugarDevBoard
 // Git hash  : 9e5077ae013b5f4dfe25852e91ad863be7b6fcdd
 
 `timescale 1ns/1ps
 
-module MsfReference (
+module IceSugarDevBoard (
   output              io_p23,
   output              io_ledR,
   output              io_ledG,
@@ -46,7 +46,7 @@ module MsfReference (
   assign reset = bufferCC_1_io_dataOut; // @[CrossClock.scala 13:9]
   always @(*) begin
     _zz_reset = 1'b0; // @[Utils.scala 536:23]
-    _zz_reset = ((! reset) && (! _zz_reset_3)); // @[MsfReference.scala 22:44]
+    _zz_reset = ((! reset) && (! _zz_reset_3)); // @[IceSugarDevBoard.scala 22:44]
   end
 
   assign _zz_reset_3 = (_zz_reset_2 == 16'hffff); // @[BaseType.scala 305:24]
@@ -58,10 +58,10 @@ module MsfReference (
   end
 
   assign _zz_reset_4 = (reset || _zz_reset); // @[BaseType.scala 305:24]
-  assign io_p23 = sanitisedClockArea_core_p23; // @[MsfReference.scala 36:24]
-  assign io_ledR = sanitisedClockArea_core_ledR; // @[MsfReference.scala 37:25]
-  assign io_ledG = sanitisedClockArea_core_ledG; // @[MsfReference.scala 38:25]
-  assign io_ledB = sanitisedClockArea_core_ledB; // @[MsfReference.scala 39:25]
+  assign io_p23 = sanitisedClockArea_core_p23; // @[IceSugarDevBoard.scala 36:24]
+  assign io_ledR = sanitisedClockArea_core_ledR; // @[IceSugarDevBoard.scala 37:25]
+  assign io_ledG = sanitisedClockArea_core_ledG; // @[IceSugarDevBoard.scala 38:25]
+  assign io_ledB = sanitisedClockArea_core_ledB; // @[IceSugarDevBoard.scala 39:25]
   always @(posedge clk) begin
     if(reset) begin
       _zz_reset_2 <= 16'h0; // @[Data.scala 400:33]

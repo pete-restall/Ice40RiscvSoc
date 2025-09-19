@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40
 
 import org.scalatest.flatspec._
 import org.scalatest.Suite

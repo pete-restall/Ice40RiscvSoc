@@ -1,6 +1,6 @@
-package uk.co.lophtware.msfreference.tests.simulation
+package net.restall.ice40riscvsoc.tests.simulation
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 
 class SimulationBranchState(condition: () => Boolean, whenTrue: WithNextSampling, whenFalse: WithNextSampling) extends WithNextSampling {
 	condition.mustNotBeNull("condition")

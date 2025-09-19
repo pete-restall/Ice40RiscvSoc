@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus
+package net.restall.ice40riscvsoc.tests.bus
 
 import org.scalatest.flatspec._
 import org.scalatest.Suite

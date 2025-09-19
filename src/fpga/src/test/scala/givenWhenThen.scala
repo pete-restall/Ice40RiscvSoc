@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.givenwhenthen
+package net.restall.ice40riscvsoc.tests.givenwhenthen
 
 abstract trait Given[A <: When[_]] {
 	def when: A = ???

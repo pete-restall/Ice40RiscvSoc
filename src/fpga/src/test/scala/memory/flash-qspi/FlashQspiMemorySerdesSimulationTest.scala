@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.memory.flashqspi
+package net.restall.ice40riscvsoc.tests.memory.flashqspi
 
 import scala.util.Random
 
@@ -9,11 +9,11 @@ import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.memory.flashqspi.FlashQspiMemorySerdes
-import uk.co.lophtware.msfreference.pins.TristatePin
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.TristatePinMatchers
-import uk.co.lophtware.msfreference.tests.simulation.LightweightSimulationFixture
+import net.restall.ice40riscvsoc.memory.flashqspi.FlashQspiMemorySerdes
+import net.restall.ice40riscvsoc.pins.TristatePin
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.TristatePinMatchers
+import net.restall.ice40riscvsoc.tests.simulation.LightweightSimulationFixture
 
 class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 	with LightweightSimulationFixture[FlashQspiMemorySerdesFixture]
@@ -1360,7 +1360,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 	}
 
 	they must "not be modified for a (Q)SPI write-only transaction until a MOSI byte has been registered" in simulator { fixture =>
- 		forAll(transactionTypes) { isQspi =>
+		forAll(transactionTypes) { isQspi =>
 			val transactioMosi = anyByte()
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount=1)
@@ -1372,7 +1372,7 @@ class FlashQspiMemorySerdesSimulationTest extends AnyFlatSpec
 	}
 
 	they must "use the MOSI byte registered on the first active clock edge of a transaction" in simulator { fixture =>
- 		forAll(transactionTypes) { isQspi =>
+		forAll(transactionTypes) { isQspi =>
 			val transactioMosi = anyByte()
 			fixture.reset()
 			fixture.stubCommand(isQspi, writeCount=1)

@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.core
+package net.restall.ice40riscvsoc.core
 
 import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneAdapter, WishboneConfig}
@@ -6,7 +6,7 @@ import spinal.lib.master
 import vexriscv._
 import vexriscv.plugin._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 
 class Cpu(resetVector: Long, mtvecInit: Long, yamlOutFilename: Option[String]) extends Component {
 	yamlOutFilename.mustNotBeNull("yamlOutFilename")
@@ -43,7 +43,7 @@ class Cpu(resetVector: Long, mtvecInit: Long, yamlOutFilename: Option[String]) e
 		misaExtensionsInit=66,
 		misaAccess=CsrAccess.NONE,
 		mtvecAccess=CsrAccess.NONE,
-		mtvecInit=0x00000201,
+		mtvecInit=mtvecInit,
 		mepcAccess=CsrAccess.NONE,
 		mscratchGen=false,
 		mcauseAccess=CsrAccess.READ_ONLY,
@@ -63,7 +63,7 @@ class Cpu(resetVector: Long, mtvecInit: Long, yamlOutFilename: Option[String]) e
 				instructionBus,
 				dataBus,
 				csr,
- 				new DecoderSimplePlugin(
+				new DecoderSimplePlugin(
 					catchIllegalInstruction=false),
 				new RegFilePlugin(
 					regFileReadyKind=plugin.SYNC,

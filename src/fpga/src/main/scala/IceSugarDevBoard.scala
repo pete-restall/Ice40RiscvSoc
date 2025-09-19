@@ -1,13 +1,13 @@
-package uk.co.lophtware.msfreference
+package net.restall.ice40riscvsoc
 
 import spinal._
 import spinal.core._
 
-import uk.co.lophtware.msfreference.core.Core
+import net.restall.ice40riscvsoc.core.Core
 import spinal.lib.Counter
 import spinal.lib.ResetCtrl
 
-class MsfReference extends Component {
+class IceSugarDevBoard extends Component {
 	val io = new Bundle {
 		val p23 = out Bool()
 		val ledR = out Bool()
@@ -40,7 +40,7 @@ class MsfReference extends Component {
 	}
 }
 
-object MsfReference {
+object IceSugarDevBoard {
 	def main(args: Array[String]): Unit = {
 		val externalClockDomain = ClockDomainConfig(
 			clockEdge=RISING,
@@ -60,7 +60,7 @@ object MsfReference {
 				resetKind=ASYNC,
 				resetActiveLevel=LOW))
 
-		val topLevelModule = (externalClockDomain, () => new MsfReference)
+		val topLevelModule = (externalClockDomain, () => new IceSugarDevBoard)
 		val modules = topLevelModule +: List(
 			() => new Core
 		).map((internalClockDomain, _))

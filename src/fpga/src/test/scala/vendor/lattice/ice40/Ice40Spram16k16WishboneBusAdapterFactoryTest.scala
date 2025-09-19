@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40
 
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
@@ -7,9 +7,9 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.wishbone.sim.{WishboneDriver, WishboneTransaction}
 
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.{Ice40Spram16k16, Ice40Spram16k16WishboneBusAdapter}
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.{Ice40Spram16k16, Ice40Spram16k16WishboneBusAdapter}
 
 class Ice40Spram16k16WishboneBusAdapterFactoryTest extends AnyFlatSpec
 	with SimulationFixture[Ice40Spram16k16WishboneBusAdapterFactoryFixture]

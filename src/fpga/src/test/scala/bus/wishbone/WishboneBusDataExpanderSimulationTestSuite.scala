@@ -1,10 +1,10 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import org.scalatest.flatspec._
 import org.scalatest.Suite
 import spinal.lib.bus.wishbone.WishboneConfig
 
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusDataExpander
+import net.restall.ice40riscvsoc.bus.wishbone.WishboneBusDataExpander
 
 class WishboneBusDataExpanderSimulationTestSuite extends AnyFlatSpec {
 	override def nestedSuites: IndexedSeq[Suite] =

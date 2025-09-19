@@ -1,9 +1,9 @@
-package uk.co.lophtware.msfreference.tests
+package net.restall.ice40riscvsoc.tests
 
 import org.scalatest.matchers.{HavePropertyMatcher, HavePropertyMatchResult}
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.pins.TristatePin
+import net.restall.ice40riscvsoc.pins.TristatePin
 
 trait TristatePinMatchers {
 	def nonTristatedOutValueOf(expectedValue: Boolean) = new HavePropertyMatcher[TristatePin.IoBundle, Boolean] {

@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.memory.flashqspi
+package net.restall.ice40riscvsoc.tests.memory.flashqspi
 
 import scala.util.Random
 
@@ -7,7 +7,7 @@ import org.scalatest.matchers.must.Matchers._
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.memory.flashqspi.FlashQspiMemorySerdes
+import net.restall.ice40riscvsoc.memory.flashqspi.FlashQspiMemorySerdes
 
 class FlashQspiMemorySerdesFixture extends Component {
 	val io = new FlashQspiMemorySerdes.IoBundle()

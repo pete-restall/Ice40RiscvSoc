@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests
+package net.restall.ice40riscvsoc.tests
 
 import scala.util.Random
 
@@ -6,8 +6,8 @@ import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 
-import uk.co.lophtware.msfreference.SeqPairingExtensions._
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.SeqPairingExtensions._
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
 
 class SeqPairingExtensionsTest extends AnyFlatSpec with TableDrivenPropertyChecks {
 	"The asPairedSeq method" must "not accept a null sequence of items" in {

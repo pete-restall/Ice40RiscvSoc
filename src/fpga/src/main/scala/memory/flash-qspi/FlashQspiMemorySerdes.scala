@@ -1,9 +1,9 @@
-package uk.co.lophtware.msfreference.memory.flashqspi
+package net.restall.ice40riscvsoc.memory.flashqspi
 
 import spinal.core._
 import spinal.lib.{master, slave, Stream}
 
-import uk.co.lophtware.msfreference.pins.TristatePin
+import net.restall.ice40riscvsoc.pins.TristatePin
 
 class FlashQspiMemorySerdes extends Component {
 	val io = new FlashQspiMemorySerdes.IoBundle()

@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus
+package net.restall.ice40riscvsoc.tests.bus
 
 import scala.util.Random
 
@@ -6,9 +6,9 @@ import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 
-import uk.co.lophtware.msfreference.bus.MultiMasterSingleSlaveArbiter
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.simulation.NonSimulationFixture
+import net.restall.ice40riscvsoc.bus.MultiMasterSingleSlaveArbiter
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.simulation.NonSimulationFixture
 
 class MultiMasterSingleSlaveArbiterTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {
 	"MultiMasterSingleSlaveArbiter" must "not use the 'io' prefix for signals" in spinalContext {

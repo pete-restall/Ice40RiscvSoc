@@ -1,7 +1,7 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.direct
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.spram.direct
 
-import uk.co.lophtware.msfreference.tests.givenwhenthen._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.tests.givenwhenthen._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class SpramThen(builder: SpramStateMachineBuilder) extends Then with And[SpramThen] {
 	def contentsMustEqual(expectedWords: Seq[Int], startingFromAddress: Int = 0): SpramThen = new SpramThen(builder.assertContentsEqualTo(expectedWords, startingFromAddress))

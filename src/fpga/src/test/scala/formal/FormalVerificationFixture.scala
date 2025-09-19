@@ -1,11 +1,11 @@
-package uk.co.lophtware.msfreference.tests.formal
+package net.restall.ice40riscvsoc.tests.formal
 
 import org.scalatest._
 import spinal.core._
 import spinal.core.formal._
 
-import uk.co.lophtware.msfreference.tests.EnvFile
-import uk.co.lophtware.msfreference.tests.TestsPackage
+import net.restall.ice40riscvsoc.tests.EnvFile
+import net.restall.ice40riscvsoc.tests.TestsPackage
 
 abstract trait FormalVerificationFixture[TDut <: Component] extends TestSuiteMixin with FormalAssertions { this: TestSuite =>
 	private var fixtureDut: TDut = _

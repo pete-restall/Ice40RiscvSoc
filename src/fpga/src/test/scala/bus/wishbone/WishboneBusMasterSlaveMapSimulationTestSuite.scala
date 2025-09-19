@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import org.scalatest.flatspec._
 import org.scalatest.Suite

@@ -1,7 +1,7 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.wishbone
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.spram.wishbone
 
-import uk.co.lophtware.msfreference.tests.givenwhenthen._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.tests.givenwhenthen._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class SpramThen(builder: SpramStateMachineBuilder) extends Then with And[SpramThen] {
 	def singleWordMustEqual(word: Int, atAddress: Int): SpramThen = contentsMustEqual(List(word), atAddress)

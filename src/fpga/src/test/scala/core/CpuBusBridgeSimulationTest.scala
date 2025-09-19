@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.core
+package net.restall.ice40riscvsoc.tests.core
 
 import scala.util.Random
 
@@ -10,9 +10,9 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.Wishbone
 
-import uk.co.lophtware.msfreference.core.CpuBusBridge
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.core.CpuBusBridge
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 // TODO: MAKE THIS PARAMETERISED WITH THE TWO BUS CONFIGURATIONS AND THEN CREATE A SUITE TO EXERCISE THE VARIOUS COMBINATIONS
 class CpuBusBridgeSimulationTest extends AnyFlatSpec with LightweightSimulationFixture[CpuBusBridgeFixture] with TableDrivenPropertyChecks with Inspectors {

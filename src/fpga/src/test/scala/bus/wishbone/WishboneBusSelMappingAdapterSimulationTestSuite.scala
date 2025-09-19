@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import org.scalatest.flatspec._
 import org.scalatest.Suite
 import spinal.core._
 import spinal.lib.bus.wishbone.WishboneConfig
 
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusSelMappingAdapter
-import uk.co.lophtware.msfreference.tests.bus.wishbone.WishboneBusSelMappingAdapterFixture.DutCreationMethod
+import net.restall.ice40riscvsoc.bus.wishbone.WishboneBusSelMappingAdapter
+import net.restall.ice40riscvsoc.tests.bus.wishbone.WishboneBusSelMappingAdapterFixture.DutCreationMethod
 
 class WishboneBusSelMappingAdapterSimulationTestSuite extends AnyFlatSpec {
 	override def nestedSuites: IndexedSeq[Suite] =

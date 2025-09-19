@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import scala.util.Random
 
@@ -8,9 +8,9 @@ import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusDataExpander
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.bus.wishbone.WishboneBusDataExpander
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class WishboneBusDataExpanderTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
 	"WishboneBusDataExpander" must "not use the 'io' prefix for signals" in spinalContext {

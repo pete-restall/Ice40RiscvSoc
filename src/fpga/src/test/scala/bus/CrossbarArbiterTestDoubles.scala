@@ -1,6 +1,6 @@
-package uk.co.lophtware.msfreference.tests.bus
+package net.restall.ice40riscvsoc.tests.bus
 
-import uk.co.lophtware.msfreference.bus.CrossbarArbiter
+import net.restall.ice40riscvsoc.bus.CrossbarArbiter
 
 object CrossbarArbiterTestDoubles {
 	def dummy(): CrossbarArbiter = new CrossbarArbiter(numberOfMasters=1, numberOfSlaves=1)

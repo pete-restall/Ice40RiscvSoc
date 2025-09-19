@@ -1,13 +1,13 @@
 ThisBuild / version := "0.1.0"
 ThisBuild / scalaVersion := "2.13.16"
-ThisBuild / organization := "uk.co.lophtware"
+ThisBuild / organization := "net.restall"
 
 val spinalVersion = "1.8.0"
 
 lazy val root = (project in file("."))
 	.settings(
-		name := "MsfReference",
-		description := "MSF Frequency Reference",
+		name := "Ice40RiscvSoc",
+		description := "A RISC-V SoC for the iCE40 FPGA Family",
 		fork := true,
 		envVars ++= Map(
 			"SPINALSIM_WORKSPACE" -> "target/sim-workspace",

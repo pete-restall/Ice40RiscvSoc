@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests
+package net.restall.ice40riscvsoc.tests
 
 object KeyValuePairsFrom {
 	private val comment = """^\s*(#.*)?$""".r

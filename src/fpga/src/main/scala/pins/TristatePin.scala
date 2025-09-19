@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.pins
+package net.restall.ice40riscvsoc.pins
 
 import spinal.core._
 

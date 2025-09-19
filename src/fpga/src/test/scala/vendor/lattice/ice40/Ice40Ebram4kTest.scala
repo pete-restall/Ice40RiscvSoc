@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40
 
 import scala.util.Random
 
@@ -7,9 +7,9 @@ import org.scalatest.matchers.must._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.simulation.NonSimulationFixture
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.simulation.NonSimulationFixture
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.Ice40Ebram4k
 
 class Ice40Ebram4kTest extends AnyFlatSpec with NonSimulationFixture with Matchers with TableDrivenPropertyChecks {
 	"Ice40Ebram4k" must "not use the 'io' prefix for signals" in spinalContext {

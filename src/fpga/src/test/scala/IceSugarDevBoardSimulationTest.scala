@@ -1,22 +1,22 @@
-package uk.co.lophtware.msfreference.tests
+package net.restall.ice40riscvsoc.tests
 
 import org.scalatest.flatspec._
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.MsfReference
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.IceSugarDevBoard
+import net.restall.ice40riscvsoc.tests.simulation._
 
-class MsfReferenceSimulationTest extends AnyFlatSpec with SimulationFixture[MsfReferenceFixture] {
-	protected override def dutFactory() = new MsfReferenceFixture()
+class IceSugarDevBoardSimulationTest extends AnyFlatSpec with SimulationFixture[IceSugarDevBoardFixture] {
+	protected override def dutFactory() = new IceSugarDevBoardFixture()
 
-	"MsfReference" must "run" in simulator { fixture =>
+	"IceSugarDevBoard" must "run" in simulator { fixture =>
 		fixture.wireStimuli()
 		fixture.clockDomain.waitSampling(1000)
 	}
 }
 
-class MsfReferenceFixture extends Component {
+class IceSugarDevBoardFixture extends Component {
 	val io = new Bundle {
 		val p23 = out Bool()
 		val ledR = out Bool()
@@ -24,7 +24,7 @@ class MsfReferenceFixture extends Component {
 		val ledB = out Bool()
 	}
 
-	private val dut = new MsfReference()
+	private val dut = new IceSugarDevBoard()
 	dut.io <> io
 
 	def wireStimuli() = {

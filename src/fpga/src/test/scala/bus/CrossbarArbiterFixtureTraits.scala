@@ -1,9 +1,9 @@
-package uk.co.lophtware.msfreference.tests.bus
+package net.restall.ice40riscvsoc.tests.bus
 
 import spinal.core.Component
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.bus.{CrossbarArbiter, MultiMasterSingleSlaveArbiter}
+import net.restall.ice40riscvsoc.bus.{CrossbarArbiter, MultiMasterSingleSlaveArbiter}
 
 trait CrossbarArbiterFixtureTraits extends Component {
 	def io: CrossbarArbiter.IoBundle = ???

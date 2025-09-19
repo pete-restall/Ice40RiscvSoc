@@ -1,8 +1,8 @@
-package uk.co.lophtware.msfreference.multiplexing
+package net.restall.ice40riscvsoc.multiplexing
 
 import spinal.core._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 
 class PriorityEncoder(numberOfInputs: Int) extends Component {
 	val io = new PriorityEncoder.IoBundle(numberOfInputs)

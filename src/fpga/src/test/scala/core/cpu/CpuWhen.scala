@@ -1,9 +1,9 @@
-package uk.co.lophtware.msfreference.tests.core.cpu
+package net.restall.ice40riscvsoc.tests.core.cpu
 
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.core.Cpu
-import uk.co.lophtware.msfreference.tests.givenwhenthen._
+import net.restall.ice40riscvsoc.core.Cpu
+import net.restall.ice40riscvsoc.tests.givenwhenthen._
 
 class CpuWhen(builder: CpuStateMachineBuilder) extends WhenAnd[CpuWhen, CpuThen] {
 	def dataWrittenTo(address: Long): WhenAnd[CpuWhen, CpuThen] = new CpuWhen(builder.pushAssertionPredicate(cpu =>

@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import scala.util.Random
 
@@ -10,9 +10,9 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusSelMappingAdapter
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.bus.wishbone.WishboneBusSelMappingAdapter
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class WishboneBusSelMappingAdapterSimulationTest(masterConfig: WishboneConfig, slaveSelWidth: BitCount, slaveSelAddend: Int, dutCreationMethod: WishboneBusSelMappingAdapterFixture.DutCreationMethod.Enum)
 	extends AnyFlatSpec

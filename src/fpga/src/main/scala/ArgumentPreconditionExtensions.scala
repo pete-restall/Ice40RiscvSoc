@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference
+package net.restall.ice40riscvsoc
 
 object ArgumentPreconditionExtensions {
 	private val UNSPECIFIED_ARG_NAME = "Argument name must be specified"

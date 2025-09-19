@@ -1,9 +1,9 @@
-package uk.co.lophtware.msfreference.tests.memory.flashqspi
+package net.restall.ice40riscvsoc.tests.memory.flashqspi
 
 import spinal.core._
 import spinal.core.formal._
 
-import uk.co.lophtware.msfreference.memory.flashqspi.FlashQspiMemoryStateMachine
+import net.restall.ice40riscvsoc.memory.flashqspi.FlashQspiMemoryStateMachine
 
 class FlashQspiMemoryStateMachineVerificationFixture extends Component {
 	private val dut = new FlashQspiMemoryStateMachine()

@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests.core.cpu
+package net.restall.ice40riscvsoc.tests.core.cpu
 
 import scala.collection.mutable.Map
 
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.core.Cpu
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.core.Cpu
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class CpuDataReadWriteState(
 	cpu: Cpu.IoBundle,

@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus
+package net.restall.ice40riscvsoc.tests.bus
 
 import scala.util.Random
 
@@ -6,7 +6,7 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.{master, slave}
 
-import uk.co.lophtware.msfreference.bus.MasterSlaveMap
+import net.restall.ice40riscvsoc.bus.MasterSlaveMap
 
 class MasterSlaveMapFixture(numberOfMasters: Int, numberOfSlaves: Int, dutCreatedViaApplyFactory: Boolean) extends Component {
 	val io = new Bundle {

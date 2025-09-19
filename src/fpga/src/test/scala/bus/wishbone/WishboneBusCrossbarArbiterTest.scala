@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
@@ -6,11 +6,11 @@ import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 import spinal.lib.bus.wishbone.Wishbone
 
-import uk.co.lophtware.msfreference.bus.{CrossbarArbiter, MasterSlaveMap}
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusCrossbarArbiter
-import uk.co.lophtware.msfreference.multiplexing.{Encoder, SimpleEncoder}
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.simulation.NonSimulationFixture
+import net.restall.ice40riscvsoc.bus.{CrossbarArbiter, MasterSlaveMap}
+import net.restall.ice40riscvsoc.bus.wishbone.WishboneBusCrossbarArbiter
+import net.restall.ice40riscvsoc.multiplexing.{Encoder, SimpleEncoder}
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.simulation.NonSimulationFixture
 
 class WishboneBusCrossbarArbiterTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks {
 	"WishboneBusCrossbarArbiter companion's apply(busMap) method" must "not use the 'io' prefix for signals" in spinalContext {

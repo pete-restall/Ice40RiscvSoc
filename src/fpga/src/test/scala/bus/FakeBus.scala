@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus
+package net.restall.ice40riscvsoc.tests.bus
 
 import spinal.core._
 import spinal.lib.IMasterSlave

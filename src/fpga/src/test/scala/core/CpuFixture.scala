@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.core
+package net.restall.ice40riscvsoc.tests.core
 
 import java.util.UUID
 import scala.util.Random
@@ -6,10 +6,10 @@ import scala.util.Random
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.core.Cpu
-import uk.co.lophtware.msfreference.tests.core.cpu.{CpuGiven, CpuStateMachineBuilder}
-import uk.co.lophtware.msfreference.tests.simulation.{Sampling, SimulationFixtureBase, WithNextSampling}
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.core.Cpu
+import net.restall.ice40riscvsoc.tests.core.cpu.{CpuGiven, CpuStateMachineBuilder}
+import net.restall.ice40riscvsoc.tests.simulation.{Sampling, SimulationFixtureBase, WithNextSampling}
 
 class CpuFixture() extends Component {
 	val yamlOutFilename = "/tmp/" + UUID.randomUUID().toString

@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import scala.util.Random
 
@@ -9,10 +9,10 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.Wishbone
 
-import uk.co.lophtware.msfreference.bus.{CrossbarArbiter, MasterSlaveMap, MultiMasterSingleSlaveArbiter}
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.bus.CrossbarArbiterSimulationTest
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.bus.{CrossbarArbiter, MasterSlaveMap, MultiMasterSingleSlaveArbiter}
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.bus.CrossbarArbiterSimulationTest
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class WishboneBusCrossbarArbiterSimulationTest(numberOfMasters: Int, numberOfSlaves: Int, busMap: => MasterSlaveMap[Wishbone]) extends AnyFlatSpec
 	with LightweightSimulationFixture[WishboneBusCrossbarArbiterFixture]

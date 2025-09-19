@@ -1,11 +1,11 @@
-package uk.co.lophtware.msfreference.bus.wishbone
+package net.restall.ice40riscvsoc.bus.wishbone
 
 import spinal.core._
 import spinal.lib.bus.wishbone.Wishbone
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.bus.{CrossbarArbiter, MasterSlaveMap}
-import uk.co.lophtware.msfreference.multiplexing.Encoder
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.bus.{CrossbarArbiter, MasterSlaveMap}
+import net.restall.ice40riscvsoc.multiplexing.Encoder
 
 object WishboneBusCrossbarArbiter {
 	def apply(busMap: MasterSlaveMap[Wishbone], encoderFactory: Vec[Bool] => Encoder.IoBundle): CrossbarArbiter = {

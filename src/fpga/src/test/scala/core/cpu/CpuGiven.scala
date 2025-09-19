@@ -1,6 +1,6 @@
-package uk.co.lophtware.msfreference.tests.core.cpu
+package net.restall.ice40riscvsoc.tests.core.cpu
 
-import uk.co.lophtware.msfreference.tests.givenwhenthen._
+import net.restall.ice40riscvsoc.tests.givenwhenthen._
 
 class CpuGiven(builder: CpuStateMachineBuilder) extends GivenAnd[CpuGiven, CpuWhen] {
 	def instructions(instructions: (Long, Long)*): GivenAnd[CpuGiven, CpuWhen] = this.instructions(instructions.toMap)

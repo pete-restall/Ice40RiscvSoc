@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
-import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
-import uk.co.lophtware.msfreference.bus.{CrossbarArbiter, MasterSlaveMap}
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusCrossbarMultiplexer
-import uk.co.lophtware.msfreference.tests.HaveIoTestDoubles
+import net.restall.ice40riscvsoc.ValueBitWidthExtensions._
+import net.restall.ice40riscvsoc.bus.{CrossbarArbiter, MasterSlaveMap}
+import net.restall.ice40riscvsoc.bus.wishbone.WishboneBusCrossbarMultiplexer
+import net.restall.ice40riscvsoc.tests.HaveIoTestDoubles
 
 class WishboneBusCrossbarMultiplexerFixture(busConfig: WishboneConfig, numberOfMasters: Int, numberOfSlaves: Int, dutCreatedViaApplyFactory: Boolean) extends Component {
 	val io = new WishboneBusCrossbarMultiplexerFixture.IoBundle(busConfig, numberOfMasters, numberOfSlaves)

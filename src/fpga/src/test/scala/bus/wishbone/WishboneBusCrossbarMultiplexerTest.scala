@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import scala.util.Random
 
@@ -8,10 +8,10 @@ import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusCrossbarMultiplexer
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.bus.CrossbarArbiterTestDoubles
-import uk.co.lophtware.msfreference.tests.simulation.NonSimulationFixture
+import net.restall.ice40riscvsoc.bus.wishbone.WishboneBusCrossbarMultiplexer
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.bus.CrossbarArbiterTestDoubles
+import net.restall.ice40riscvsoc.tests.simulation.NonSimulationFixture
 
 class WishboneBusCrossbarMultiplexerTest extends AnyFlatSpec with NonSimulationFixture with TableDrivenPropertyChecks with Inspectors {
 	"WishboneBusCrossbarMultiplexer" must "not use the 'io' prefix for signals" in spinalContext {

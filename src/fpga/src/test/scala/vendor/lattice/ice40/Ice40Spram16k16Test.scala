@@ -1,13 +1,13 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40
 
 import scala.collection.immutable.ArraySeq
 import scala.util.Random
 
 import org.scalatest.flatspec._
 
-import uk.co.lophtware.msfreference.tests.givenwhenthen._
-import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
+import net.restall.ice40riscvsoc.tests.givenwhenthen._
+import net.restall.ice40riscvsoc.tests.simulation._
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.Ice40Spram16k16
 
 class Ice40Spram16k16Test extends AnyFlatSpec with SimulationFixture[Ice40Spram16k16Fixture] {
 	protected override def dutFactory() = new Ice40Spram16k16Fixture

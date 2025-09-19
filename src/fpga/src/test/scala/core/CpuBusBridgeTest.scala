@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.core
+package net.restall.ice40riscvsoc.tests.core
 
 import scala.util.Random
 
@@ -8,9 +8,9 @@ import org.scalatest.matchers.must.Matchers._
 import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
-import uk.co.lophtware.msfreference.core.CpuBusBridge
-import uk.co.lophtware.msfreference.tests.bus.wishbone.{WishboneTestDoubles, WishboneConfigTestDoubles}
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.core.CpuBusBridge
+import net.restall.ice40riscvsoc.tests.bus.wishbone.{WishboneTestDoubles, WishboneConfigTestDoubles}
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class CpuBusBridgeTest extends AnyFlatSpec with NonSimulationFixture with Inspectors {
 	"CpuBusBridge" must "not use the 'io' prefix for signals" in spinalContext {

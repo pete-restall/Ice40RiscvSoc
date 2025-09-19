@@ -1,10 +1,10 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.direct
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.ebram.direct
 
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.Ice40Ebram4k
 
 class EbramPrimeReadState(ebram: Ice40Ebram4k.IoBundle, address: Int, nextState: Sampling) extends WithNextSampling {
 	ebram.mustNotBeNull("ebram")

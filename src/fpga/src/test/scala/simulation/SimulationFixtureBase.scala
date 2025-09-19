@@ -1,10 +1,10 @@
-package uk.co.lophtware.msfreference.tests.simulation
+package net.restall.ice40riscvsoc.tests.simulation
 
 import org.scalatest._
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 
 abstract trait SimulationFixtureBase[TDut <: Component] extends TestSuiteMixin { this: TestSuite =>
 	private lazy val sim: SimCompiled[TDut] = createSimulation().compile(dutFactory())

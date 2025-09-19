@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
-import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
-import uk.co.lophtware.msfreference.bus.wishbone.{WishboneBusCrossbarArbiter, WishboneBusMasterSlaveMap}
-import uk.co.lophtware.msfreference.multiplexing.Encoder
+import net.restall.ice40riscvsoc.ValueBitWidthExtensions._
+import net.restall.ice40riscvsoc.bus.wishbone.{WishboneBusCrossbarArbiter, WishboneBusMasterSlaveMap}
+import net.restall.ice40riscvsoc.multiplexing.Encoder
 
 class WishboneBusCrossbarArbiterEncoderFactoryFixture(numberOfMasters: Int, numberOfSlaves: Int) extends Component {
 	private val busConfig = new WishboneConfig(addressWidth=16, dataWidth=4)

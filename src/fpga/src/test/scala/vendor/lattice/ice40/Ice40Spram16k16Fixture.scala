@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40
 
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.direct.{SpramGiven, SpramStateMachineBuilder}
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
+import net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.spram.direct.{SpramGiven, SpramStateMachineBuilder}
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.Ice40Spram16k16
 
 class Ice40Spram16k16Fixture extends Component {
 	val io = new Ice40Spram16k16.IoBundle()

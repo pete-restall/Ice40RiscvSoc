@@ -1,8 +1,8 @@
-package uk.co.lophtware.msfreference.tests.multiplexing
+package net.restall.ice40riscvsoc.tests.multiplexing
 
 import spinal.core._
 
-import uk.co.lophtware.msfreference.multiplexing.SimpleEncoder
+import net.restall.ice40riscvsoc.multiplexing.SimpleEncoder
 
 class SimpleEncoderFixture(numberOfInputs: Int, dutCreatedViaApplyFactory: Boolean) extends Component {
 	val io = new SimpleEncoder.IoBundle(numberOfInputs)

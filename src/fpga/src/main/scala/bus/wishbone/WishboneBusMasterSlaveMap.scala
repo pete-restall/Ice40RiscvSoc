@@ -1,10 +1,10 @@
-package uk.co.lophtware.msfreference.bus.wishbone
+package net.restall.ice40riscvsoc.bus.wishbone
 
 import spinal.core._
 import spinal.lib.bus.wishbone.Wishbone
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.bus.MasterSlaveMap
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.bus.MasterSlaveMap
 
 object WishboneBusMasterSlaveMap {
 	def apply(firstMapping: (Wishbone, Wishbone => Bool, Wishbone), otherMappings: (Wishbone, Wishbone => Bool, Wishbone)*): MasterSlaveMap[Wishbone] = {

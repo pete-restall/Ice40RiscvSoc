@@ -1,11 +1,11 @@
-package uk.co.lophtware.msfreference.core
+package net.restall.ice40riscvsoc.core
 
 import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneAdapter, WishboneConfig}
 import spinal.lib.{master, slave}
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.bus.MasterSlaveMap
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.bus.MasterSlaveMap
 
 class CpuBusBridge(cpuBusConfig: WishboneConfig, deviceBusConfig: WishboneConfig) extends Component {
 	val io = new CpuBusBridge.IoBundle(cpuBusConfig, deviceBusConfig)

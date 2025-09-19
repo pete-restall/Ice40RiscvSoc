@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.simulation
+package net.restall.ice40riscvsoc.tests.simulation
 
 abstract trait Sampling {
 	def onSampling(): Sampling = ???

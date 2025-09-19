@@ -1,9 +1,9 @@
-package uk.co.lophtware.msfreference.multiplexing
+package net.restall.ice40riscvsoc.multiplexing
 
 import spinal.core._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.ValueBitWidthExtensions._
 
 object Encoder {
 	class IoBundle(numberOfInputs: Int) extends Bundle {

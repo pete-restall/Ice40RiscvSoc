@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40
 
 import scala.util.Random
 
@@ -6,7 +6,7 @@ import spinal.core._
 import spinal.lib.bus.wishbone._
 import spinal.lib.slave
 
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.{Ice40Ebram4k, Ice40Ebram4k16WishboneBusAdapter}
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.{Ice40Ebram4k, Ice40Ebram4k16WishboneBusAdapter}
 
 class Ice40Ebram4k16WishboneBusAdapterFactoryFixture extends Component {
 	val io = new Bundle {

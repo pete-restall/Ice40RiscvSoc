@@ -1,8 +1,8 @@
-package uk.co.lophtware.msfreference.tests.simulation
+package net.restall.ice40riscvsoc.tests.simulation
 
 import spinal.sim.SimThread
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 
 class SimulationWaitForForkedState(thread: SimThread, nextState: Sampling) extends Sampling {
 	thread.mustNotBeNull("thread")

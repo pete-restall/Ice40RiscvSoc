@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.wishbone
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.spram.wishbone
 
 import spinal.core.ClockDomain
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.Wishbone
 import spinal.lib.wishbone.sim.{WishboneDriver, WishboneTransaction}
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class WishboneSpramWriteSeqState(
 	clockDomain: ClockDomain,

@@ -1,7 +1,7 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.direct
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.ebram.direct
 
-import uk.co.lophtware.msfreference.tests.givenwhenthen._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.tests.givenwhenthen._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class EbramThen(builder: EbramStateMachineBuilder, readingFromAddress: Int) extends Then with And[EbramThen] {
 	def contentsMustEqual(expectedWords: Seq[Int]): EbramThen = {

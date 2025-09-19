@@ -1,6 +1,6 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.wishbone
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.spram.wishbone
 
-import uk.co.lophtware.msfreference.tests.givenwhenthen._
+import net.restall.ice40riscvsoc.tests.givenwhenthen._
 
 class SpramGiven(builder: SpramStateMachineBuilder) extends GivenAnd[SpramGiven, SpramWhen] {
 	def spramIsPoweredOn: GivenAnd[SpramGiven, SpramWhen] = new SpramGiven(builder.powerOn())

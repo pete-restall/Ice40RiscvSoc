@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.multiplexing
+package net.restall.ice40riscvsoc.multiplexing
 
 import spinal.core._
 

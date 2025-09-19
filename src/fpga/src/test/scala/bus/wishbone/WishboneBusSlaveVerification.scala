@@ -1,11 +1,11 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
 import spinal.core._
 import spinal.core.formal._
 
-import uk.co.lophtware.msfreference.tests.formal._
+import net.restall.ice40riscvsoc.tests.formal._
 
 class WishboneBusSlaveVerification[TDut <: Component with IHaveWishboneSlave](slaveDutFactory: () => TDut) extends AnyFlatSpec with FormalVerificationFixture[TDut] {
 	protected override def dutFactory() = slaveDutFactory()

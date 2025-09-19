@@ -1,8 +1,8 @@
-package uk.co.lophtware.msfreference.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.vendor.lattice.ice40
 
 import spinal.core._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 
 private class Ice40NativeEbram4k(readWidth: BitCount, writeWidth: BitCount, initialRows: Option[Seq[Seq[Byte]]] = None) extends BlackBox {
 	val io = new Ice40NativeEbram4k.IoBundle()

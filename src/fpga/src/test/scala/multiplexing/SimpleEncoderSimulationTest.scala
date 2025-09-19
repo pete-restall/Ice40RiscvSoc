@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.multiplexing
+package net.restall.ice40riscvsoc.tests.multiplexing
 
 import scala.util.Random
 
@@ -8,9 +8,9 @@ import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.multiplexing.SimpleEncoder
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.multiplexing.SimpleEncoder
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class SimpleEncoderSimulationTest(numberOfInputs: Int, dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec
 	with LightweightSimulationFixture[SimpleEncoderFixture]

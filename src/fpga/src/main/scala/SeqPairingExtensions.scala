@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference
+package net.restall.ice40riscvsoc
 
 object SeqPairingExtensions {
 	implicit class SeqPairer[A, B](items: B)(implicit cast: B => Seq[A]) {

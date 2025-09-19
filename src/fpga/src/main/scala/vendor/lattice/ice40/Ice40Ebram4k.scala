@@ -1,8 +1,8 @@
-package uk.co.lophtware.msfreference.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.vendor.lattice.ice40
 
 import spinal.core._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 
 class Ice40Ebram4k(readWidth: BitCount, writeWidth: BitCount, initialRows: Option[Seq[Seq[Byte]]] = None) extends Component {
 	initialRows.mustNotBeNull("initialRows", "Use None (or omit the argument entirely) if EBRAM initialisation is unimportant")

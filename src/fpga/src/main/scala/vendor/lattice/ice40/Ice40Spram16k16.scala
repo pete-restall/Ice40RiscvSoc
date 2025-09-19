@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.vendor.lattice.ice40
 
 import spinal.core._
 

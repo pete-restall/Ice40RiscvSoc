@@ -1,6 +1,6 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.wishbone
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.ebram.wishbone
 
-import uk.co.lophtware.msfreference.tests.givenwhenthen._
+import net.restall.ice40riscvsoc.tests.givenwhenthen._
 
 class EbramGiven(builder: EbramStateMachineBuilder) extends GivenAnd[EbramGiven, EbramWhen] {
 	def ebramIsPoweredOn: GivenAnd[EbramGiven, EbramWhen] = new EbramGiven(builder.powerOn())

@@ -1,7 +1,7 @@
 .*.ini
 .recovery
 default_impl/
-MsfReference_tcr.dir/
-MsfReference_tcl.html
+Ice40RiscvSoc_tcr.dir/
+Ice40RiscvSoc_tcl.html
 reportview.xml
 drc.log

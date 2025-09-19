@@ -1,9 +1,9 @@
-package uk.co.lophtware.msfreference.tests.core.cpu
+package net.restall.ice40riscvsoc.tests.core.cpu
 
 import org.scalatest.matchers.must.Matchers._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class CpuDataAssertionState(
 	data: scala.collection.mutable.Map[Long, Long],

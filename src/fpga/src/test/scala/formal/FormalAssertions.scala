@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.formal
+package net.restall.ice40riscvsoc.tests.formal
 
 import spinal.core._
 import spinal.idslplugin._

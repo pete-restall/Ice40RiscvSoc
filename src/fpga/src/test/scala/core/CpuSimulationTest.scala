@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.core
+package net.restall.ice40riscvsoc.tests.core
 
 import scala.io.Source
 import scala.util.{Random, Using}
@@ -8,8 +8,8 @@ import org.scalatest.matchers.must.Matchers._
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.core.Cpu
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.core.Cpu
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class CpuSimulationTest extends AnyFlatSpec with LightweightSimulationFixture[CpuFixture] {
 

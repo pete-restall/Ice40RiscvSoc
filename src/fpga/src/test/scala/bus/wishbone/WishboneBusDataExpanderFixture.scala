@@ -1,11 +1,11 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import scala.util.Random
 
 import spinal.core._
 import spinal.lib.bus.wishbone.WishboneConfig
 
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusDataExpander
+import net.restall.ice40riscvsoc.bus.wishbone.WishboneBusDataExpander
 
 class WishboneBusDataExpanderFixture(slaveConfig: WishboneConfig, numberOfSlaves: Int, dutCreatedViaApplyFactory: Boolean) extends Component {
 	val io = new WishboneBusDataExpander.IoBundle(slaveConfig, numberOfSlaves)

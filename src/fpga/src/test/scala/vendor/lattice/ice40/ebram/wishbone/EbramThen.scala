@@ -1,7 +1,7 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.wishbone
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.ebram.wishbone
 
-import uk.co.lophtware.msfreference.tests.givenwhenthen._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.tests.givenwhenthen._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class EbramThen(builder: EbramStateMachineBuilder) extends Then with And[EbramThen] {
 	def singleWordMustEqual(word: Int, atAddress: Int): EbramThen = contentsMustEqual(List(word), atAddress)

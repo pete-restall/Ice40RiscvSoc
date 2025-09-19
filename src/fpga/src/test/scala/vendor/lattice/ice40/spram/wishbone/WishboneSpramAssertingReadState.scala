@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.wishbone
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.spram.wishbone
 
 import org.scalatest.AppendedClues._
 import org.scalatest.matchers.must.Matchers._
@@ -7,8 +7,8 @@ import spinal.core.sim._
 import spinal.lib.bus.wishbone._
 import spinal.lib.wishbone.sim.{WishboneDriver, WishboneTransaction}
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class WishboneSpramAssertingReadState(
 	clockDomain: ClockDomain,

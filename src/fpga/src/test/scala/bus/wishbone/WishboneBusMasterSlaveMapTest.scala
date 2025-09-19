@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import scala.util.Random
 
@@ -7,8 +7,8 @@ import org.scalatest.matchers.must.Matchers._
 import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusMasterSlaveMap
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.bus.wishbone.WishboneBusMasterSlaveMap
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class WishboneBusMasterSlaveMapTest extends AnyFlatSpec with NonSimulationFixture {
 	private val dummyConfig = WishboneConfigTestDoubles.dummy()

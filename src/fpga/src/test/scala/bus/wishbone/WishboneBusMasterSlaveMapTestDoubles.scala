@@ -1,10 +1,10 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import spinal.core.False
 import spinal.lib.bus.wishbone.Wishbone
 
-import uk.co.lophtware.msfreference.bus.MasterSlaveMap
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusMasterSlaveMap
+import net.restall.ice40riscvsoc.bus.MasterSlaveMap
+import net.restall.ice40riscvsoc.bus.wishbone.WishboneBusMasterSlaveMap
 
 object WishboneBusMasterSlaveMapTestDoubles {
 	def dummy(): MasterSlaveMap[Wishbone] = {

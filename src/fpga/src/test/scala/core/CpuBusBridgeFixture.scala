@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.core
+package net.restall.ice40riscvsoc.tests.core
 
 import scala.util.Random
 
@@ -6,8 +6,8 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
-import uk.co.lophtware.msfreference.core.CpuBusBridge
-import uk.co.lophtware.msfreference.tests.bus.wishbone.WishboneTestDoubles
+import net.restall.ice40riscvsoc.core.CpuBusBridge
+import net.restall.ice40riscvsoc.tests.bus.wishbone.WishboneTestDoubles
 
 class CpuBusBridgeFixture() extends Component {
 	val io = new Bundle {

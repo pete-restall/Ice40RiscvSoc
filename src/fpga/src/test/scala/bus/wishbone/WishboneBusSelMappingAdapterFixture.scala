@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import scala.util.Random
 
 import spinal.core._
 import spinal.lib.bus.wishbone.WishboneConfig
 
-import uk.co.lophtware.msfreference.bus.wishbone.WishboneBusSelMappingAdapter
-import uk.co.lophtware.msfreference.tests.bus.wishbone.WishboneBusSelMappingAdapterFixture.DutCreationMethod
+import net.restall.ice40riscvsoc.bus.wishbone.WishboneBusSelMappingAdapter
+import net.restall.ice40riscvsoc.tests.bus.wishbone.WishboneBusSelMappingAdapterFixture.DutCreationMethod
 
 class WishboneBusSelMappingAdapterFixture(masterConfig: WishboneConfig, slaveSelWidth: BitCount, slaveSelAddend: Int, dutCreationMethod: DutCreationMethod.Enum) extends Component {
 	val io = new WishboneBusSelMappingAdapter.IoBundle(masterConfig, slaveSelWidth)

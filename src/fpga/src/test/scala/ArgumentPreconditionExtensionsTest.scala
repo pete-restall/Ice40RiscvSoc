@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests
+package net.restall.ice40riscvsoc.tests
 
 import scala.util.Random
 
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.tests.StringGeneratorExtensions._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.tests.StringGeneratorExtensions._
 
 class ArgumentPreconditionExtensionsTest extends AnyFlatSpec {
 	"mustNotBeNull(argName)" must "not accept a null argName" in {

@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference
+package net.restall.ice40riscvsoc
 
 import spinal.core.Bundle
 

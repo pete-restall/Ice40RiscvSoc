@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.wishbone
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.ebram.wishbone
 
 import scala.collection.immutable.LinearSeq
 
@@ -6,10 +6,10 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.Wishbone
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.direct.{EbramAssertingReadState, EbramPrimeReadState, EbramWriteSeqState}
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
+import net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.ebram.direct.{EbramAssertingReadState, EbramPrimeReadState, EbramWriteSeqState}
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.Ice40Ebram4k
 
 class EbramStateMachineBuilder(
 	clockDomain: ClockDomain,

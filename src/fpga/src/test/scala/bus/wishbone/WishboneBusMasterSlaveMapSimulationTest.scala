@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import org.scalatest.flatspec._
 import org.scalatest.Inspectors
@@ -7,8 +7,8 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
-import uk.co.lophtware.msfreference.bus.MasterSlaveMap
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.bus.MasterSlaveMap
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class WishboneBusMasterSlaveMapSimulationTest(numberOfMasters: Int, numberOfSlaves: Int) extends AnyFlatSpec
 	with LightweightSimulationFixture[WishboneBusMasterSlaveMapFixture]

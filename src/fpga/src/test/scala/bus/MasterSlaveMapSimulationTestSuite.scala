@@ -1,9 +1,9 @@
-package uk.co.lophtware.msfreference.tests.bus
+package net.restall.ice40riscvsoc.tests.bus
 
 import org.scalatest.flatspec._
 import org.scalatest.Suite
 
-import uk.co.lophtware.msfreference.bus.MasterSlaveMap
+import net.restall.ice40riscvsoc.bus.MasterSlaveMap
 
 class MasterSlaveMapSimulationTestSuite extends AnyFlatSpec {
 	override def nestedSuites: IndexedSeq[Suite] =

@@ -1,11 +1,11 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40
 
 import spinal.core._
 import spinal.core.formal._
 import spinal.lib.bus.wishbone.Wishbone
 
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16WishboneBusAdapter
-import uk.co.lophtware.msfreference.tests.bus.wishbone.IHaveWishboneSlave
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.Ice40Spram16k16WishboneBusAdapter
+import net.restall.ice40riscvsoc.tests.bus.wishbone.IHaveWishboneSlave
 
 class Ice40Spram16k16WishboneBusAdapterFormalVerificationFixture extends Component with IHaveWishboneSlave {
 	val io = new Ice40Spram16k16WishboneBusAdapter.IoBundle()

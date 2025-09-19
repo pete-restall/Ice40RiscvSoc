@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.spram.direct
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.spram.direct
 
 import org.scalatest.AppendedClues._
 import org.scalatest.matchers.must.Matchers._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Spram16k16
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.Ice40Spram16k16
 
 class SpramAssertingReadState(
 	spram: Ice40Spram16k16.IoBundle,

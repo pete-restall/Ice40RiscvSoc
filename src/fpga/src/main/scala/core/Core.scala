@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.core
+package net.restall.ice40riscvsoc.core
 
 import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneAdapter, WishboneConfig}
@@ -6,11 +6,11 @@ import spinal.lib.{Counter, slave, StreamArbiterFactory}
 import vexriscv._
 import vexriscv.plugin._
 
-import uk.co.lophtware.msfreference.bus._
-import uk.co.lophtware.msfreference.bus.wishbone._
-import uk.co.lophtware.msfreference.multiplexing._
-import uk.co.lophtware.msfreference.SeqPairingExtensions._
-import uk.co.lophtware.msfreference.vendor.lattice.ice40._
+import net.restall.ice40riscvsoc.bus._
+import net.restall.ice40riscvsoc.bus.wishbone._
+import net.restall.ice40riscvsoc.multiplexing._
+import net.restall.ice40riscvsoc.SeqPairingExtensions._
+import net.restall.ice40riscvsoc.vendor.lattice.ice40._
 
 class Core extends Component {
 	val io = new Core.IoBundle()
@@ -234,7 +234,7 @@ class CoreBlackBox extends BlackBox {
 
 _boot:
 	li s1, 1
- 	li s2, LED
+	li s2, LED
 
  _loop:
 	sw s1, 0(s2)
@@ -262,7 +262,7 @@ _boot:
 	li s1, 1
 	li s2, 2
 	li s3, 4
- 	li s4, LED
+	li s4, LED
 
  _loop:
 	sw s1, 0(s4)
@@ -293,7 +293,7 @@ _boot:
 _boot:
 	li s1, 4
 	slli s2, s1, 1
- 	li s3, LED
+	li s3, LED
 	li s4, DELAY
 
 loop:

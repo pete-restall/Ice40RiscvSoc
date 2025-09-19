@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests
+package net.restall.ice40riscvsoc.tests
 
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import spinal.core._
 
-import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.ValueBitWidthExtensions._
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
 
 class ValueBitWidthExtensionsTest extends AnyFlatSpec with TableDrivenPropertyChecks {
 	private val lessThanOne = Seq(0, -1, -2, -33, -1234).asTable("invalidValue")

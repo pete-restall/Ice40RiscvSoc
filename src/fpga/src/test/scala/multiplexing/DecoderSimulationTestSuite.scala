@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.multiplexing
+package net.restall.ice40riscvsoc.tests.multiplexing
 
 import org.scalatest.flatspec._
 import org.scalatest.Suite

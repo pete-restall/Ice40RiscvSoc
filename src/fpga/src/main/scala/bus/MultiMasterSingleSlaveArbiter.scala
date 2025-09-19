@@ -1,10 +1,10 @@
-package uk.co.lophtware.msfreference.bus
+package net.restall.ice40riscvsoc.bus
 
 import spinal.core._
 import spinal.lib.master
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.multiplexing.Encoder
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.multiplexing.Encoder
 
 class MultiMasterSingleSlaveArbiter(numberOfMasters: Int) extends Component {
 	val io = new MultiMasterSingleSlaveArbiter.IoBundle(numberOfMasters)

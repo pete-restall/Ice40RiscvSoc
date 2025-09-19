@@ -1,10 +1,10 @@
-package uk.co.lophtware.msfreference.tests.memory.flashqspi
+package net.restall.ice40riscvsoc.tests.memory.flashqspi
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers._
 
-import uk.co.lophtware.msfreference.memory.flashqspi.FlashQspiMemorySerdes
-import uk.co.lophtware.msfreference.tests.simulation.NonSimulationFixture
+import net.restall.ice40riscvsoc.memory.flashqspi.FlashQspiMemorySerdes
+import net.restall.ice40riscvsoc.tests.simulation.NonSimulationFixture
 
 class FlashQspiMemorySerdesTest extends AnyFlatSpec with NonSimulationFixture {
 	"FlashQspiSerdes" must "not use the 'io' prefix for signals" in spinalContext {

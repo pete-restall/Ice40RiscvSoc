@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.memory.flashqspi
+package net.restall.ice40riscvsoc.memory.flashqspi
 
 import spinal.core._
 import spinal.lib.{slave, Stream}

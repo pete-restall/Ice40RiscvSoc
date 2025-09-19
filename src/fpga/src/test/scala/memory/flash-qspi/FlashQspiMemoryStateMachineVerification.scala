@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests.memory.flashqspi
+package net.restall.ice40riscvsoc.tests.memory.flashqspi
 
 import org.scalatest.flatspec._
 import spinal.core._
 import spinal.core.formal._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.memory.flashqspi.FlashQspiMemoryStateMachine
-import uk.co.lophtware.msfreference.tests.formal._
+import net.restall.ice40riscvsoc.memory.flashqspi.FlashQspiMemoryStateMachine
+import net.restall.ice40riscvsoc.tests.formal._
 
 class FlashQspiMemoryStateMachineVerification extends AnyFlatSpec with FormalVerificationFixture[FlashQspiMemoryStateMachineVerificationFixture] {
 	protected override def dutFactory() = new FlashQspiMemoryStateMachineVerificationFixture().withStimuli

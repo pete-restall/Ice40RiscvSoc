@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40
 
 import scala.collection.immutable.ArraySeq
 import scala.util.Random
@@ -6,9 +6,9 @@ import scala.util.Random
 import org.scalatest.flatspec._
 import spinal.core._
 
-import uk.co.lophtware.msfreference.tests.givenwhenthen._
-import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
+import net.restall.ice40riscvsoc.tests.givenwhenthen._
+import net.restall.ice40riscvsoc.tests.simulation._
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.Ice40Ebram4k
 
 class Ice40Ebram4kAs512x8Test(dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec with SimulationFixture[Ice40Ebram4kFixture] {
 	protected override def dutFactory() = new Ice40Ebram4kFixture(8 bits, 8 bits, dutCreatedViaApplyFactory)

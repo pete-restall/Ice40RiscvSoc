@@ -1,12 +1,12 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.Wishbone
 
-import uk.co.lophtware.msfreference.bus.{CrossbarArbiter, MasterSlaveMap, MultiMasterSingleSlaveArbiter}
-import uk.co.lophtware.msfreference.bus.wishbone.{WishboneBusCrossbarArbiter, WishboneBusMasterSlaveMap}
-import uk.co.lophtware.msfreference.tests.bus.CrossbarArbiterFixtureTraits
+import net.restall.ice40riscvsoc.bus.{CrossbarArbiter, MasterSlaveMap, MultiMasterSingleSlaveArbiter}
+import net.restall.ice40riscvsoc.bus.wishbone.{WishboneBusCrossbarArbiter, WishboneBusMasterSlaveMap}
+import net.restall.ice40riscvsoc.tests.bus.CrossbarArbiterFixtureTraits
 
 class WishboneBusCrossbarArbiterFixture(busMapFactory: => MasterSlaveMap[Wishbone]) extends Component with CrossbarArbiterFixtureTraits {
 	private val busMap = busMapFactory

@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus
+package net.restall.ice40riscvsoc.tests.bus
 
 import scala.util.Random
 
@@ -8,9 +8,9 @@ import org.scalatest.matchers.must.Matchers._
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.bus.{CrossbarArbiter, MultiMasterSingleSlaveArbiter}
-import uk.co.lophtware.msfreference.tests.IterableTableExtensions._
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.bus.{CrossbarArbiter, MultiMasterSingleSlaveArbiter}
+import net.restall.ice40riscvsoc.tests.IterableTableExtensions._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class CrossbarArbiterSimulationTest(numberOfMasters: Int, numberOfSlaves: Int) extends AnyFlatSpec
 	with LightweightSimulationFixture[CrossbarArbiterFixtureTraits]

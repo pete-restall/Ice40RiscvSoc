@@ -1,9 +1,9 @@
-package uk.co.lophtware.msfreference.tests.bus
+package net.restall.ice40riscvsoc.tests.bus
 
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.bus.MultiMasterSingleSlaveArbiter
+import net.restall.ice40riscvsoc.bus.MultiMasterSingleSlaveArbiter
 
 class MultiMasterSingleSlaveArbiterFixture(numberOfMasters: Int, dutCreatedViaApplyFactory: Boolean) extends Component {
 	val io = new MultiMasterSingleSlaveArbiter.IoBundle(numberOfMasters)

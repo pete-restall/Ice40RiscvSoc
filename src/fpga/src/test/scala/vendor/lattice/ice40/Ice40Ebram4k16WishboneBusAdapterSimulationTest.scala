@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40
 
 import org.scalatest.AppendedClues._
 import org.scalatest.flatspec._
@@ -6,8 +6,8 @@ import org.scalatest.matchers.must.Matchers._
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.tests.simulation._
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k16WishboneBusAdapter
+import net.restall.ice40riscvsoc.tests.simulation._
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.Ice40Ebram4k16WishboneBusAdapter
 
 class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with LightweightSimulationFixture[Ice40Ebram4k16WishboneBusAdapterFixture] {
 	protected override def dutFactory() = new Ice40Ebram4k16WishboneBusAdapterFixture()

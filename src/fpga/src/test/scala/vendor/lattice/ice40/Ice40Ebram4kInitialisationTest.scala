@@ -1,11 +1,11 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40
 
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must._
 import spinal.core._
 
-import uk.co.lophtware.msfreference.tests.simulation.SimulationFixture
-import uk.co.lophtware.msfreference.vendor.lattice.ice40.Ice40Ebram4k
+import net.restall.ice40riscvsoc.tests.simulation.SimulationFixture
+import net.restall.ice40riscvsoc.vendor.lattice.ice40.Ice40Ebram4k
 
 class Ice40Ebram4kInitialisationTest(readWidth: BitCount, writeWidth: BitCount, numberOfInitialisedCells: Option[Int]) extends AnyFlatSpec
 	with SimulationFixture[Ice40Ebram4kInitialisationFixture]

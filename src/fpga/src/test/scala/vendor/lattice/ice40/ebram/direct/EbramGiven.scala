@@ -1,6 +1,6 @@
-package uk.co.lophtware.msfreference.tests.vendor.lattice.ice40.ebram.direct
+package net.restall.ice40riscvsoc.tests.vendor.lattice.ice40.ebram.direct
 
-import uk.co.lophtware.msfreference.tests.givenwhenthen._
+import net.restall.ice40riscvsoc.tests.givenwhenthen._
 
 class EbramGiven(builder: EbramStateMachineBuilder) extends GivenAnd[EbramGiven, EbramWhen] {
 	def contentsHaveNotBeenInitialised: GivenAnd[EbramGiven, EbramWhen] = new EbramGiven(builder)

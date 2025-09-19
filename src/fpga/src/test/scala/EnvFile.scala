@@ -1,9 +1,9 @@
-package uk.co.lophtware.msfreference.tests
+package net.restall.ice40riscvsoc.tests
 
 import scala.io.Source
 import scala.util.Using
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 
 class EnvFile(filename: String) {
 	filename.mustBeSpecified("filename")

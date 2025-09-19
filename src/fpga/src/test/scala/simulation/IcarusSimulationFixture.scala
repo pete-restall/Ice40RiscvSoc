@@ -1,11 +1,11 @@
-package uk.co.lophtware.msfreference.tests.simulation
+package net.restall.ice40riscvsoc.tests.simulation
 
 import org.scalatest._
 import spinal.core._
 import spinal.core.sim._
 
-import uk.co.lophtware.msfreference.tests.EnvFile
-import uk.co.lophtware.msfreference.tests.TestsPackage
+import net.restall.ice40riscvsoc.tests.EnvFile
+import net.restall.ice40riscvsoc.tests.TestsPackage
 
 abstract trait IcarusSimulationFixture[TDut <: Component] extends SimulationFixtureBase[TDut] { this: TestSuite =>
 	protected abstract override def createSimulation(): SpinalSimConfig = IcarusSimulationFixture

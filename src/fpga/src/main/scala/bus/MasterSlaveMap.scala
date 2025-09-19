@@ -1,11 +1,11 @@
-package uk.co.lophtware.msfreference.bus
+package net.restall.ice40riscvsoc.bus
 
 import spinal.core._
 import spinal.lib.IMasterSlave
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
-import uk.co.lophtware.msfreference.ValueBitWidthExtensions._
-import uk.co.lophtware.msfreference.multiplexing.SimpleEncoder
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.ValueBitWidthExtensions._
+import net.restall.ice40riscvsoc.multiplexing.SimpleEncoder
 
 class MasterSlaveMap[TBus <: IMasterSlave](val masters: Seq[TBus], val slaves: Seq[TBus]) extends Component {
 	masters.mustNotContainNull("masters", "Bus masters must all be specified")

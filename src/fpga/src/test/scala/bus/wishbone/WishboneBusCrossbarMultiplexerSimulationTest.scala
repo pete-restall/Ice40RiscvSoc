@@ -1,4 +1,4 @@
-package uk.co.lophtware.msfreference.tests.bus.wishbone
+package net.restall.ice40riscvsoc.tests.bus.wishbone
 
 import org.scalatest.AppendedClues._
 import org.scalatest.flatspec._
@@ -8,7 +8,7 @@ import spinal.core._
 import spinal.core.sim._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 
-import uk.co.lophtware.msfreference.tests.simulation._
+import net.restall.ice40riscvsoc.tests.simulation._
 
 class WishboneBusCrossbarMultiplexerSimulationTest(busConfig: WishboneConfig, numberOfMasters: Int, numberOfSlaves: Int, dutCreatedViaApplyFactory: Boolean) extends AnyFlatSpec
 	with LightweightSimulationFixture[WishboneBusCrossbarMultiplexerFixture]

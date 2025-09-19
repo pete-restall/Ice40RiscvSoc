@@ -1,8 +1,8 @@
-package uk.co.lophtware.msfreference.tests
+package net.restall.ice40riscvsoc.tests
 
 import org.scalatest.prop.TableDrivenPropertyChecks._
 
-import uk.co.lophtware.msfreference.ArgumentPreconditionExtensions._
+import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 import org.scalatest.prop.TableFor1
 
 object IterableTableExtensions {
