@@ -4,8 +4,6 @@ import spinal.core._
 import spinal.lib.bus.wishbone.{Wishbone, WishboneConfig}
 import spinal.lib.slave
 
-import net.restall.ice40riscvsoc.memory.flashqspi.FlashQspiMemory
-
 class FlashQspiMemoryWishboneBusAdapter(addressWidth: BitCount, dataWidth: BitCount) extends Component {
 	val io = new FlashQspiMemoryWishboneBusAdapter.IoBundle(addressWidth, dataWidth)
 

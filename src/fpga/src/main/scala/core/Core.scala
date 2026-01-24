@@ -158,12 +158,12 @@ class Core extends Component {
 	private val highInstructionEbram = Ice40Ebram4k16WishboneBusAdapter(Ice40Ebram4k(readWidth=16 bits, writeWidth=16 bits, Some(instructions.map(x => ((x >> 16) & 0x0000ffff).toInt))))
 
 	private val instructionEbramBlocks = Seq(lowInstructionEbram, highInstructionEbram)
-	private val wideInstructionEbramBlock = WishboneBusSelMappingAdapter(4 bits, WishboneBusDataExpander(instructionEbramBlocks(0).io.wishbone, instructionEbramBlocks(1).io.wishbone).io.master, riscvToEbramSelMapper)
+	private val wideInstructionEbramBlock = WishboneBusSelMappingAdapter(4 bits, WishboneBusDataExpander(instructionEbramBlocks(0).io.wishbone, instructionEbramBlocks(1).io.wishbone).io.master, riscvToEbramSelMapper(_))
 	private val instructionEbramBlockWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, wideInstructionEbramBlock.io.master, adr => adr.resize(8 bits))
 
 	private val dataSprams = Seq.fill(2) { new Ice40Spram16k16() }
 	private val dataSpramBlocks = dataSprams.map(Ice40Spram16k16WishboneBusAdapter(_))
-	private val wideDataSpramBlock = WishboneBusSelMappingAdapter(4 bits, WishboneBusDataExpander(dataSpramBlocks(0).io.wishbone, dataSpramBlocks(1).io.wishbone).io.master, riscvToSpramSelMapper)
+	private val wideDataSpramBlock = WishboneBusSelMappingAdapter(4 bits, WishboneBusDataExpander(dataSpramBlocks(0).io.wishbone, dataSpramBlocks(1).io.wishbone).io.master, riscvToSpramSelMapper(_))
 	private val dataSpramBlockWidthAdjusted = WishboneBusAddressMappingAdapter(30 bits, wideDataSpramBlock.io.master, adr => adr.resize(14 bits))
 	dataSprams.foreach { spram =>
 		spram.io.PWROFF_N := True
