@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e;
 THISDIR="$(dirname "$(readlink -f "$0")")";
 RADIANT_HDL_PATH="/opt/lattice/radiant/3.1/cae_library/simulation/verilog/iCE40UP";
