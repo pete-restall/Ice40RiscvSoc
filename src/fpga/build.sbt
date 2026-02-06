@@ -24,3 +24,4 @@ lazy val root = (project in file("."))
 	.dependsOn(vexriscv)
 
 lazy val vexriscv = RootProject(uri("https://github.com/pete-restall/fork-VexRiscv.git#7cdc0dfa74551f0e9e46074397499d88e1694683"))
+vexriscv / scalaVersion := "2.13.18"
