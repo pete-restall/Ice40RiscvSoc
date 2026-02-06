@@ -13,6 +13,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	protected override def dutFactory() = new Ice40Ebram4k16WishboneBusAdapterFixture()
 
 	"Ice40Ebram4k16WishboneBusAdapter" must "not assert EBRAM CER when reading and Wishbone CYC is low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= false
 		sleep(1)
@@ -20,6 +21,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert EBRAM CER when writing and Wishbone CYC is low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.CYC #= false
 		sleep(1)
@@ -27,6 +29,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "assert EBRAM CER asynchronously when reading and Wishbone CYC goes high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= true
 		sleep(1)
@@ -34,6 +37,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert EBRAM CER asynchronously when writing and Wishbone CYC goes high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.CYC #= true
 		sleep(1)
@@ -41,6 +45,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "unassert EBRAM CER asynchronously when Wishbone CYC goes low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= true
 		sleep(1)
@@ -50,6 +55,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert EBRAM CEW when writing and Wishbone CYC is low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.CYC #= false
 		sleep(1)
@@ -57,6 +63,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert EBRAM CEW when reading and Wishbone CYC is low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= false
 		sleep(1)
@@ -64,6 +71,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "assert EBRAM CEW asynchronously when writing and Wishbone CYC goes high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.CYC #= true
 		sleep(1)
@@ -71,6 +79,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert EBRAM CEW asynchronously when reading and Wishbone CYC goes high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= true
 		sleep(1)
@@ -78,6 +87,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "unassert EBRAM CEW asynchronously when Wishbone CYC goes low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.CYC #= true
 		sleep(1)
@@ -87,6 +97,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "set EBRAM ADR asynchronously when Wishbone ADR is set" in simulator { fixture =>
+		fixture.reset()
 		for (address <- List(0x0000, fixture.io.wishbone.ADR.maxValue.toInt, fixture.anyAddress())) {
 			fixture.io.wishbone.ADR #= address
 			sleep(1)
@@ -95,6 +106,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "set EBRAM ADW asynchronously when Wishbone ADR is set" in simulator { fixture =>
+		fixture.reset()
 		for (address <- List(0x0000, fixture.io.wishbone.ADR.maxValue.toInt, fixture.anyAddress())) {
 			fixture.io.wishbone.ADR #= address
 			sleep(1)
@@ -103,6 +115,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "set EBRAM DI asynchronously when Wishbone DAT_MOSI is set" in simulator { fixture =>
+		fixture.reset()
 		for (data <- List(0x0000, (1 << fixture.io.wishbone.DAT_MOSI.getWidth) - 1, fixture.anyData())) {
 			fixture.io.wishbone.DAT_MOSI #= data
 			sleep(1)
@@ -111,6 +124,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "set Wishbone DAT_MISO asynchronously when EBRAM DO is set" in simulator { fixture =>
+		fixture.reset()
 		for (data <- List(0x0000, (1 << fixture.io.ebram.DO.getWidth) - 1, fixture.anyData())) {
 			fixture.io.ebram.DO #= data
 			sleep(1)
@@ -126,6 +140,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert EBRAM WE asynchronously when reading and Wishbone STB goes high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.STB #= true
 		sleep(1)
@@ -133,6 +148,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert EBRAM WE asynchronously when writing and Wishbone STB is not high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.STB #= false
 		sleep(1)
@@ -140,6 +156,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "unassert EBRAM WE asynchronously when writing and Wishbone STB goes low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.STB #= true
 		sleep(1)
@@ -149,6 +166,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "unassert EBRAM WE asynchronously when reading and Wishbone STB goes low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.STB #= true
 		sleep(1)
@@ -158,6 +176,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "assert EBRAM RE asynchronously when writing and Wishbone STB goes high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.STB #= true
 		sleep(1)
@@ -165,6 +184,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "assert EBRAM RE asynchronously when reading and Wishbone STB goes high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.STB #= true
 		sleep(1)
@@ -172,6 +192,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert EBRAM RE asynchronously when writing and Wishbone STB is not high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.STB #= false
 		sleep(1)
@@ -179,6 +200,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "unassert EBRAM RE asynchronously when writing and Wishbone STB goes low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.STB #= true
 		sleep(1)
@@ -188,6 +210,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "unassert EBRAM RE asynchronously when reading and Wishbone STB goes low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.STB #= true
 		sleep(1)
@@ -197,6 +220,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "set the inverted EBRAM MASK_N asynchronously when Wishbone SEL is set" in simulator { fixture =>
+		fixture.reset()
 		val maximumSel = (1 << fixture.io.wishbone.SEL.getWidth) - 1
 		for (bitCombination <- 0 to maximumSel) {
 			fixture.io.wishbone.SEL #= bitCombination
@@ -206,6 +230,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert Wishbone ACK when reading and Wishbone CYC is low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= false
 		fixture.io.wishbone.STB #= false
@@ -214,6 +239,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert Wishbone ACK when writing and Wishbone CYC is low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.CYC #= false
 		fixture.io.wishbone.STB #= false
@@ -222,6 +248,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert Wishbone ACK when reading and Wishbone CYC goes high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= true
 		fixture.io.wishbone.STB #= false
@@ -230,6 +257,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert Wishbone ACK when writing and Wishbone CYC goes high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.CYC #= true
 		fixture.io.wishbone.STB #= false
@@ -238,6 +266,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert Wishbone ACK when reading and Wishbone STB is low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= true
 		fixture.io.wishbone.STB #= false
@@ -246,6 +275,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert Wishbone ACK when writing and Wishbone STB is low" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.CYC #= true
 		fixture.io.wishbone.STB #= false
@@ -254,6 +284,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "not assert Wishbone ACK when reading and Wishbone STB goes high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= true
 		fixture.io.wishbone.STB #= true
@@ -262,6 +293,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "assert Wishbone ACK when writing and Wishbone STB goes high" in simulator { fixture =>
+		fixture.reset()
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.CYC #= true
 		fixture.io.wishbone.STB #= true
@@ -270,6 +302,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "assert Wishbone ACK one cycle after Wishbone STB goes high when reading" in simulator { fixture =>
+		fixture.reset()
 		fixture.clockDomain.forkStimulus(period=10)
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= true
@@ -281,6 +314,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "unassert Wishbone ACK one cycle after Wishbone STB goes low when reading" in simulator { fixture =>
+		fixture.reset()
 		fixture.clockDomain.forkStimulus(period=10)
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= true
@@ -294,6 +328,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "unassert Wishbone ACK immediately after Wishbone STB goes low when writing" in simulator { fixture =>
+		fixture.reset()
 		fixture.clockDomain.forkStimulus(period=10)
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.CYC #= true
@@ -305,6 +340,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "assert Wishbone ACK one cycle after Wishbone STB goes high when reading and then maintain high when writing" in simulator { fixture =>
+		fixture.reset()
 		fixture.clockDomain.forkStimulus(period=10)
 		fixture.io.wishbone.WE #= false
 		fixture.io.wishbone.CYC #= true
@@ -319,6 +355,7 @@ class Ice40Ebram4k16WishboneBusAdapterSimulationTest extends AnyFlatSpec with Li
 	}
 
 	it must "assert Wishbone ACK immediately after Wishbone STB goes high when writing and then re-assert one cycle later when reading" in simulator { fixture =>
+		fixture.reset()
 		fixture.clockDomain.forkStimulus(period=10)
 		fixture.io.wishbone.WE #= true
 		fixture.io.wishbone.CYC #= true

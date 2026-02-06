@@ -3,6 +3,7 @@ package net.restall.ice40riscvsoc.tests.simulation
 import org.scalatest._
 import spinal.core._
 import spinal.core.sim._
+import spinal.sim.JvmThreadUnschedule
 
 import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 
@@ -16,11 +17,16 @@ abstract trait SimulationFixtureBase[TDut <: Component] extends TestSuiteMixin {
 		sim.doSim { dut =>
 			dut.mustNotBeNull("dut")
 			SimTimeout(1_000_000)
-			val result = new Component { val result = test(dut) }.result
-			if (result == SimulationFixtureBase.waitForExplicitSimulationTermination) {
-				while (true) {
-					sleep(10)
+			try {
+				val result = test(dut)
+				if (result == SimulationFixtureBase.waitForExplicitSimulationTermination) {
+					while (true) {
+						sleep(10)
+					}
 				}
+			} catch {
+				case exception: JvmThreadUnschedule => throw exception
+				case exception: Throwable => { sleep(1); throw exception }
 			}
 		}
 	}

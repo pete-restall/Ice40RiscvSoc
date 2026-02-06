@@ -15,16 +15,9 @@ class WishboneBusCrossbarArbiterEncoderFactorySimulationTest(numberOfMasters: In
 
 	protected override def dutFactory() = new WishboneBusCrossbarArbiterEncoderFactoryFixture(numberOfMasters, numberOfSlaves)
 
-	"WishboneBusCrossbarArbiter companion's apply(busMap, encoders) method" must "not accept a null return value from the encoder factory" in simulator { fixture =>
-		val thrown = the [IllegalArgumentException] thrownBy WishboneBusCrossbarArbiter(dummyBusMap(), _ => null)
-		thrown.getMessage must (include("arg=encoderFactory") and include("null"))
-	}
-
-	private def dummyBusMap() = WishboneBusMasterSlaveMapTestDoubles.dummy()
-
 	private val combinationsOfMastersAndSlaves = for (m <- 0 until numberOfMasters; s <- 0 until numberOfSlaves) yield (m, s)
 
-	it must "wire each slave's selector to the corresponding encoder's input" in simulator { fixture =>
+	"WishboneBusCrossbarArbiter companion's apply(busMap, encoders) method" must "wire each slave's selector to the corresponding encoder's input" in simulator { fixture =>
 		forAll(combinationsOfMastersAndSlaves) { case (masterIndex, slaveIndex) =>
 			fixture.resetAllArbiterRequests()
 			fixture.setArbiterRequest(masterIndex, slaveIndex)

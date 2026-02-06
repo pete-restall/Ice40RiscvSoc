@@ -16,9 +16,7 @@ class WishboneBusDataExpander(slaveConfig: WishboneConfig, numberOfSlaves: Int) 
 
 	private val dataSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.dataWidth)
 	private val selSliceIndices = sliceIndices(numberOfSlaves, slaveConfig.selWidth)
-// TODO: Scala 2.13+ uses the line below, since 'zip()' is deprecated:
-// for ((slave, (i, j), (m, n)) <- io.slaves.lazyZip(dataSliceIndices).lazyZip(selSliceIndices)) {
-	for (((slave, (i, j)), (m, n)) <- io.slaves.zip(dataSliceIndices).zip(selSliceIndices)) {
+	for ((slave, (i, j), (m, n)) <- io.slaves.lazyZip(dataSliceIndices).lazyZip(selSliceIndices)) {
 		slave.ADR := io.master.ADR
 		slave.CYC := io.master.CYC
 		slave.STB := io.master.STB

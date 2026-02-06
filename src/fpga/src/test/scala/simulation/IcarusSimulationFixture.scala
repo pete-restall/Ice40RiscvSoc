@@ -1,5 +1,7 @@
 package net.restall.ice40riscvsoc.tests.simulation
 
+import scala.reflect.io.File
+
 import org.scalatest._
 import spinal.core._
 import spinal.core.sim._
@@ -32,7 +34,7 @@ object IcarusSimulationFixture {
 		.cachePath(s"${envVars("SPINALSIM_WORKSPACE")}/.pluginsCache")
 		.withConfig(config)
 		.allOptimisation
-		.addSimulatorFlag(s"-y ${envVars("SIMULATOR_VERILOG_LIBRARY_PATH")}")
-		.addIncludeDir(envVars("SIMULATOR_VERILOG_PATCHED_INCLUDE_PATH"))
-		.addIncludeDir(envVars("SIMULATOR_VERILOG_INCLUDE_PATH"))
+		.addSimulatorFlag(s"-y ${File(envVars("SIMULATOR_VERILOG_LIBRARY_PATH")).toCanonical}")
+		.addIncludeDir(File(envVars("SIMULATOR_VERILOG_PATCHED_INCLUDE_PATH")).toCanonical.toString)
+		.addIncludeDir(File(envVars("SIMULATOR_VERILOG_INCLUDE_PATH")).toCanonical.toString)
 }
