@@ -10,7 +10,7 @@ class SpramPrimeReadState(spram: Ice40Spram16k16.IoBundle, address: Int, nextSta
 	spram.mustNotBeNull("spram")
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = {
 		spram.CS #= true
 		spram.WE #= false
 		spram.AD #= address

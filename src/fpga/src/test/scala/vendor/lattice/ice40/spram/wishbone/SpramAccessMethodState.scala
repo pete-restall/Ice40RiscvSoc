@@ -9,7 +9,7 @@ import net.restall.ice40riscvsoc.tests.simulation._
 class SpramAccessMethodState(isSpramDirectSelector: Bool, isSpramDirect: Boolean, nextState: Sampling) extends WithNextSampling {
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = {
 		isSpramDirectSelector #= isSpramDirect
 		nextState
 	}

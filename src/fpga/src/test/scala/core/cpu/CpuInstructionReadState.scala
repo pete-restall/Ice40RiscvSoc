@@ -15,7 +15,9 @@ class CpuInstructionReadState(
 	instructions.mustNotBeNull("instructions")
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = this
+
+	override def onInactiveEdge(): Sampling = {
 		val ibus = cpu.ibus
 		if (ibus.CYC.toBoolean && ibus.STB.toBoolean) {
 			if (!ibus.WE.toBoolean) {

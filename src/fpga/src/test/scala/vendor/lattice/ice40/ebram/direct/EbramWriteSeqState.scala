@@ -18,10 +18,10 @@ class EbramWriteSeqState(
 
 	private val addressAndWord = addressesAndWords.iterator
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = {
 		if (!addressAndWord.hasNext) {
 			ebram.WE #= false
-			return nextState.onSampling()
+			return nextState.onActiveEdge()
 		}
 
 		val (address, word) = addressAndWord.next()

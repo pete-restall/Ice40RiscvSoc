@@ -10,7 +10,7 @@ class SpramPowerOnState(spram: Ice40Spram16k16.IoBundle, nextState: Sampling) ex
 	spram.mustNotBeNull("spram")
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = {
 		spram.CS #= false
 		spram.WE #= false
 		spram.MASKWE #= 0

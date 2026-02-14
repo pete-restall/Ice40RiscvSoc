@@ -38,7 +38,7 @@ class EbramStateMachineBuilder(
 	def usingWishboneEbramAccess() = withFactory(nextState => EbramAccessMethodState.wishbone(isEbramDirect, nextState))
 
 	def populateWith(words: Seq[Int], startingFromAddress: Int = 0) = withFactory(nextState =>
-		new SimulationBranchState(
+		new SimulationBranchOnActiveEdgeState(
 			() => isEbramDirect.toBoolean,
 			new EbramWriteSeqState(ebram, mask=0x0000, addressesAndWords=addressesAndWordsFor(words, startingFromAddress), nextState=nextState),
 			new WishboneEbramWriteSeqState(clockDomain, wishbone, startingFromAddress, words, nextState)))
@@ -48,7 +48,7 @@ class EbramStateMachineBuilder(
 	def startReadingFrom(address: Int) = withFactory(nextState => new EbramPrimeReadState(ebram, address, nextState))
 
 	def assertContentsEqualTo(expectedWords: Seq[Int], startingFromAddress: Int = 0) = withFactory(_ =>
-		new SimulationBranchState(
+		new SimulationBranchOnActiveEdgeState(
 			() => isEbramDirect.toBoolean,
 			new EbramAssertingReadState(
 				ebram,

@@ -1,8 +1,6 @@
 package net.restall.ice40riscvsoc.tests.core
 
-import java.util.UUID
-import scala.io.Source
-import scala.util.{Random, Using}
+import scala.util.Random
 
 import org.scalatest.flatspec._
 import org.scalatest.matchers.must.Matchers._
@@ -12,7 +10,7 @@ import net.restall.ice40riscvsoc.core.Cpu
 import net.restall.ice40riscvsoc.tests.simulation._
 
 class CpuTest extends AnyFlatSpec with NonSimulationFixture {
-	"Cpu" must "not use the 'io' prefix for signals" in spinalContext {
+	"Cpu" must "not use the 'io' prefix for signals" in fullSpinalContext {
 		val cpu = new Cpu(anyResetVector(), anyMtvecInit(), dummyYamlOutFilename())
 		cpu.io.name must be("")
 	}
@@ -23,7 +21,7 @@ class CpuTest extends AnyFlatSpec with NonSimulationFixture {
 
 	private def dummyYamlOutFilename() = None
 
-	it must "not accept a null yamlOutFilename" in spinalContext {
+	it must "not accept a null yamlOutFilename" in fullSpinalContext {
 		val thrown = the [IllegalArgumentException] thrownBy(new Cpu(anyResetVector(), anyMtvecInit(), null))
 		thrown.getMessage must (include("arg=yamlOutFilename") and include("null"))
 	}

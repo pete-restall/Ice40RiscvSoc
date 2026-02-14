@@ -23,7 +23,8 @@ class Ice40Spram16k16Fixture extends Component {
 
 		var state = initialState
 		val dutClockDomain = clockDomain.withoutReset
-		dutClockDomain.withRevertedClockEdge.onSamplings { state = state.onSampling() }
+		dutClockDomain.onRisingEdges { state = if (dutClockDomain.config.clockEdge != RISING) { state.onActiveEdge() } else { state.onInactiveEdge() } }
+		dutClockDomain.onFallingEdges { state = if (dutClockDomain.config.clockEdge == RISING) { state.onActiveEdge() } else { state.onInactiveEdge() } }
 		dutClockDomain.forkStimulus(period=10)
 	}
 }

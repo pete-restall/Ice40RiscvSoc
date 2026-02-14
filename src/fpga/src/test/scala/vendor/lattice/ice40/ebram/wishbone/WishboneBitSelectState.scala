@@ -10,9 +10,9 @@ class WishboneBitSelectState(ebram: Wishbone, bitSelector: Int, nextState: Sampl
 	ebram.mustNotBeNull("ebram")
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = {
 		ebram.SEL #= bitSelector
-		nextState.onSampling()
+		nextState.onActiveEdge()
 	}
 
 	override def withNext(nextState: Sampling) = new WishboneBitSelectState(ebram, bitSelector, nextState)

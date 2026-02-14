@@ -15,8 +15,8 @@ class CpuAssertionPredicateState(
 	predicate.mustNotBeNull("predicate")
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = {
-		if (!predicate(cpu)) this else nextState.onSampling()
+	override def onActiveEdge(): Sampling = {
+		if (!predicate(cpu)) this else nextState.onActiveEdge()
 	}
 
 	override def withNext(nextState: Sampling) = new CpuAssertionPredicateState(cpu, predicate, nextState)

@@ -37,10 +37,9 @@ class CpuFixture() extends Component {
 
 		var state = initialState
 		clockDomain.assertReset()
-		clockDomain.onSamplings { state = state.onSampling() }
-		clockDomain.forkStimulus(period=10)
-		clockDomain.waitEdge(3)
-		clockDomain.deassertReset()
+		clockDomain.onRisingEdges { state = if (clockDomain.config.clockEdge == RISING) { state.onActiveEdge() } else { state.onInactiveEdge() } }
+		clockDomain.onFallingEdges { state = if (clockDomain.config.clockEdge != RISING) { state.onActiveEdge() } else { state.onInactiveEdge() } }
+		clockDomain.forkStimulus(period=10, resetCycles=4)
 		SimulationFixtureBase.waitForExplicitSimulationTermination
 	}
 

@@ -8,5 +8,7 @@ class SimulationWaitForForkedState(thread: SimThread, nextState: Sampling) exten
 	thread.mustNotBeNull("thread")
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = if (thread.isDone) nextState.onSampling() else this
+	override def onActiveEdge(): Sampling = if (thread.isDone) nextState.onActiveEdge() else this
+
+	override def onInactiveEdge(): Sampling = if (thread.isDone) nextState.onInactiveEdge() else this
 }

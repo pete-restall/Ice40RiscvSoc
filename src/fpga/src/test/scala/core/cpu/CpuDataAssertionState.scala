@@ -14,9 +14,9 @@ class CpuDataAssertionState(
 	expectedData.mustNotBeNull("expectedData")
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = {
 		data must equal(expectedData)
-		nextState.onSampling()
+		nextState.onActiveEdge()
 	}
 
 	override def withNext(nextState: Sampling) = new CpuDataAssertionState(data, expectedData, nextState)

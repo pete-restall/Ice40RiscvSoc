@@ -18,9 +18,9 @@ class SpramWriteSeqState(
 
 	private val word = words.iterator
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = {
 		if (!word.hasNext)
-			return nextState.onSampling()
+			return nextState.onActiveEdge()
 
 		spram.CS #= true
 		spram.WE #= true

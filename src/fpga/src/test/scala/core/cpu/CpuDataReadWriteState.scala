@@ -17,7 +17,9 @@ class CpuDataReadWriteState(
 	data.mustNotBeNull("data")
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = this
+
+	override def onInactiveEdge(): Sampling = {
 		val dbus = cpu.dbus
 		if (dbus.CYC.toBoolean && dbus.STB.toBoolean) {
 			if (!dbus.WE.toBoolean) {
@@ -27,7 +29,7 @@ class CpuDataReadWriteState(
 					this
 				}.getOrElse(nextState)
 			} else {
-				data += (dbus.ADR.toLong -> dbus.DAT_MOSI.toLong) // TODO: SHOULD HAVE A LATENCY OF 0 CYCLES, NOT 1 AS THIS DOES; WOULD ENTAIL THIS LOGIC SAMPLING ON FALLING EDGES OR A NON-SAMPLING EVENT...
+				data += (dbus.ADR.toLong -> dbus.DAT_MOSI.toLong)
 				dbus.ACK #= true
 				this
 			}

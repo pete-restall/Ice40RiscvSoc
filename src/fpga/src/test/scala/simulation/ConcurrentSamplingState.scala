@@ -7,8 +7,13 @@ class ConcurrentSamplingState(samplings: Sampling*) extends Sampling {
 
 	private var states = samplings.toSeq
 
-	override def onSampling(): Sampling = {
-		states = states.map(_.onSampling())
+	override def onActiveEdge(): Sampling = {
+		states = states.map(_.onActiveEdge())
+		this
+	}
+
+	override def onInactiveEdge(): Sampling = {
+		states = states.map(_.onInactiveEdge())
 		this
 	}
 }

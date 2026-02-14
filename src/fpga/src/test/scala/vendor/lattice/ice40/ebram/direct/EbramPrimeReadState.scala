@@ -10,7 +10,7 @@ class EbramPrimeReadState(ebram: Ice40Ebram4k.IoBundle, address: Int, nextState:
 	ebram.mustNotBeNull("ebram")
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = {
 		ebram.CER #= true
 		ebram.RE #= true
 		ebram.ADR #= address

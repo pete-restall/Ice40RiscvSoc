@@ -36,7 +36,8 @@ class Ice40Spram16k16WishboneBusAdapterIntegrationFixture extends Component {
 
 	def wireStimuliUsing(initialState: Sampling) = {
 		var state = initialState
-		clockDomain.withRevertedClockEdge.onSamplings { state = state.onSampling() }
+		clockDomain.onRisingEdges { state = if (clockDomain.config.clockEdge != RISING) { state.onActiveEdge() } else { state.onInactiveEdge() } }
+		clockDomain.onFallingEdges { state = if (clockDomain.config.clockEdge == RISING) { state.onActiveEdge() } else { state.onInactiveEdge() } }
 		clockDomain.forkStimulus(period=10)
 		SimulationFixtureBase.waitForExplicitSimulationTermination
 	}

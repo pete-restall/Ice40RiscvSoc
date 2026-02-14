@@ -10,9 +10,9 @@ class WishboneNybbleSelectState(spram: Wishbone, nybbleSelector: Int, nextState:
 	spram.mustNotBeNull("spram")
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = {
 		spram.SEL #= nybbleSelector
-		nextState.onSampling()
+		nextState.onActiveEdge()
 	}
 
 	override def withNext(nextState: Sampling) = new WishboneNybbleSelectState(spram, nybbleSelector, nextState)

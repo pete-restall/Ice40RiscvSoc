@@ -39,7 +39,7 @@ class SpramStateMachineBuilder(
 	def usingWishboneSpramAccess() = withFactory(nextState => SpramAccessMethodState.wishbone(isSpramDirect, nextState))
 
 	def populateWith(words: Seq[Int], startingFromAddress: Int = 0) = withFactory(nextState =>
-		new SimulationBranchState(
+		new SimulationBranchOnActiveEdgeState(
 			() => isSpramDirect.toBoolean,
 			new SpramWriteSeqState(spram, startingFromAddress, words, nextState),
 			new WishboneSpramWriteSeqState(clockDomain, wishbone, startingFromAddress, words, nextState)))
@@ -47,7 +47,7 @@ class SpramStateMachineBuilder(
 	def startReadingFrom(address: Int) = withFactory(nextState => new SpramPrimeReadState(spram, address, nextState))
 
 	def assertContentsEqualTo(expectedWords: Seq[Int], startingFromAddress: Int = 0) = withFactory(_ =>
-		new SimulationBranchState(
+		new SimulationBranchOnActiveEdgeState(
 			() => isSpramDirect.toBoolean,
 			new SpramAssertingReadState(
 				spram,

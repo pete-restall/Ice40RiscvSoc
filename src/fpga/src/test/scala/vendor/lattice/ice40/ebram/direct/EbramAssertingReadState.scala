@@ -20,9 +20,9 @@ class EbramAssertingReadState(
 	private val addressAndWord = expectedAddressesAndWords.iterator
 	private var currentAddressAndWord = addressAndWord.nextOption()
 
-	override def onSampling(): Sampling = {
+	override def onActiveEdge(): Sampling = {
 		if (currentAddressAndWord.isEmpty)
-			return nextState.onSampling()
+			return nextState.onActiveEdge()
 
 		ebram.CER #= true
 		ebram.RE #= true

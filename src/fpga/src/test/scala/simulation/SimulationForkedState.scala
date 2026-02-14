@@ -7,7 +7,7 @@ import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 class SimulationForkedState(nextState: Sampling, action: () => Unit = null) extends Sampling {
 	nextState.mustNotBeNull("nextState")
 
-	override def onSampling(): Sampling = new SimulationWaitForForkedState(fork { onForked() }, nextState)
+	override def onActiveEdge(): Sampling = new SimulationWaitForForkedState(fork { onForked() }, nextState)
 
 	protected def onForked(): Unit = if (action != null) action()
 }

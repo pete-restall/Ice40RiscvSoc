@@ -7,5 +7,5 @@ import net.restall.ice40riscvsoc.ArgumentPreconditionExtensions._
 class SimulationFailureState(errorMessage: String) extends Sampling {
 	errorMessage.mustBeSpecified("errorMessage")
 
-	override def onSampling(): Sampling = simFailure(errorMessage)
+	override def onActiveEdge(): Sampling = simFailure(errorMessage)
 }

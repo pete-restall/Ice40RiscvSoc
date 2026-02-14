@@ -29,7 +29,8 @@ class Ice40Ebram4kInitialisationFixture(readWidth: BitCount, writeWidth: BitCoun
 		initialState.mustNotBeNull("initialState")
 
 		var state = initialState
-		readClockDomain.withRevertedClockEdge.onSamplings { state = state.onSampling() }
+		readClockDomain.onRisingEdges { state = if (readClockDomain.config.clockEdge != RISING) { state.onActiveEdge() } else { state.onInactiveEdge() } }
+		readClockDomain.onFallingEdges { state = if (readClockDomain.config.clockEdge == RISING) { state.onActiveEdge() } else { state.onInactiveEdge() } }
 		readClockDomain.forkStimulus(period=10)
 		writeClockDomain.forkStimulus(period=10)
 		SimulationFixtureBase.waitForExplicitSimulationTermination
